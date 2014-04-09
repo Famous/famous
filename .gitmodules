@@ -1,0 +1,33 @@
+[submodule "core"]
+	path = core
+	url = git@github.com:FamousInternal/core.git
+[submodule "widgets"]
+	path = widgets
+	url = git@github.com:FamousInternal/widgets.git
+[submodule "events"]
+	path = events
+	url = git@github.com:FamousInternal/events.git
+[submodule "inputs"]
+	path = inputs
+	url = git@github.com:FamousInternal/inputs.git
+[submodule "modifiers"]
+	path = modifiers
+	url = git@github.com:FamousInternal/modifiers.git
+[submodule "physics"]
+	path = physics
+	url = git@github.com:FamousInternal/physics.git
+[submodule "surfaces"]
+	path = surfaces
+	url = git@github.com:FamousInternal/surfaces.git
+[submodule "transitions"]
+	path = transitions
+	url = git@github.com:FamousInternal/transitions.git
+[submodule "utilities"]
+	path = utilities
+	url = git@github.com:FamousInternal/utilities.git
+[submodule "views"]
+	path = views
+	url = git@github.com:FamousInternal/views.git
+[submodule "math"]
+	path = math
+	url = git@github.com:FamousInternal/math.git
