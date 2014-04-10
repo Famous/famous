@@ -2,7 +2,7 @@ Famo.us
 =======
 
 
-Famo.us provides a powerful JavaScript framework and developer tools designed to build rich, fast web applications.  Famo.us takes an opinionated approach to developing with web technology, maintaining tight control of rendering to achieve maximum UI performance.  Built-in and user-defined animations can be powered by our physics engine, creating delightful, natural motion.  The framework also maintains strict modularity for maximum flexibility.  Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that was once reserved only for native development.
+Famo.us provides a powerful JavaScript framework and developer tools designed to build rich, fast web applications.  Famo.us takes an opinionated approach to developing with web technology, maintaining tight control of rendering to achieve maximum UI performance.  Built-in and user-defined animations can be powered by our physics engine, creating delightful, natural motion.  The framework also maintains strict modularity for maximum flexibility.  Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that were once reserved only for native development.
 
 The Famo.us front end is currently optimized to work for mobile devices on iOS (6 and above) and Android (4.3 and above).  Broader support for more browsers is coming.
 
