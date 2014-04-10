@@ -30,7 +30,7 @@ Famous is currently in public beta.  Expect additions and changes to be rapid du
 ## Documentation
 - High-level documentation is included in this distribution in markdown format in the docs folder.
 - Online verisons of this documentation are available in our [guides pages][launch-guides].
-- Rendered versions of the JSDoc comments in the source are browsable at our [docs pages][launch-docs] .
+- Rendered versions of the JSDoc comments in the source are browsable at our [docs pages][launch-docs] or [our guides on github][github-docs] .
 - Small examples of using each component are available at [examples repo][github-examples]
 - Rich interactive tutorials are available at Famous University.  [Matriculate now][launch-university].
 
@@ -100,6 +100,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/.
 [github-generator]: http://github.com/Famous/generator-famous.git
 [launch-guides]: http://famo.us/guides/dev
 [launch-docs]: http://famo.us/docs
+[github-docs]: https://github.com/Famous/guides
 [launch-university]: http://famo.us/university
 [famous-organization-github]: http://github.com/Famous
 [github-examples]: http://github.com/Famous/examples
