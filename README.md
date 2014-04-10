@@ -10,7 +10,7 @@ Our [github organization][famous-organization-github] is primarily for those wis
 
 Famous is currently in public beta.  Expect additions and changes to be rapid during this early period.
 
-- "The only constant is change." -- Heraclitus
+> "The only constant is change." — Heraclitus
 
 ## Famous.git package
 
@@ -26,24 +26,25 @@ git submodule update --init
 
 This will populate the following submodules:
 
-  - core: The low level componentry of Famo.us, plus the required famous.css stylesheet.
-  - events: Events are used for communication between objects in Famous.
-  - inputs: The inputs library is used to interpret user input to the device.
-  - math: A simple math library used throughout the core.
-  - modifiers: Implementations of the core/Modifier pattern which output transforms to the render tree.
-  - physics: Core engine controlling animations via physical simulation.
-  - surfaces: Surfaces are extensions of core/Surface and are the primary concrete interface to the visual document elements.
-  - transitions: Transitions are used to create animation, usually by providing input to a Modifier.
-  - utilities: Utilities hosts various helper classes and static methods.
-  - views: Views are visually interactable components for use in applications.
-  - widgets: Widgets are small visually interactable components for use in applications with their own styling.
-
-
+| Submodule | Description |
+| --------- | ----------- |
+| core | The low level componentry of Famo.us, plus the required famous.css stylesheet. |
+| events | Events are used for communication between objects in Famous. |
+| inputs | The inputs library is used to interpret user input to the device. |
+| math | A simple math library used throughout the core. |
+| modifiers | Implementations of the core/Modifier pattern which output transforms to the render tree. |
+| physics | Core engine controlling animations via physical simulation. |
+| surfaces | Surfaces extend core/Surface and encapsulate common HTML tags like `<img>` and `<canvas>`.|
+| transitions | Transitions are used to create animation, usually by providing input to a Modifier. |
+| utilities | Utilities hosts various helper classes and static methods. |
+| views | Views are visually interactable components for use in applications. |
+| widgets | Widgets are small visually interactable components for use in applications with their own styling. |
+  
 ## Documentation
 
-- High-level documentation is included in this distribution in markdown format in the docs folder.
+- High-level documentation is included in our [guides repository][github-docs]
 - Online verisons of this documentation are available in our [guides pages][launch-guides].
-- Rendered versions of the JSDoc comments in the source are browsable at our [docs pages][launch-docs] or [our guides on github][github-docs] .
+- Rendered versions of the JSDoc comments in the source are browsable at our [docs pages][launch-docs]
 - Small examples of using each component are available at [examples repo][github-examples]
 - Rich interactive tutorials are available at Famous University.  [Matriculate now][launch-university].
 
