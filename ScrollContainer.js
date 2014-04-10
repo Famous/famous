@@ -34,7 +34,7 @@ define(function(require, exports, module) {
         this.container = new ContainerSurface(this.options.container);
         this.scrollview = new Scrollview(this.options.scrollview);
 
-        this.surface.add(this.scrollview);
+        this.container.add(this.scrollview);
 
         EventHandler.setInputHandler(this, this.scrollview);
         EventHandler.setOutputHandler(this, this.scrollview);
