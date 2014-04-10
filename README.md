@@ -13,7 +13,19 @@ Famous is currently in public beta.  Expect additions and changes to be rapid du
 - "The only constant is change." -- Heraclitus
 
 ## Famous.git package
-- This package contains the submodules necessary to be productive in Famo.us.  They are all hosted on [our github organization][famous-organization-github].  In particular:
+
+This package contains the submodules necessary to be productive in Famo.us.  They are all hosted on [our github organization][famous-organization-github].  
+
+Cloning this repo will give you a famous folder, but all subfolders will be unpopulated unless you initialize and update your submodules. To clone and update from the command line, run
+
+```
+git clone git@github.com:Famous/famous.git
+cd famous
+git submodule update --init
+```
+
+This will populate the following submodules:
+
   - core: The low level componentry of Famo.us, plus the required famous.css stylesheet.
   - events: Events are used for communication between objects in Famous.
   - inputs: The inputs library is used to interpret user input to the device.
@@ -28,6 +40,7 @@ Famous is currently in public beta.  Expect additions and changes to be rapid du
 
 
 ## Documentation
+
 - High-level documentation is included in this distribution in markdown format in the docs folder.
 - Online verisons of this documentation are available in our [guides pages][launch-guides].
 - Rendered versions of the JSDoc comments in the source are browsable at our [docs pages][launch-docs] or [our guides on github][github-docs] .
