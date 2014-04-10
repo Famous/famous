@@ -29,7 +29,7 @@ Famous is currently in public beta.  Expect additions and changes to be rapid du
 
 ## Documentation
 - High-level documentation is included in this distribution in markdown format in the docs folder.
-- Online verisons of this documentation are available in our [guides pages][launch-guides].
+- Online versions of this documentation are available in our [guides pages][launch-guides].
 - Rendered versions of the JSDoc comments in the source are browsable at our [docs pages][launch-docs] or [our guides on github][github-docs] .
 - Small examples of using each component are available at [examples repo][github-examples]
 - Rich interactive tutorials are available at Famous University.  [Matriculate now][launch-university].
