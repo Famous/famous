@@ -106,7 +106,7 @@ You can obtain one at http://mozilla.org/MPL/2.0/.
 [mpl]: http://www.mozilla.org/MPL/2.0/
 [mpl-faq]: http://www.mozilla.org/MPL/2.0/FAQ.html
 [forum]: http://forum.famo.us
-[site-install]: http://famo.us/install.html
+[site-install]: http://famo.us/install
 [github-generator]: http://github.com/Famous/generator-famous.git
 [site-guides]: http://famo.us/guides
 [site-docs]: http://famo.us/docs
