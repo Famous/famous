@@ -6,7 +6,7 @@ Famo.us provides a powerful JavaScript framework and developer tools designed to
 
 The Famo.us front end is currently optimized to work for mobile devices on iOS (6 and above) and Android (4.3 and above).  Broader support for more browsers is coming.
 
-Our [github organization][famous-organization-github] is primarily for those wishing to contribute back to Famo.us.  If you are looking instead to get started quickly on an applications and you've only cloned this repository, prefer one of the installation methods listed in [#Installation].
+Our [github organization][famous-organization-github] is primarily for those wishing to contribute back to Famo.us.  If you are looking instead to get started quickly on an applications and you've only cloned this repository, prefer one of the installation methods listed in the Installation section.
 
 Famous is currently in public beta.  Expect additions and changes to be rapid during this early period.
 
@@ -42,18 +42,16 @@ This will populate the following submodules:
   
 ## Documentation
 
-- High-level documentation is included in our [guides repository][github-docs]
-- Online verisons of this documentation are available in our [guides pages][launch-guides].
-- Rendered versions of the JSDoc comments in the source are browsable at our [docs pages][launch-docs]
+- High-level documentation is included publicly at the [guides section our website][site-guides].
+- Rendered versions of the JSDoc comments in the source are browsable at the [docs section of our website][site-docs].
 - Small examples of using each component are available at [examples repo][github-examples]
-- Rich interactive tutorials are available at Famous University.  [Matriculate now][launch-university].
+- Rich interactive tutorials are available at Famous University.  [Matriculate now][site-university].
 
 
 ## Installation
 Famous can be installed in one of two ways:
 
 ### Installation: Toolbelt
-You can find information about our toolbelt over at [our install page][launch-install]
 
 If you would like to get started right away you can install our [yeoman generator][github-generator] via npm.
 
@@ -68,9 +66,9 @@ Preparing your project for production is then as simple as:
     grunt
 
 ### Installation: Getting started with Famo.us Base
-By installing our starter kit available at [our install page][launch-install], unzipping, and building a project starting directly from js/main.js.
+By installing our starter kit available at [our install page][site-install] (requires login), unzipping, and building a project starting directly from js/main.js.
 
-    unzip base.zip
+    unzip famous-starter.zip
     npm install -g serve
     cd starter
     serve
@@ -81,7 +79,7 @@ Again, cloning this repository directly is primarily for those wishing to contri
 
 ## Community
 - If you would like to report a bug, please check the [issues][contributing-issues] section in our [contributing instructions][contributing].
-- Ask a question on our [forum][forum].
+- Ask a question on our [forum][forum] (requires login).
 - Join us in our IRC channel #famous at irc.freenode.net. Freenode maintains this [getting started guide][irc-getting-started] for those new to irc. If you're new to discussing open-source software development on freenode and you want to ask a question, we recommend that you first read esr's [How to Ask Questions the Smart Way][esr-questions].
 - For contributors, read more instructions in the [CONTRIBUTING.md][contributing-issues] document in this repo.
 
@@ -107,15 +105,12 @@ You can obtain one at http://mozilla.org/MPL/2.0/.
 [famous-site]: http://famo.us
 [mpl]: http://www.mozilla.org/MPL/2.0/
 [mpl-faq]: http://www.mozilla.org/MPL/2.0/FAQ.html
-[bugs-general]: http://github.com/Famous/famous/issues
-[bugs-sumobule]: http://github.com/Famous/core/issues
 [forum]: http://forum.famo.us
-[launch-install]: http://famo.us/install.html
+[site-install]: http://famo.us/install.html
 [github-generator]: http://github.com/Famous/generator-famous.git
-[launch-guides]: http://famo.us/guides/dev
-[launch-docs]: http://famo.us/docs
-[github-docs]: https://github.com/Famous/guides
-[launch-university]: http://famo.us/university
+[site-guides]: http://famo.us/guides
+[site-docs]: http://famo.us/docs
+[site-university]: http://famo.us/university
 [famous-organization-github]: http://github.com/Famous
 [github-examples]: http://github.com/Famous/examples
 [contributing]: https://github.com/Famous/famous/blob/master/CONTRIBUTING.md
