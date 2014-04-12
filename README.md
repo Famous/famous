@@ -10,32 +10,6 @@ Famous is currently in public beta.  Expect additions and changes to be rapid du
 
 > "The only constant is change." — Heraclitus
 
-## Famous.git package
-
-This package contains the submodules necessary to be productive in Famo.us.  They are all hosted on [our github organization][famous-organization-github].  
-
-| Submodule | Description |
-| --------- | ----------- |
-| core.git | The low level componentry of Famo.us, plus the required famous.css stylesheet. |
-| events.git | Events are used for communication between objects in Famous. |
-| inputs.git | The inputs library is used to interpret user input to the device. |
-| math.git | A simple math library used throughout the core. |
-| modifiers.git | Implementations of the core/Modifier pattern which output transforms to the render tree. |
-| physics.git | Core engine controlling animations via physical simulation. |
-| surfaces.git | Surfaces extend core/Surface and encapsulate common HTML tags like `<img>` and `<canvas>`.|
-| transitions.git | Transitions are used to create animation, usually by providing input to a Modifier. |
-| utilities.git | Utilities hosts various helper classes and static methods. |
-| views.git | Views are visually interactable components for use in applications. |
-| widgets.git | Widgets are small visually interactable components for use in applications with their own styling. |
-  
-## Documentation
-
-- High-level documentation is included publicly at the [guides section our website][site-guides].
-- Rendered versions of the JSDoc comments in the source are browsable at the [docs section of our website][site-docs].
-- Small examples of using each component are available at [examples repo][github-examples]
-- Rich interactive tutorials are available at Famous University.  [Matriculate now][site-university]. We are gradually rolling this feature out.
-
-
 ## Installation
 Famous can be installed in one of two ways:
 
@@ -63,7 +37,33 @@ Cloning this repository directly is primarily for those wishing to contribute to
     
 Note: this only provides the Famo.us folder and all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the famous.css file that is included in famous/core. Require.js is also a hard dependency for using Famo.us.    
 
+## Famous.git Package
+
+This package contains the submodules necessary to be productive in Famo.us.  They are all hosted on [our github organization][famous-organization-github].  
+
+| Submodule | Description |
+| --------- | ----------- |
+| core.git | The low level componentry of Famo.us, plus the required famous.css stylesheet. |
+| events.git | Events are used for communication between objects in Famous. |
+| inputs.git | The inputs library is used to interpret user input to the device. |
+| math.git | A simple math library used throughout the core. |
+| modifiers.git | Implementations of the core/Modifier pattern which output transforms to the render tree. |
+| physics.git | Core engine controlling animations via physical simulation. |
+| surfaces.git | Surfaces extend core/Surface and encapsulate common HTML tags like `<img>` and `<canvas>`.|
+| transitions.git | Transitions are used to create animation, usually by providing input to a Modifier. |
+| utilities.git | Utilities hosts various helper classes and static methods. |
+| views.git | Views are visually interactable components for use in applications. |
+| widgets.git | Widgets are small visually interactable components for use in applications with their own styling. |
+  
+## Documentation
+
+- High-level documentation is included publicly at the [guides section our website][site-guides].
+- Rendered versions of the JSDoc comments in the source are browsable at the [docs section of our website][site-docs].
+- Small examples of using each component are available at [examples repo][github-examples]
+- Rich interactive tutorials are available at Famous University.  [Matriculate now][site-university]. We are gradually rolling this feature out.
+
 ## Community
+
 - If you would like to report a bug, please check the [issues][contributing-issues] section in our [contributing instructions][contributing].
 - Ask a question on our [forum][forum] (requires login).
 - Join us in our IRC channel #famous at irc.freenode.net. Freenode maintains this [getting started guide][irc-getting-started] for those new to irc. If you're new to discussing open-source software development on freenode and you want to ask a question, we recommend that you first read esr's [How to Ask Questions the Smart Way][esr-questions].
