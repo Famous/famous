@@ -87,7 +87,7 @@ define(function(require, exports, module) {
     Scroller.prototype.setOptions = function setOptions(options) {
         this._optionsManager.setOptions(options);
 
-        if(options.groupScroll)
+        if(this.options.groupScroll)
             this.group.pipe(this._eventOutput);
         else
             this.group.unpipe(this._eventOutput);
