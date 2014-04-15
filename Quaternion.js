@@ -299,7 +299,6 @@ define(function(require, exports, module) {
         return this.w * q.w + this.x * q.x + this.y * q.y + this.z * q.z;
     };
 
-
     /**
      * Doc: TODO
      *
