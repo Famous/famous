@@ -70,9 +70,9 @@ define(function(require, exports, module) {
         var index = this.firstIndex;
         var indexShiftAmount = insertCount - removeCount;
         var node = this.firstNode;
-        
-        if(start === this.firstIndex) {
-            for (var i = 0; i < removeCount; i++) {
+
+        if (start === this.firstIndex) {
+            for (i = 0; i < removeCount; i++) {
                 this.firstNode = this.firstNode.getNext();
             }
             this.firstNode.index = this.firstIndex;
