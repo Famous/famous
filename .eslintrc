@@ -19,7 +19,7 @@
     "new-cap": 1,
     "new-parens": 2,
     "no-ternary": 0,
-    "no-unused-vars": 1,
+    "no-unused-vars": [1, {"vars": "local", "args": "none"}],
     "quotes": [2, "single"],
     "one-var": 0,
     "space-infix-ops": 0,
