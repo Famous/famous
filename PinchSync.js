@@ -44,17 +44,24 @@ define(function(require, exports, module) {
         return Math.sqrt(diffX * diffX + diffY * diffY);
     }
 
+    function _calcCenter(posA, posB) {
+      return [(posA[0] + posB[0]) / 2.0, (posA[1] + posB[1]) / 2.0]
+    }
+
     PinchSync.prototype._startUpdate = function _startUpdate(event) {
         this._dist = _calcDist(this.posA, this.posB);
+        this._center = _calcCenter(this.posA, this.posB);
         this.output.emit('start', {
             count: event.touches.length,
             touches: [this.touchAId, this.touchBId],
-            distance: this._dist
+            distance: this._dist,
+            center: this._center
         });
     };
 
     PinchSync.prototype._moveUpdate = function _moveUpdate(diffTime) {
         var currDist = _calcDist(this.posA, this.posB);
+        var currCenter = _calcCenter(this.posA, this.posB);
         var diffZ = currDist - this._dist;
         var veloZ = diffZ / diffTime;
 
@@ -66,7 +73,8 @@ define(function(require, exports, module) {
             position: prevPos + scale*diffZ,
             velocity: scale*veloZ,
             touches: [this.touchAId, this.touchBId],
-            distance: currDist
+            distance: currDist,
+            center: currCenter
         });
 
         this._dist = currDist;
