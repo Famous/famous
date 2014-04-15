@@ -114,7 +114,8 @@ define(function(require, exports, module) {
         pageDamp: 0.8,
         pageStopSpeed: 10,
         pageSwitchSpeed: 0.5,
-        speedLimit: 10
+        speedLimit: 10,
+        groupScroll: false
     };
 
     /** @enum */
@@ -365,8 +366,14 @@ define(function(require, exports, module) {
             if (options.direction === 'x') options.direction = Utility.Direction.X;
             else if (options.direction === 'y') options.direction = Utility.Direction.Y;
         }
-        this._scroller.setOptions(options);
+
         this._optionsManager.setOptions(options);
+
+        this._scroller.setOptions(this.options);
+        if(this.options.groupScroll)
+            this._scroller.pipe(this._eventInput);
+        else
+            this._scroller.unpipe(this._eventInput);
 
         if (this.options.margin === undefined) this.options.margin = 1000; // mostly safe
 
