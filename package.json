@@ -1,0 +1,31 @@
+{
+  "name": "famous-math",
+  "version": "0.1.1",
+  "description": "A math library for Famo.us.",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/famous/math"
+  },
+  "keywords": [
+    "famous"
+  ],
+  "author": "famous",
+  "license": "MPL v2.0",
+  "bugs": {
+    "url": "https://github.com/famous/math/issues"
+  },
+  "homepage": "https://github.com/famous/math",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-eslint": "^0.4.0",
+    "grunt-jscs-checker": "^0.4.1",
+    "load-grunt-tasks": "^0.4.0",
+    "time-grunt": "^0.3.1"
+  },
+  "scripts": {
+    "test": "grunt test"
+  }
+}
