@@ -198,7 +198,7 @@ define(function(require, exports, module) {
                         this._nextRenderable = null;
                     });
                 }
-                return;
+                return undefined;
             }
         }
 

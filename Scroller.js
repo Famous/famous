@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     var EventHandler = require('famous/core/EventHandler');
 
     /**
-     * Scroller lays out a collection of renderables, and will browse through them based on 
+     * Scroller lays out a collection of renderables, and will browse through them based on
      * accesed position. Scroller also broadcasts an 'edgeHit' event, with a position property of the location of the edge,
      * when you've hit the 'edges' of it's renderable collection.
      * @class Scroller
@@ -100,7 +100,7 @@ define(function(require, exports, module) {
      * Allows you to overwrite the way Scroller lays out it's renderables. Scroller will
      * pass an offset into the function. By default the Scroller instance just translates each node
      * in it's direction by the passed-in offset.
-     * Scroller will translate each renderable down 
+     * Scroller will translate each renderable down
      * @method outputFrom
      * @param {Function} fn A function that takes an offset and returns a transform.
      * @param {Function} [masterFn]
