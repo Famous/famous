@@ -79,7 +79,7 @@ define(function(require, exports, module) {
         EventEmitter.prototype.emit.apply(this, arguments);
         var i = 0;
         for (i = 0; i < this.downstream.length; i++) {
-            this.downstream[i].trigger(type, event);
+            if (this.downstream[i].trigger) this.downstream[i].trigger(type, event);
         }
         for (i = 0; i < this.downstreamFn.length; i++) {
             this.downstreamFn[i](type, event);
