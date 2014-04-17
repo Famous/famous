@@ -13,6 +13,7 @@ define(function(require, exports, module) {
     var Transform = require('./Transform');
 
     var usePrefix = document.body.style.webkitTransform !== undefined;
+    var devicePixelRatio = window.devicePixelRatio || 1;
 
     /**
      * A base class for viewable content and event
@@ -315,6 +316,9 @@ define(function(require, exports, module) {
      * @return {string} matrix3d CSS style representation of the transform
      */
     function _formatCSSTransform(m) {
+        m[12] = Math.round(m[12] * devicePixelRatio) / devicePixelRatio;
+        m[13] = Math.round(m[13] * devicePixelRatio) / devicePixelRatio;
+
         var result = 'matrix3d(';
         for (var i = 0; i < 15; i++) {
             result += (m[i] < 0.000001 && m[i] > -0.000001) ? '0,' : m[i] + ',';
