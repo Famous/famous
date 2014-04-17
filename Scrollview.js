@@ -56,6 +56,8 @@ define(function(require, exports, module) {
      * @param {Number} [speedLimit=10] The highest scrolling speed you can reach.
      */
     function Scrollview(options) {
+        options = options || {};
+
         this.options = Object.create(Scrollview.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
 
