@@ -109,6 +109,7 @@ define(function(require, exports, module) {
         edgeGrip: 0.5,
         edgePeriod: 300,
         edgeDamp: 1,
+        margin: 1000, // mostly safe
         paginated: false,
         pagePeriod: 500,
         pageDamp: 0.8,
@@ -367,8 +368,6 @@ define(function(require, exports, module) {
         }
         this._scroller.setOptions(options);
         this._optionsManager.setOptions(options);
-
-        if (this.options.margin === undefined) this.options.margin = 1000; // mostly safe
 
         this.drag.setOptions({strength: this.options.drag});
         this.friction.setOptions({strength: this.options.friction});
