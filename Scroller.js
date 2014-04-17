@@ -57,7 +57,8 @@ define(function(require, exports, module) {
     Scroller.DEFAULT_OPTIONS = {
         direction: Utility.Direction.Y,
         margin: 0,
-        clipSize: undefined
+        clipSize: undefined,
+        groupScroll: false
     };
 
     function _sizeForDir(size) {
@@ -84,7 +85,12 @@ define(function(require, exports, module) {
      * @param {Options} options An object of configurable options for the Scroller instance.
      */
     Scroller.prototype.setOptions = function setOptions(options) {
-        return this._optionsManager.setOptions(options);
+        this._optionsManager.setOptions(options);
+
+        if(this.options.groupScroll)
+            this.group.pipe(this._eventOutput);
+        else
+            this.group.unpipe(this._eventOutput);
     };
 
     /**
