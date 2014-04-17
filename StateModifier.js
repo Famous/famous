@@ -48,7 +48,7 @@ define(function(require, exports, module) {
 
         if (options) {
             if (options.transform) this.setTransform(options.transform);
-            if (options.opacity) this.setOpacity(options.opacity);
+            if (options.opacity !== undefined) this.setOpacity(options.opacity);
             if (options.origin) this.setOrigin(options.origin);
             if (options.size) this.setSize(options.size);
         }
