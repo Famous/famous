@@ -328,7 +328,7 @@ define(function(require, exports, module) {
     }
 
     function _setZIndex(element, matrix) {
-        element.style.zIndex = (matrix[15] * 1000000) | 0;
+        element.style.zIndex = (matrix[14] * 1000000) | 0;
     }
 
     /**
