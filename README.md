@@ -2,28 +2,28 @@ Famo.us
 =======
 
 
-Famo.us provides a powerful JavaScript framework designed to build rich, interactive web applications.  Famo.us takes an opinionated approach to developing, maintaining a tight control of rendering to achieve UI performance.  The framework also maintains strict modularity for flexibility. Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that was once reserved only for native development.
+Famo.us provides a powerful JavaScript framework designed to build rich, interactive web applications.  Famo.us takes an opinionated approach to web development, maintaining a tight control of rendering to achieve performance.  The framework also maintains strict modularity for flexibility. Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that was once reserved only for native development.
 
-The Famo.us front end is currently optimized to work for mobile devices on iOS (6 and above) and Android (4.3 and above).  Broader support for more browsers is coming.
+Famo.us is in public beta, and currently optimized to work for mobile devices on iOS 6+ and Android 4.3+.  Broader support is coming.
 
-Famous is currently in public beta.  Expect additions and changes to be rapid during this early period.
+If you have any problems at all, we recommend you join our [IRC channel (#famous on Freenode)][IRC] for live help.
 
 > "The only constant is change." — Heraclitus
 
 ## Installation
-Famous can be installed in one of two ways:
+Famo.us can be installed in one of two ways:
 
 ### Grunt Toolbelt
 
 If you would like to get started right away you can install our [yeoman generator][github-generator] via npm.
 
-    npm install -g generator-famous
+    npm install -g yo grunt-cli bower generator-famous
     mkdir newProject
     cd newProject
     yo famous
     grunt serve
 
-Preparing your project for production is then as simple as:
+Preparing your project for distribution is then as simple as:
 
     grunt
 
@@ -77,6 +77,7 @@ Copyright (c) 2014 Famous Industries, Inc.
 
 
 [famous-site]: http://famo.us
+[IRC]: http://webchat.freenode.net/?channels=famous
 [mpl]: http://www.mozilla.org/MPL/2.0/
 [mpl-faq]: http://www.mozilla.org/MPL/2.0/FAQ.html
 [forum]: http://forum.famo.us
