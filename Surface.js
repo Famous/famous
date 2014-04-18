@@ -327,6 +327,10 @@ define(function(require, exports, module) {
         return result;
     }
 
+    function _setZIndex(element, matrix) {
+        element.style.zIndex = (matrix[15] * 1000000) | 0;
+    }
+
     /**
      * Directly apply given FamousMatrix to the document element as the
      *   appropriate webkit CSS style.
@@ -457,6 +461,7 @@ define(function(require, exports, module) {
                 this._origin[1] = origin[1];
                 aaMatrix = Transform.moveThen([-this._size[0] * origin[0], -this._size[1] * origin[1], 0], matrix);
             }
+            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) _setZIndex(target, aaMatrix);
             _setMatrix(target, aaMatrix);
         }
 
