@@ -2,7 +2,7 @@ Famo.us
 =======
 
 
-Famo.us provides a powerful JavaScript framework designed to build rich, interactive web applications.  Famo.us takes an opinionated approach to web development, maintaining a tight control of rendering to achieve performance.  The framework also maintains strict modularity for flexibility. Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that was once reserved only for native development.
+Famo.us provides a JavaScript framework designed to build rich, interactive web applications.  Famo.us takes an opinionated approach to web development, maintaining a tight control of rendering to achieve performance.  The framework also maintains strict modularity for flexibility. Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that was once reserved only for native development.
 
 Famo.us is in public beta, and currently optimized to work for mobile devices on iOS 6+ and Android 4.3+.  Broader support is coming.
 
