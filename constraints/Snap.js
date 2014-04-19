@@ -171,28 +171,32 @@ define(function(require, exports, module) {
 
             pDiff.set(p1.sub(anchor));
             var dist = pDiff.norm() - length;
+            var effMass;
 
             if (source) {
                 var w2 = source.inverseMass;
                 var v2 = source.velocity;
                 vDiff.set(v1.sub(v2));
-                var effMass = 1/(w1 + w2);
+                effMass = 1/(w1 + w2);
             }
             else {
                 vDiff.set(v1);
-                var effMass = m1;
+                effMass = m1;
             }
 
+            var gamma;
+            var beta;
+
             if (this.options.period === 0) {
-                var gamma = 0;
-                var beta = 1;
+                gamma = 0;
+                beta = 1;
             }
             else {
                 var k = 4 * effMass * pi * pi / (period * period);
                 var c = 4 * effMass * pi * dampingRatio / period;
 
-                var beta  = dt * k / (c + dt * k);
-                var gamma = 1 / (c + dt*k);
+                beta  = dt * k / (c + dt * k);
+                gamma = 1 / (c + dt*k);
             }
 
             var antiDrift = beta/dt * dist;

@@ -105,16 +105,19 @@ define(function(require, exports, module) {
             var p = particle.position;
             var m = particle.mass;
 
+            var gamma;
+            var beta;
+
             if (period === 0) {
-                var gamma = 0;
-                var beta = 1;
+                gamma = 0;
+                beta = 1;
             }
             else {
                 var c = 4 * m * pi * dampingRatio / period;
                 var k = 4 * m * pi * pi / (period * period);
 
-                var gamma = 1 / (c + dt*k);
-                var beta  = dt*k / (c + dt*k);
+                gamma = 1 / (c + dt*k);
+                beta  = dt*k / (c + dt*k);
             }
 
             var x = p.x;

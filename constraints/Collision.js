@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 
     /**
      *  Allows for two circular bodies to collide and bounce off each other.
-     *  
+     *
      *
      *  @class Collision
      *  @constructor
