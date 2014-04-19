@@ -108,7 +108,6 @@ define(function(require, exports, module) {
     // @param {Object=} event document event
     //
     function handleResize(event) {
-        window.scrollTo(0, 0);
         for (var i = 0; i < contexts.length; i++) {
             contexts[i].emit('resize');
         }
