@@ -96,12 +96,12 @@ define(function(require, exports, module) {
     }
 
     function _outputTransform(offset) {
-        if (this.options.direction == HeaderFooterLayout.DIRECTION_X) return Transform.translate(offset, 0, 0);
+        if (this.options.direction === HeaderFooterLayout.DIRECTION_X) return Transform.translate(offset, 0, 0);
         else return Transform.translate(0, offset, 0);
     }
 
     function _finalSize(directionSize, size) {
-        if (this.options.direction == HeaderFooterLayout.DIRECTION_X) return [directionSize, size[1]];
+        if (this.options.direction === HeaderFooterLayout.DIRECTION_X) return [directionSize, size[1]];
         else return [size[0], directionSize];
     }
 
