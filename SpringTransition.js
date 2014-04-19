@@ -7,6 +7,9 @@
  * @copyright Famous Industries, Inc. 2014
  */
 
+/*global console*/
+/*eslint no-console: 1 */
+
 define(function(require, exports, module) {
     var PE = require('famous/physics/PhysicsEngine');
     var Particle = require('famous/physics/bodies/Particle');
