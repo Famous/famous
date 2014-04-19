@@ -6,6 +6,7 @@
  * @license MPL 2.0
  * @copyright Famous Industries, Inc. 2014
  */
+/*eslint func-style: [1, "declaration"] */
 
 define(function(require, exports, module) {
     /**
