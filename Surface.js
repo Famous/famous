@@ -342,12 +342,23 @@ define(function(require, exports, module) {
      * @param {Element} element document element
      * @param {FamousMatrix} matrix
      */
+    
+    var _setMatrix;
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) 
+        _setMatrix = function(element, matrix){
+            _setZIndex(target, matrix);
+            _formatCSSTransform(matrix);
+        }
+    else if (usePrefix)
+        _setMatrix = function(element, matrix){
+            element.style.webkitTransform = _formatCSSTransform(matrix);
+        }
+    else
+        _setMatrix = function(element, matrix){
+            element.style.transform = _formatCSSTransform(matrix);
+        }
+    }
 
-    var _setMatrix = usePrefix ? function(element, matrix) {
-        element.style.webkitTransform = _formatCSSTransform(matrix);
-    } : function(element, matrix) {
-        element.style.transform = _formatCSSTransform(matrix);
-    };
 
     // format origin as CSS percentage string
     function _formatCSSOrigin(origin) {
@@ -461,7 +472,6 @@ define(function(require, exports, module) {
                 this._origin[1] = origin[1];
                 aaMatrix = Transform.moveThen([-this._size[0] * origin[0], -this._size[1] * origin[1], 0], matrix);
             }
-            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) _setZIndex(target, aaMatrix);
             _setMatrix(target, aaMatrix);
         }
 
