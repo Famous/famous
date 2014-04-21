@@ -340,21 +340,22 @@ define(function(require, exports, module) {
      */
     
     var _setMatrix;
-    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) 
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         _setMatrix = function(element, matrix){
             element.style.zIndex = (matrix[14] * 1000000) | 0;    // fix for Firefox z-buffer issues
             element.style.transform = _formatCSSTransform(matrix);
-        }
-    else if (usePrefix)
+        };
+    }
+    else if (usePrefix) {
         _setMatrix = function(element, matrix){
             element.style.webkitTransform = _formatCSSTransform(matrix);
-        }
-    else
+        };
+    }
+    else {
         _setMatrix = function(element, matrix){
             element.style.transform = _formatCSSTransform(matrix);
-        }
+        };
     }
-
 
     // format origin as CSS percentage string
     function _formatCSSOrigin(origin) {
