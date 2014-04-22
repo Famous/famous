@@ -414,7 +414,7 @@ define(function(require, exports, module) {
         this._matrix = null;
         this._opacity = undefined;
         this._origin = null;
-        this._size = null;
+        this._size = [];
     };
 
     /**
