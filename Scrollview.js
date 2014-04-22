@@ -93,7 +93,7 @@ define(function(require, exports, module) {
         this._scroller = new Scroller();
         this._scroller.positionFrom(this.getPosition.bind(this));
 
-        if (options) this.setOptions(options);
+        this.setOptions(options);
 
         _bindEvents.call(this);
     }
@@ -109,6 +109,7 @@ define(function(require, exports, module) {
         edgeGrip: 0.5,
         edgePeriod: 300,
         edgeDamp: 1,
+        margin: 1000,       // mostly safe
         paginated: false,
         pagePeriod: 500,
         pageDamp: 0.8,
@@ -361,14 +362,15 @@ define(function(require, exports, module) {
      * @param {Options} options An object of configurable options for the Scrollview instance.
      */
     Scrollview.prototype.setOptions = function setOptions(options) {
-        if (options.direction !== undefined) {
-            if (options.direction === 'x') options.direction = Utility.Direction.X;
-            else if (options.direction === 'y') options.direction = Utility.Direction.Y;
-        }
-        this._scroller.setOptions(options);
-        this._optionsManager.setOptions(options);
+        if (options) {
+            if (options.direction !== undefined) {
+                if (options.direction === 'x') options.direction = Utility.Direction.X;
+                else if (options.direction === 'y') options.direction = Utility.Direction.Y;
+            }
 
-        if (this.options.margin === undefined) this.options.margin = 1000; // mostly safe
+            this._scroller.setOptions(options);
+            this._optionsManager.setOptions(options);
+        }
 
         this.drag.setOptions({strength: this.options.drag});
         this.friction.setOptions({strength: this.options.friction});
