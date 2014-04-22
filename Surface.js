@@ -435,6 +435,12 @@ define(function(require, exports, module) {
         var origin = context.origin;
         var size = context.size;
 
+        if (this._contentDirty) {
+            this.deploy(target);
+            this.eventHandler.emit('deploy');
+            this._contentDirty = false;
+        }
+
         if (this.size) {
             var origSize = size;
             size = [this.size[0], this.size[1]];
@@ -442,8 +448,26 @@ define(function(require, exports, module) {
             if (size[1] === undefined && origSize[1]) size[1] = origSize[1];
         }
 
-        if (_xyNotEquals(this._size, size)) {
-            this._size = [size[0], size[1]];
+        var widthTrue = size[0] === true;
+        var heightTrue = size[1] === true;
+
+        if (_xyNotEquals(this._size, size) && (!widthTrue || !heightTrue)) {
+            if (!widthTrue) {
+                this._size[0] = size[0];
+            }
+            if (!heightTrue) {
+                this._size[1] = size[1];
+            }
+            this._sizeDirty = true;
+        }
+
+        if (widthTrue && target.clientWidth !== this._size[0]) {
+            this._size[0] = target.clientWidth;
+            this._sizeDirty = true;
+        }
+
+        if (heightTrue && target.clientHeight !== this._size[1]) {
+            this._size[1] = target.clientHeight;
             this._sizeDirty = true;
         }
 
@@ -459,7 +483,7 @@ define(function(require, exports, module) {
             target.style.opacity = (opacity >= 1) ? '0.999999' : opacity;
         }
 
-        if (_xyNotEquals(this._origin, origin) || Transform.notEquals(this._matrix, matrix)) {
+        if (_xyNotEquals(this._origin, origin) || Transform.notEquals(this._matrix, matrix) || this._sizeDirty) {
             if (!matrix) matrix = Transform.identity;
             this._matrix = matrix;
             var aaMatrix = matrix;
@@ -486,15 +510,10 @@ define(function(require, exports, module) {
         }
         if (this._sizeDirty) {
             if (this._size) {
-                target.style.width = (this._size[0] !== true) ? this._size[0] + 'px' : '';
-                target.style.height = (this._size[1] !== true) ? this._size[1] + 'px' : '';
+                target.style.width = (this.size[0] !== true) ? this._size[0] + 'px' : '';
+                target.style.height = (this.size[1] !== true) ? this._size[1] + 'px' : '';
             }
             this._sizeDirty = false;
-        }
-        if (this._contentDirty) {
-            this.deploy(target);
-            this.eventHandler.emit('deploy');
-            this._contentDirty = false;
         }
     };
 
