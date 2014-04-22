@@ -48,7 +48,7 @@ define(function(require, exports, module) {
         this._matrix = null;
         this._opacity = 1;
         this._origin = null;
-        this._size = null;
+        this._size = [];
 
         /** @ignore */
         this.eventForwarder = function eventForwarder(event) {
