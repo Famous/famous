@@ -1,4 +1,4 @@
-Utilities: Famo.us static utility method library
+Utilities: Famo.us static utility method library [![Build Status](https://travis-ci.org/Famous/utilities.svg)](https://travis-ci.org/Famous/utilities)
 ================================================
 
 Utilities hosts various helper classes and static methods
