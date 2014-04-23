@@ -1,4 +1,4 @@
-Surfaces: Famo.us render targets
+Surfaces: Famo.us render targets [![Build Status](https://travis-ci.org/Famous/surfaces.svg)](https://travis-ci.org/Famous/surfaces)
 ================================
 
 Surfaces are extensions of core/Surface and are the primary concrete interface 
