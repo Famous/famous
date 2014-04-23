@@ -1,4 +1,4 @@
-Inputs: Famous user input libraries
+Inputs: Famous user input libraries [![Build Status](https://travis-ci.org/Famous/inputs.svg)](https://travis-ci.org/Famous/inputs)
 ===================================
 
 The inputs library is used to interpret user input to the device. Its primary 
