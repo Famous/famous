@@ -1,4 +1,4 @@
-Widgets: Small app views within Famo.us
+Widgets: Small app views within Famo.us [![Build Status](https://travis-ci.org/Famous/widgets.svg)](https://travis-ci.org/Famous/widgets)
 =======================================
 
 This widget library is a collection of small views with app-specific styling.
