@@ -1,4 +1,4 @@
-Views: Famo.us interaction components
+Views: Famo.us interaction components [![Build Status](https://travis-ci.org/Famous/views.svg)](https://travis-ci.org/Famous/views)
 =====================================
 
 Views are visually interactable components for use in applications.
