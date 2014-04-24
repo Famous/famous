@@ -143,13 +143,12 @@ define(function(require, exports, module) {
             }
         ];
 
-        var nextSpec = {
+        return {
             transform: transform,
             opacity: opacity,
             size: size,
             target: result
         };
-        return nextSpec;
     };
 
     module.exports = HeaderFooterLayout;
