@@ -1,4 +1,4 @@
-Math: A math library for Famo.us
+Math: A math library for Famo.us [![Build Status](https://travis-ci.org/Famous/math.svg)](https://travis-ci.org/Famous/math)
 ================================
 
 A simple math library used throughout the core.
