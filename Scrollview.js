@@ -370,7 +370,7 @@ define(function(require, exports, module) {
         this._optionsManager.setOptions(options);
 
         this._scroller.setOptions(this.options);
-        if(this.options.groupScroll)
+        if (this.options.groupScroll)
             this._scroller.pipe(this._eventInput);
         else
             this._scroller.unpipe(this._eventInput);
