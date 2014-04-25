@@ -1,4 +1,4 @@
-Modifiers: Famous modifier objects
+Modifiers: Famous modifier objects [![Build Status](https://travis-ci.org/Famous/modifiers.svg)](https://travis-ci.org/Famous/modifiers)
 ==================================
 
 Implementations of the core/Modifier pattern which output transforms to the
