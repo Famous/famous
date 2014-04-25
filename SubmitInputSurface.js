@@ -4,18 +4,18 @@ define(function(require, exports, module) {
     function SubmitInputSurface(options) {
         InputSurface.apply(this, arguments);
         this._type = 'submit';
-        if (options && options.onclick) this.onclick = options.onclick;
+        if (options && options.onClick) this.setOnClick(options.onClick);
     }
 
     SubmitInputSurface.prototype = Object.create( InputSurface.prototype );
     SubmitInputSurface.prototype.constructor = SubmitInputSurface;
 
-    SubmitInputSurface.prototype.setOnClick = function(onclick){
-        this.onclick = onclick;
+    SubmitInputSurface.prototype.setOnClick = function(onClick){
+        this.onClick = onClick;
     };
 
     SubmitInputSurface.prototype.deploy = function deploy(target) {
-        if (this.onclick) target.onclick = this.onclick;
+        if (this.onclick) target.onClick = this.onClick;
         InputSurface.prototype.deploy.apply(this, arguments);
     };
 
