@@ -338,21 +338,21 @@ define(function(require, exports, module) {
      * @param {Element} element document element
      * @param {FamousMatrix} matrix
      */
-    
+
     var _setMatrix;
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        _setMatrix = function(element, matrix){
+        _setMatrix = function(element, matrix) {
             element.style.zIndex = (matrix[14] * 1000000) | 0;    // fix for Firefox z-buffer issues
             element.style.transform = _formatCSSTransform(matrix);
         };
     }
     else if (usePrefix) {
-        _setMatrix = function(element, matrix){
+        _setMatrix = function(element, matrix) {
             element.style.webkitTransform = _formatCSSTransform(matrix);
         };
     }
     else {
-        _setMatrix = function(element, matrix){
+        _setMatrix = function(element, matrix) {
             element.style.transform = _formatCSSTransform(matrix);
         };
     }
