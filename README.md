@@ -1,4 +1,4 @@
-Transitions: Famo.us animation library
+Transitions: Famo.us animation library [![Build Status](https://travis-ci.org/Famous/transitions.svg)](https://travis-ci.org/Famous/transitions)
 ======================================
 
 Transitions are used to create animation, usually by providing input to a 
