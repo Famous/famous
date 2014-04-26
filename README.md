@@ -57,7 +57,7 @@ This package contains the submodules necessary to be productive in Famo.us.  The
   
 ## Documentation
 
-- High-level documentation is included publicly at the [guides section our website][site-guides].
+- High-level documentation is included publicly at the [guides section on our website][site-guides].
 - Rendered versions of the JSDoc comments in the source are browsable at the [docs section of our website][site-docs].
 - Small examples of using each component are available at [examples repo][github-examples]
 
