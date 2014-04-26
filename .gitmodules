@@ -1,33 +1,33 @@
 [submodule "core"]
 	path = core
-	url = git@github.com:Famous/core.git
+	url = https://github.com/Famous/core.git
 [submodule "widgets"]
 	path = widgets
-	url = git@github.com:Famous/widgets.git
+	url = https://github.com/Famous/widgets.git
 [submodule "events"]
 	path = events
-	url = git@github.com:Famous/events.git
+	url = https://github.com/Famous/events.git
 [submodule "inputs"]
 	path = inputs
-	url = git@github.com:Famous/inputs.git
+	url = https://github.com/Famous/inputs.git
 [submodule "math"]
 	path = math
-	url = git@github.com:Famous/math.git
+	url = https://github.com/Famous/math.git
 [submodule "modifiers"]
 	path = modifiers
-	url = git@github.com:Famous/modifiers.git
+	url = https://github.com/Famous/modifiers.git
 [submodule "physics"]
 	path = physics
-	url = git@github.com:Famous/physics.git
+	url = https://github.com/Famous/physics.git
 [submodule "surfaces"]
 	path = surfaces
-	url = git@github.com:Famous/surfaces.git
+	url = https://github.com/Famous/surfaces.git
 [submodule "transitions"]
 	path = transitions
-	url = git@github.com:Famous/transitions.git
+	url = https://github.com/Famous/transitions.git
 [submodule "utilities"]
 	path = utilities
-	url = git@github.com:Famous/utilities.git
+	url = https://github.com/Famous/utilities.git
 [submodule "views"]
 	path = views
-	url = git@github.com:Famous/views.git
+	url = https://github.com/Famous/views.git
