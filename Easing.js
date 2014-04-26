@@ -108,7 +108,7 @@ define(function(require, exports, module) {
         },
 
         /**
-         * @property inQuad
+         * @property inOutQuint
          * @static
          */
         inOutQuint: function(t) {
