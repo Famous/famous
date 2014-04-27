@@ -316,7 +316,7 @@ define(function(require, exports, module) {
 
     /**
      * Returns the position associated with the Scrollview instance's current node
-     * (generally the node currently at the top).
+     *  (generally the node currently at the top).
      * @method getPosition
      * @param {number} [node] If specified, returns the position of the node at that index in the
      * Scrollview instance's currently managed collection.
@@ -348,7 +348,7 @@ define(function(require, exports, module) {
 
     /**
      * Sets the Scrollview instance's velocity. Until affected by input or another call of setVelocity
-     * the Scrollview instance will scroll at the passed-in velocity.
+     *  the Scrollview instance will scroll at the passed-in velocity.
      * @method setVelocity
      * @param {number} v TThe magnitude of the velocity.
      */
@@ -431,9 +431,9 @@ define(function(require, exports, module) {
 
     /**
      * Sets the collection of renderables under the Scrollview instance's control, by
-     * setting its current node to the passed in ViewSequence. If you
-     * pass in an array, the Scrollview instance will set its node as a ViewSequence instantiated with
-     * the passed-in array.
+     *  setting its current node to the passed in ViewSequence. If you
+     *  pass in an array, the Scrollview instance will set its node as a ViewSequence instantiated with
+     *  the passed-in array.
      *
      * @method sequenceFrom
      * @param {Array|ViewSequence} node Either an array of renderables or a Famous viewSequence.

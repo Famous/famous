@@ -75,7 +75,7 @@ define(function(require, exports, module) {
 
    /**
      * Show displays the targeted renderable with a transition and an optional callback to
-     * execute afterwards.
+     *  execute afterwards.
      * @method show
      * @param {Object} renderable The renderable you want to show.
      * @param {Transition} [transition] Overwrites the default transition in to display the
