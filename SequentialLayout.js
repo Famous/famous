@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 
     /**
      * SequentialLayout will lay out a collection of renderables sequentially in the specified direction.
-     * @class ScrollContainer
+     * @class SequentialLayout
      * @constructor
      * @param {Options} [options] An object of configurable options.
      * @param {Number} [options.direction=Utility.Direction.Y] Using the direction helper found in the famous Utility
