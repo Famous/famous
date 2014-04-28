@@ -12,6 +12,7 @@ define(function(require, exports, module) {
     var RenderNode = require('famous/core/RenderNode');
     var Transform = require('famous/core/Transform');
     var ViewSequence = require('famous/core/ViewSequence');
+    var EventHandler = require('famous/core/EventHandler');
     var Modifier = require('famous/core/Modifier');
     var OptionsManager = require('famous/core/OptionsManager');
     var Transitionable = require('famous/transitions/Transitionable');
@@ -43,6 +44,9 @@ define(function(require, exports, module) {
         this._contextSizeCache = [0, 0];
         this._dimensionsCache = [0, 0];
         this._activeCount = 0;
+
+        this._eventOutput = new EventHandler();
+        EventHandler.setOutputHandler(this, this._eventOutput);
     }
 
     function _reflow(size, cols, rows) {
@@ -55,8 +59,12 @@ define(function(require, exports, module) {
             for (var j = 0; j < cols; j++) {
                 var currX = Math.round(colSize * j);
                 var currIndex = i * cols + j;
-                if (!(currIndex in this._modifiers)) _createModifier.call(this, currIndex);
-                _animateModifier.call(this, currIndex, [Math.round(colSize * (j + 1)) - currX, Math.round(rowSize * (i+ 1)) - currY], [currX, currY, 0], 1);
+                if (!(currIndex in this._modifiers)) {
+                    _createModifier.call(this, currIndex, [Math.round(colSize * (j + 1)) - currX, Math.round(rowSize * (i+ 1)) - currY], [currX, currY, 0], 1);
+                }
+                else {
+                    _animateModifier.call(this, currIndex, [Math.round(colSize * (j + 1)) - currX, Math.round(rowSize * (i+ 1)) - currY], [currX, currY, 0], 1);
+                }
             }
         }
         this._dimensionsCache = [this.options.dimensions[0], this.options.dimensions[1]];
@@ -67,13 +75,15 @@ define(function(require, exports, module) {
         for (i = this._activeCount ; i < this._modifiers.length; i++) {
             _animateModifier.call(this, i, [Math.round(colSize), Math.round(rowSize)], [0, 0], 0);
         }
+
+        this._eventOutput.emit('reflow');
     }
 
-    function _createModifier(index) {
+    function _createModifier(index, size, position, opacity) {
         var transitionItem = {
-            transform: new TransitionableTransform(Transform.identity),
-            opacity: new Transitionable(0),
-            size: new Transitionable([0, 0])
+            transform: new TransitionableTransform(Transform.translate.apply(null, position)),
+            opacity: new Transitionable(opacity),
+            size: new Transitionable(size)
         };
 
         var modifier = new Modifier({
