@@ -13,11 +13,11 @@ Famo.us is a framework that is always testing the limits of where browsers can g
 If you think you've encountered a bug, do the following:
 
 1. Make sure you are working with the latest version of the Famo.us `master` branch.
-2. Browse through the [issues][#issues] to check if
+2. Browse through the [issues](#issues) to check if
    anyone else has already reported. If someone has, feel free to add more
    information to that issue to help us solve it.
 3. If no one has yet submitted the issue you are encountering, check the
-   [guidelines for deciding where to file your issue][#issues]. Please be sure
+   [guidelines for deciding where to file your issue](#issues). Please be sure
    to include as much information as possible, include errors, warnings,
    screenshots, links to a video showing the problem or code that can reproduce
    the issue.
@@ -37,7 +37,7 @@ hiccups.
 
 Our development process is very similar to the approach
 described in the well-known article [A Successful Git Branching Model by Vincent
-Driessen][git_branching_model]. Here's a 10,000 foot overview:
+Driessen][git-branching-model]. Here's a 10,000 foot overview:
 
 * Our `master` branch is the branch upon which most
   famous developers should be basing their work on. The `master` branch is not guaranteed to be stable.
@@ -86,7 +86,7 @@ branch. We are using the following tokens:
     wip   // work in progress
     feat  // feature
 
-Bug fixes follow a [slightly different format][#bug-fixes].
+Bug fixes follow a [slightly different format](#bug-fixes).
 
 
 ### Bug fixes
