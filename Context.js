@@ -146,7 +146,7 @@ define(function(require, exports, module) {
     /**
      * Set current perspective of this context in pixels.
      *
-     * @method getPerspective
+     * @method setPerspective
      * @param {Number} perspective in pixels
      * @param {Object} [transition] Transitionable object for applying the change
      * @param {function(Object)} callback function called on completion of transition

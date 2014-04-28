@@ -99,13 +99,13 @@ define(function(require, exports, module) {
      * @method emit
      *
      * @param {string} type event type key (for example, 'click')
-     * @param {Object} event event data
+     * @param {Object} [event] event data
      * @return {EventHandler} this
      */
     Surface.prototype.emit = function emit(type, event) {
         if (event && !event.origin) event.origin = this;
         var handled = this.eventHandler.emit(type, event);
-        if (handled && event.stopPropagation) event.stopPropagation();
+        if (handled && event && event.stopPropagation) event.stopPropagation();
         return handled;
     };
 
