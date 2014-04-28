@@ -6,7 +6,8 @@
  * @license MPL 2.0
  * @copyright Famous Industries, Inc. 2014
  */
-/*eslint func-style: [1, "declaration"] */
+// TODO fix func-style
+/*eslint func-style: [0, "declaration"] */
 
 define(function(require, exports, module) {
     /**
