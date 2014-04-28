@@ -9,7 +9,7 @@ define(function(require, exports, module) {
 
     /**
      * Scroller lays out a collection of renderables, and will browse through them based on
-     * accesed position. Scroller also broadcasts an 'edgeHit' event, with a position property of the location of the edge,
+     * accessed position. Scroller also broadcasts an 'edgeHit' event, with a position property of the location of the edge,
      * when you've hit the 'edges' of it's renderable collection.
      * @class Scroller
      * @constructor
