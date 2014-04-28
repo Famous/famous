@@ -7,10 +7,10 @@ define(function(require, exports, module) {
         if (options && options.onClick) this.setOnClick(options.onClick);
     }
 
-    SubmitInputSurface.prototype = Object.create( InputSurface.prototype );
+    SubmitInputSurface.prototype = Object.create(InputSurface.prototype);
     SubmitInputSurface.prototype.constructor = SubmitInputSurface;
 
-    SubmitInputSurface.prototype.setOnClick = function(onClick){
+    SubmitInputSurface.prototype.setOnClick = function(onClick) {
         this.onClick = onClick;
     };
 

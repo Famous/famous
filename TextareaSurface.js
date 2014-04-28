@@ -90,7 +90,7 @@ define(function(require, exports, module) {
         this._contentDirty = true;
         return this;
     };
-    
+
     /**
      * Get the value of the inner content of the textarea (e.g. the entered text)
      *
@@ -105,7 +105,7 @@ define(function(require, exports, module) {
             return this._value;
         }
     };
-    
+
     /**
      * Set the name attribute of the element.
      *   Note: Triggers a repaint next tick.
@@ -129,7 +129,7 @@ define(function(require, exports, module) {
     TextareaSurface.prototype.getName = function getName() {
         return this._name;
     };
-    
+
     /**
      * Set the wrap of textarea.
      *   Note: Triggers a repaint next tick.
@@ -143,7 +143,7 @@ define(function(require, exports, module) {
         this._contentDirty = true;
         return this;
     };
-        
+
     /**
      * Set the number of columns visible in the textarea.
      *   Note: Overridden by surface size; set width to true. (eg. size: [true, *])
@@ -158,7 +158,7 @@ define(function(require, exports, module) {
         this._contentDirty = true;
         return this;
     };
-    
+
     /**
      * Set the number of rows visible in the textarea.
      *   Note: Overridden by surface size; set height to true. (eg. size: [*, true])
