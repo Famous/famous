@@ -12,6 +12,7 @@ to the visual document elements.
   properties to be applied to all of them at once.
 - ImageSurface.js: A Surface containing image content.
 - InputSurface.js: A Surface in the form of an HTML input element.
+- TextareaSurface.js: A Surface in the form of an HTML textarea element.
 - VideoSurface.js: A Surface containing video content.
 
 

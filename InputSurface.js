@@ -64,7 +64,7 @@ define(function(require, exports, module) {
     /**
      * Blur the current input, hiding the keyboard on mobile.
      *
-     * @method focus
+     * @method blur
      * @return {InputSurface} this, allowing method chaining.
      */
     InputSurface.prototype.blur = function blur() {
