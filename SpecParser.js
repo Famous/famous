@@ -135,7 +135,10 @@ define(function(require, exports, module) {
             }
             if (spec.size) {
                 var parentSize = parentContext.size;
-                size = [spec.size[0] || parentSize[0], spec.size[1] || parentSize[1]];
+                size = [
+                    spec.size[0] !== undefined ? spec.size[0] : parentSize[0],
+                    spec.size[1] !== undefined ? spec.size[1] : parentSize[1]
+                ];
                 if (parentSize && origin && (origin[0] || origin[1])) {
                     transform = Transform.thenMove(transform, _vecInContext([origin[0] * parentSize[0], origin[1] * parentSize[1], 0], sizeContext));
                     transform = Transform.moveThen([-origin[0] * size[0], -origin[1] * size[1], 0], transform);
