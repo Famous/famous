@@ -80,7 +80,7 @@ define(function(require, exports, module) {
 
         this._add(this.layout);
 
-        this.optionsManager.on('change', function(event) {
+        this._optionsManager.on('change', function(event) {
             var key = event.id;
             var data = event.value;
             if (key === 'size') {
