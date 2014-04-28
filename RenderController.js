@@ -72,10 +72,10 @@ define(function(require, exports, module) {
 
     /**
      * As your RenderController shows a new renderable, it executes a transition in. This transition in
-     * will affect a default interior state and modify it as you bring renderables in and out. However, if you want to control
-     * the transform, opacity, and origin state yourself, you may call certain methods (such as inTransformFrom) to obtain state from an outside source,
-     * that may either be a function or a Famous transitionable. inTransformFrom sets the accessor for the state of
-     * the transform used in transitioning in renderables.
+     *  will affect a default interior state and modify it as you bring renderables in and out. However, if you want to control
+     *  the transform, opacity, and origin state yourself, you may call certain methods (such as inTransformFrom) to obtain state from an outside source,
+     *  that may either be a function or a Famous transitionable. inTransformFrom sets the accessor for the state of
+     *  the transform used in transitioning in renderables.
      *
      * @method inTransformFrom
      * @param {Function|Transitionable} transform  A function that returns a transform from outside closure, or a
