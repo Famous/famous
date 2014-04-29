@@ -145,7 +145,9 @@ define(function(require, exports, module) {
      *    to range inside [0,1]
      */
     TweenTransition.getCurve = function getCurve(curveName) {
-        return registeredCurves[curveName];
+        var curve = registeredCurves[curveName];
+        if (curve !== undefined) return curve;
+        else throw "curve not registered";
     };
 
     /**
