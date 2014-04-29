@@ -16,7 +16,9 @@ define(function(require, exports, module) {
      */
     if (!window.CustomEvent) return;
     var clickThreshold = 300;
+    var clickWindow = 500;
     var potentialClicks = {};
+    var recentlyDispatched = {};
     window.addEventListener('touchstart', function(event) {
         var timestamp = Date.now();
         for (var i = 0; i < event.changedTouches.length; i++) {
@@ -36,14 +38,24 @@ define(function(require, exports, module) {
             var touch = event.changedTouches[i];
             var startTime = potentialClicks[touch.identifier];
             if (startTime && currTime - startTime < clickThreshold) {
-                event.preventDefault();
                 var clickEvt = new window.CustomEvent('click', {
                     'bubbles': true,
                     'details': touch
                 });
+                recentlyDispatched[currTime] = event;
                 event.target.dispatchEvent(clickEvt);
             }
             delete potentialClicks[touch.identifier];
         }
     });
+    window.addEventListener('click', function(event) {
+        var currTime = Date.now();
+        for (var i in recentlyDispatched) {
+            var previousEvent = recentlyDispatched[i];
+            if (currTime - i < clickWindow) {
+                if (event instanceof window.MouseEvent && event.origin === previousEvent.origin) event.stopPropagation();
+            }
+            else delete recentlyDispatched[i];
+        }
+    }, true);
 });
