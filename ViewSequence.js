@@ -100,7 +100,7 @@ define(function(require, exports, module) {
             index++;
             while (node && index < this.array.length + this.firstIndex) {
                 if (node._nextNode) node.index += indexShiftAmount;
-                node.index = index;
+                else node.index = index;
                 node = node.getNext();
                 index++;
             }
