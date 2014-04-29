@@ -44,17 +44,24 @@ define(function(require, exports, module) {
         return Math.atan2(diffY, diffX);
     }
 
+    function _calcCenter(posA, posB) {
+      return [(posA[0] + posB[0]) / 2.0, (posA[1] + posB[1]) / 2.0]
+    }
+
     RotateSync.prototype._startUpdate = function _startUpdate(event) {
         this._angle = _calcAngle(this.posA, this.posB);
+        this._center = _calcCenter(this.posA, this.posB);
         this.output.emit('start', {
             count: event.touches.length,
             touches: [this.touchAId, this.touchBId],
-            angle: this._angle
+            angle: this._angle,
+            center: this._center
         });
     };
 
     RotateSync.prototype._moveUpdate = function _moveUpdate(diffTime) {
         var currAngle = _calcAngle(this.posA, this.posB);
+        var currCenter = _calcCenter(this.posA, this.posB);
         var diffTheta = currAngle - this._angle;
         var velTheta = diffTheta / diffTime;
 
@@ -66,7 +73,8 @@ define(function(require, exports, module) {
             position: prevPos + scale*diffTheta,
             velocity: scale*velTheta,
             touches: [this.touchAId, this.touchBId],
-            angle: currAngle
+            angle: currAngle,
+            center: currCenter
         });
 
         this._angle = currAngle;

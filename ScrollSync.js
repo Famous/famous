@@ -105,7 +105,13 @@ define(function(require, exports, module) {
         event.preventDefault();
         if (!this.inProgress) {
             this.inProgress = true;
-            this.output.emit('start', {slip: true});
+            payload = this._payload;
+            payload.slip = true;
+            payload.clientX = event.clientX;
+            payload.clientY = event.clientY;
+            payload.offsetX = event.offsetX;
+            payload.offsetY = event.offsetY;
+            this.output.emit('start', payload);
             if (!this._loopBound) {
                 Engine.on('prerender', _newFrame.bind(this));
                 this._loopBound = true;
