@@ -1,0 +1,31 @@
+{
+  "name": "famous-transitions",
+  "version": "0.1.1",
+  "description": "Famo.us animation library.",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/famous/transitions"
+  },
+  "keywords": [
+    "famous"
+  ],
+  "author": "famous",
+  "license": "MPL v2.0",
+  "bugs": {
+    "url": "https://github.com/famous/transitions/issues"
+  },
+  "homepage": "https://github.com/famous/transitions",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-eslint": "^0.4.0",
+    "grunt-jscs-checker": "^0.4.1",
+    "load-grunt-tasks": "^0.4.0",
+    "time-grunt": "^0.3.1"
+  },
+  "scripts": {
+    "test": "grunt test"
+  }
+}

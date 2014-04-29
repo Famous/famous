@@ -1,0 +1,31 @@
+{
+  "name": "famous-core",
+  "version": "0.1.1",
+  "description": "The low level componentry of Famo.us, including the required CSS stylesheet.",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/famous/core"
+  },
+  "keywords": [
+    "famous"
+  ],
+  "author": "famous",
+  "license": "MPL v2.0",
+  "bugs": {
+    "url": "https://github.com/famous/core/issues"
+  },
+  "homepage": "https://github.com/famous/core",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-eslint": "^0.4.0",
+    "grunt-jscs-checker": "^0.4.1",
+    "load-grunt-tasks": "^0.4.0",
+    "time-grunt": "^0.3.1"
+  },
+  "scripts": {
+    "test": "grunt test"
+  }
+}
