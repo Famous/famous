@@ -8,7 +8,6 @@
  */
 
 define(function(require, exports, module) {
-
     var EventHandler = require('famous/core/EventHandler');
     var Engine = require('famous/core/Engine');
 
@@ -33,27 +32,9 @@ define(function(require, exports, module) {
      * @param {Number | Array.Number} [options.scale] scale outputs in by scalar or pair of scalars
      * @param {Number} [options.stallTime] reset time for velocity calculation in ms
      */
-    function ScrollSync(legacyGetter, options) {
-        if (arguments.length === 2){
-            this._legacyPositionGetter = arguments[0];
-            options = arguments[1];
-        }
-        else {
-            this._legacyPositionGetter = null;
-            options = arguments[0];
-        }
-
-        this.options = {
-            direction: undefined,
-            minimumEndSpeed: Infinity,
-            rails: false,
-            scale: 1,
-            stallTime: 50,
-            lineHeight: 40
-        };
-
+    function ScrollSync(options) {
+        this.options = Object.create(ScrollSync.DEFAULT_OPTIONS);
         if (options) this.setOptions(options);
-        else this.setOptions(this.options);
 
         this._payload = {
             delta    : null,
@@ -62,57 +43,77 @@ define(function(require, exports, module) {
             slip     : true
         };
 
-        this.input = new EventHandler();
-        this.output = new EventHandler();
+        this._eventInput = new EventHandler();
+        this._eventOutput = new EventHandler();
 
-        EventHandler.setInputHandler(this, this.input);
-        EventHandler.setOutputHandler(this, this.output);
+        EventHandler.setInputHandler(this, this._eventInput);
+        EventHandler.setOutputHandler(this, this._eventOutput);
 
+        this._position = (this.options.direction === undefined) ? [0,0] : 0;
         this._prevTime = undefined;
         this._prevVel = undefined;
-        this.input.on('mousewheel', _handleMove.bind(this));
-        this.input.on('wheel', _handleMove.bind(this));
-        this.inProgress = false;
-
+        this._eventInput.on('mousewheel', _handleMove.bind(this));
+        this._eventInput.on('wheel', _handleMove.bind(this));
+        this._inProgress = false;
         this._loopBound = false;
     }
+
+    ScrollSync.DEFAULT_OPTIONS = {
+        direction: undefined,
+        minimumEndSpeed: Infinity,
+        rails: false,
+        scale: 1,
+        stallTime: 50,
+        lineHeight: 40
+    };
 
     ScrollSync.DIRECTION_X = 0;
     ScrollSync.DIRECTION_Y = 1;
 
-    function _newFrame() {
-        var now = Date.now();
-        if (this.inProgress && now - this._prevTime > this.options.stallTime) {
-            var pos = (this.options.direction === undefined)
-                ? this._legacyPositionGetter ? this._legacyPositionGetter : [0,0]
-                : this._legacyPositionGetter ? this._legacyPositionGetter : 0;
+    var MINIMUM_TICK_TIME = 8;
 
-            this.inProgress = false;
+    var _now = Date.now;
+
+    function _newFrame() {
+        if (this._inProgress && (_now() - this._prevTime) > this.options.stallTime) {
+            this._position = (this.options.direction === undefined) ? [0,0] : 0;
+            this._inProgress = false;
             var finalVel = 0;
 
             if (Math.abs(this._prevVel) >= this.options.minimumEndSpeed) finalVel = this._prevVel;
 
             var payload = this._payload;
-            payload.position = pos;
+            payload.position = this._position;
             payload.velocity = finalVel;
             payload.slip = true;
 
-            this.output.emit('end', payload);
+            this._eventOutput.emit('end', payload);
         }
     }
 
     function _handleMove(event) {
         event.preventDefault();
-        if (!this.inProgress) {
-            this.inProgress = true;
-            this.output.emit('start', {slip: true});
+
+        if (!this._inProgress) {
+            this._inProgress = true;
+
+            payload = this._payload;
+            payload.slip = true;
+            payload.position = this._position;
+            payload.clientX = event.clientX;
+            payload.clientY = event.clientY;
+            payload.offsetX = event.offsetX;
+            payload.offsetY = event.offsetY;
+            this._eventOutput.emit('start', payload);
             if (!this._loopBound) {
                 Engine.on('prerender', _newFrame.bind(this));
                 this._loopBound = true;
             }
         }
 
-        var prevTime = this._prevTime || Date.now();
+        var currTime = _now();
+        var prevTime = this._prevTime || currTime;
+
         var diffX = (event.wheelDeltaX !== undefined) ? event.wheelDeltaX : -event.deltaX;
         var diffY = (event.wheelDeltaY !== undefined) ? event.wheelDeltaY : -event.deltaY;
 
@@ -121,50 +122,44 @@ define(function(require, exports, module) {
             diffY *= this.options.lineHeight;
         }
 
-        var currTime = Date.now();
-
         if (this.options.rails) {
             if (Math.abs(diffX) > Math.abs(diffY)) diffY = 0;
             else diffX = 0;
         }
 
-        var diffTime = Math.max(currTime - prevTime, 8); // minimum tick time
+        var diffTime = Math.max(currTime - prevTime, MINIMUM_TICK_TIME); // minimum tick time
 
         var velX = diffX / diffTime;
         var velY = diffY / diffTime;
 
-        var prevPos;
         var scale = this.options.scale;
-        var nextPos;
         var nextVel;
         var nextDelta;
 
         if (this.options.direction === ScrollSync.DIRECTION_X) {
-            prevPos = this._legacyPositionGetter ? this._legacyPositionGetter() : 0;
             nextDelta = scale * diffX;
-            nextPos = prevPos + nextDelta;
             nextVel = scale * velX;
+            this._position += nextDelta;
         }
         else if (this.options.direction === ScrollSync.DIRECTION_Y) {
-            prevPos = this._legacyPositionGetter ? this._legacyPositionGetter() : 0;
             nextDelta = scale * diffY;
-            nextPos = prevPos + nextDelta;
             nextVel = scale * velY;
+            this._position += nextDelta;
         }
         else {
-            prevPos = this._legacyPositionGetter ? this._legacyPositionGetter() : [0,0];
             nextDelta = [scale * diffX, scale * diffY];
-            nextPos = [prevPos[0] + nextDelta[0], prevPos[1] + nextDelta[1]];
             nextVel = [scale * velX, scale * velY];
+            this._position[0] += nextDelta[0];
+            this._position[1] += nextDelta[1];
         }
 
         var payload = this._payload;
         payload.delta    = nextDelta;
-        payload.position = nextPos;
         payload.velocity = nextVel;
+        payload.position = this._position;
         payload.slip     = true;
 
-        this.output.emit('update', payload);
+        this._eventOutput.emit('update', payload);
 
         this._prevTime = currTime;
         this._prevVel = nextVel;

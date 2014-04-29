@@ -18,33 +18,26 @@ define(function(require, exports, module) {
      * @class ScaleSync
      * @extends TwoFingerSync
      * @constructor
-     * @param {function} legacyGetter position getter object (deprecated)
      * @param {Object} options default options overrides
+     * @param {Number} [options.scale] scale velocity by this factor
      */
-    function ScaleSync(legacyGetter, options) {
-        if (arguments.length === 2){
-            this._legacyPositionGetter = arguments[0];
-            options = arguments[1];
-        }
-        else {
-            this._legacyPositionGetter = null;
-            options = arguments[0];
-        }
+    function ScaleSync(options) {
+        TwoFingerSync.call(this);
 
-        TwoFingerSync.call(this, this._legacyPositionGetter, options);
+        this.options = Object.create(ScaleSync.DEFAULT_OPTIONS);
+        if (options) this.setOptions(options);
+
+        this._scaleFactor = 1;
         this._startDist = 0;
-        this._prevScale = 1;
-        this.input.on('pipe', _reset.bind(this));
+        this._eventInput.on('pipe', _reset.bind(this));
     }
 
     ScaleSync.prototype = Object.create(TwoFingerSync.prototype);
     ScaleSync.prototype.constructor = ScaleSync;
 
-    function _calcDist(posA, posB) {
-        var diffX = posB[0] - posA[0];
-        var diffY = posB[1] - posA[1];
-        return Math.sqrt(diffX * diffX + diffY * diffY);
-    }
+    ScaleSync.DEFAULT_OPTIONS = {
+        scale : 1
+    };
 
     function _reset() {
         this.touchAId = undefined;
@@ -53,10 +46,9 @@ define(function(require, exports, module) {
 
     // handles initial touch of two fingers
     ScaleSync.prototype._startUpdate = function _startUpdate(event) {
-        this._prevScale = 1;
-        this._startDist = _calcDist(this.posA, this.posB);
-        this._vel = 0;
-        this.output.emit('start', {
+        this._scaleFactor = 1;
+        this._startDist = TwoFingerSync.calculateDistance(this.posA, this.posB);
+        this._eventOutput.emit('start', {
             count: event.touches.length,
             touches: [this.touchAId, this.touchBId],
             distance: this._startDist
@@ -65,35 +57,45 @@ define(function(require, exports, module) {
 
     // handles movement of two fingers
     ScaleSync.prototype._moveUpdate = function _moveUpdate(diffTime) {
-        var currDist = _calcDist(this.posA, this.posB);
-        var currScale = currDist / this._startDist;
-        var diffScale = currScale - this._prevScale;
-        var veloScale = diffScale / diffTime;
-
-        var prevPos = this._legacyPositionGetter ? this._legacyPositionGetter() : 0;
         var scale = this.options.scale;
 
-        this.output.emit('update', {
-            delta : diffScale,
-            position: prevPos + scale*diffScale,
-            velocity: scale*veloScale,
-            touches: [this.touchAId, this.touchBId],
-            distance: currDist
+        var currDist = TwoFingerSync.calculateDistance(this.posA, this.posB);
+        var delta = (currDist - this._startDist) / this._startDist;
+        var newScaleFactor = Math.max(1 + scale * delta, 0);
+        var veloScale = (newScaleFactor - this._scaleFactor) / diffTime;
+
+        this._eventOutput.emit('update', {
+            delta : delta,
+            scale: newScaleFactor,
+            velocity: veloScale,
+            distance: currDist,
+            touches: [this.touchAId, this.touchBId]
         });
 
-        this._prevScale = currScale;
-        this._vel = veloScale;
+        this._scaleFactor = newScaleFactor;
     };
 
     /**
-     * See TwoFingerSync.setOptions
-     * @method setOptions
+     * Return entire options dictionary, including defaults.
+     *
+     * @method getOptions
+     * @return {Object} configuration options
      */
+    ScaleSync.prototype.getOptions = function getOptions() {
+        return this.options;
+    };
 
     /**
-     * See TwoFingerSync.getOptions
-     * @method getOptions
+     * Set internal options, overriding any default options
+     *
+     * @method setOptions
+     *
+     * @param {Object} [options] overrides of default options
+     * @param {Number} [options.scale] scale velocity by this factor
      */
+    ScaleSync.prototype.setOptions = function setOptions(options) {
+        if (options.scale !== undefined) this.options.scale = options.scale;
+    };
 
     module.exports = ScaleSync;
 });

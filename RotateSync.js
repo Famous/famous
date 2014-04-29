@@ -18,68 +18,81 @@ define(function(require, exports, module) {
      * @class RotateSync
      * @extends TwoFingerSync
      * @constructor
-     * @param {function} legacyGetter position getter object (deprecated)
      * @param {Object} options default options overrides
+     * @param {Number} [options.scale] scale velocity by this factor
      */
-    function RotateSync(legacyGetter, options) {
-        if (arguments.length === 2){
-            this._legacyPositionGetter = arguments[0];
-            options = arguments[1];
-        }
-        else {
-            this._legacyPositionGetter = null;
-            options = arguments[0];
-        }
+    function RotateSync(options) {
+        TwoFingerSync.call(this);
 
-        TwoFingerSync.call(this, this._legacyPositionGetter, options);
+        this.options = Object.create(RotateSync.DEFAULT_OPTIONS);
+        if (options) this.setOptions(options);
+
         this._angle = 0;
+        this._previousAngle = 0;
     }
 
     RotateSync.prototype = Object.create(TwoFingerSync.prototype);
     RotateSync.prototype.constructor = RotateSync;
 
-    function _calcAngle(posA, posB) {
-        var diffX = posB[0] - posA[0];
-        var diffY = posB[1] - posA[1];
-        return Math.atan2(diffY, diffX);
-    }
+    RotateSync.DEFAULT_OPTIONS = {
+        scale : 1
+    };
 
     RotateSync.prototype._startUpdate = function _startUpdate(event) {
-        this._angle = _calcAngle(this.posA, this.posB);
-        this.output.emit('start', {
+        this._angle = 0;
+        this._previousAngle = TwoFingerSync.calculateAngle(this.posA, this.posB);
+        var center = TwoFingerSync.calculateCenter(this.posA, this.posB);
+        this._eventOutput.emit('start', {
             count: event.touches.length,
-            touches: [this.touchAId, this.touchBId],
-            angle: this._angle
+            angle: this._angle,
+            center: center,
+            touches: [this.touchAId, this.touchBId]
         });
     };
 
     RotateSync.prototype._moveUpdate = function _moveUpdate(diffTime) {
-        var currAngle = _calcAngle(this.posA, this.posB);
-        var diffTheta = currAngle - this._angle;
-        var velTheta = diffTheta / diffTime;
-
-        var prevPos = this._legacyPositionGetter ? this._legacyPositionGetter() : 0;
         var scale = this.options.scale;
 
-        this.output.emit('update', {
+        var currAngle = TwoFingerSync.calculateAngle(this.posA, this.posB);
+        var center = TwoFingerSync.calculateCenter(this.posA, this.posB);
+
+        var diffTheta = scale * (currAngle - this._previousAngle);
+        var velTheta = diffTheta / diffTime;
+
+        this._angle += diffTheta;
+
+        this._eventOutput.emit('update', {
             delta : diffTheta,
-            position: prevPos + scale*diffTheta,
-            velocity: scale*velTheta,
-            touches: [this.touchAId, this.touchBId],
-            angle: currAngle
+            velocity: velTheta,
+            angle: this._angle,
+            center: center,
+            touches: [this.touchAId, this.touchBId]
         });
 
-        this._angle = currAngle;
+        this._previousAngle = currAngle;
     };
 
     /**
-     * See TwoFingerSync.setOptions
-     * @method setOptions
+     * Return entire options dictionary, including defaults.
+     *
+     * @method getOptions
+     * @return {Object} configuration options
      */
+    RotateSync.prototype.getOptions = function getOptions() {
+        return this.options;
+    };
 
     /**
-     * See TwoFingerSync.getOptions
-     * @method getOptions
+     * Set internal options, overriding any default options
+     *
+     * @method setOptions
+     *
+     * @param {Object} [options] overrides of default options
+     * @param {Number} [options.scale] scale velocity by this factor
      */
+    RotateSync.prototype.setOptions = function setOptions(options) {
+        if (options.scale !== undefined) this.options.scale = options.scale;
+    };
+
     module.exports = RotateSync;
 });

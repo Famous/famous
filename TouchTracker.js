@@ -10,13 +10,15 @@
 define(function(require, exports, module) {
     var EventHandler = require('famous/core/EventHandler');
 
+    var _now = Date.now;
+
     function _timestampTouch(touch, origin, history, count) {
-        var touchClone = {};
-        for (var i in touch) touchClone[i] = touch[i];
         return {
-            touch: touchClone,
+            x: touch.pageX,
+            y: touch.pageY,
+            identifier : touch.identifier,
             origin: origin,
-            timestamp: Date.now(),
+            timestamp: _now(),
             count: count,
             history: history
         };
@@ -25,7 +27,7 @@ define(function(require, exports, module) {
     function _handleStart(event) {
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
-            var data = _timestampTouch(touch, event.origin, undefined, event.touches.length);
+            var data = _timestampTouch(touch, event.origin, null, event.touches.length);
             this.eventOutput.emit('trackstart', data);
             if (!this.selective && !this.touchHistory[touch.identifier]) this.track(data);
         }
@@ -99,7 +101,7 @@ define(function(require, exports, module) {
      * @param {Object} data touch data
      */
     TouchTracker.prototype.track = function track(data) {
-        this.touchHistory[data.touch.identifier] = [data];
+        this.touchHistory[data.identifier] = [data];
     };
 
     module.exports = TouchTracker;
