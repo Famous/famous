@@ -95,7 +95,7 @@ define(function(require, exports, module) {
         if (this._showing) {
             if (this.options.overlap) this.hide();
             else {
-                return this.hide(this.show.bind(this, renderable, callback));
+                return this.hide(this.show.bind(this, renderable, transition, callback));
             }
         }
         this._showing = true;
