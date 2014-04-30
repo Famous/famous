@@ -75,7 +75,7 @@ define(function(require, exports, module) {
 
    /**
      * Show displays the targeted renderable with a transition and an optional callback to
-     * execute afterwards.
+     *  execute afterwards.
      * @method show
      * @param {Object} renderable The renderable you want to show.
      * @param {Transition} [transition] Overwrites the default transition in to display the
@@ -95,8 +95,7 @@ define(function(require, exports, module) {
         if (this._showing) {
             if (this.options.overlap) this.hide();
             else {
-                this.hide(this.show.bind(this, renderable, callback));
-                return;
+                return this.hide(this.show.bind(this, renderable, callback));
             }
         }
         this._showing = true;

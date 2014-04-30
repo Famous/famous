@@ -1,4 +1,4 @@
-Views: Famo.us interaction components
+Views: Famo.us interaction components [![Build Status](https://travis-ci.org/Famous/views.svg)](https://travis-ci.org/Famous/views)
 =====================================
 
 Views are visually interactable components for use in applications.
@@ -19,7 +19,7 @@ Views are visually interactable components for use in applications.
 - RenderController.js: Show, hide, or switch between different renderables with
   a configurable transitions and in/out states
 - ScrollContainer.js: A scrollview added within a container surface.
-- Scroller.js: Doc: TODO
+- Scroller.js: Doc: Lays out a collection of renderables, and will browse through them based on accessed position.
 - Scrollview.js:  Lays out the sequenced renderables sequentially and makes them
   scrollable.
 - SequentialLayout.js: Lays out specified renderables sequentially.

@@ -56,8 +56,6 @@ define(function(require, exports, module) {
      * @param {Number} [speedLimit=10] The highest scrolling speed you can reach.
      */
     function Scrollview(options) {
-        options = options || {};
-
         this.options = Object.create(Scrollview.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
 
@@ -95,7 +93,7 @@ define(function(require, exports, module) {
         this._scroller = new Scroller();
         this._scroller.positionFrom(this.getPosition.bind(this));
 
-        if (options) this.setOptions(options);
+        this.setOptions(options);
 
         _bindEvents.call(this);
     }
@@ -111,13 +109,14 @@ define(function(require, exports, module) {
         edgeGrip: 0.5,
         edgePeriod: 300,
         edgeDamp: 1,
-        margin: 1000, // mostly safe
+        margin: 1000,       // mostly safe
         paginated: false,
         pagePeriod: 500,
         pageDamp: 0.8,
         pageStopSpeed: 10,
         pageSwitchSpeed: 0.5,
-        speedLimit: 10
+        speedLimit: 10,
+        groupScroll: false
     };
 
     /** @enum */
@@ -318,7 +317,7 @@ define(function(require, exports, module) {
 
     /**
      * Returns the position associated with the Scrollview instance's current node
-     * (generally the node currently at the top).
+     *  (generally the node currently at the top).
      * @method getPosition
      * @param {number} [node] If specified, returns the position of the node at that index in the
      * Scrollview instance's currently managed collection.
@@ -350,7 +349,7 @@ define(function(require, exports, module) {
 
     /**
      * Sets the Scrollview instance's velocity. Until affected by input or another call of setVelocity
-     * the Scrollview instance will scroll at the passed-in velocity.
+     *  the Scrollview instance will scroll at the passed-in velocity.
      * @method setVelocity
      * @param {number} v TThe magnitude of the velocity.
      */
@@ -364,12 +363,15 @@ define(function(require, exports, module) {
      * @param {Options} options An object of configurable options for the Scrollview instance.
      */
     Scrollview.prototype.setOptions = function setOptions(options) {
-        if (options.direction !== undefined) {
-            if (options.direction === 'x') options.direction = Utility.Direction.X;
-            else if (options.direction === 'y') options.direction = Utility.Direction.Y;
+        if (options) {
+            if (options.direction !== undefined) {
+                if (options.direction === 'x') options.direction = Utility.Direction.X;
+                else if (options.direction === 'y') options.direction = Utility.Direction.Y;
+            }
+
+            this._scroller.setOptions(options);
+            this._optionsManager.setOptions(options);
         }
-        this._scroller.setOptions(options);
-        this._optionsManager.setOptions(options);
 
         this.drag.setOptions({strength: this.options.drag});
         this.friction.setOptions({strength: this.options.friction});
@@ -430,9 +432,9 @@ define(function(require, exports, module) {
 
     /**
      * Sets the collection of renderables under the Scrollview instance's control, by
-     * setting its current node to the passed in ViewSequence. If you
-     * pass in an array, the Scrollview instance will set its node as a ViewSequence instantiated with
-     * the passed-in array.
+     *  setting its current node to the passed in ViewSequence. If you
+     *  pass in an array, the Scrollview instance will set its node as a ViewSequence instantiated with
+     *  the passed-in array.
      *
      * @method sequenceFrom
      * @param {Array|ViewSequence} node Either an array of renderables or a Famous viewSequence.
