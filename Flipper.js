@@ -40,6 +40,8 @@ define(function(require, exports, module) {
     Flipper.DEFAULT_OPTIONS = {
         transition: true,
         cull: true,
+        continuous: false,
+        invert: false,
         direction: Utility.Direction.Y
     };
 
@@ -51,10 +53,16 @@ define(function(require, exports, module) {
      *   Defaults to the default transition (true).
      * @param {function} [callback] Executes after transitioning to the toggled state.
      */
-    Flipper.prototype.flip = function flip(side, callback) {
+    Flipper.prototype.flip = function flip(side, transition, callback) {
         if (side === undefined) side = (this._side === 1) ? 0 : 1;
+        if (transition === undefined) transition = this.options.transition;
+        if (this.options.continuous) {
+            if (this.secondFlip === undefined) this.secondFlip = false;
+            else this.secondFlip = !this.secondFlip;
+        }
+        console.log(this.secondFlip);
         this._side = side;
-        this.state.set(side, this.options.transition, callback);
+        this.state.set(side, transition, callback);
     };
 
     /**
@@ -101,9 +109,14 @@ define(function(require, exports, module) {
         var axis = this.options.direction;
         var frontRotation = [0, 0, 0];
         var backRotation = [0, 0, 0];
-        frontRotation[axis] = Math.PI * pos;
-        backRotation[axis] = Math.PI * (pos + 1);
 
+        var inverseCoefficient = this.options.invert ? -1 : 1;
+        if (this.options.continuous && this.secondFlip === true) {
+            inverseCoefficient = -inverseCoefficient;
+        }
+
+        frontRotation[axis] = Math.PI * (inverseCoefficient * pos);
+        backRotation[axis] = Math.PI * ((inverseCoefficient * pos) + 1);
         if (this.options.cull && !this.state.isActive()) {
             if (pos) return this.backNode.render();
             else return this.frontNode.render();
@@ -111,11 +124,11 @@ define(function(require, exports, module) {
         else {
             return [
                 {
-                    transform: Transform.rotate.apply(null, frontRotation),
+                    transform: Transform.moveThen([0, 0, 1], Transform.rotate.apply(null, frontRotation)),
                     target: this.frontNode.render()
                 },
                 {
-                    transform: Transform.rotate.apply(null, backRotation),
+                    transform: Transform.moveThen([0, 0, 1], Transform.rotate.apply(null, backRotation)),
                     target: this.backNode.render()
                 }
             ];
