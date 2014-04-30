@@ -56,13 +56,14 @@ define(function(require, exports, module) {
     Flipper.prototype.flip = function flip(side, transition, callback) {
         if (side === undefined) side = (this._side === 1) ? 0 : 1;
         if (transition === undefined) transition = this.options.transition;
-        if (this.options.continuous) {
-            if (this.secondFlip === undefined) this.secondFlip = false;
-            else this.secondFlip = !this.secondFlip;
-        }
-        console.log(this.secondFlip);
         this._side = side;
-        this.state.set(side, transition, callback);
+        this.state.set(side, transition, function() {
+            if (this.options.continuous) {
+                if (this.secondFlip === undefined) this.secondFlip = false;
+                else this.secondFlip = !this.secondFlip;
+            }
+            if (callback) callback();
+        }.bind(this));
     };
 
     /**
