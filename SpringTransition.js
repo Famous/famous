@@ -8,7 +8,6 @@
  */
 
 /*global console*/
-/*eslint no-console: 1 */
 
 define(function(require, exports, module) {
     var PE = require('famous/physics/PhysicsEngine');
@@ -141,6 +140,8 @@ define(function(require, exports, module) {
     }
 
     function _setupDefinition(definition) {
+        // TODO fix no-console error
+        /* eslint no-console: 0 */
         var defaults = SpringTransition.DEFAULT_OPTIONS;
         if (definition.period === undefined)       definition.period       = defaults.period;
         if (definition.dampingRatio === undefined) definition.dampingRatio = defaults.dampingRatio;
