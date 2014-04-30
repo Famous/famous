@@ -46,7 +46,7 @@ define(function(require, exports, module) {
     /**
      * Flips from the current side to the opposite one with the Flipper instance's default transition.
      *
-     * @method setDefaultTransition
+     * @method flip
      * @param {Number} side Can be either one or zero (one represents the back, zero represents the front).
      *   Defaults to the default transition (true).
      * @param {function} [callback] Executes after transitioning to the toggled state.
