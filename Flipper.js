@@ -35,6 +35,8 @@ define(function(require, exports, module) {
 
         this.frontNode = new RenderNode();
         this.backNode = new RenderNode();
+
+        this.secondFlip = false;
     }
 
     Flipper.DEFAULT_OPTIONS = {
@@ -57,12 +59,14 @@ define(function(require, exports, module) {
         if (side === undefined) side = (this._side === 1) ? 0 : 1;
         if (transition === undefined) transition = this.options.transition;
         this._side = side;
+
+        if (!this.options.continuous) {
+            this.state.halt();
+        }
         this.state.set(side, transition, function() {
             if (this.options.continuous) {
-                if (this.secondFlip === undefined) this.secondFlip = false;
-                else this.secondFlip = !this.secondFlip;
+                this.secondFlip = !this.secondFlip;
             }
-            if (callback) callback();
         }.bind(this));
     };
 
