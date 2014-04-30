@@ -16,7 +16,7 @@ define(function(require, exports, module) {
 
     /**
      * A Container surface with a scrollview automatically added. The convenience of ScrollContainer lies in
-     * being able to clip out portions of the associated scrollview that lie outside the boundign surface,
+     * being able to clip out portions of the associated scrollview that lie outside the bounding surface,
      * and in being able to move the scrollview more easily by applying modifiers to the parent container
      * surface.
      * @class ScrollContainer
