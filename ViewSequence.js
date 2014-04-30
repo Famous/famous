@@ -66,17 +66,12 @@ define(function(require, exports, module) {
 
     // After splicing into the backing store, restore the indexes of each node correctly.
     ViewSequence.Backing.prototype.reindex = function reindex(start, removeCount, insertCount) {
+        if (!this.array[0]) return;
+
         var i = 0;
         var index = this.firstIndex;
         var indexShiftAmount = insertCount - removeCount;
         var node = this.firstNode;
-
-        if (start === this.firstIndex) {
-            for (i = 0; i < removeCount; i++) {
-                this.firstNode = this.firstNode.getNext();
-            }
-            this.firstNode.index = this.firstIndex;
-        }
 
         // find node to begin
         while (index < start - 1) {
