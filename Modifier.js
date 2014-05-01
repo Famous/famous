@@ -35,6 +35,7 @@ define(function(require, exports, module) {
         this._transformGetter = null;
         this._opacityGetter = null;
         this._originGetter = null;
+        this._alignGetter = null;
         this._sizeGetter = null;
 
         /* TODO: remove this when deprecation complete */
@@ -44,6 +45,7 @@ define(function(require, exports, module) {
             transform: Transform.identity,
             opacity: 1,
             origin: null,
+            align: null,
             size: null,
             target: null
         };
@@ -52,6 +54,7 @@ define(function(require, exports, module) {
             if (options.transform) this.transformFrom(options.transform);
             if (options.opacity !== undefined) this.opacityFrom(options.opacity);
             if (options.origin) this.originFrom(options.origin);
+            if (options.align) this.alignFrom(options.align);
             if (options.size) this.sizeFrom(options.size);
         }
     }
@@ -102,13 +105,31 @@ define(function(require, exports, module) {
      * @param {Object} origin provider object
      * @return {Modifier} this
      */
-
     Modifier.prototype.originFrom = function originFrom(origin) {
         if (origin instanceof Function) this._originGetter = origin;
         else if (origin instanceof Object && origin.get) this._originGetter = origin.get.bind(origin);
         else {
             this._originGetter = null;
             this._output.origin = origin;
+        }
+        return this;
+    };
+
+    /**
+     * Set function, object, or numerical array to provide align, as [x,y],
+     *   where x and y are in the range [0,1].
+     *
+     * @method alignFrom
+     *
+     * @param {Object} align provider object
+     * @return {Modifier} this
+     */
+    Modifier.prototype.alignFrom = function alignFrom(align) {
+        if (align instanceof Function) this._alignGetter = align;
+        else if (align instanceof Object && align.get) this._alignGetter = align.get.bind(align);
+        else {
+            this._alignGetter = null;
+            this._output.align = align;
         }
         return this;
     };
@@ -202,6 +223,31 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Deprecated: Prefer alignFrom with static align array, or use a Transitionable with that align.
+     * @deprecated
+     * @method setAlign
+     *
+     * @param {Array.Number} align two element array with values between 0 and 1.
+     * @param {Transitionable} transition Valid transitionable object
+     * @param {Function} callback callback to call after transition completes
+     * @return {Modifier} this
+     */
+    Modifier.prototype.setAlign = function setAlign(align, transition, callback) {
+        /* TODO: remove this if statement when deprecation complete */
+        if (transition || this._legacyStates.align) {
+
+            if (!this._legacyStates.align) {
+                this._legacyStates.align = new Transitionable(this._output.align || [0, 0]);
+            }
+            if (!this._alignGetter) this.alignFrom(this._legacyStates.align);
+
+            this._legacyStates.align.set(align, transition, callback);
+            return this;
+        }
+        else return this.alignFrom(align);
+    };
+
+    /**
      * Deprecated: Prefer sizeFrom with static origin array, or use a Transitionable with that size.
      * @deprecated
      * @method setSize
@@ -232,10 +278,12 @@ define(function(require, exports, module) {
         if (this._legacyStates.transform) this._legacyStates.transform.halt();
         if (this._legacyStates.opacity) this._legacyStates.opacity.halt();
         if (this._legacyStates.origin) this._legacyStates.origin.halt();
+        if (this._legacyStates.align) this._legacyStates.align.halt();
         if (this._legacyStates.size) this._legacyStates.size.halt();
         this._transformGetter = null;
         this._opacityGetter = null;
         this._originGetter = null;
+        this._alignGetter = null;
         this._sizeGetter = null;
     };
 
@@ -268,6 +316,7 @@ define(function(require, exports, module) {
     Modifier.prototype.getOpacity = function getOpacity() {
         return this._opacityGetter();
     };
+
     /**
      * Deprecated: Prefer to use your provided origin or output of your origin provider.
      * @deprecated
@@ -276,6 +325,16 @@ define(function(require, exports, module) {
      */
     Modifier.prototype.getOrigin = function getOrigin() {
         return this._originGetter();
+    };
+
+    /**
+     * Deprecated: Prefer to use your provided align or output of your align provider.
+     * @deprecated
+     * @method getAlign
+     * @return {Object} align provider object
+     */
+    Modifier.prototype.getAlign = function getAlign() {
+        return this._alignGetter();
     };
 
     /**
@@ -293,6 +352,7 @@ define(function(require, exports, module) {
         if (this._transformGetter) this._output.transform = this._transformGetter();
         if (this._opacityGetter) this._output.opacity = this._opacityGetter();
         if (this._originGetter) this._output.origin = this._originGetter();
+        if (this._alignGetter) this._output.align = this._alignGetter();
         if (this._sizeGetter) this._output.size = this._sizeGetter();
     }
 
