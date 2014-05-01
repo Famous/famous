@@ -69,7 +69,7 @@ pull requests when filling it out. Our CLA can be found [here][cla].
 
 ### Testing and Linting
 
-Travis-ci is integrated into all of our submodules. This ensures a consistently styled codebase. Before making a pull request, please run our linter locally. From the submodule directory, execute
+Travis-ci is integrated into all of our submodules to automatically run tests on our codebase. All pull requests must pass our tests before they can be merged. Currently, the only test we support is a linting test. This ensures a consistently styled codebase. Before making a pull request, please run our linter locally. From the submodule directory, execute
 
 ```js
 npm install
