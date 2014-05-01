@@ -101,15 +101,16 @@ define(function(require, exports, module) {
         if (typeof spec === 'number') {
             id = spec;
             transform = parentContext.transform;
-            if (parentContext.size && parentContext.align && (parentContext.align[0] || parentContext.align[1])) {
-                var alignAdjust = [parentContext.align[0] * parentContext.size[0], parentContext.align[1] * parentContext.size[1], 0];
+            align = parentContext.align || parentContext.origin;
+            if (parentContext.size && align && (align[0] || align[1])) {
+                var alignAdjust = [align[0] * parentContext.size[0], align[1] * parentContext.size[1], 0];
                 transform = Transform.thenMove(transform, _vecInContext(alignAdjust, sizeContext));
             }
             this.result[id] = {
                 transform: transform,
                 opacity: parentContext.opacity,
                 origin: parentContext.origin || _originZeroZero,
-                align: parentContext.align || _originZeroZero,
+                align: parentContext.align || parentContext.origin || _originZeroZero,
                 size: parentContext.size
             };
         }
@@ -144,6 +145,7 @@ define(function(require, exports, module) {
                     spec.size[1] !== undefined ? spec.size[1] : parentSize[1]
                 ];
                 if (parentSize) {
+                    if (!align) align = origin;
                     if (align && (align[0] || align[1])) transform = Transform.thenMove(transform, _vecInContext([align[0] * parentSize[0], align[1] * parentSize[1], 0], sizeContext));
                     if (origin && (origin[0] || origin[1])) transform = Transform.moveThen([-origin[0] * size[0], -origin[1] * size[1], 0], transform);
                 }

@@ -48,7 +48,6 @@ define(function(require, exports, module) {
         this._matrix = null;
         this._opacity = 1;
         this._origin = null;
-        this._align = null;
         this._size = null;
 
         /** @ignore */
@@ -433,7 +432,6 @@ define(function(require, exports, module) {
         var matrix = context.transform;
         var opacity = context.opacity;
         var origin = context.origin;
-        var align = context.align;
         var size = context.size;
 
         if (this.size) {
