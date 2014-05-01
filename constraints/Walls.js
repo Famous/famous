@@ -40,6 +40,28 @@ define(function(require, exports, module) {
      * @static
      */
     Walls.ON_CONTACT = Wall.ON_CONTACT;
+
+    /**
+     * An enumeration of common types of walls
+     *    LEFT, RIGHT, TOP, BOTTOM, FRONT, BACK
+     *    TWO_DIMENSIONAL, THREE_DIMENSIONAL
+     *
+     * @property Walls.SIDES
+     * @type Object
+     * @final
+     * @static
+     */
+    Walls.SIDES = {
+        LEFT   : 0,
+        RIGHT  : 1,
+        TOP    : 2,
+        BOTTOM : 3,
+        FRONT  : 4,
+        BACK   : 5,
+        TWO_DIMENSIONAL : [0, 1, 2, 3],
+        THREE_DIMENSIONAL : [0, 1, 2, 3, 4, 5]
+    };
+    
     /**
      * @property Walls.DEFAULT_OPTIONS
      * @type Object
@@ -111,27 +133,6 @@ define(function(require, exports, module) {
          * @type Number
          */
         onContact : Walls.ON_CONTACT.REFLECT
-    };
-
-    /**
-     * An enumeration of common types of walls
-     *    LEFT, RIGHT, TOP, BOTTOM, FRONT, BACK
-     *    TWO_DIMENSIONAL, THREE_DIMENSIONAL
-     *
-     * @property Walls.SIDES
-     * @type Object
-     * @final
-     * @static
-     */
-    Walls.SIDES = {
-        LEFT   : 0,
-        RIGHT  : 1,
-        TOP    : 2,
-        BOTTOM : 3,
-        FRONT  : 4,
-        BACK   : 5,
-        TWO_DIMENSIONAL : [0, 1, 2, 3],
-        THREE_DIMENSIONAL : [0, 1, 2, 3, 4, 5]
     };
 
     var _SIDE_NORMALS = {
