@@ -117,7 +117,8 @@ define(function(require, exports, module) {
         backRotation[axis] = pos + Math.PI;
 
         if (this.options.cull && !this.state.isActive()) {
-            if (Math.abs((pos % (0.5 * Math.PI))) < 0.5) {
+            var reducedRadians = Math.abs(pos) % Math.PI;
+            if (reducedRadians < (0.5 * Math.PI) || reducedRadians > (1.5 * Math.PI)) {
                 return {
                     transform: Transform.moveThen([0, 0, 1], Transform.rotate.apply(null, frontRotation)),
                     target: this.frontNode.render()
