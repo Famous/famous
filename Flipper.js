@@ -30,8 +30,8 @@ define(function(require, exports, module) {
         this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 
-        this._side = 0;
         this.state = new Transitionable(0);
+        this.flipped = false;
 
         this.frontNode = new RenderNode();
         this.backNode = new RenderNode();
@@ -42,8 +42,6 @@ define(function(require, exports, module) {
     Flipper.DEFAULT_OPTIONS = {
         transition: true,
         cull: true,
-        continuous: false,
-        invert: false,
         direction: Utility.Direction.Y
     };
 
@@ -55,19 +53,16 @@ define(function(require, exports, module) {
      *   Defaults to the default transition (true).
      * @param {function} [callback] Executes after transitioning to the toggled state.
      */
-    Flipper.prototype.flip = function flip(side, transition, callback) {
-        if (side === undefined) side = (this._side === 1) ? 0 : 1;
-        if (transition === undefined) transition = this.options.transition;
-        this._side = side;
-
-        if (!this.options.continuous) {
-            this.state.halt();
+    Flipper.prototype.rotate = function rotate(angle, transition, callback) {
+        if (angle === undefined) {
+            angle = this.flipped ? 0 : Math.PI;
+            this.flipped = !this.flipped;
+        } else {
+            this.flipped = false;
         }
-        this.state.set(side, transition, function() {
-            if (this.options.continuous) {
-                this.secondFlip = !this.secondFlip;
-            }
-        }.bind(this));
+        if (transition === undefined) transition = this.options.transition;
+        this.state.halt();
+        this.state.set(angle, transition, callback);
     };
 
     /**
@@ -110,23 +105,31 @@ define(function(require, exports, module) {
      * @return {Number} Render spec for this component
      */
     Flipper.prototype.render = function render() {
+
         var pos = this.state.get();
+
+
         var axis = this.options.direction;
         var frontRotation = [0, 0, 0];
         var backRotation = [0, 0, 0];
 
-        var inverseCoefficient = this.options.invert ? -1 : 1;
-        if (this.options.continuous && this.secondFlip === true) {
-            inverseCoefficient = -inverseCoefficient;
-        }
+        frontRotation[axis] = pos;
+        backRotation[axis] = pos + Math.PI;
 
-        frontRotation[axis] = Math.PI * (inverseCoefficient * pos);
-        backRotation[axis] = Math.PI * ((inverseCoefficient * pos) + 1);
         if (this.options.cull && !this.state.isActive()) {
-            if (pos) return this.backNode.render();
-            else return this.frontNode.render();
-        }
-        else {
+            if (Math.abs((pos % (0.5 * Math.PI))) < 0.5) {
+                return {
+                    transform: Transform.moveThen([0, 0, 1], Transform.rotate.apply(null, frontRotation)),
+                    target: this.frontNode.render()
+                };
+            }
+            else {
+                return {
+                    transform: Transform.moveThen([0, 0, 1], Transform.rotate.apply(null, backRotation)),
+                    target: this.backNode.render()
+                };
+            }
+        } else {
             return [
                 {
                     transform: Transform.moveThen([0, 0, 1], Transform.rotate.apply(null, frontRotation)),
