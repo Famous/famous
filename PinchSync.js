@@ -45,7 +45,7 @@ define(function(require, exports, module) {
     }
 
     function _calcCenter(posA, posB) {
-      return [(posA[0] + posB[0]) / 2.0, (posA[1] + posB[1]) / 2.0]
+      return [(posA[0] + posB[0]) / 2.0, (posA[1] + posB[1]) / 2.0];
     }
 
     PinchSync.prototype._startUpdate = function _startUpdate(event) {
