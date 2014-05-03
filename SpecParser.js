@@ -151,6 +151,7 @@ define(function(require, exports, module) {
                 }
                 nextSizeContext = parentContext.transform;
                 origin = null;
+                align = null;
             }
 
             this._parseSpec(target, {
