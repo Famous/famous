@@ -23,7 +23,6 @@ define(function(require, exports, module) {
      *
      * @class ScrollSync
      * @constructor
-     * @param {function} legacyGetter position getter function (deprecated)
      * @param {Object} [options] overrides of default options
      * @param {Number} [options.direction] Pay attention to x changes (ScrollSync.DIRECTION_X),
      *   y changes (ScrollSync.DIRECTION_Y) or both (undefined)
@@ -78,9 +77,10 @@ define(function(require, exports, module) {
         if (this._inProgress && (_now() - this._prevTime) > this.options.stallTime) {
             this._position = (this.options.direction === undefined) ? [0,0] : 0;
             this._inProgress = false;
-            var finalVel = 0;
 
-            if (Math.abs(this._prevVel) >= this.options.minimumEndSpeed) finalVel = this._prevVel;
+            var finalVel = (Math.abs(this._prevVel) >= this.options.minimumEndSpeed)
+                ? this._prevVel
+                : 0;
 
             var payload = this._payload;
             payload.position = this._position;

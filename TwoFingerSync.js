@@ -40,19 +40,19 @@ define(function(require, exports, module) {
         this._eventInput.on('touchcancel', this.handleEnd.bind(this));
     }
 
-    TwoFingerSync.calculateAngle = function(posA, posB){
+    TwoFingerSync.calculateAngle = function(posA, posB) {
         var diffX = posB[0] - posA[0];
         var diffY = posB[1] - posA[1];
         return Math.atan2(diffY, diffX);
     };
 
-    TwoFingerSync.calculateDistance = function(posA, posB){
+    TwoFingerSync.calculateDistance = function(posA, posB) {
         var diffX = posB[0] - posA[0];
         var diffY = posB[1] - posA[1];
         return Math.sqrt(diffX * diffX + diffY * diffY);
     };
 
-    TwoFingerSync.calculateCenter = function(posA, posB){
+    TwoFingerSync.calculateCenter = function(posA, posB) {
         return [(posA[0] + posB[0]) / 2.0, (posA[1] + posB[1]) / 2.0];
     };
 

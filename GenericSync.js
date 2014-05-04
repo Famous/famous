@@ -22,10 +22,11 @@ define(function(require, exports, module) {
      *
      * @class GenericSync
      * @constructor
-     * @param keys {String|Array.String}        identifier from sync class
-     * @param [options] {Object|Array.Object}   options for sync class
+     * @param syncs {Object|Array} object with fields {sync key : sync options}
+     *    or an array of registered sync keys
+     * @param [options] {Object|Array} options object to set on all syncs
      */
-    function GenericSync(syncs) {
+    function GenericSync(syncs, options) {
         this._eventInput = new EventHandler();
         this._eventOutput = new EventHandler();
 
@@ -34,10 +35,12 @@ define(function(require, exports, module) {
 
         this._syncs = {};
         if (syncs) this.addSync(syncs);
+        if (options) this.setOptions(options);
     }
 
     GenericSync.DIRECTION_X = 0;
     GenericSync.DIRECTION_Y = 1;
+    GenericSync.DIRECTION_Z = 2;
 
     // Global registry of sync classes. Append only.
     var registry = {};
@@ -48,8 +51,7 @@ define(function(require, exports, module) {
      * @static
      * @method register
      *
-     * @param key {String}  identifier for sync class
-     * @param sync {Sync}   sync class
+     * @param syncObject {Object} an object of {sync key : sync options} fields
      */
     GenericSync.register = function register(syncObject) {
         for (var key in syncObject){
@@ -62,12 +64,24 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Helper to set options on all sync instances
+     *
+     * @method setOptions
+     * @param options {Object} options object
+     */
+    GenericSync.prototype.setOptions = function(options) {
+        for (var key in this._syncs){
+            this._syncs[key].setOptions(options);
+        }
+    };
+
+    /**
      * Pipe events to a sync class
      *
-     * @method pipeToSync
+     * @method pipeSync
      * @param key {String} identifier for sync class
      */
-    GenericSync.prototype.pipeToSync = function pipeToSync(key){
+    GenericSync.prototype.pipeSync = function pipeToSync(key) {
         var sync = this._syncs[key];
         this._eventInput.pipe(sync);
         sync.pipe(this._eventOutput);
@@ -76,29 +90,29 @@ define(function(require, exports, module) {
     /**
      * Unpipe events from a sync class
      *
-     * @method pipeToSync
+     * @method unpipeSync
      * @param key {String} identifier for sync class
      */
-    GenericSync.prototype.unpipeFromSync = function unpipeFromSync(key){
+    GenericSync.prototype.unpipeSync = function unpipeFromSync(key) {
         var sync = this._syncs[key];
         this._eventInput.unpipe(sync);
         sync.unpipe(this._eventOutput);
     };
 
-    function _addSingleSync(key, options){
+    function _addSingleSync(key, options) {
         if (!registry[key]) return;
-        this._syncs[key] = new registry[key](options);
-        this.pipeToSync(key);
+        this._syncs[key] = new (registry[key])(options);
+        this.pipeSync(key);
     }
 
     /**
      * Add a sync class to from the registered classes
      *
      * @method addSync
-     * @param keys {String|Array.String}        identifier for sync class
-     * @param [options] {Object|Array.Object}   options for sync class
+     * @param syncs {Object|Array.String} an array of registered sync keys
+     *    or an object with fields {sync key : sync options}
      */
-    GenericSync.prototype.addSync = function addSync(syncs){
+    GenericSync.prototype.addSync = function addSync(syncs) {
         if (syncs instanceof Array)
             for (var i = 0; i < syncs.length; i++)
                 _addSingleSync.call(this, syncs[i]);

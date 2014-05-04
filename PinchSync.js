@@ -53,6 +53,7 @@ define(function(require, exports, module) {
     PinchSync.prototype._moveUpdate = function _moveUpdate(diffTime) {
         var currDist = TwoFingerSync.calculateDistance(this.posA, this.posB);
         var center = TwoFingerSync.calculateCenter(this.posA, this.posB);
+
         var scale = this.options.scale;
         var delta = scale * (currDist - this._previousDistance);
         var velocity = delta / diffTime;

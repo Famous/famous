@@ -43,7 +43,7 @@ define(function(require, exports, module) {
      * @method get
      * @return {Number|Array} current value
      */
-    Accumulator.prototype.get = function get(){
+    Accumulator.prototype.get = function get() {
         return this._state.get();
     };
 
@@ -53,7 +53,7 @@ define(function(require, exports, module) {
      * @method set
      * @param value {Number|Array} new value
      */
-    Accumulator.prototype.set = function set(value){
+    Accumulator.prototype.set = function set(value) {
         this._state.set(value);
     };
 
