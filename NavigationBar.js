@@ -22,7 +22,7 @@ define(function(require, exports, module) {
      * @extends View
      * @constructor
      *
-     * @param {object} [options] overrides of deault options
+     * @param {object} [options] overrides of default options
      * @param {Array.number} [options.size=(undefined,0.5)] Size of the navigation bar and it's componenets.
      * @param {Array.string} [options.backClasses=(back)] CSS Classes attached to back of Navigation.
      * @param {String} [options.backContent=(&#x25c0;)] Content of the back button.
