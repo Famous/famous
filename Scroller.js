@@ -197,7 +197,8 @@ define(function(require, exports, module) {
         // reset edge detection on size change
         if (!this.options.clipSize && (size[0] !== this._contextSize[0] || size[1] !== this._contextSize[1])) {
             this._onEdge = 0;
-            this._contextSize = size;
+            this._contextSize[0] = size[0];
+            this._contextSize[1] = size[1];
 
             if (this.options.direction === Utility.Direction.X) {
                 this._size[0] = _getClipSize.call(this);
