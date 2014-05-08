@@ -104,7 +104,7 @@ define(function(require, exports, module) {
         var array = (body.isBody) ? this._bodies : this._particles;
         var index = array.indexOf(body);
         if (index > -1) {
-            for (var i = 0; i < Object.keys(this._agents); i++) this.detachFrom(i, body);
+            for (var i = 0; i < Object.keys(this._agents).length; i++) this.detachFrom(i, body);
             array.splice(index,1);
         }
         if (this.getBodies().length === 0) this._hasBodies = false;
