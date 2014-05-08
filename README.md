@@ -61,7 +61,7 @@ This package contains the submodules necessary to be productive in Famo.us.  The
 
 ## Examples
 
-Discrete examples of using each Famo.us component are available at [examples repo][github-examples]
+Discrete examples of using each Famo.us component are available at our [examples repo][github-examples]
 
 ## Community
 
