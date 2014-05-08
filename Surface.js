@@ -459,7 +459,7 @@ define(function(require, exports, module) {
             target.style.opacity = (opacity >= 1) ? '0.999999' : opacity;
         }
 
-        if (_xyNotEquals(this._origin, origin) || Transform.notEquals(this._matrix, matrix)) {
+        if (_xyNotEquals(this._origin, origin) || Transform.notEquals(this._matrix, matrix) || this._sizeDirty) {
             if (!matrix) matrix = Transform.identity;
             this._matrix = matrix;
             var aaMatrix = matrix;
