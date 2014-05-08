@@ -145,7 +145,9 @@ define(function(require, exports, module) {
      *    to range inside [0,1]
      */
     TweenTransition.getCurve = function getCurve(curveName) {
-        return registeredCurves[curveName];
+        var curve = registeredCurves[curveName];
+        if (curve !== undefined) return curve;
+        else throw "curve not registered";
     };
 
     /**
@@ -315,8 +317,13 @@ define(function(require, exports, module) {
         var speed = (curve(t) - curve(t - eps)) / eps;
         if (current instanceof Array) {
             velocity = [];
-            for (var i = 0; i < current.length; i++)
-                velocity[i] = speed * (current[i] - start[i]) / duration;
+            for (var i = 0; i < current.length; i++){
+                if (typeof current[i] === 'number')
+                    velocity[i] = speed * (current[i] - start[i]) / duration;
+                else
+                    velocity[i] = 0;
+            }
+
         }
         else velocity = speed * (current - start) / duration;
         return velocity;
@@ -326,8 +333,12 @@ define(function(require, exports, module) {
         var state;
         if (start instanceof Array) {
             state = [];
-            for (var i = 0; i < start.length; i++)
-                state[i] = _interpolate(start[i], end[i], t);
+            for (var i = 0; i < start.length; i++) {
+                if (typeof start[i] === 'number')
+                    state[i] = _interpolate(start[i], end[i], t);
+                else
+                    state[i] = start[i];
+            }
         }
         else state = _interpolate(start, end, t);
         return state;
