@@ -36,22 +36,15 @@ hiccups.
 
 Our development process is very similar to the approach
 described in the well-known article [A Successful Git Branching Model by Vincent
-Driessen][git-branching-model]. Here's a 10,000 foot overview:
+Driessen][git-branching-model]. Here's an overview:
 
-* Our `master` branch is the branch upon which most
-  famous developers should be basing their work on. The `master` branch is not guaranteed to be stable.
+* Our `master` branch is the branch upon which 
+  Famo.us developers should be basing their work on. The `master` branch is not guaranteed to be stable.
 * All commits intended for `master` should take place on your own personal
   fork, and be submitted via pull request when ready.
 * Only maintainers can accept pull requests from forks into the core Famo.us
   repository.
-* Some of the internal teams at Famo.us are experimenting with new features or
-  tooling to make the experience of working with Famo.us better. These teams
-  maintain their own forks of Famo.us, some of which may not yet be public. The
-  goal here isn't to be secretive, but to be able to move fast and work in an
-  environment in which they feel comfortable. They will submit their pull
-  requests to the main famous repository the same way as any other member of the
-  community.
-
+* Please squash your commits into a single commit before making a pull request.
 
 ### Getting started
 
@@ -72,6 +65,16 @@ individuals or companies agree to our Contributor License Agreement (CLA). The e
 address used in the pull request will be used to check if a CLA has already been
 filed, so be sure to list all email addresses that you might use to submit your
 pull requests when filling it out. Our CLA can be found [here][cla].
+
+### Testing and Linting
+
+Travis-ci is integrated into all of our submodules to automatically run tests on our codebase. All pull requests must pass our tests before they can be merged. Currently, the only test we support is a linting test. This ensures a consistently styled codebase. Before making a pull request, please run our linter locally. From the submodule directory, execute
+
+```js
+npm install
+npm test
+```
+The created `node_modules` folder will be ignored in your push by our `.gitignore` file.
 
 
 ### Branch grouping tokens
