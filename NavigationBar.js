@@ -14,7 +14,7 @@ define(function(require, exports, module) {
     var View = require('famous/core/View');
 
     /**
-     * A view for display for displaying the title of the current page
+     * A view for displaying the title of the current page
      *  as well as icons for navigating backwards and opening
      *  further options
      *
