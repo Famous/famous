@@ -95,19 +95,22 @@ define(function(require, exports, module) {
         var transform;
         var opacity;
         var origin;
+        var align;
         var size;
 
         if (typeof spec === 'number') {
             id = spec;
             transform = parentContext.transform;
-            if (parentContext.size && parentContext.origin && (parentContext.origin[0] || parentContext.origin[1])) {
-                var originAdjust = [parentContext.origin[0] * parentContext.size[0], parentContext.origin[1] * parentContext.size[1], 0];
-                transform = Transform.thenMove(transform, _vecInContext(originAdjust, sizeContext));
+            align = parentContext.align || parentContext.origin;
+            if (parentContext.size && align && (align[0] || align[1])) {
+                var alignAdjust = [align[0] * parentContext.size[0], align[1] * parentContext.size[1], 0];
+                transform = Transform.thenMove(transform, _vecInContext(alignAdjust, sizeContext));
             }
             this.result[id] = {
                 transform: transform,
                 opacity: parentContext.opacity,
                 origin: parentContext.origin || _originZeroZero,
+                align: parentContext.align || parentContext.origin || _originZeroZero,
                 size: parentContext.size
             };
         }
@@ -124,6 +127,7 @@ define(function(require, exports, module) {
             transform = parentContext.transform;
             opacity = parentContext.opacity;
             origin = parentContext.origin;
+            align = parentContext.align;
             size = parentContext.size;
             var nextSizeContext = sizeContext;
 
@@ -133,24 +137,28 @@ define(function(require, exports, module) {
                 origin = spec.origin;
                 nextSizeContext = parentContext.transform;
             }
+            if (spec.align) align = spec.align;
             if (spec.size) {
                 var parentSize = parentContext.size;
                 size = [
                     spec.size[0] !== undefined ? spec.size[0] : parentSize[0],
                     spec.size[1] !== undefined ? spec.size[1] : parentSize[1]
                 ];
-                if (parentSize && origin && (origin[0] || origin[1])) {
-                    transform = Transform.thenMove(transform, _vecInContext([origin[0] * parentSize[0], origin[1] * parentSize[1], 0], sizeContext));
-                    transform = Transform.moveThen([-origin[0] * size[0], -origin[1] * size[1], 0], transform);
+                if (parentSize) {
+                    if (!align) align = origin;
+                    if (align && (align[0] || align[1])) transform = Transform.thenMove(transform, _vecInContext([align[0] * parentSize[0], align[1] * parentSize[1], 0], sizeContext));
+                    if (origin && (origin[0] || origin[1])) transform = Transform.moveThen([-origin[0] * size[0], -origin[1] * size[1], 0], transform);
                 }
                 nextSizeContext = parentContext.transform;
                 origin = null;
+                align = null;
             }
 
             this._parseSpec(target, {
                 transform: transform,
                 opacity: opacity,
                 origin: origin,
+                align: align,
                 size: size
             }, nextSizeContext);
         }

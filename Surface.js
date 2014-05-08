@@ -359,7 +359,7 @@ define(function(require, exports, module) {
 
     // format origin as CSS percentage string
     function _formatCSSOrigin(origin) {
-        return (100 * origin[0]).toFixed(6) + '% ' + (100 * origin[1]).toFixed(6) + '%';
+        return (100 * origin[0]) + '% ' + (100 * origin[1]) + '%';
     }
 
      // Directly apply given origin coordinates to the document element as the
@@ -405,7 +405,6 @@ define(function(require, exports, module) {
         }
         target.style.display = '';
         _addEventListeners.call(this, target);
-        _setOrigin(target, [0, 0]); // handled internally
         this._currTarget = target;
         this._stylesDirty = true;
         this._classesDirty = true;
@@ -443,7 +442,9 @@ define(function(require, exports, module) {
         }
 
         if (_xyNotEquals(this._size, size)) {
-            this._size = [size[0], size[1]];
+            if (!this._size) this._size = [0, 0];
+            this._size[0] = size[0];
+            this._size[1] = size[1];
             this._sizeDirty = true;
         }
 
@@ -467,7 +468,8 @@ define(function(require, exports, module) {
                 if (!this._origin) this._origin = [0, 0];
                 this._origin[0] = origin[0];
                 this._origin[1] = origin[1];
-                aaMatrix = Transform.moveThen([-this._size[0] * origin[0], -this._size[1] * origin[1], 0], matrix);
+                aaMatrix = Transform.thenMove(matrix, [-this._size[0] * origin[0], -this._size[1] * origin[1], 0]);
+                _setOrigin(target, origin);
             }
             _setMatrix(target, aaMatrix);
         }
