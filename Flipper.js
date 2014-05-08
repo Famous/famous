@@ -32,6 +32,8 @@ define(function(require, exports, module) {
 
         this.frontNode = new RenderNode();
         this.backNode = new RenderNode();
+
+        this.flipped = false;
     }
 
 
@@ -54,8 +56,14 @@ define(function(require, exports, module) {
      * @param {function} [callback] Executes after transitioning to the toggled state.
      */
     Flipper.prototype.rotate = function rotate(angle, transition, callback) {
-        if (angle === undefined) angle = Math.PI;
+        if (angle === undefined) {
+            angle = this.flipped ? this.state.get() - Math.PI : this.state.get() + Math.PI;
+            this.flipped = !this.flipped;
+        } else {
+            this.flipped = false;
+        }
         if (transition === undefined) transition = this.options.transition;
+        this.state.halt();
         this.state.set(angle, transition, callback);
     };
 
@@ -102,11 +110,11 @@ define(function(require, exports, module) {
         var angle = this.state.get();
 
         var frontTransform, backTransform;
-        if (this.options.direction == Flipper.DIRECTION_X){
+        if (this.options.direction == Flipper.DIRECTION_X) {
             frontTransform = Transform.rotateY(angle);
             backTransform = Transform.rotateY(angle + Math.PI);
         }
-        else{
+        else {
             frontTransform = Transform.rotateX(angle);
             backTransform = Transform.rotateX(angle + Math.PI);
         }
