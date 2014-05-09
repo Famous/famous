@@ -18,7 +18,7 @@ define(function(require, exports, module) {
 
     /**
      * Makes added render nodes responsive to drag beahvior.
-     *   Emits events 'dragstart', 'dragmove', 'dragend'.
+     *   Emits events 'start', 'update', 'end'.
      * @class Draggable
      * @constructor
      * @param {Object} [options] options configuration object.
