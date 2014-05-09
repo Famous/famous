@@ -49,32 +49,36 @@ define(function(require, exports, module) {
         EventHandler.setOutputHandler(this, this._eventOutput);
     }
 
+
     function _reflow(size, cols, rows) {
-        if (!rows) rows = (size[1] / this.options.cellSize[1]) | 0;
-        if (!cols) cols = (size[0] / this.options.cellSize[0]) | 0;
-        var rowSize = size[1] / rows;
-        var colSize = size[0] / cols;
+        var usableSize = [size[0], size[1]];
+        usableSize[0] -= this.options.verticalGutterSize * (cols - 1);
+        usableSize[1] -= this.options.horizontalGutterSize * (rows - 1);
+
+        var rowSize = usableSize[1] / rows;
+        var colSize = usableSize[0] / cols;
+
         for (var i = 0; i < rows; i++) {
-            var currY = Math.round(rowSize * i);
+            var currY = Math.round(rowSize * i + (i * this.options.horizontalGutterSize));
             for (var j = 0; j < cols; j++) {
-                var currX = Math.round(colSize * j);
                 var currIndex = i * cols + j;
-                if (!(currIndex in this._modifiers)) {
-                    _createModifier.call(this, currIndex, [Math.round(colSize * (j + 1)) - currX, Math.round(rowSize * (i+ 1)) - currY], [currX, currY, 0], 1);
+                var currX = Math.round(colSize * j + (j * this.options.verticalGutterSize));
+
+                if (this._modifiers[currIndex] === undefined) {
+                    _createModifier.call(this, currIndex, [Math.round(colSize), Math.round(rowSize)], [currX, currY, 0], 1);
                 }
                 else {
-                    _animateModifier.call(this, currIndex, [Math.round(colSize * (j + 1)) - currX, Math.round(rowSize * (i+ 1)) - currY], [currX, currY, 0], 1);
+                    _animateModifier.call(this, currIndex, [Math.round(colSize), Math.round(rowSize)], [currX, currY, 0], 1);
                 }
             }
         }
+
         this._dimensionsCache = [this.options.dimensions[0], this.options.dimensions[1]];
         this._contextSizeCache = [size[0], size[1]];
 
         this._activeCount = rows * cols;
 
-        for (i = this._activeCount ; i < this._modifiers.length; i++) {
-            _animateModifier.call(this, i, [Math.round(colSize), Math.round(rowSize)], [0, 0], 0);
-        }
+        for (i = this._activeCount ; i < this._modifiers.length; i++) _animateModifier.call(this, i, [Math.round(colSize), Math.round(rowSize)], [0, 0], 0);
 
         this._eventOutput.emit('reflow');
     }
@@ -117,8 +121,9 @@ define(function(require, exports, module) {
 
     GridLayout.DEFAULT_OPTIONS = {
         dimensions: [1, 1],
-        cellSize: [250, 250],
-        transition: false
+        transition: false,
+        verticalGutterSize: 0,
+        horizontalGutterSize: 0
     };
 
     /**
