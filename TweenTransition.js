@@ -147,7 +147,7 @@ define(function(require, exports, module) {
     TweenTransition.getCurve = function getCurve(curveName) {
         var curve = registeredCurves[curveName];
         if (curve !== undefined) return curve;
-        else throw "curve not registered";
+        else throw new Error('curve not registered');
     };
 
     /**
