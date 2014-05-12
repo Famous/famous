@@ -175,7 +175,7 @@ define(function(require, exports, module) {
             if (Math.abs(dist) < minLength) return;
 
             if (source) diffV.set(v1.sub(v2));
-            else        diffV.set(v1);
+            else diffV.set(v1);
 
             var effMass = 1 / (w1 + w2);
             var gamma;
