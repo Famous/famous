@@ -16,7 +16,7 @@ define(function(require, exports, module) {
 
     /**
      * A layout which divides a context into sections based on a proportion
-     *   of the total sum of ratios.  FlexibleLayout can either lay renderables 
+     *   of the total sum of ratios.  FlexibleLayout can either lay renderables
      *   out vertically or horizontally.
      * @class FlexibleLayout
      * @constructor

@@ -36,7 +36,6 @@ define(function(require, exports, module) {
         this.flipped = false;
     }
 
-
     Flipper.DIRECTION_X = 0;
     Flipper.DIRECTION_Y = 1;
 
@@ -109,7 +108,9 @@ define(function(require, exports, module) {
     Flipper.prototype.render = function render() {
         var angle = this.state.get();
 
-        var frontTransform, backTransform;
+        var frontTransform;
+        var backTransform;
+
         if (this.options.direction == Flipper.DIRECTION_X) {
             frontTransform = Transform.rotateY(angle);
             backTransform = Transform.rotateY(angle + Math.PI);
