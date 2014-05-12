@@ -61,7 +61,7 @@ define(function(require, exports, module) {
         TWO_DIMENSIONAL : [0, 1, 2, 3],
         THREE_DIMENSIONAL : [0, 1, 2, 3, 4, 5]
     };
-    
+
     /**
      * @property Walls.DEFAULT_OPTIONS
      * @type Object
