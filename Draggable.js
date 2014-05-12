@@ -9,12 +9,14 @@
 
 define(function(require, exports, module) {
     var Transform = require('famous/core/Transform');
-    var MouseSync = require('famous/inputs/MouseSync');
-    var TouchSync = require('famous/inputs/TouchSync');
-    var GenericSync = require('famous/inputs/GenericSync');
     var Transitionable = require('famous/transitions/Transitionable');
     var EventHandler = require('famous/core/EventHandler');
     var Utilities = require('famous/math/Utilities');
+
+    var GenericSync = require('famous/inputs/GenericSync');
+    var MouseSync = require('famous/inputs/MouseSync');
+    var TouchSync = require('famous/inputs/TouchSync');
+    GenericSync.register({'mouse': MouseSync, 'touch': TouchSync});
 
     /**
      * Makes added render nodes responsive to drag beahvior.
@@ -39,16 +41,7 @@ define(function(require, exports, module) {
         this._differential  = [0,0];
         this._active = true;
 
-        this.sync = new GenericSync(
-            function() {
-                return this._differential;
-            }.bind(this),
-            {
-                scale : this.options.scale,
-                syncClasses : [MouseSync, TouchSync]
-            }
-        );
-
+        this.sync = new GenericSync(['mouse', 'touch'], {scale : this.options.scale});
         this.eventOutput = new EventHandler();
         EventHandler.setInputHandler(this,  this.sync);
         EventHandler.setOutputHandler(this, this.eventOutput);
@@ -62,13 +55,16 @@ define(function(require, exports, module) {
         y : 0x02          //010
     };
 
+    Draggable.DIRECTION_X = _direction.x;
+    Draggable.DIRECTION_Y = _direction.y;
+
     var _clamp = Utilities.clamp;
 
     Draggable.DEFAULT_OPTIONS = {
         projection  : _direction.x | _direction.y,
         scale       : 1,
-        xRange      : [-Infinity, Infinity],
-        yRange      : [-Infinity, Infinity],
+        xRange      : null,
+        yRange      : null,
         snapX       : 0,
         snapY       : 0,
         transition  : {duration : 0}
@@ -88,7 +84,7 @@ define(function(require, exports, module) {
         if (snapX > 0) tx -= tx % snapX;
         if (snapY > 0) ty -= ty % snapY;
 
-        return [tx,ty];
+        return [tx, ty];
     }
 
     function _handleStart() {
@@ -101,10 +97,7 @@ define(function(require, exports, module) {
         if (!this._active) return;
 
         var options = this.options;
-
-        //TODO: p -> position
         this._differential = event.position;
-
         var newDifferential = _mapDifferential.call(this, this._differential);
 
         //buffer the differential if snapping is set
@@ -118,10 +111,15 @@ define(function(require, exports, module) {
         pos[1] += newDifferential[1];
 
         //handle bounding box
-        var xRange = [options.xRange[0] + 0.5 * options.snapX, options.xRange[1] - 0.5 * options.snapX];
-        var yRange = [options.yRange[0] + 0.5 * options.snapY, options.yRange[1] - 0.5 * options.snapY];
-        pos[0] = _clamp(pos[0], xRange);
-        pos[1] = _clamp(pos[1], yRange);
+        if (options.xRange){
+            var xRange = [options.xRange[0] + 0.5 * options.snapX, options.xRange[1] - 0.5 * options.snapX];
+            pos[0] = _clamp(pos[0], xRange);
+        }
+
+        if (options.yRange){
+            var yRange = [options.yRange[0] + 0.5 * options.snapY, options.yRange[1] - 0.5 * options.snapY];
+            pos[1] = _clamp(pos[1], yRange);
+        }
 
         this.eventOutput.emit('update', {position : pos});
     }
@@ -132,9 +130,9 @@ define(function(require, exports, module) {
     }
 
     function _bindEvents() {
-        this.sync.on('start',  _handleStart.bind(this));
+        this.sync.on('start', _handleStart.bind(this));
         this.sync.on('update', _handleMove.bind(this));
-        this.sync.on('end',    _handleEnd.bind(this));
+        this.sync.on('end', _handleEnd.bind(this));
     }
 
     /**
@@ -178,13 +176,13 @@ define(function(require, exports, module) {
      *
      * @method setRelativePosition
      *
-     * @param {array<number>} p end state to which we interpolate
+     * @param {array<number>} position end state to which we interpolate
      * @param {transition} transition transition object specifying how object moves to new position
      * @param {function} callback zero-argument function to call on observed completion
      */
-    Draggable.prototype.setRelativePosition = function setRelativePosition(p, transition, callback) {
-        var pos = this.getPosition();
-        var relativePosition = [pos[0] + p[0], pos[1] + p[1]];
+    Draggable.prototype.setRelativePosition = function setRelativePosition(position, transition, callback) {
+        var currPos = this.getPosition();
+        var relativePosition = [currPos[0] + position[0], currPos[1] + position[1]];
         this.setPosition(relativePosition, transition, callback);
     };
 
@@ -194,13 +192,13 @@ define(function(require, exports, module) {
      *
      * @method setPosition
      *
-     * @param {array<number>} p end state to which we interpolate
+     * @param {array<number>} position end state to which we interpolate
      * @param {transition} transition transition object specifying how object moves to new position
      * @param {function} callback zero-argument function to call on observed completion
      */
-    Draggable.prototype.setPosition = function setPosition(p, transition, callback) {
+    Draggable.prototype.setPosition = function setPosition(position, transition, callback) {
         if (this._positionState.isActive()) this._positionState.halt();
-        this._positionState.set(p, transition, callback);
+        this._positionState.set(position, transition, callback);
     };
 
     /**
@@ -254,5 +252,4 @@ define(function(require, exports, module) {
     };
 
     module.exports = Draggable;
-
 });
