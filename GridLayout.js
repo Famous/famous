@@ -49,28 +49,32 @@ define(function(require, exports, module) {
         EventHandler.setOutputHandler(this, this._eventOutput);
     }
 
-
     function _reflow(size, cols, rows) {
         var usableSize = [size[0], size[1]];
-        usableSize[0] -= this.options.verticalGutterSize * (cols - 1);
-        usableSize[1] -= this.options.horizontalGutterSize * (rows - 1);
+        usableSize[0] -= this.options.gutterSize[0] * (cols - 1);
+        usableSize[1] -= this.options.gutterSize[1] * (rows - 1);
 
-        var rowSize = usableSize[1] / rows;
-        var colSize = usableSize[0] / cols;
+        var rowSize = Math.round(usableSize[1] / rows);
+        var colSize = Math.round(usableSize[0] / cols);
 
+        var currY = 0;
+        var currX;
+        var currIndex = 0;
         for (var i = 0; i < rows; i++) {
-            var currY = Math.round(rowSize * i + (i * this.options.horizontalGutterSize));
+            currX = 0;
             for (var j = 0; j < cols; j++) {
-                var currIndex = i * cols + j;
-                var currX = Math.round(colSize * j + (j * this.options.verticalGutterSize));
-
                 if (this._modifiers[currIndex] === undefined) {
-                    _createModifier.call(this, currIndex, [Math.round(colSize), Math.round(rowSize)], [currX, currY, 0], 1);
+                    _createModifier.call(this, currIndex, [colSize, rowSize], [currX, currY, 0], 1);
                 }
                 else {
-                    _animateModifier.call(this, currIndex, [Math.round(colSize), Math.round(rowSize)], [currX, currY, 0], 1);
+                    _animateModifier.call(this, currIndex, [colSize, rowSize], [currX, currY, 0], 1);
                 }
+
+                currIndex++;
+                currX += colSize + this.options.gutterSize[0];
             }
+
+            currY += rowSize + this.options.gutterSize[1];
         }
 
         this._dimensionsCache = [this.options.dimensions[0], this.options.dimensions[1]];
@@ -122,8 +126,7 @@ define(function(require, exports, module) {
     GridLayout.DEFAULT_OPTIONS = {
         dimensions: [1, 1],
         transition: false,
-        verticalGutterSize: 0,
-        horizontalGutterSize: 0
+        gutterSize: [0, 0]
     };
 
     /**
