@@ -123,6 +123,10 @@ define(function(require, exports, module) {
         var direction = this.options.direction;
         var length = size[direction];
 
+        var ratio;
+        var i;
+        var node;
+
         if (length === this._cachedLength && this._cachedSpec && !this._ratios.isActive() && direction === this._cachedDirection)
             return this._cachedSpec;
 
@@ -130,9 +134,9 @@ define(function(require, exports, module) {
 
         var flexLength = length;
         var ratioSum = 0;
-        for (var i = 0; i < ratios.length; i++){
-            var ratio = ratios[i];
-            var node = this._nodes[i];
+        for (i = 0; i < ratios.length; i++){
+            ratio = ratios[i];
+            node = this._nodes[i];
             if (typeof ratio !== 'number')
                 flexLength -= node.getSize()[direction] || 0;
             else
@@ -142,10 +146,10 @@ define(function(require, exports, module) {
         var currTransform;
         var translation = 0;
         var result = [];
-        for (var i = 0; i < ratios.length; i++) {
+        for (i = 0; i < ratios.length; i++) {
             var nodeSize = [size[0], size[1]];
-            var node = this._nodes[i];
-            var ratio = ratios[i];
+            node = this._nodes[i];
+            ratio = ratios[i];
 
             nodeSize[direction] = (typeof ratio === 'number')
                 ? flexLength * ratio / ratioSum

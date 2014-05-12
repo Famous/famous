@@ -111,7 +111,7 @@ define(function(require, exports, module) {
         var frontTransform;
         var backTransform;
 
-        if (this.options.direction == Flipper.DIRECTION_X) {
+        if (this.options.direction === Flipper.DIRECTION_X) {
             frontTransform = Transform.rotateY(angle);
             backTransform = Transform.rotateY(angle + Math.PI);
         }
