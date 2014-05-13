@@ -10,14 +10,16 @@
 define(function(require, exports, module) {
     var EventHandler = require('famous/core/EventHandler');
 
-    function _timestampTouch(touch, origin, history, count) {
-        var touchClone = {};
-        for (var i in touch) touchClone[i] = touch[i];
+    var _now = Date.now;
+
+    function _timestampTouch(touch, event, history) {
         return {
-            touch: touchClone,
-            origin: origin,
-            timestamp: Date.now(),
-            count: count,
+            x: touch.clientX,
+            y: touch.clientY,
+            identifier : touch.identifier,
+            origin: event.origin,
+            timestamp: _now(),
+            count: event.touches.length,
             history: history
         };
     }
@@ -25,7 +27,7 @@ define(function(require, exports, module) {
     function _handleStart(event) {
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
-            var data = _timestampTouch(touch, event.origin, undefined, event.touches.length);
+            var data = _timestampTouch(touch, event, null);
             this.eventOutput.emit('trackstart', data);
             if (!this.selective && !this.touchHistory[touch.identifier]) this.track(data);
         }
@@ -36,7 +38,7 @@ define(function(require, exports, module) {
             var touch = event.changedTouches[i];
             var history = this.touchHistory[touch.identifier];
             if (history) {
-                var data = _timestampTouch(touch, event.origin, history, event.touches.length);
+                var data = _timestampTouch(touch, event, history);
                 this.touchHistory[touch.identifier].push(data);
                 this.eventOutput.emit('trackmove', data);
             }
@@ -48,7 +50,7 @@ define(function(require, exports, module) {
             var touch = event.changedTouches[i];
             var history = this.touchHistory[touch.identifier];
             if (history) {
-                var data = _timestampTouch(touch, event.origin, history, event.touches.length);
+                var data = _timestampTouch(touch, event, history);
                 this.eventOutput.emit('trackend', data);
                 delete this.touchHistory[touch.identifier];
             }
@@ -80,8 +82,10 @@ define(function(require, exports, module) {
     function TouchTracker(selective) {
         this.selective = selective;
         this.touchHistory = {};
+
         this.eventInput = new EventHandler();
         this.eventOutput = new EventHandler();
+
         EventHandler.setInputHandler(this, this.eventInput);
         EventHandler.setOutputHandler(this, this.eventOutput);
 
@@ -99,7 +103,7 @@ define(function(require, exports, module) {
      * @param {Object} data touch data
      */
     TouchTracker.prototype.track = function track(data) {
-        this.touchHistory[data.touch.identifier] = [data];
+        this.touchHistory[data.identifier] = [data];
     };
 
     module.exports = TouchTracker;
