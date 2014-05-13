@@ -90,7 +90,7 @@ define(function(require, exports, module) {
      * setOutputFunction is used to apply a user-defined output transform on each processed renderable.
      *  For a good example, check out SequentialLayout's own DEFAULT_OUTPUT_FUNCTION in the code.
      *
-     * @method setOptions
+     * @method setOutputFunction
      * @param {Function} outputFunction An output processer for each renderable in the SequentialLayout
      * instance.
      * @chainable

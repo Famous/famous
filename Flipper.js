@@ -12,7 +12,6 @@ define(function(require, exports, module) {
     var Transitionable = require('famous/transitions/Transitionable');
     var RenderNode = require('famous/core/RenderNode');
     var OptionsManager = require('famous/core/OptionsManager');
-    var Utility = require('famous/utilities/Utility');
 
     /**
      * Allows you to link two renderables as front and back sides that can be
@@ -23,24 +22,28 @@ define(function(require, exports, module) {
      * @constructor
      * @param {Options} [options] An object of options.
      * @param {Transition} [options.transition=true] The transition executed when flipping your Flipper instance.
-     * @param {Boolean} [options.cull=true] If true, culls the 'hidden' side untill you flip to it.
      */
     function Flipper(options) {
         this.options = Object.create(Flipper.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 
-        this._side = 0;
         this.state = new Transitionable(0);
 
         this.frontNode = new RenderNode();
         this.backNode = new RenderNode();
+
+        this.flipped = false;
     }
+
+    Flipper.DIRECTION_X = 0;
+    Flipper.DIRECTION_Y = 1;
+
+    var SEPERATION_LENGTH = 1;
 
     Flipper.DEFAULT_OPTIONS = {
         transition: true,
-        cull: true,
-        direction: Utility.Direction.Y
+        direction: Flipper.DIRECTION_X
     };
 
     /**
@@ -51,10 +54,16 @@ define(function(require, exports, module) {
      *   Defaults to the default transition (true).
      * @param {function} [callback] Executes after transitioning to the toggled state.
      */
-    Flipper.prototype.flip = function flip(side, callback) {
-        if (side === undefined) side = (this._side === 1) ? 0 : 1;
-        this._side = side;
-        this.state.set(side, this.options.transition, callback);
+    Flipper.prototype.rotate = function rotate(angle, transition, callback) {
+        if (angle === undefined) {
+            angle = this.flipped ? this.state.get() - Math.PI : this.state.get() + Math.PI;
+            this.flipped = !this.flipped;
+        } else {
+            this.flipped = false;
+        }
+        if (transition === undefined) transition = this.options.transition;
+        this.state.halt();
+        this.state.set(angle, transition, callback);
     };
 
     /**
@@ -97,29 +106,30 @@ define(function(require, exports, module) {
      * @return {Number} Render spec for this component
      */
     Flipper.prototype.render = function render() {
-        var pos = this.state.get();
-        var axis = this.options.direction;
-        var frontRotation = [0, 0, 0];
-        var backRotation = [0, 0, 0];
-        frontRotation[axis] = Math.PI * pos;
-        backRotation[axis] = Math.PI * (pos + 1);
+        var angle = this.state.get();
 
-        if (this.options.cull && !this.state.isActive()) {
-            if (pos) return this.backNode.render();
-            else return this.frontNode.render();
+        var frontTransform;
+        var backTransform;
+
+        if (this.options.direction === Flipper.DIRECTION_X) {
+            frontTransform = Transform.rotateY(angle);
+            backTransform = Transform.rotateY(angle + Math.PI);
         }
         else {
-            return [
-                {
-                    transform: Transform.rotate.apply(null, frontRotation),
-                    target: this.frontNode.render()
-                },
-                {
-                    transform: Transform.rotate.apply(null, backRotation),
-                    target: this.backNode.render()
-                }
-            ];
+            frontTransform = Transform.rotateX(angle);
+            backTransform = Transform.rotateX(angle + Math.PI);
         }
+
+        return [
+            {
+                transform: frontTransform,
+                target: this.frontNode.render()
+            },
+            {
+                transform: Transform.moveThen([0, 0, SEPERATION_LENGTH], backTransform),
+                target: this.backNode.render()
+            }
+        ];
     };
 
     module.exports = Flipper;
