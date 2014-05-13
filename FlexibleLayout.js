@@ -70,7 +70,6 @@ define(function(require, exports, module) {
      */
     FlexibleLayout.prototype.setOptions = function setOptions(options) {
         if (options.direction && options.direction !== this.options.direction) this._cachedDirection = options.direction;
-        if (options.ratios !== undefined) this.setRatios(options.ratios);
         this.optionsManager.setOptions(options);
     };
 
@@ -87,7 +86,6 @@ define(function(require, exports, module) {
         if (this._ratios.get().length === 0) {
             var ratios = [];
             for (var i = 0; i < this._nodes.length; i++) ratios.push(1);
-
             this.setRatios(ratios);
         }
     };
@@ -100,9 +98,7 @@ define(function(require, exports, module) {
      */
     FlexibleLayout.prototype.setRatios = function setRatios(ratios, transition, callback) {
         if (transition === undefined) transition = this.options.transition;
-
         if (this._ratios.get().length === 0) transition = undefined;
-
         this._ratios.set(ratios, transition, callback);
     };
 
