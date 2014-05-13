@@ -61,12 +61,8 @@ define(function(require, exports, module) {
 
         // cached _spec
         this._spec = {
-            size : [false, false],
-            target : {
-                origin : [.5,.5],
-                transform : this.transform,
-                target    : null
-            }
+            transform : this.transform,
+            target    : null
         };
     }
 
@@ -393,7 +389,7 @@ define(function(require, exports, module) {
      * @return Spec {Spec}
      */
     Particle.prototype.modify = function modify(target) {
-        var _spec = this._spec.target;
+        var _spec = this._spec;
         _spec.transform = this.getTransform();
         _spec.target = target;
         return _spec;
