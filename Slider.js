@@ -10,98 +10,102 @@
 define(function(require, exports, module) {
     var Surface = require('famous/core/Surface');
     var CanvasSurface = require('famous/surfaces/CanvasSurface');
-    var GenericSync = require('famous/inputs/GenericSync');
     var Transform = require('famous/core/Transform');
     var EventHandler = require('famous/core/EventHandler');
+    var Utilities = require('famous/math/Utilities');
+    var OptionsManager = require('famous/core/OptionsManager');
+
+    var MouseSync = require('famous/inputs/MouseSync');
+    var TouchSync = require('famous/inputs/TouchSync');
+    var GenericSync = require('famous/inputs/GenericSync');
+
+    GenericSync.register({
+        mouse : MouseSync,
+        touch : TouchSync
+    });
 
     /** @constructor */
-    function Slider(options)
-    {
-        this.options = {
-            size: [200, 60],
-            indicatorSize: [200, 30],
-            labelSize: [200, 30],
-            range: [0, 1],
-            precision: 2,
-            defaultValue: 0,
-            label: '',
-            fillColor: 'rgba(170, 170, 170, 1)'
-        };
-
+    function Slider(options) {
+        this.options = Object.create(Slider.DEFAULT_OPTIONS);
+        this.optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
-        this.value = this.options.defaultValue;
 
         this.indicator = new CanvasSurface({
-            size: this.options.indicatorSize
+            size: this.options.indicatorSize,
+            classes : ['slider-back']
         });
-        this.indicator.addClass('slider-back');
 
         this.label = new Surface({
             size: this.options.labelSize,
             content: this.options.label,
+            properties : {pointerEvents : 'none'},
             classes: ['slider-label']
         });
-        this.label.setProperties({ 'pointer-events': 'none' });
 
         this.eventOutput = new EventHandler();
         this.eventInput = new EventHandler();
         EventHandler.setInputHandler(this, this.eventInput);
         EventHandler.setOutputHandler(this, this.eventOutput);
 
-        this.sync = new GenericSync(this.get.bind(this), {
-            scale: (this.options.range[1] - this.options.range[0])/this.options.indicatorSize[0],
-            direction: GenericSync.DIRECTION_X
-        });
+        var scale = (this.options.range[1] - this.options.range[0]) / this.options.indicatorSize[0];
+
+        this.sync = new GenericSync(
+            ['mouse', 'touch'],
+            {
+                scale : scale,
+                direction : GenericSync.DIRECTION_X
+            }
+        );
+
+        this.indicator.pipe(this.sync);
+        this.sync.pipe(this);
 
         this.eventInput.on('update', function(data) {
-            this.set(data.p);
+            this.set(data.position);
         }.bind(this));
-
-        this.indicator.pipe(this.sync).pipe(this.eventInput);
 
         this._drawPos = 0;
         _updateLabel.call(this);
     }
 
+    Slider.DEFAULT_OPTIONS = {
+        size: [200, 60],
+        indicatorSize: [200, 30],
+        labelSize: [200, 30],
+        range: [0, 1],
+        precision: 2,
+        value: 0,
+        label: '',
+        fillColor: 'rgba(170, 170, 170, 1)'
+    };
+
     function _updateLabel() {
         this.label.setContent(this.options.label + '<span style="float: right">' + this.get().toFixed(this.options.precision) + '</span>');
     }
 
-    Slider.prototype.getOptions = function getOptions() {
-        return this.options;
-    };
-
     Slider.prototype.setOptions = function setOptions(options) {
-        if (options.size !== undefined) this.options.size = options.size;
-        if (options.indicatorSize !== undefined) this.options.indicatorSize = options.indicatorSize;
-        if (options.labelSize !== undefined) this.options.labelSize = options.labelSize;
-        if (options.range !== undefined) this.options.range = options.range;
-        if (options.precision !== undefined) this.options.precision = options.precision;
-        if (options.defaultValue !== undefined) this.options.defaultValue = options.defaultValue;
-        if (options.label !== undefined) this.options.label = options.label;
-        if (options.fillColor !== undefined) this.options.fillColor = options.fillColor;
+        return this.optionsManager.setOptions(options);
     };
 
-    Slider.prototype.get = function get()
-    {
-        return this.value;
+    Slider.prototype.get = function get() {
+        return this.options.value;
     };
 
-    Slider.prototype.set = function set(val)
-    {
-        this.value = Math.min(Math.max(this.options.range[0], val), this.options.range[1]);
+    Slider.prototype.set = function set(value) {
+        if (value === this.options.value) return;
+        this.options.value = Utilities.clamp(value, this.options.range);
         _updateLabel.call(this);
-        this.eventOutput.emit('change', {value: this.get(), range: this.options.range});
+        this.eventOutput.emit('change', {value: value});
     };
 
     Slider.prototype.getSize = function getSize() {
         return this.options.size;
     };
 
-    Slider.prototype.render = function render()
-    {
+    Slider.prototype.render = function render() {
         var range = this.options.range;
         var fillSize = Math.floor(((this.get() - range[0]) / (range[1] - range[0])) * this.options.indicatorSize[0]);
+
         if (fillSize < this._drawPos) {
             this.indicator.getContext('2d').clearRect(fillSize, 0, this._drawPos - fillSize + 1, this.options.indicatorSize[1]);
         }
@@ -116,12 +120,12 @@ define(function(require, exports, module) {
             size: this.options.size,
             target: [
                 {
-                    origin: [0.5, 0],
+                    origin: [0, 0],
                     target: this.indicator.render()
                 },
                 {
                     transform: Transform.translate(0, 0, 1),
-                    origin: [0.5, 1],
+                    origin: [0, 0],
                     target: this.label.render()
                 }
             ]
