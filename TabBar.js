@@ -14,14 +14,14 @@ define(function(require, exports, module) {
     var ToggleButton = require('./ToggleButton');
 
     /**
-     * A view for display various tabs that dispatch events
+     * A view for displaying various tabs that dispatch events
      *  based on the id of the button that was clicked
      *
      * @class TabBar
      * @extends View
      * @constructor
      *
-     * @param {object} options overrides of deault options
+     * @param {object} options overrides of default options
      */
     function TabBar(options) {
         View.apply(this, arguments);
