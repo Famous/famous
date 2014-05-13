@@ -274,7 +274,7 @@ define(function(require, exports, module) {
             el.classList.add(options.containerClass);
             needMountContainer = true;
         }
-        context = new Context(el);
+        var context = new Context(el);
         Engine.registerContext(context);
         if (needMountContainer) {
             Engine.nextTick(function(context, el) {
