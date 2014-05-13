@@ -228,7 +228,7 @@ define(function(require, exports, module) {
 
             if (overlap <= 0) {
                 if (nv < 0) _onEnter.call(this, particle, overlap, dt);
-                else        _onExit.call(this, particle, overlap, dt);
+                else _onExit.call(this, particle, overlap, dt);
             }
         }
     };
