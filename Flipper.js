@@ -28,10 +28,10 @@ define(function(require, exports, module) {
         this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 
-        this.state = new Transitionable(0);
+        this.angle = new Transitionable(0);
 
-        this.frontNode = new RenderNode();
-        this.backNode = new RenderNode();
+        this.frontNode = undefined;
+        this.backNode = undefined;
 
         this.flipped = false;
     }
@@ -47,23 +47,30 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Flips from the current side to the opposite one with the Flipper instance's default transition.
+     * Toggles the rotation between the front and back renderables
      *
      * @method flip
-     * @param {Number} side Can be either one or zero (one represents the back, zero represents the front).
-     *   Defaults to the default transition (true).
-     * @param {function} [callback] Executes after transitioning to the toggled state.
+     * @param {Object} [transition] Transition definition
+     * @param {Function} [callback] Callback
      */
-    Flipper.prototype.rotate = function rotate(angle, transition, callback) {
-        if (angle === undefined) {
-            angle = this.flipped ? this.state.get() - Math.PI : this.state.get() + Math.PI;
-            this.flipped = !this.flipped;
-        } else {
-            this.flipped = false;
-        }
+    Flipper.prototype.flip = function flip(transition, callback){
+        var angle = this.flipped ? 0 : Math.PI;
+        this.setAngle(angle, transition, callback);
+        this.flipped = !this.flipped;
+    };
+
+    /**
+     * Basic setter to the angle
+     *
+     * @method setAngle
+     * @param {Number} angle
+     * @param {Object} [transition] Transition definition
+     * @param {Function} [callback] Callback
+     */
+    Flipper.prototype.setAngle = function setAngle(angle, transition, callback) {
         if (transition === undefined) transition = this.options.transition;
-        this.state.halt();
-        this.state.set(angle, transition, callback);
+        if (this.angle.isActive()) this.angle.halt();
+        this.angle.set(angle, transition, callback);
     };
 
     /**
@@ -81,10 +88,10 @@ define(function(require, exports, module) {
      *
      * @method setFront
      * @chainable
-     * @param {Object} obj The renderable you want to add to the front.
+     * @param {Object} node The renderable you want to add to the front.
      */
-    Flipper.prototype.setFront = function setFront(obj) {
-        return this.frontNode.set(obj);
+    Flipper.prototype.setFront = function setFront(node) {
+        this.frontNode = node;
     };
 
     /**
@@ -92,10 +99,10 @@ define(function(require, exports, module) {
      *
      * @method setBack
      * @chainable
-     * @param {Object} obj The renderable you want to add to the back.
+     * @param {Object} node The renderable you want to add to the back.
      */
-    Flipper.prototype.setBack = function setBack(obj) {
-        return this.backNode.set(obj);
+    Flipper.prototype.setBack = function setBack(node) {
+        this.backNode = node;
     };
 
     /**
@@ -106,7 +113,7 @@ define(function(require, exports, module) {
      * @return {Number} Render spec for this component
      */
     Flipper.prototype.render = function render() {
-        var angle = this.state.get();
+        var angle = this.angle.get();
 
         var frontTransform;
         var backTransform;
@@ -120,16 +127,22 @@ define(function(require, exports, module) {
             backTransform = Transform.rotateX(angle + Math.PI);
         }
 
-        return [
-            {
+        var result = [];
+        if (this.frontNode){
+            result.push({
                 transform: frontTransform,
                 target: this.frontNode.render()
-            },
-            {
+            });
+        }
+
+        if (this.backNode){
+            result.push({
                 transform: Transform.moveThen([0, 0, SEPERATION_LENGTH], backTransform),
                 target: this.backNode.render()
-            }
-        ];
+            });
+        }
+
+        return result;
     };
 
     module.exports = Flipper;
