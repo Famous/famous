@@ -12,8 +12,8 @@ define(function(require, exports, module) {
     var EventHandler = require('./EventHandler');
     var Transform = require('./Transform');
 
-    var usePrefix = document.body.style.webkitTransform !== undefined;
     var devicePixelRatio = window.devicePixelRatio || 1;
+    var usePrefix = document.createElement('div').style.webkitTransform !== undefined;
 
     /**
      * A base class for viewable content and event
@@ -460,7 +460,7 @@ define(function(require, exports, module) {
             target.style.opacity = (opacity >= 1) ? '0.999999' : opacity;
         }
 
-        if (_xyNotEquals(this._origin, origin) || Transform.notEquals(this._matrix, matrix)) {
+        if (_xyNotEquals(this._origin, origin) || Transform.notEquals(this._matrix, matrix) || this._sizeDirty) {
             if (!matrix) matrix = Transform.identity;
             this._matrix = matrix;
             var aaMatrix = matrix;
