@@ -53,7 +53,7 @@ define(function(require, exports, module) {
      * @param {Object} [transition] Transition definition
      * @param {Function} [callback] Callback
      */
-    Flipper.prototype.flip = function flip(transition, callback){
+    Flipper.prototype.flip = function flip(transition, callback) {
         var angle = this.flipped ? 0 : Math.PI;
         this.setAngle(angle, transition, callback);
         this.flipped = !this.flipped;
