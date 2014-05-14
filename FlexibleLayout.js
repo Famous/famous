@@ -53,9 +53,14 @@ define(function(require, exports, module) {
         ratios : []
     };
 
-    function _reflow(ratios, length, direction) {
-        var flexLength = length;
+    function _reflow(ratios, size, direction) {
+        var currTransform;
+        var translation = 0;
+        var flexLength = size[direction];
         var ratioSum = 0;
+        var ratio;
+        var node;
+        var i;
 
         this._cachedSizes = [];
         this._cachedTransforms = [];
@@ -70,9 +75,6 @@ define(function(require, exports, module) {
                 ratioSum += ratio;
         }
 
-        var currTransform;
-        var translation = 0;
-        var result = [];
         for (i = 0; i < ratios.length; i++) {
             var nodeSize = [size[0], size[1]];
             node = this._nodes[i];
@@ -87,7 +89,7 @@ define(function(require, exports, module) {
                 : Transform.translate(0, translation, 0);
 
             this._cachedTransforms.push(currTransform);
-            this._cachedSizes.push(nodeSize); 
+            this._cachedSizes.push(nodeSize);
 
             translation += nodeSize[direction];
         }
@@ -160,7 +162,7 @@ define(function(require, exports, module) {
         var ratios = this._ratios.get();
 
         if (size[0] !== this._contextSizeCache[0] || size[1] !== this._contextSizeCache[1] || !this._initialReflow || this._ratios.isActive() || this.options.direction !== this._cachedDirection) {
-            _reflow.call(this, ratios, size[this.options.direction], this.options.direction);
+            _reflow.call(this, ratios, size, this.options.direction);
 
             if (!this._initialReflow) this._initialReflow = true;
             if (size !== this._cachedContextSize) this._contextSizeCache = [size[0], size[1]];
@@ -168,7 +170,7 @@ define(function(require, exports, module) {
         }
 
         var result = [];
-        for (i = 0; i < ratios.length; i++) {
+        for (var i = 0; i < ratios.length; i++) {
             result.push({
                 transform : this._cachedTransforms[i],
                 size: this._cachedSizes[i],
