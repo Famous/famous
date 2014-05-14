@@ -98,8 +98,10 @@ define(function(require, exports, module) {
      */
     FlexibleLayout.prototype.setRatios = function setRatios(ratios, transition, callback) {
         if (transition === undefined) transition = this.options.transition;
-        if (this._ratios.get().length === 0) transition = undefined;
-        this._ratios.set(ratios, transition, callback);
+        var currRatios = this._ratios;
+        if (currRatios.get().length === 0) transition = undefined;
+        if (currRatios.isActive()) currRatios.halt();
+        currRatios.set(ratios, transition, callback);
     };
 
     /**
