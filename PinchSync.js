@@ -34,7 +34,6 @@ define(function(require, exports, module) {
     PinchSync.prototype = Object.create(TwoFingerSync.prototype);
     PinchSync.prototype.constructor = PinchSync;
 
-
     PinchSync.DEFAULT_OPTIONS = {
         scale : 1
     };
