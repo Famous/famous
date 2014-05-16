@@ -28,12 +28,12 @@ define(function(require, exports, module) {
      * @param {Array} [options.position] The position of the particle.
      * @param {Array} [options.velocity] The velocity of the particle.
      * @param {Number} [options.mass] The mass of the particle.
-     * @param {Hexadecimal} [options.axis] The axis a particle can move along. Can be bitwise ORed e.g., Particle.AXES.X, Particle.AXES.X | Particle.AXES.Y 
-     * 
+     * @param {Hexadecimal} [options.axis] The axis a particle can move along. Can be bitwise ORed e.g., Particle.AXES.X, Particle.AXES.X | Particle.AXES.Y
+     *
      */
      function Particle(options) {
         options = options || {};
- 
+
         // registers
         this.position = new Vector();
         this.velocity = new Vector();
@@ -161,7 +161,7 @@ define(function(require, exports, module) {
      * @method setPosition1D
      * @param value {Number}
      */
-    Particle.prototype.setPosition1D = function(x) {
+    Particle.prototype.setPosition1D = function setPosition1D(x) {
         this.position.x = x;
     };
 
@@ -213,7 +213,7 @@ define(function(require, exports, module) {
      * @method setVelocity1D
      * @param velocity {Number}
      */
-    Particle.prototype.setVelocity1D = function(x) {
+    Particle.prototype.setVelocity1D = function setVelocity1D(x) {
         this.velocity.x = x;
         this.wake();
     };

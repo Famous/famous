@@ -26,7 +26,7 @@ define(function(require, exports, module) {
      *  @param {Number} [options.dampingRatio] Additional damping of the spring. Range : [0, 1]. At 0 this spring will still be damped, at 1 the spring will be critically damped (the spring will never oscillate)
      *  @param {Number} [options.length] The rest length of the spring. Range: [0, Infinity].
      *  @param {Array} [options.anchor] The location of the spring's anchor, if not another physics body.
-     *  
+     *
      */
     function Snap(options) {
         this.options = Object.create(this.constructor.DEFAULT_OPTIONS);

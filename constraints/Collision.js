@@ -21,7 +21,7 @@ define(function(require, exports, module) {
      *  @param {Number} [options.restitution] The energy ratio lost in a collision (0 = stick, 1 = elastic) Range : [0, 1]
      *  @param {Number} [options.drift] Baumgarte stabilization parameter. Makes constraints "loosely" (0) or "tightly" (1) enforced. Range : [0, 1]
      *  @param {Number} [options.slop] Amount of penetration in pixels to ignore before collision event triggers
-     *  
+     *
      */
     function Collision(options) {
         this.options = Object.create(Collision.DEFAULT_OPTIONS);
