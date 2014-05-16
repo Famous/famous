@@ -23,6 +23,7 @@ define(function(require, exports, module) {
      * @param {Options} [options] An object of configurable options.
      * @param {Number} [options.direction=0] Direction the FlexibleLayout instance should lay out renderables.
      * @param {Transition} [options.transition=false] The transiton that controls the FlexibleLayout instance's reflow.
+     * @param {Ratios} [options.ratios=[]] The proportions for the renderables to maintain
      */
     function FlexibleLayout(options) {
         this.options = Object.create(FlexibleLayout.DEFAULT_OPTIONS);
@@ -165,7 +166,7 @@ define(function(require, exports, module) {
             _reflow.call(this, ratios, length, direction);
 
             if (length !== this._cachedTotalLength) this._cachedTotalLength = length;
-            if (this._cachedDirection !== direction) this._cachedDirection = direction;
+            if (direction !== this._cachedDirection) this._cachedDirection = direction;
         }
 
         var result = [];
