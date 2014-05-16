@@ -18,7 +18,10 @@ define(function(require, exports, module) {
      *  @class Surface
      *  @constructor
      *  @extends Constraint
-     *  @param options {Object}
+     *  @param {Options} [options] An object of configurable options.
+     *  @param {Function} [options.equation] An implicitly defined surface f(x,y,z) = 0 that body is constrained to e.g. function(x,y,z) { x*x + y*y + z*z - r*r } corresponds to a sphere of radius r pixels.
+     *  @param {Number} [options.period] The spring-like reaction when the constraint is violated.
+     *  @param {Number} [options.dampingRatio] The damping-like reaction when the constraint is violated.
      */
     function Surface(options) {
         this.options = Object.create(Surface.DEFAULT_OPTIONS);
@@ -33,38 +36,9 @@ define(function(require, exports, module) {
     Surface.prototype = Object.create(Constraint.prototype);
     Surface.prototype.constructor = Surface;
 
-    /**
-     * @property Surface.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
     Surface.DEFAULT_OPTIONS = {
-
-        /**
-         * An implicitly defined surface f(x,y,z) = 0 that body is constrained to
-         *   e.g. function(x,y,z) { x*x + y*y + z*z - r*r }
-         *   corresponds to a sphere of radius r pixels
-         *
-         * @attribute equation
-         * @type Function
-         */
         equation : undefined,
-
-        /**
-         * The spring-like reaction when the constraint is violated
-         * @attribute period
-         * @type Number
-         * @default 0
-         */
         period : 0,
-
-        /**
-         * The damping-like reaction when the constraint is violated
-         * @attribute dampingRatio
-         * @type Number
-         * @default 0
-         */
         dampingRatio : 0
     };
 

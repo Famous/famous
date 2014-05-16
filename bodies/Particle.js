@@ -24,10 +24,16 @@ define(function(require, exports, module) {
      * @uses EventHandler
      * @uses Modifier
      * @extensionfor Body
+     * @param {Options} [options] An object of configurable options.
+     * @param {Array} [options.position] The position of the particle.
+     * @param {Array} [options.velocity] The velocity of the particle.
+     * @param {Number} [options.mass] The mass of the particle.
+     * @param {Hexadecimal} [options.axis] The axis a particle can move along. Can be bitwise ORed e.g., Particle.AXES.X, Particle.AXES.X | Particle.AXES.Y 
+     * 
      */
      function Particle(options) {
         options = options || {};
-
+ 
         // registers
         this.position = new Vector();
         this.velocity = new Vector();
@@ -66,41 +72,10 @@ define(function(require, exports, module) {
         };
     }
 
-    /**
-     * @property Particle.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
     Particle.DEFAULT_OPTIONS = {
-
-        /**
-         * The position of the particle
-         * @attribute position
-         * @type Array
-         */
         position : [0,0,0],
-
-        /**
-         * The velocity of the particle
-         * @attribute velocity
-         * @type Array
-         */
         velocity : [0,0,0],
-
-        /**
-         * The mass of the particle
-         * @attribute mass
-         * @type Number
-         */
         mass : 1,
-
-        /**
-         * The axis a particle can move along. Can be bitwise ORed
-         *    e.g., Particle.AXES.X, Particle.AXES.X | Particle.AXES.Y
-         * @attribute axis
-         * @type Hexadecimal
-         */
         axis : undefined
     };
 
