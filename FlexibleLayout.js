@@ -38,7 +38,6 @@ define(function(require, exports, module) {
         this._contextSizeCache = [0, 0];
         this._cachedSizes = null;
         this._cachedTransforms = null;
-        this._initialReflow = false;
 
         this._eventOutput = new EventHandler();
         EventHandler.setOutputHandler(this, this._eventOutput);
@@ -160,13 +159,14 @@ define(function(require, exports, module) {
         var origin = context.origin;
 
         var ratios = this._ratios.get();
+        var direction = this.options.direction;
 
-        if (size[0] !== this._contextSizeCache[0] || size[1] !== this._contextSizeCache[1] || !this._initialReflow || this._ratios.isActive() || this.options.direction !== this._cachedDirection) {
-            _reflow.call(this, ratios, size, this.options.direction);
+        if (size[0] !== this._contextSizeCache[0] || size[1] !== this._contextSizeCache[1] || this._ratios.isActive() || direction !== this._cachedDirection) {
+            _reflow.call(this, ratios, size, direction);
 
             if (!this._initialReflow) this._initialReflow = true;
             if (size !== this._cachedContextSize) this._contextSizeCache = [size[0], size[1]];
-            if (this._cachedDirection !== this.options.direction) this._cachedDirection = this.options.direction;
+            if (this._cachedDirection !== direction) this._cachedDirection = direction;
         }
 
         var result = [];
