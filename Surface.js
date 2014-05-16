@@ -12,8 +12,8 @@ define(function(require, exports, module) {
     var EventHandler = require('./EventHandler');
     var Transform = require('./Transform');
 
-    var usePrefix = document.body.style.webkitTransform !== undefined;
     var devicePixelRatio = window.devicePixelRatio || 1;
+    var usePrefix = document.createElement('div').style.webkitTransform !== undefined;
 
     /**
      * A base class for viewable content and event
@@ -99,13 +99,13 @@ define(function(require, exports, module) {
      * @method emit
      *
      * @param {string} type event type key (for example, 'click')
-     * @param {Object} event event data
+     * @param {Object} [event] event data
      * @return {EventHandler} this
      */
     Surface.prototype.emit = function emit(type, event) {
         if (event && !event.origin) event.origin = this;
         var handled = this.eventHandler.emit(type, event);
-        if (handled && event.stopPropagation) event.stopPropagation();
+        if (handled && event && event.stopPropagation) event.stopPropagation();
         return handled;
     };
 
@@ -359,7 +359,7 @@ define(function(require, exports, module) {
 
     // format origin as CSS percentage string
     function _formatCSSOrigin(origin) {
-        return (100 * origin[0]).toFixed(6) + '% ' + (100 * origin[1]).toFixed(6) + '%';
+        return (100 * origin[0]) + '% ' + (100 * origin[1]) + '%';
     }
 
      // Directly apply given origin coordinates to the document element as the
@@ -405,7 +405,6 @@ define(function(require, exports, module) {
         }
         target.style.display = '';
         _addEventListeners.call(this, target);
-        _setOrigin(target, [0, 0]); // handled internally
         this._currTarget = target;
         this._stylesDirty = true;
         this._classesDirty = true;
@@ -464,7 +463,7 @@ define(function(require, exports, module) {
         if (size[1] === true) size[1] = target.clientHeight;
 
         if (_xyNotEquals(this._size, size)) {
-            if (!this._size) this._size = [undefined, undefined];
+            if (!this._size) this._size = [0, 0];
             this._size[0] = size[0];
             this._size[1] = size[1];
             this._sizeDirty = true;
@@ -490,7 +489,8 @@ define(function(require, exports, module) {
                 if (!this._origin) this._origin = [0, 0];
                 this._origin[0] = origin[0];
                 this._origin[1] = origin[1];
-                aaMatrix = Transform.moveThen([-this._size[0] * origin[0], -this._size[1] * origin[1], 0], matrix);
+                aaMatrix = Transform.thenMove(matrix, [-this._size[0] * origin[0], -this._size[1] * origin[1], 0]);
+                _setOrigin(target, origin);
             }
             _setMatrix(target, aaMatrix);
         }

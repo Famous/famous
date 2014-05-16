@@ -46,6 +46,7 @@ define(function(require, exports, module) {
             transform: Transform.identity,
             opacity: 1,
             origin: _originZeroZero,
+            align: null,
             size: this._size
         };
 
@@ -121,6 +122,7 @@ define(function(require, exports, module) {
             if (contextParameters.transform) this._nodeContext.transform = contextParameters.transform;
             if (contextParameters.opacity) this._nodeContext.opacity = contextParameters.opacity;
             if (contextParameters.origin) this._nodeContext.origin = contextParameters.origin;
+            if (contextParameters.align) this._nodeContext.align = contextParameters.align;
             if (contextParameters.size) this._nodeContext.size = contextParameters.size;
         }
         var perspective = this._perspectiveState.get();
@@ -146,7 +148,7 @@ define(function(require, exports, module) {
     /**
      * Set current perspective of this context in pixels.
      *
-     * @method getPerspective
+     * @method setPerspective
      * @param {Number} perspective in pixels
      * @param {Object} [transition] Transitionable object for applying the change
      * @param {function(Object)} callback function called on completion of transition

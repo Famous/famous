@@ -161,7 +161,14 @@ define(function(require, exports, module) {
     Engine.on = function on(type, handler) {
         if (!(type in eventForwarders)) {
             eventForwarders[type] = eventHandler.emit.bind(eventHandler, type);
-            document.body.addEventListener(type, eventForwarders[type]);
+            if (document.body) {
+                document.body.addEventListener(type, eventForwarders[type]);
+            }
+            else {
+                Engine.nextTick(function(type, forwarder) {
+                    document.body.addEventListener(type, forwarder);
+                }.bind(this, type, eventForwarders[type]));
+            }
         }
         return eventHandler.on(type, handler);
     };
@@ -261,17 +268,20 @@ define(function(require, exports, module) {
      * @return {Context} new Context within el
      */
     Engine.createContext = function createContext(el) {
-        if (el === undefined) {
+        var needMountContainer = false;
+        if (!el) {
             el = document.createElement(options.containerType);
             el.classList.add(options.containerClass);
-            document.body.appendChild(el);
-        }
-        else if (!(el instanceof Element)) {
-            el = document.createElement(options.containerType);
-            throw new Error('Tried to create context on non-existent element');
+            needMountContainer = true;
         }
         var context = new Context(el);
         Engine.registerContext(context);
+        if (needMountContainer) {
+            Engine.nextTick(function(context, el) {
+                document.body.appendChild(el);
+                context.emit('resize');
+            }.bind(this, context, el));
+        }
         return context;
     };
 
