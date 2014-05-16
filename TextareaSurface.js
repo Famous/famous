@@ -18,7 +18,7 @@ define(function(require, exports, module) {
      * @extends Surface
      * @constructor
      * @param {Object} [options] overrides of default options
-     * @param {string} [options.placeholder] placeholder text hint that describes the expected value of an <textarea> element
+     * @param {string} [options.placeholder] placeholder text hint that describes the expected value of an textarea element
      * @param {string} [options.value] value of text
      * @param {string} [options.name] specifies the name of textarea
      * @param {string} [options.wrap] specify 'hard' or 'soft' wrap for textarea
