@@ -21,7 +21,11 @@ define(function(require, exports, module) {
      *  @class Curve
      *  @constructor
      *  @extends Constraint
-     *  @param options {Object}
+     *  @param {Options} [options] An object of configurable options.
+     *  @param {Function} [options.equation] An implicitly defined surface f(x,y,z) = 0 that body is constrained to e.g. function(x,y,z) { x*x + y*y - r*r } corresponds to a circle of radius r pixels
+     *  @param {Function} [options.plane] An implicitly defined second surface that the body is constrained to
+     *  @param {Number} [options.period] The spring-like reaction when the constraint is violated
+     *  @param {Number} [options.number] The damping-like reaction when the constraint is violated
      */
     function Curve(options) {
         this.options = Object.create(Curve.DEFAULT_OPTIONS);
@@ -40,52 +44,14 @@ define(function(require, exports, module) {
     /** @const */ var epsilon = 1e-7;
     /** @const */ var pi = Math.PI;
 
-    /**
-     * @property Curve.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
     Curve.DEFAULT_OPTIONS = {
-
-        /**
-         * An implicitly defined surface f(x,y,z) = 0 that body is constrained to
-         *   e.g. function(x,y,z) { x*x + y*y - r*r }
-         *   corresponds to a circle of radius r pixels
-         *
-         * @attribute equation
-         * @type Function
-         */
         equation  : function(x,y,z) {
             return 0;
         },
-
-        /**
-         * An implicitly defined second surface that the body is constrained to
-         *
-         * @attribute path
-         * @type Function
-         * @default the xy-plane
-         * @optional
-         */
         plane : function(x,y,z) {
             return z;
         },
-
-        /**
-         * The spring-like reaction when the constraint is violated
-         * @attribute period
-         * @type Number
-         * @default 0
-         */
         period : 0,
-
-        /**
-         * The damping-like reaction when the constraint is violated
-         * @attribute dampingRatio
-         * @type Number
-         * @default 0
-         */
         dampingRatio : 0
     };
 

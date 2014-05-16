@@ -21,7 +21,12 @@ define(function(require, exports, module) {
      *  @class Snap
      *  @constructor
      *  @extends Constraint
-     *  @param options {Object}
+     *  @param {Options} [options] An object of configurable options.
+     *  @param {Number} [options.period] The amount of time in milliseconds taken for one complete oscillation when there is no damping. Range : [150, Infinity]
+     *  @param {Number} [options.dampingRatio] Additional damping of the spring. Range : [0, 1]. At 0 this spring will still be damped, at 1 the spring will be critically damped (the spring will never oscillate)
+     *  @param {Number} [options.length] The rest length of the spring. Range: [0, Infinity].
+     *  @param {Array} [options.anchor] The location of the spring's anchor, if not another physics body.
+     *
      */
     function Snap(options) {
         this.options = Object.create(this.constructor.DEFAULT_OPTIONS);
@@ -39,52 +44,10 @@ define(function(require, exports, module) {
     Snap.prototype = Object.create(Constraint.prototype);
     Snap.prototype.constructor = Snap;
 
-    /**
-     * @property Snap.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
     Snap.DEFAULT_OPTIONS = {
-
-        /**
-         * The amount of time in milliseconds taken for one complete oscillation
-         * when there is no damping
-         *    Range : [150, Infinity]
-         * @attribute period
-         * @type Number
-         * @default 300
-         */
         period        : 300,
-
-        /**
-         * Additional damping of the spring
-         *    Range : [0, 1]
-         *    0 = note this will still be damped
-         *    1 = critically damped (the spring will never oscillate)
-         * @attribute dampingRatio
-         * @type Number
-         * @default 300
-         */
         dampingRatio : 0.1,
-
-        /**
-         * The rest length of the spring
-         *    Range : [0, Infinity]
-         * @attribute length
-         * @type Number
-         * @default 0
-         */
         length : 0,
-
-        /**
-         * The location of the spring's anchor, if not another physics body
-         *
-         * @attribute anchor
-         * @type Array
-         * @default 0.01
-         * @optional
-         */
         anchor : undefined
     };
 

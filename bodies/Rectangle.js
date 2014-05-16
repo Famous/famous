@@ -15,7 +15,7 @@ define(function(require, exports, module) {
      * Implements a rectangular geometry for an Body with
      * size = [width, height].
      *
-     * @class Circle
+     * @class Rectangle
      * @extends Body
      * @constructor
      */
