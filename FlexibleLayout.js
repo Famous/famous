@@ -23,6 +23,7 @@ define(function(require, exports, module) {
      * @param {Options} [options] An object of configurable options.
      * @param {Number} [options.direction=0] Direction the FlexibleLayout instance should lay out renderables.
      * @param {Transition} [options.transition=false] The transiton that controls the FlexibleLayout instance's reflow.
+     * @param {Ratios} [options.ratios=[]] The proportions for the renderables to maintain
      */
     function FlexibleLayout(options) {
         this.options = Object.create(FlexibleLayout.DEFAULT_OPTIONS);
@@ -34,9 +35,10 @@ define(function(require, exports, module) {
         this._ratios = new Transitionable(this.options.ratios);
         this._nodes = [];
 
-        this._cachedDirection = this.options.direction;
-        this._cachedSpec = null;
-        this._cachedLength = false;
+        this._cachedDirection = null;
+        this._cachedTotalLength = false;
+        this._cachedLengths = [];
+        this._cachedTransforms = null;
 
         this._eventOutput = new EventHandler();
         EventHandler.setOutputHandler(this, this._eventOutput);
@@ -50,6 +52,47 @@ define(function(require, exports, module) {
         transition: false,
         ratios : []
     };
+
+    function _reflow(ratios, length, direction) {
+        var currTransform;
+        var translation = 0;
+        var flexLength = length;
+        var ratioSum = 0;
+        var ratio;
+        var node;
+        var i;
+
+        this._cachedLengths = [];
+        this._cachedTransforms = [];
+
+        for (i = 0; i < ratios.length; i++){
+            ratio = ratios[i];
+            node = this._nodes[i];
+
+            if (typeof ratio !== 'number')
+                flexLength -= node.getSize()[direction] || 0;
+            else
+                ratioSum += ratio;
+        }
+
+        for (i = 0; i < ratios.length; i++) {
+            node = this._nodes[i];
+            ratio = ratios[i];
+
+            length = (typeof ratio === 'number')
+                ? flexLength * ratio / ratioSum
+                : node.getSize()[direction];
+
+            currTransform = (direction === FlexibleLayout.DIRECTION_X)
+                ? Transform.translate(translation, 0, 0)
+                : Transform.translate(0, translation, 0);
+
+            this._cachedTransforms.push(currTransform);
+            this._cachedLengths.push(length);
+
+            translation += length;
+        }
+    }
 
     /**
      * Generate a render spec from the contents of this component.
@@ -69,7 +112,6 @@ define(function(require, exports, module) {
      * @param {Options} options An object of configurable options for the FlexibleLayout instance.
      */
     FlexibleLayout.prototype.setOptions = function setOptions(options) {
-        if (options.direction && options.direction !== this.options.direction) this._cachedDirection = options.direction;
         this.optionsManager.setOptions(options);
     };
 
@@ -114,70 +156,42 @@ define(function(require, exports, module) {
      * @param {Context} context commit context
      */
     FlexibleLayout.prototype.commit = function commit(context) {
-        var size = context.size;
-        var transform = context.transform;
-        var origin = context.origin;
-
-        var direction = this.options.direction;
-        var length = size[direction];
-
-        var ratio;
-        var i;
-        var node;
-
-        if (length === this._cachedLength && this._cachedSpec && !this._ratios.isActive() && direction === this._cachedDirection)
-            return this._cachedSpec;
+        var parentSize = context.size;
+        var parentTransform = context.transform;
+        var parentOrigin = context.origin;
 
         var ratios = this._ratios.get();
+        var direction = this.options.direction;
+        var length = parentSize[direction];
+        var size;
 
-        var flexLength = length;
-        var ratioSum = 0;
-        for (i = 0; i < ratios.length; i++){
-            ratio = ratios[i];
-            node = this._nodes[i];
-            if (typeof ratio !== 'number')
-                flexLength -= node.getSize()[direction] || 0;
-            else
-                ratioSum += ratio;
+        if (length !== this._cachedTotalLength || this._ratios.isActive() || direction !== this._cachedDirection) {
+            _reflow.call(this, ratios, length, direction);
+
+            if (length !== this._cachedTotalLength) this._cachedTotalLength = length;
+            if (direction !== this._cachedDirection) this._cachedDirection = direction;
         }
 
-        var currTransform;
-        var translation = 0;
         var result = [];
-        for (i = 0; i < ratios.length; i++) {
-            var nodeSize = [size[0], size[1]];
-            node = this._nodes[i];
-            ratio = ratios[i];
-
-            nodeSize[direction] = (typeof ratio === 'number')
-                ? flexLength * ratio / ratioSum
-                : node.getSize()[direction];
-
-            currTransform = (direction === FlexibleLayout.DIRECTION_X)
-                ? Transform.translate(translation, 0, 0)
-                : Transform.translate(0, translation, 0);
-
+        for (var i = 0; i < ratios.length; i++) {
+            size = [undefined, undefined];
+            length = this._cachedLengths[i];
+            size[direction] = length;
             result.push({
-                transform : currTransform,
-                size: nodeSize,
-                target : node.render()
+                transform : this._cachedTransforms[i],
+                size: size,
+                target : this._nodes[i].render()
             });
-
-            translation += nodeSize[direction];
         }
 
-        if (size && (origin[0] !== 0 && origin[1] !== 0))
-            transform = Transform.moveThen([-size[0]*origin[0], -size[1]*origin[1], 0], transform);
+        if (parentSize && (parentOrigin[0] !== 0 && parentOrigin[1] !== 0))
+            parentTransform = Transform.moveThen([-parentSize[0]*parentOrigin[0], -parentSize[1]*parentOrigin[1], 0], parentTransform);
 
-        this._cachedSpec = {
-            transform: transform,
-            size: size,
+        return {
+            transform: parentTransform,
+            size: parentSize,
             target: result
         };
-        this._cachedLength = length;
-        this._cachedDirection = direction;
-
-        return this._cachedSpec;
     };
 
     module.exports = FlexibleLayout;
