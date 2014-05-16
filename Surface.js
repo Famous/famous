@@ -48,7 +48,7 @@ define(function(require, exports, module) {
         this._matrix = null;
         this._opacity = 1;
         this._origin = null;
-        this._size = [];
+        this._size = null;
 
         /** @ignore */
         this.eventForwarder = function eventForwarder(event) {
@@ -414,7 +414,7 @@ define(function(require, exports, module) {
         this._matrix = null;
         this._opacity = undefined;
         this._origin = null;
-        this._size = [];
+        this._size = null;
     };
 
     /**
@@ -435,6 +435,18 @@ define(function(require, exports, module) {
         var origin = context.origin;
         var size = context.size;
 
+        if (this._classesDirty) {
+            _cleanupClasses.call(this, target);
+            var classList = this.getClassList();
+            for (var i = 0; i < classList.length; i++) target.classList.add(classList[i]);
+            this._classesDirty = false;
+        }
+
+        if (this._stylesDirty) {
+            _applyStyles.call(this, target);
+            this._stylesDirty = false;
+        }
+
         if (this._contentDirty) {
             this.deploy(target);
             this.eventHandler.emit('deploy');
@@ -448,26 +460,13 @@ define(function(require, exports, module) {
             if (size[1] === undefined && origSize[1]) size[1] = origSize[1];
         }
 
-        var widthTrue = size[0] === true;
-        var heightTrue = size[1] === true;
+        if (size[0] === true) size[0] = target.clientWidth;
+        if (size[1] === true) size[1] = target.clientHeight;
 
-        if (_xyNotEquals(this._size, size) && (!widthTrue || !heightTrue)) {
-            if (!widthTrue) {
-                this._size[0] = size[0];
-            }
-            if (!heightTrue) {
-                this._size[1] = size[1];
-            }
-            this._sizeDirty = true;
-        }
-
-        if (widthTrue && target.clientWidth !== this._size[0]) {
-            this._size[0] = target.clientWidth;
-            this._sizeDirty = true;
-        }
-
-        if (heightTrue && target.clientHeight !== this._size[1]) {
-            this._size[1] = target.clientHeight;
+        if (_xyNotEquals(this._size, size)) {
+            if (!this._size) this._size = [undefined, undefined];
+            this._size[0] = size[0];
+            this._size[1] = size[1];
             this._sizeDirty = true;
         }
 
@@ -496,18 +495,6 @@ define(function(require, exports, module) {
             _setMatrix(target, aaMatrix);
         }
 
-        if (!(this._classesDirty || this._stylesDirty || this._sizeDirty || this._contentDirty)) return;
-
-        if (this._classesDirty) {
-            _cleanupClasses.call(this, target);
-            var classList = this.getClassList();
-            for (var i = 0; i < classList.length; i++) target.classList.add(classList[i]);
-            this._classesDirty = false;
-        }
-        if (this._stylesDirty) {
-            _applyStyles.call(this, target);
-            this._stylesDirty = false;
-        }
         if (this._sizeDirty) {
             if (this._size) {
                 target.style.width = (this.size[0] !== true) ? this._size[0] + 'px' : '';
