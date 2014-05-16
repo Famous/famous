@@ -35,8 +35,8 @@ define(function(require, exports, module) {
         this._nodes = [];
 
         this._cachedDirection = null;
-        this._contextSizeCache = [0, 0];
-        this._cachedSizes = null;
+        this._cachedTotalLength = false;
+        this._cachedLengths = [];
         this._cachedTransforms = null;
 
         this._eventOutput = new EventHandler();
@@ -52,16 +52,16 @@ define(function(require, exports, module) {
         ratios : []
     };
 
-    function _reflow(ratios, size, direction) {
+    function _reflow(ratios, length, direction) {
         var currTransform;
         var translation = 0;
-        var flexLength = size[direction];
+        var flexLength = length;
         var ratioSum = 0;
         var ratio;
         var node;
         var i;
 
-        this._cachedSizes = [];
+        this._cachedLengths = [];
         this._cachedTransforms = [];
 
         for (i = 0; i < ratios.length; i++){
@@ -75,11 +75,10 @@ define(function(require, exports, module) {
         }
 
         for (i = 0; i < ratios.length; i++) {
-            var nodeSize = [size[0], size[1]];
             node = this._nodes[i];
             ratio = ratios[i];
 
-            nodeSize[direction] = (typeof ratio === 'number')
+            length = (typeof ratio === 'number')
                 ? flexLength * ratio / ratioSum
                 : node.getSize()[direction];
 
@@ -88,9 +87,9 @@ define(function(require, exports, module) {
                 : Transform.translate(0, translation, 0);
 
             this._cachedTransforms.push(currTransform);
-            this._cachedSizes.push(nodeSize);
+            this._cachedLengths.push(length);
 
-            translation += nodeSize[direction];
+            translation += length;
         }
     }
 
@@ -160,20 +159,24 @@ define(function(require, exports, module) {
 
         var ratios = this._ratios.get();
         var direction = this.options.direction;
+        var length = size[direction];
 
-        if (size[0] !== this._contextSizeCache[0] || size[1] !== this._contextSizeCache[1] || this._ratios.isActive() || direction !== this._cachedDirection) {
-            _reflow.call(this, ratios, size, direction);
+        if (length !== this._cachedTotalLength || this._ratios.isActive() || direction !== this._cachedDirection) {
+            _reflow.call(this, ratios, length, direction);
 
-            if (!this._initialReflow) this._initialReflow = true;
-            if (size !== this._cachedContextSize) this._contextSizeCache = [size[0], size[1]];
+            if (length !== this._cachedTotalLength) this._cachedTotalLength = length;
             if (this._cachedDirection !== direction) this._cachedDirection = direction;
         }
 
         var result = [];
         for (var i = 0; i < ratios.length; i++) {
+            var length = this._cachedLengths[i];
+            var size = [undefined, undefined];
+            size[direction] = length;
+
             result.push({
                 transform : this._cachedTransforms[i],
-                size: this._cachedSizes[i],
+                size: size,
                 target : this._nodes[i].render()
             });
         }
