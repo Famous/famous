@@ -21,7 +21,14 @@ define(function(require, exports, module) {
      *  @constructor
      *  @extends Constraint
      *  @uses Wall
-     *  @param options {Object}
+     *  @param {Options} [options] An object of configurable options.
+     *  @param {Array} [options.sides] An array of sides e.g., [Walls.LEFT, Walls.TOP]
+     *  @param {Array} [options.size] The size of the bounding box of the walls.
+     *  @param {Array} [options.origin] The center of the wall relative to the size.
+     *  @param {Array} [options.drift] Baumgarte stabilization parameter. Makes constraints "loosely" (0) or "tightly" (1) enforced. Range : [0, 1]
+     *  @param {Array} [options.slop] Amount of penetration in pixels to ignore before collision event triggers.
+     *  @param {Array} [options.restitution] The energy ratio lost in a collision (0 = stick, 1 = elastic) The energy ratio lost in a collision (0 = stick, 1 = elastic)
+     *  @param {Array} [options.onContact] How to handle collision against the wall.
      */
     function Walls(options) {
         this.options = Object.create(Walls.DEFAULT_OPTIONS);
@@ -62,76 +69,13 @@ define(function(require, exports, module) {
         THREE_DIMENSIONAL : [0, 1, 2, 3, 4, 5]
     };
 
-    /**
-     * @property Walls.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
     Walls.DEFAULT_OPTIONS = {
-        /**
-         * An array of sides e.g., [Walls.LEFT, Walls.TOP]
-         *
-         * @type Array
-         * @attribute sides
-         * @default [Walls.LEFT, Walls.RIGHT, Walls.TOP, Walls.BOTTOM];
-         */
         sides : Walls.SIDES.TWO_DIMENSIONAL,
-
-        /**
-         * The size of the bounding box of the walls
-         *
-         * @attribute size
-         * @type Array
-         * @default [window.innerWidth, window.innerHeight, 0]
-         */
         size : [window.innerWidth, window.innerHeight, 0],
-
-        /**
-         * The center of the wall relative to the size
-         *
-         * @attribute origin
-         * @type Array
-         * @default [.5, .5, .5]
-         */
         origin : [.5, .5, .5],
-
-        /**
-         * Baumgarte stabilization parameter.
-         *    Makes constraints "loosely" (0) or "tightly" (1) enforced
-         *    Range : [0, 1]
-         *
-         * @attribute drift
-         * @type Number
-         * @default 0.5
-         */
         drift : 0.5,
-
-        /**
-         * Amount of penetration in pixels to ignore before collision event triggers
-         *
-         * @attribute slop
-         * @type Number
-         * @default 0
-         */
         slop : 0,
-
-        /**
-         * The energy ratio lost in a collision (0 = stick, 1 = elastic)
-         *    Range : [0, 1]
-         *
-         * @attribute restitution
-         * @type Number
-         * @default 0.5
-         */
         restitution : 0.5,
-
-        /**
-         * How to handle collision against the wall
-         *
-         * @attribute onContact
-         * @type Number
-         */
         onContact : Walls.ON_CONTACT.REFLECT
     };
 

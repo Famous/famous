@@ -14,11 +14,14 @@ define(function(require, exports, module) {
     /**
      *  Allows for two circular bodies to collide and bounce off each other.
      *
-     *
      *  @class Collision
      *  @constructor
      *  @extends Constraint
-     *  @param options {Object}
+     *  @param {Options} [options] An object of configurable options.
+     *  @param {Number} [options.restitution] The energy ratio lost in a collision (0 = stick, 1 = elastic) Range : [0, 1]
+     *  @param {Number} [options.drift] Baumgarte stabilization parameter. Makes constraints "loosely" (0) or "tightly" (1) enforced. Range : [0, 1]
+     *  @param {Number} [options.slop] Amount of penetration in pixels to ignore before collision event triggers
+     *
      */
     function Collision(options) {
         this.options = Object.create(Collision.DEFAULT_OPTIONS);
@@ -37,42 +40,9 @@ define(function(require, exports, module) {
     Collision.prototype = Object.create(Constraint.prototype);
     Collision.prototype.constructor = Collision;
 
-    /**
-     * @property Collision.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
     Collision.DEFAULT_OPTIONS = {
-
-        /**
-         * The energy ratio lost in a collision (0 = stick, 1 = elastic)
-         *    Range : [0, 1]
-         *
-         * @attribute restitution
-         * @type Number
-         * @default 0.5
-         */
         restitution : 0.5,
-
-        /**
-         * Baumgarte stabilization parameter.
-         *    Makes constraints "loosely" (0) or "tightly" (1) enforced
-         *    Range : [0, 1]
-         *
-         * @attribute drift
-         * @type Number
-         * @default 0.5
-         */
         drift : 0.5,
-
-        /**
-         * Amount of penetration in pixels to ignore before collision event triggers
-         *
-         * @attribute slop
-         * @type Number
-         * @default 0
-         */
         slop : 0
     };
 
