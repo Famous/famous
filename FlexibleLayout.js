@@ -154,13 +154,14 @@ define(function(require, exports, module) {
      * @param {Context} context commit context
      */
     FlexibleLayout.prototype.commit = function commit(context) {
-        var size = context.size;
-        var transform = context.transform;
-        var origin = context.origin;
+        var parentSize = context.size;
+        var parentTransform = context.transform;
+        var parentOrigin = context.origin;
 
         var ratios = this._ratios.get();
         var direction = this.options.direction;
-        var length = size[direction];
+        var length = parentSize[direction];
+        var size;
 
         if (length !== this._cachedTotalLength || this._ratios.isActive() || direction !== this._cachedDirection) {
             _reflow.call(this, ratios, length, direction);
@@ -171,10 +172,9 @@ define(function(require, exports, module) {
 
         var result = [];
         for (var i = 0; i < ratios.length; i++) {
-            var length = this._cachedLengths[i];
-            var size = [undefined, undefined];
+            size = [undefined, undefined];
+            length = this._cachedLengths[i];
             size[direction] = length;
-
             result.push({
                 transform : this._cachedTransforms[i],
                 size: size,
@@ -182,12 +182,12 @@ define(function(require, exports, module) {
             });
         }
 
-        if (size && (origin[0] !== 0 && origin[1] !== 0))
-            transform = Transform.moveThen([-size[0]*origin[0], -size[1]*origin[1], 0], transform);
+        if (parentSize && (parentOrigin[0] !== 0 && parentOrigin[1] !== 0))
+            parentTransform = Transform.moveThen([-parentSize[0]*parentOrigin[0], -parentSize[1]*parentOrigin[1], 0], parentTransform);
 
         return {
-            transform: transform,
-            size: size,
+            transform: parentTransform,
+            size: parentSize,
             target: result
         };
     };
