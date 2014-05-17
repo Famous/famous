@@ -32,7 +32,14 @@ define(function(require, exports, module) {
      *  @class Wall
      *  @constructor
      *  @extends Constraint
-     *  @param options {Object}
+     *  @param {Options} [options] An object of configurable options.
+     *  @param {Number} [options.restitution] The energy ratio lost in a collision (0 = stick, 1 = elastic). Range : [0, 1]
+     *  @param {Number} [options.drift] Baumgarte stabilization parameter. Makes constraints "loosely" (0) or "tightly" (1) enforced. Range : [0, 1]
+     *  @param {Number} [options.slop] Amount of penetration in pixels to ignore before collision event triggers.
+     *  @param {Array} [options.normal] The normal direction to the wall.
+     *  @param {Number} [options.distance] The distance from the origin that the wall is placed.
+     *  @param {onContact} [options.onContact] How to handle collision against the wall.
+     *
      */
     function Wall(options) {
         this.options = Object.create(Wall.DEFAULT_OPTIONS);
@@ -69,68 +76,12 @@ define(function(require, exports, module) {
         SILENT : 1
     };
 
-    /**
-     * @property Wall.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
     Wall.DEFAULT_OPTIONS = {
-
-        /**
-         * The energy ratio lost in a collision (0 = stick, 1 = elastic)
-         *    Range : [0, 1]
-         *
-         * @attribute restitution
-         * @type Number
-         * @default 0.5
-         */
         restitution : 0.5,
-
-        /**
-         * Baumgarte stabilization parameter.
-         *    Makes constraints "loosely" (0) or "tightly" (1) enforced
-         *    Range : [0, 1]
-         *
-         * @attribute drift
-         * @type Number
-         * @default 0.5
-         */
         drift : 0.5,
-
-        /**
-         * Amount of penetration in pixels to ignore before collision event triggers
-         *
-         * @attribute slop
-         * @type Number
-         * @default 0
-         */
         slop : 0,
-
-        /**
-         * The normal direction to the wall
-         *
-         * @attribute normal
-         * @type Array
-         * @required
-         */
         normal : [1, 0, 0],
-
-        /**
-         * The distance from the origin that the wall is placed
-         *
-         * @attribute distance
-         * @type Number
-         * @required
-         */
         distance : 0,
-
-        /**
-         * How to handle collision against the wall
-         *
-         * @attribute onContact
-         * @type Number
-         */
         onContact : Wall.ON_CONTACT.REFLECT
     };
 
@@ -228,7 +179,7 @@ define(function(require, exports, module) {
 
             if (overlap <= 0) {
                 if (nv < 0) _onEnter.call(this, particle, overlap, dt);
-                else        _onExit.call(this, particle, overlap, dt);
+                else _onExit.call(this, particle, overlap, dt);
             }
         }
     };

@@ -19,7 +19,13 @@ define(function(require, exports, module) {
      *  @class Distance
      *  @constructor
      *  @extends Constraint
-     *  @param options {Object}
+     *  @param {Options} [options] An object of configurable options.
+     *  @param {Array} [options.anchor] The location of the anchor
+     *  @param {Number} [options.length] The amount of distance from the anchor the constraint should enforce
+     *  @param {Number} [options.minLength] The minimum distance before the constraint is activated. Use this property for a "rope" effect.
+     *  @param {Number} [options.period] The spring-like reaction when the constraint is broken.
+     *  @param {Number} [options.dampingRatio] The damping-like reaction when the constraint is broken.
+     *
      */
     function Distance(options) {
         this.options = Object.create(this.constructor.DEFAULT_OPTIONS);
@@ -37,56 +43,11 @@ define(function(require, exports, module) {
     Distance.prototype = Object.create(Constraint.prototype);
     Distance.prototype.constructor = Distance;
 
-    /**
-     * @property Distance.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
     Distance.DEFAULT_OPTIONS = {
-
-        /**
-         * The location of the anchor
-         *
-         * @attribute anchor
-         * @type Array
-         * @optional
-         */
         anchor : null,
-
-        /**
-         * The amount of distance from the anchor the constraint should enforce
-         *
-         * @attribute length
-         * @type Number
-         * @default 0
-         */
         length : 0,
-
-        /**
-         * The minimum distance before the constraint is activated
-         *    Use this property for a "rope" effect
-         *
-         * @attribute length
-         * @type Number
-         * @default 0
-         */
         minLength : 0,
-
-        /**
-         * The spring-like reaction when the constraint is broken
-         * @attribute period
-         * @type Number
-         * @default 0
-         */
         period : 0,
-
-        /**
-         * The damping-like reaction when the constraint is broken
-         * @attribute dampingRatio
-         * @type Number
-         * @default 0
-         */
         dampingRatio : 0
     };
 
@@ -175,7 +136,7 @@ define(function(require, exports, module) {
             if (Math.abs(dist) < minLength) return;
 
             if (source) diffV.set(v1.sub(v2));
-            else        diffV.set(v1);
+            else diffV.set(v1);
 
             var effMass = 1 / (w1 + w2);
             var gamma;
