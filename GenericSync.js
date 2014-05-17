@@ -9,107 +9,116 @@
 
 define(function(require, exports, module) {
     var EventHandler = require('famous/core/EventHandler');
-    var TouchSync = require('./TouchSync');
-    var ScrollSync = require('./ScrollSync');
-
-    var defaultClasses = [TouchSync, ScrollSync];
 
     /**
-     * Combines multiple types of event handling (e.g. touch, trackpad
-     *     scrolling) into one standardized interface for inclusion in
-     *     widgets. TouchSync and ScrollSync are enabled by default.
-     *     Emits 'start', 'update', and 'end' events as a union
-     *     of the input sync providers.
+     * Combines multiple types of sync classes (e.g. mouse, touch,
+     *  scrolling) into one standardized interface for inclusion in widgets.
+     *
+     *  Sync classes are first registered with a key, and then can be accessed
+     *  globally by key.
+     *
+     *  Emits 'start', 'update' and 'end' events as a union of the sync class
+     *  providers.
+     *
      * @class GenericSync
      * @constructor
-     * @param {function} legacyGetter position getter function object (Deprecated)
-     * @param {Object} [options] default options overrides, passed to all sync classes
-     * @param {Array.Object} [options.syncClasses] array of classes in inputs/ which
-     *   will feed input to GenericSync.
+     * @param syncs {Object|Array} object with fields {sync key : sync options}
+     *    or an array of registered sync keys
+     * @param [options] {Object|Array} options object to set on all syncs
      */
-    function GenericSync(legacyGetter, options) {
-        if (arguments.length === 2){
-            this._legacyPositionGetter = legacyGetter;
-        }
-        else {
-            this._legacyPositionGetter = null;
-            options = legacyGetter;
-        }
+    function GenericSync(syncs, options) {
+        this._eventInput = new EventHandler();
+        this._eventOutput = new EventHandler();
 
-        this.eventInput = new EventHandler();
-        this.eventOutput = new EventHandler();
+        EventHandler.setInputHandler(this, this._eventInput);
+        EventHandler.setOutputHandler(this, this._eventOutput);
 
-        EventHandler.setInputHandler(this, this.eventInput);
-        EventHandler.setOutputHandler(this, this.eventOutput);
-
-        this._handlers = undefined;
-
-        if (options) {
-            this.options = options;
-            if (!options.syncClasses) this.options.syncClasses = defaultClasses;
-            this.setOptions(options);
-        }
-        else this.options = {syncClasses : defaultClasses};
-
-        if (this._handlers) _updateHandlers.call(this);
+        this._syncs = {};
+        if (syncs) this.addSync(syncs);
+        if (options) this.setOptions(options);
     }
-
-    /**
-     * Add another sync type to the sources for this class
-     *
-     * @static
-     * @method register
-     *
-     * @param {Object} syncClass class to add to GenericSync's inputs.
-     */
-    GenericSync.register = function register(syncClass) {
-        if (defaultClasses.indexOf(syncClass) < 0) defaultClasses.push(syncClass);
-    };
 
     GenericSync.DIRECTION_X = 0;
     GenericSync.DIRECTION_Y = 1;
     GenericSync.DIRECTION_Z = 2;
 
-    function _updateHandlers() {
-        var SyncClass = null;
-        var i = 0;
-        if (this._handlers) {
-            for (i = 0; i < this._handlers.length; i++) {
-                this.eventInput.unpipe(this._handlers[i]);
-                this._handlers[i].unpipe(this.eventOutput);
-            }
-        }
-        this._handlers = [];
+    // Global registry of sync classes. Append only.
+    var registry = {};
 
-        for (i = 0; i < this.options.syncClasses.length; i++) {
-            SyncClass = this.options.syncClasses[i];
-            this._handlers[i] = new SyncClass(this._legacyPositionGetter, this._handlerOptions);
-            this.eventInput.pipe(this._handlers[i]);
-            this._handlers[i].pipe(this.eventOutput);
+    /**
+     * Register a global sync class with an identifying key
+     *
+     * @static
+     * @method register
+     *
+     * @param syncObject {Object} an object of {sync key : sync options} fields
+     */
+    GenericSync.register = function register(syncObject) {
+        for (var key in syncObject){
+            if (registry[key]){
+                if (registry[key] === syncObject[key]) return; // redundant registration
+                else throw new Error('this key is registered to a different sync class');
+            }
+            else registry[key] = syncObject[key];
         }
+    };
+
+    /**
+     * Helper to set options on all sync instances
+     *
+     * @method setOptions
+     * @param options {Object} options object
+     */
+    GenericSync.prototype.setOptions = function(options) {
+        for (var key in this._syncs){
+            this._syncs[key].setOptions(options);
+        }
+    };
+
+    /**
+     * Pipe events to a sync class
+     *
+     * @method pipeSync
+     * @param key {String} identifier for sync class
+     */
+    GenericSync.prototype.pipeSync = function pipeToSync(key) {
+        var sync = this._syncs[key];
+        this._eventInput.pipe(sync);
+        sync.pipe(this._eventOutput);
+    };
+
+    /**
+     * Unpipe events from a sync class
+     *
+     * @method unpipeSync
+     * @param key {String} identifier for sync class
+     */
+    GenericSync.prototype.unpipeSync = function unpipeFromSync(key) {
+        var sync = this._syncs[key];
+        this._eventInput.unpipe(sync);
+        sync.unpipe(this._eventOutput);
+    };
+
+    function _addSingleSync(key, options) {
+        if (!registry[key]) return;
+        this._syncs[key] = new (registry[key])(options);
+        this.pipeSync(key);
     }
 
     /**
-     * Set internal options, overriding any default options.
-     *   Note that these options will be passed to every class added
-     *   to 'syncClasses'
-     * @method setOptions
+     * Add a sync class to from the registered classes
      *
-     * @param {Object} [options] overrides of default options
-     * @param {Array.Object} [options.syncClasses] array of classes in inputs/ which
-     *   will feed input to GenericSync.
+     * @method addSync
+     * @param syncs {Object|Array.String} an array of registered sync keys
+     *    or an object with fields {sync key : sync options}
      */
-    GenericSync.prototype.setOptions = function setOptions(options) {
-        this._handlerOptions = options;
-        if (options.syncClasses) {
-            this.options.syncClasses = options.syncClasses;
-            _updateHandlers.call(this);
-        }
-        if (this._handlers) {
-            for (var i = 0; i < this._handlers.length; i++) {
-                this._handlers[i].setOptions(this._handlerOptions);
-            }
-        }
+    GenericSync.prototype.addSync = function addSync(syncs) {
+        if (syncs instanceof Array)
+            for (var i = 0; i < syncs.length; i++)
+                _addSingleSync.call(this, syncs[i]);
+        else if (syncs instanceof Object)
+            for (var key in syncs)
+                _addSingleSync.call(this, key, syncs[key]);
     };
 
     module.exports = GenericSync;
