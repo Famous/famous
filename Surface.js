@@ -497,8 +497,8 @@ define(function(require, exports, module) {
 
         if (this._sizeDirty) {
             if (this._size) {
-                target.style.width = (this.size[0] !== true) ? this._size[0] + 'px' : '';
-                target.style.height = (this.size[1] !== true) ? this._size[1] + 'px' : '';
+                target.style.width = (this.size && this.size[0] !== true) ? this._size[0] + 'px' : '';
+                target.style.height = (this.size && this.size[1] !== true) ? this._size[1] + 'px' : '';
             }
             this._sizeDirty = false;
         }
