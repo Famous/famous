@@ -434,12 +434,33 @@ define(function(require, exports, module) {
         var origin = context.origin;
         var size = context.size;
 
+        if (this._classesDirty) {
+            _cleanupClasses.call(this, target);
+            var classList = this.getClassList();
+            for (var i = 0; i < classList.length; i++) target.classList.add(classList[i]);
+            this._classesDirty = false;
+        }
+
+        if (this._stylesDirty) {
+            _applyStyles.call(this, target);
+            this._stylesDirty = false;
+        }
+
+        if (this._contentDirty) {
+            this.deploy(target);
+            this.eventHandler.emit('deploy');
+            this._contentDirty = false;
+        }
+
         if (this.size) {
             var origSize = size;
             size = [this.size[0], this.size[1]];
             if (size[0] === undefined && origSize[0]) size[0] = origSize[0];
             if (size[1] === undefined && origSize[1]) size[1] = origSize[1];
         }
+
+        if (size[0] === true) size[0] = target.clientWidth;
+        if (size[1] === true) size[1] = target.clientHeight;
 
         if (_xyNotEquals(this._size, size)) {
             if (!this._size) this._size = [0, 0];
@@ -474,29 +495,12 @@ define(function(require, exports, module) {
             _setMatrix(target, aaMatrix);
         }
 
-        if (!(this._classesDirty || this._stylesDirty || this._sizeDirty || this._contentDirty)) return;
-
-        if (this._classesDirty) {
-            _cleanupClasses.call(this, target);
-            var classList = this.getClassList();
-            for (var i = 0; i < classList.length; i++) target.classList.add(classList[i]);
-            this._classesDirty = false;
-        }
-        if (this._stylesDirty) {
-            _applyStyles.call(this, target);
-            this._stylesDirty = false;
-        }
         if (this._sizeDirty) {
             if (this._size) {
-                target.style.width = (this._size[0] !== true) ? this._size[0] + 'px' : '';
-                target.style.height = (this._size[1] !== true) ? this._size[1] + 'px' : '';
+                target.style.width = (this.size[0] !== true) ? this._size[0] + 'px' : '';
+                target.style.height = (this.size[1] !== true) ? this._size[1] + 'px' : '';
             }
             this._sizeDirty = false;
-        }
-        if (this._contentDirty) {
-            this.deploy(target);
-            this.eventHandler.emit('deploy');
-            this._contentDirty = false;
         }
     };
 
