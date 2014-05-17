@@ -8,19 +8,21 @@
  */
 
 define(function(require, exports, module) {
-    var Utility = require('famous/utilities/Utility');
-
     var PhysicsEngine = require('famous/physics/PhysicsEngine');
     var Particle = require('famous/physics/bodies/Particle');
     var Drag = require('famous/physics/forces/Drag');
     var Spring = require('famous/physics/forces/Spring');
 
-    var GenericSync = require('famous/inputs/GenericSync');
     var EventHandler = require('famous/core/EventHandler');
     var OptionsManager = require('famous/core/OptionsManager');
     var ViewSequence = require('famous/core/ViewSequence');
-
     var Scroller = require('famous/views/Scroller');
+    var Utility = require('famous/utilities/Utility');
+
+    var GenericSync = require('famous/inputs/GenericSync');
+    var ScrollSync = require('famous/inputs/ScrollSync');
+    var TouchSync = require('famous/inputs/TouchSync');
+    GenericSync.register({scroll : ScrollSync, touch : TouchSync});
 
     /**
      * Scrollview will lay out a collection of renderables sequentially in the specified direction, and will
@@ -70,7 +72,7 @@ define(function(require, exports, module) {
         this.drag = new Drag({forceFunction: Drag.FORCE_FUNCTIONS.QUADRATIC});
         this.friction = new Drag({forceFunction: Drag.FORCE_FUNCTIONS.LINEAR});
 
-        this.sync = new GenericSync({direction : this.options.direction});
+        this.sync = new GenericSync(['scroll', 'touch'], {direction : this.options.direction});
 
         this._eventInput = new EventHandler();
         this._eventOutput = new EventHandler();
