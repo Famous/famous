@@ -1,6 +1,6 @@
 {
   "name": "famous-surfaces",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Famo.us render targets",
   "scripts": {
     "test": "grunt test"
