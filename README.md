@@ -1,8 +1,7 @@
 Famo.us
 =======
 
-
-Famo.us provides a JavaScript framework designed to build rich, interactive web applications.  Famo.us takes an opinionated approach to web development, maintaining a tight control of rendering to achieve performance.  The framework also maintains strict modularity for flexibility. Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that was once reserved only for native development.
+Famo.us is a JavaScript framework designed to build rich, interactive web applications.  Famo.us takes an opinionated approach to web development, maintaining a tight control of rendering to achieve performance.  Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that was once reserved only for native development.
 
 Famo.us is in public beta, and currently optimized to work for mobile devices on iOS 6+ and Android 4.3+.  Broader support is coming.
 
@@ -11,11 +10,14 @@ If you have any problems at all, we recommend you join our [IRC channel (#famous
 > "The only constant is change." — Heraclitus
 
 ## Installation
-Famo.us can be installed in one of two ways:
+
+### Starter Kit
+
+To get up and running quickly, download our [starter kit][starter-kit]. We've loaded it with examples, demos, reference documentation, and higher-level guides; everything you need to get started.
 
 ### Grunt Toolbelt
 
-If you would like to get started right away you can install our [yeoman generator][github-generator] via npm.
+If you would like to scaffold an app with Famo.us from the command line, install our [yeoman generator][github-generator] via npm.
 
     npm install -g yo grunt-cli bower generator-famous
     mkdir newProject
@@ -27,7 +29,7 @@ Preparing your project for distribution is then as simple as:
 
     grunt
 
-### Git Submodules (for contributors)
+## Contributing
 
 Cloning this repository directly is primarily for those wishing to contribute to our codebase. Check out our [contributing instructions][contributing] to get involved. Since we use git submodules, all subfolders will be unpopulated unless you initialize and update your submodules. To clone from the command line, run
 
@@ -77,6 +79,7 @@ Copyright (c) 2014 Famous Industries, Inc.
 
 
 [famous-site]: http://famo.us
+[starter-kit]: http://code.famo.us/famous-starter-kit/famous-starter-kit.zip
 [IRC]: http://webchat.freenode.net/?channels=famous
 [mpl]: http://www.mozilla.org/MPL/2.0/
 [mpl-faq]: http://www.mozilla.org/MPL/2.0/FAQ.html
