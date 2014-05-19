@@ -8,8 +8,8 @@ Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us,
 | **DOWNLOAD** | [Famo.us Starter Kit][starter-kit] |
 | **LEARN** | [Famo.us University][famous-university] |
 | **DOCS** | [Documentation][famous-docs] |
-| **HELP** | [IRC Channel][famous-university] |
-| **DEMOS** | [Mobile Interactive Demos][famous-university] (*built by the community*)|
+| **HELP** | [IRC Channel][IRC] |
+| **DEMOS** | [Mobile Interactive Demos][famous-demos] (*built by the community*)|
 | **ANGULAR INTEGRATION** | [ng.us][famous-angular] |
 
 ## About
