@@ -17,7 +17,7 @@ Famo.us can be installed in one of three ways:
 
 We’ve packaged Famo.us together with documentation, tutorials, examples, guides, FAQs, and interface demos from members of our community into a simple .ZIP file. Just download, unzip, and open any index.html file to explore and start learning.
 
-<a href="http://code.famo.us/famous-starter-kit/famous-starter-kit.zip"><img src="https://raw.githubusercontent.com/arkadyp/assets/master/download-button.png" alt="Download"></a>
+<a href="http://code.famo.us/famous-starter-kit/famous-starter-kit.zip"><img src="https://raw.githubusercontent.com/arkadyp/assets/master/download_button.png" alt="Download"></a>
 
 ### Grunt Toolbelt
 
