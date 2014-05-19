@@ -3,10 +3,11 @@ Famo.us
 
 Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us, we are now in open beta.
 
-- **DOWNLOAD** : [Starter Kit][starter-kit]
+- **DOWNLOAD** : [Famo.us Starter Kit][starter-kit]
 - **LEARN** : [Famo.us University][famous-university]
 - **DOCS** : [Documentation][famous-docs]
 - **HELP** : [IRC Channel][IRC]
+- **DEMOS** : [Demos][famous-demos]
 - **ANGULAR INTEGRATION** : [ng.us][famous-angular]
 
 ## About
@@ -19,7 +20,7 @@ Famo.us is a free and open source JavaScript platform for building mobile apps a
 
 To get up and running quickly, download our [starter kit][starter-kit]. We've loaded it with examples, demos, reference documentation, and higher-level guides; everything you need to get started.
 
-### Grunt Toolbelt
+### Advanced Installation
 
 If you would like to scaffold an app with Famo.us from the command line, install our [yeoman generator][github-generator] via npm.
 
