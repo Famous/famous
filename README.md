@@ -1,21 +1,30 @@
 Famo.us
 =======
 
+Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us, we are now in open beta.
 
-Famo.us provides a JavaScript framework designed to build rich, interactive web applications.  Famo.us takes an opinionated approach to web development, maintaining a tight control of rendering to achieve performance.  The framework also maintains strict modularity for flexibility. Paired with server-side technology designed to match Famo.us on the front end, you can finally create high quality applications that was once reserved only for native development.
+| ITEM | LINK |
+|------------|---------|
+| **DOWNLOAD** | [Famo.us Starter Kit][starter-kit] |
+| **LEARN** | [Famo.us University][famous-university] |
+| **DOCS** | [Documentation][famous-docs] |
+| **HELP** | [IRC Channel][IRC] |
+| **DEMOS** | [Mobile Interactive Demos][famous-demos] (*built by the community*)|
+| **ANGULAR INTEGRATION** | [ng.us][famous-angular] |
 
-Famo.us is in public beta, and currently optimized to work for mobile devices on iOS 6+ and Android 4.3+.  Broader support is coming.
+## About
 
-If you have any problems at all, we recommend you join our [IRC channel (#famous on Freenode)][IRC] for live help.
-
-> "The only constant is change." — Heraclitus
+Famo.us is a free and open source JavaScript platform for building mobile apps and desktop experiences. What makes Famo.us unique is its JavaScript rendering engine and 3D physics engine that gives developers the power and tools to build native quality apps and animations using pure JavaScript. Famo.us runs on iOS, Android, Kindle and Firefox devices and integrates with [Angular][famous-angular], Backbone, Meteor and Facebook React. [Famo.us University][famous-university] is a free live coding classroom that teaches all levels of developers how to utilize famo.us to build beautiful experiences on every screen.
 
 ## Installation
-Famo.us can be installed in one of two ways:
 
-### Grunt Toolbelt
+### Starter Kit
 
-If you would like to get started right away you can install our [yeoman generator][github-generator] via npm.
+To get up and running quickly, download our [starter kit][starter-kit]. We've loaded it with examples, demos, reference documentation, and higher-level guides; everything you need to get started.
+
+### Advanced Installation
+
+If you would like to scaffold an app with Famo.us from the command line, install our [yeoman generator][github-generator] via npm.
 
     npm install -g yo grunt-cli bower generator-famous
     mkdir newProject
@@ -27,7 +36,7 @@ Preparing your project for distribution is then as simple as:
 
     grunt
 
-### Git Submodules (for contributors)
+## Contributing
 
 Cloning this repository directly is primarily for those wishing to contribute to our codebase. Check out our [contributing instructions][contributing] to get involved. Since we use git submodules, all subfolders will be unpopulated unless you initialize and update your submodules. To clone from the command line, run
 
@@ -77,6 +86,12 @@ Copyright (c) 2014 Famous Industries, Inc.
 
 
 [famous-site]: http://famo.us
+[starter-kit]: http://code.famo.us/famous-starter-kit/famous-starter-kit.zip
+[famous-university]: https://famo.us/university
+[famous-help]: https://famo.us/help
+[famous-docs]: http://famo.us/docs
+[famous-demos]: http://famo.us/demos
+[famous-angular]: http://famo.us/integrations/angular/
 [IRC]: http://webchat.freenode.net/?channels=famous
 [mpl]: http://www.mozilla.org/MPL/2.0/
 [mpl-faq]: http://www.mozilla.org/MPL/2.0/FAQ.html
