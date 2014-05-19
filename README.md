@@ -11,7 +11,13 @@ If you have any problems at all, we recommend you join our [IRC channel (#famous
 > "The only constant is change." — Heraclitus
 
 ## Installation
-Famo.us can be installed in one of two ways:
+Famo.us can be installed in one of three ways:
+
+### .ZIP starter kit
+
+We’ve packaged Famo.us together with documentation, tutorials, examples, guides, FAQs, and interface demos from members of our community into a simple .ZIP file. Just download, unzip, and open any index.html file to explore and start learning.
+
+<a href="http://code.famo.us/famous-starter-kit/famous-starter-kit.zip"><img src="https://raw.githubusercontent.com/arkadyp/assets/master/download-button.png" alt="Download"></a>
 
 ### Grunt Toolbelt
 
