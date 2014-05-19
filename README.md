@@ -3,7 +3,7 @@ Famo.us
 
 Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us, we are now in open beta.
 
-|  |  |
+| Item | Link |
 |------------|---------|
 | **DOWNLOAD** | [Famo.us Starter Kit][starter-kit] |
 | **LEARN** | [Famo.us University][famous-university] |
