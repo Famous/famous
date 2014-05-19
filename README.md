@@ -3,11 +3,11 @@ Famo.us
 
 Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us, we are now in open beta.
 
-- **DOWNLOAD** : [Famo.us Starter Kit][starter-kit]
+**DOWNLOAD** : [Famo.us Starter Kit][starter-kit]
 - **LEARN** : [Famo.us University][famous-university]
 - **DOCS** : [Documentation][famous-docs]
 - **HELP** : [IRC Channel][IRC]
-- **DEMOS** : [Demos][famous-demos]
+- **DEMOS** : [Mobile Interactive Demos][famous-demos] [built by the community]
 - **ANGULAR INTEGRATION** : [ng.us][famous-angular]
 
 ## About
