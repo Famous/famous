@@ -39,6 +39,7 @@ define(function(require, exports, module) {
         this._cachedTotalLength = false;
         this._cachedLengths = [];
         this._cachedTransforms = null;
+        this._ratiosDirty = false;
 
         this._eventOutput = new EventHandler();
         EventHandler.setOutputHandler(this, this._eventOutput);
@@ -143,7 +144,19 @@ define(function(require, exports, module) {
         var currRatios = this._ratios;
         if (currRatios.get().length === 0) transition = undefined;
         if (currRatios.isActive()) currRatios.halt();
-        currRatios.set(ratios, transition, callback);
+        var cb;
+        if (callback) {
+            cb = function() {
+                this._ratiosDirty = false; callback();
+            }.bind(this);
+        }
+        else {
+            cb = function() {
+                this._ratiosDirty = false;
+            }.bind(this);
+        }
+        currRatios.set(ratios, transition, cb);
+        this._ratiosDirty = true;
     };
 
     /**
@@ -165,11 +178,12 @@ define(function(require, exports, module) {
         var length = parentSize[direction];
         var size;
 
-        if (length !== this._cachedTotalLength || this._ratios.isActive() || direction !== this._cachedDirection) {
+        if (length !== this._cachedTotalLength || this._ratiosDirty || direction !== this._cachedDirection) {
             _reflow.call(this, ratios, length, direction);
 
             if (length !== this._cachedTotalLength) this._cachedTotalLength = length;
             if (direction !== this._cachedDirection) this._cachedDirection = direction;
+            this._ratiosDirty = false;
         }
 
         var result = [];
