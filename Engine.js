@@ -116,11 +116,6 @@ define(function(require, exports, module) {
     window.addEventListener('resize', handleResize, false);
     handleResize();
 
-    // prevent scrolling via browser
-    window.addEventListener('touchmove', function(event) {
-        event.preventDefault();
-    }, true);
-
     /**
      * Add event handler object to set of downstream handlers.
      *
