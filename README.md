@@ -44,7 +44,7 @@ Cloning this repository directly is primarily for those wishing to contribute to
     cd famous
     git submodule update --init
     
-Note: this only provides the Famo.us folder and all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the famous.css file that is included in famous/core. Require.js is also a hard dependency for using Famo.us.    
+Note: this only provides the Famo.us folder and all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the `famous.css` file that is included in `famous/core`. Require.js is currently a hard dependency for using Famo.us.
 
 ## Famous.git Package
 
@@ -66,21 +66,20 @@ This package contains the submodules necessary to be productive in Famo.us.  The
   
 ## Documentation
 
-- High-level documentation is included publicly at the [guides section on our website][site-guides].
-- Rendered versions of the JSDoc comments in the source are browsable at the [docs section of our website][site-docs].
-- Small examples of using each component are available at [examples repo][github-examples]
+- High-level documentation: [guides][site-guides].
+- Rendered versions of the source code reference documentation: [docs][site-docs].
+- Small examples of each Famo.us component: [examples repository][github-examples].
 
 ## Community
 
 - If you would like to report a bug, please check the [issues][contributing-issues] section in our [contributing instructions][contributing].
-- Ask a question on our [forum][forum] (requires login).
-- Join us in our IRC channel #famous at irc.freenode.net. Freenode maintains this [getting started guide][irc-getting-started] for those new to irc. If you're new to discussing open-source software development on freenode and you want to ask a question, we recommend that you first read esr's [How to Ask Questions the Smart Way][esr-questions].
-- For contributors, read more instructions in the [CONTRIBUTING.md][contributing-issues] document in this repo.
+- Join us in our IRC channel #famous at irc.freenode.net. Freenode maintains this [getting started guide][irc-getting-started] for those new to IRC.
+- For contributors, read more instructions in [CONTRIBUTING.md][contributing-issues].
 
 ## Licensing information
 - Famo.us' client-side development package is licensed under the Mozilla public license version 2.0.  More information can be found at [Mozilla][mpl].
 - Mozilla also maintains an [MPL-2.0 FAQ][mpl-faq] that should answer most questions you may have about the license.
-- Contact us at license@famo.us for further inquiries.
+- Contact license@famo.us for further inquiries.
 
 Copyright (c) 2014 Famous Industries, Inc.
 
@@ -95,7 +94,6 @@ Copyright (c) 2014 Famous Industries, Inc.
 [IRC]: http://webchat.freenode.net/?channels=famous
 [mpl]: http://www.mozilla.org/MPL/2.0/
 [mpl-faq]: http://www.mozilla.org/MPL/2.0/FAQ.html
-[forum]: http://forum.famo.us
 [site-install]: http://famo.us/install
 [github-generator]: http://github.com/Famous/generator-famous.git
 [site-guides]: http://famo.us/guides
