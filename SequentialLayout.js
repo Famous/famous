@@ -45,6 +45,7 @@ define(function(require, exports, module) {
 
     SequentialLayout.DEFAULT_OPTIONS = {
         direction: Utility.Direction.Y,
+        itemSpacing: 0,
         defaultItemSize: [50, 50]
     };
 
@@ -134,7 +135,7 @@ define(function(require, exports, module) {
             var output = this._outputFunction.call(this, item, length, i);
             result[i] = output;
 
-            if (itemSize[lengthDim] && (itemSize[lengthDim] !== true)) length += itemSize[lengthDim];
+            if (itemSize[lengthDim] && (itemSize[lengthDim] !== true)) length += itemSize[lengthDim] + this.options.itemSpacing;
             currentNode = currentNode.getNext();
             i++;
         }
@@ -143,7 +144,7 @@ define(function(require, exports, module) {
         if (!girth) girth = undefined;
 
         if (!this._size) this._size = [0, 0];
-        this._size[lengthDim] = length;
+        this._size[lengthDim] = length - this.options.itemSpacing; // account for last itemSpacing
         this._size[girthDim] = girth;
 
         this._outputCache.size = this.getSize();
