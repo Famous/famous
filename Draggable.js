@@ -151,7 +151,12 @@ define(function(require, exports, module) {
                 if (proj.indexOf(val) !== -1) currentOptions.projection |= _direction[val];
             });
         }
-        if (options.scale  !== undefined) currentOptions.scale  = options.scale;
+        if (options.scale  !== undefined) {
+            currentOptions.scale  = options.scale;
+            this.sync.setOptions({
+                scale: options.scale
+            });
+        }
         if (options.xRange !== undefined) currentOptions.xRange = options.xRange;
         if (options.yRange !== undefined) currentOptions.yRange = options.yRange;
         if (options.snapX  !== undefined) currentOptions.snapX  = options.snapX;
