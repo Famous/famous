@@ -592,7 +592,6 @@ define(function(require, exports, module) {
      */
     Transform.notEquals = function notEquals(a, b) {
         if (a === b) return false;
-        if (!(a && b)) return true;
 
         // shortci
         return !(a && b) ||
