@@ -275,7 +275,7 @@ define(function(require, exports, module) {
         if (Transform.notEquals(this._matrix, matrix)) {
             if (!matrix) matrix = Transform.identity;
             this._matrix = matrix;
-            var aaMatrix = Transform.moveThen([-this.size[0]*context.origin[0], -this.size[1]*context.origin[1], 0], matrix);
+            var aaMatrix = this.size ? Transform.moveThen([-this.size[0]*context.origin[0], -this.size[1]*context.origin[1], 0], matrix) : matrix;
             _setMatrix(target, aaMatrix);
         }
     };
