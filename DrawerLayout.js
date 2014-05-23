@@ -13,13 +13,13 @@ define(function(require, exports, module) {
     var OptionsManager = require('famous/core/OptionsManager');
     var Transitionable = require('famous/transitions/Transitionable');
     var EventHandler = require('famous/core/EventHandler');
-    
+
     var DrawerLayout = function DrawerLayout(options) {
         this.options = Object.create(DrawerLayout.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 
-        this._position = new Transitionable(0);    
+        this._position = new Transitionable(0);
         this._direction = _getDirectionFromSide(this.options.side);
         this._orientation = _getOrientationFromSide(this.options.side);
         this._isOpen = false;
@@ -48,7 +48,7 @@ define(function(require, exports, module) {
 
     DrawerLayout.DEFAULT_OPTIONS = {
         side: DrawerLayout.SIDES.LEFT,
-        defaultDrawerLength : 0,        
+        defaultDrawerLength : 0,
         velocityThreshold : 0,
         positionThreshold : 0,
         transition : true
@@ -59,35 +59,35 @@ define(function(require, exports, module) {
         return (side === SIDES.LEFT || side === SIDES.RIGHT) ? DIRECTION_X : DIRECTION_Y;
     }
 
-    function _getOrientationFromSide(side){
+    function _getOrientationFromSide(side) {
         var SIDES = DrawerLayout.SIDES;
         return (side === SIDES.LEFT || side === SIDES.TOP) ? 1 : -1;
     }
 
     function _resolveNodeSize(node) {
-        var options = this.options;        
+        var options = this.options;
         var size;
         if (options.defaultDrawerLength) size = options.defaultDrawerLength;
         else {
             var nodeSize = node.getSize();
-            size = nodeSize ? nodeSize[this._direction] : options.defaultDrawerLength;    
+            size = nodeSize ? nodeSize[this._direction] : options.defaultDrawerLength;
         }
-        return this._orientation * size;        
+        return this._orientation * size;
     }
 
-    function _handleUpdate(data){
-        var newPosition = this.getPosition() + data.delta;        
-        
+    function _handleUpdate(data) {
+        var newPosition = this.getPosition() + data.delta;
+
         var MIN_LENGTH;
         var MAX_LENGTH;
         if (this._orientation === 1){
             MIN_LENGTH = 0;
-            MAX_LENGTH = _resolveNodeSize.call(this, this.drawer);    
+            MAX_LENGTH = _resolveNodeSize.call(this, this.drawer);
         }
         else {
             MIN_LENGTH = _resolveNodeSize.call(this, this.drawer);
-            MAX_LENGTH = 0; 
-        }            
+            MAX_LENGTH = 0;
+        }
 
         if (newPosition > MAX_LENGTH) newPosition = MAX_LENGTH;
         else if (newPosition < MIN_LENGTH) newPosition = MIN_LENGTH;
@@ -95,10 +95,10 @@ define(function(require, exports, module) {
         this.setPosition(newPosition);
     }
 
-    function _handleEnd(data){
+    function _handleEnd(data) {
         var velocity = data.velocity;
         var position = this._orientation * this.getPosition();
-        var options = this.options;  
+        var options = this.options;
 
         var MAX_LENGTH = this._orientation * _resolveNodeSize.call(this, this.drawer);
         var positionThreshold = options.positionThreshold || MAX_LENGTH / 2;
@@ -127,7 +127,7 @@ define(function(require, exports, module) {
         }
     };
 
-    DrawerLayout.prototype.open = function(transition, callback){
+    DrawerLayout.prototype.open = function open(transition, callback) {
         if (transition instanceof Function) callback = transition;
         if (transition === undefined) transition = this.options.transition;
         var MAX_LENGTH = _resolveNodeSize.call(this, this.drawer);
@@ -138,7 +138,7 @@ define(function(require, exports, module) {
         }
     };
 
-    DrawerLayout.prototype.close = function(transition, callback){
+    DrawerLayout.prototype.close = function close(transition, callback) {
         if (transition instanceof Function) callback = transition;
         if (transition === undefined) transition = this.options.transition;
         this.setPosition(0, transition, callback);
@@ -148,21 +148,21 @@ define(function(require, exports, module) {
         }
     };
 
-    DrawerLayout.prototype.setPosition = function(position, transition, callback){
+    DrawerLayout.prototype.setPosition = function setPosition(position, transition, callback) {
         if (this._position.isActive()) this._position.halt();
         this._position.set(position, transition, callback);
     };
 
-    DrawerLayout.prototype.getPosition = function(){
+    DrawerLayout.prototype.getPosition = function getPosition() {
         return this._position.get();
     };
 
-    DrawerLayout.prototype.toggle = function(transition){
+    DrawerLayout.prototype.toggle = function toggle(transition) {
         if (this._isOpen) this.close(transition)
         else this.open(transition);
     };
 
-    DrawerLayout.prototype.reset = function(transition){
+    DrawerLayout.prototype.reset = function reset(transition) {
         if (this._isOpen) this.open(transition)
         else this.close(transition);
     };
