@@ -41,9 +41,9 @@ define(function(require, exports, module) {
      *
      * @method multiply4x4
      * @static
-     * @param {Transform} a left matrix
-     * @param {Transform} b right matrix
-     * @return {Transform} the resulting matrix
+     * @param {Transform} a left Transform
+     * @param {Transform} b right Transform
+     * @return {Transform}
      */
     Transform.multiply4x4 = function multiply4x4(a, b) {
         return [
@@ -72,9 +72,9 @@ define(function(require, exports, module) {
      *
      * @method multiply
      * @static
-     * @param {Transform} a left matrix
-     * @param {Transform} b right matrix
-     * @return {Transform} the resulting matrix
+     * @param {Transform} a left Transform
+     * @param {Transform} b right Transform
+     * @return {Transform}
      */
     Transform.multiply = function multiply(a, b) {
         return [
@@ -101,13 +101,13 @@ define(function(require, exports, module) {
      * Return a Transform translated by additional amounts in each
      *    dimension. This is equivalent to the result of
      *
-     *    Matrix.multiply(Matrix.translate(t[0], t[1], t[2]), m).
+     *    Transform.multiply(Matrix.translate(t[0], t[1], t[2]), m).
      *
      * @method thenMove
      * @static
-     * @param {Transform} m a matrix
+     * @param {Transform} m a Transform
      * @param {Array.Number} t floats delta vector of length 2 or 3
-     * @return {Transform} the resulting translated matrix
+     * @return {Transform}
      */
     Transform.thenMove = function thenMove(m, t) {
         if (!t[2]) t[2] = 0;
@@ -144,7 +144,7 @@ define(function(require, exports, module) {
      * @param {Number} x x translation
      * @param {Number} y y translation
      * @param {Number} z z translation
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.translate = function translate(x, y, z) {
         if (z === undefined) z = 0;
@@ -162,7 +162,7 @@ define(function(require, exports, module) {
      * @param {Transform} m a matrix
      * @param {Array.Number} s delta vector (array of floats &&
      *    array.length == 3)
-     * @return {Transform} the resulting translated matrix
+     * @return {Transform}
      */
     Transform.thenScale = function thenScale(m, s) {
         return [
@@ -182,7 +182,7 @@ define(function(require, exports, module) {
      * @param {Number} x x scale factor
      * @param {Number} y y scale factor
      * @param {Number} z z scale factor
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.scale = function scale(x, y, z) {
         if (z === undefined) z = 1;
@@ -196,7 +196,7 @@ define(function(require, exports, module) {
      * @method rotateX
      * @static
      * @param {Number} theta radians
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.rotateX = function rotateX(theta) {
         var cosTheta = Math.cos(theta);
@@ -211,7 +211,7 @@ define(function(require, exports, module) {
      * @method rotateY
      * @static
      * @param {Number} theta radians
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.rotateY = function rotateY(theta) {
         var cosTheta = Math.cos(theta);
@@ -226,7 +226,7 @@ define(function(require, exports, module) {
      * @method rotateZ
      * @static
      * @param {Number} theta radians
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.rotateZ = function rotateZ(theta) {
         var cosTheta = Math.cos(theta);
@@ -244,7 +244,7 @@ define(function(require, exports, module) {
      * @param {Number} phi radians to rotate about the positive x axis
      * @param {Number} theta radians to rotate about the positive y axis
      * @param {Number} psi radians to rotate about the positive z axis
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.rotate = function rotate(phi, theta, psi) {
         var cosPhi = Math.cos(phi);
@@ -278,7 +278,7 @@ define(function(require, exports, module) {
      * @static
      * @param {Array.Number} v unit vector representing the axis to rotate about
      * @param {Number} theta radians to rotate clockwise about the axis
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.rotateAxis = function rotateAxis(v, theta) {
         var sinTheta = Math.sin(theta);
@@ -312,7 +312,7 @@ define(function(require, exports, module) {
      * @static
      * @param {Array.Number} v origin point to apply matrix
      * @param {Transform} m matrix to apply
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.aboutOrigin = function aboutOrigin(v, m) {
         var t0 = v[0] - (v[0] * m[0] + v[1] * m[4] + v[2] * m[8]);
@@ -329,10 +329,34 @@ define(function(require, exports, module) {
      * @param {Number} phi scale factor skew in the x axis
      * @param {Number} theta scale factor skew in the y axis
      * @param {Number} psi scale factor skew in the z axis
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.skew = function skew(phi, theta, psi) {
         return [1, 0, 0, 0, Math.tan(psi), 1, 0, 0, Math.tan(theta), Math.tan(phi), 1, 0, 0, 0, 0, 1];
+    };
+
+    /**
+     * Return a Transform representation of a skew in the x-direction
+     *
+     * @method skewX
+     * @static
+     * @param {Number} angle the angle between the top and left sides
+     * @return {Transform}
+     */
+    Transform.skewX = function skewX (angle) {
+        return [1, 0, 0, 0, Math.tan(-angle), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    };
+
+    /**
+     * Return a Transform representation of a skew in the y-direction
+     *
+     * @method skewY
+     * @static
+     * @param {Number} angle the angle between the top and right sides
+     * @return {Transform}
+     */
+    Transform.skewY = function skewY (angle) {
+        return [1, Math.tan(-angle), 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
     /**
@@ -341,7 +365,7 @@ define(function(require, exports, module) {
      * @method perspective
      * @static
      * @param {Number} focusZ z position of focal point
-     * @return {Transform} the resulting matrix
+     * @return {Transform}
      */
     Transform.perspective = function perspective(focusZ) {
         return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -1 / focusZ, 0, 0, 0, 1];
@@ -352,7 +376,7 @@ define(function(require, exports, module) {
      *
      * @method getTranslate
      * @static
-     * @param {Transform} m matrix
+     * @param {Transform} m Transform
      * @return {Array.Number} the translation vector [t_x, t_y, t_z]
      */
     Transform.getTranslate = function getTranslate(m) {
@@ -360,14 +384,14 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Return inverse affine matrix for given Transform.
+     * Return inverse affine transform for given Transform.
      *   Note: This assumes m[3] = m[7] = m[11] = 0, and m[15] = 1.
      *   Will provide incorrect results if not invertible or preconditions not met.
      *
      * @method inverse
      * @static
-     * @param {Transform} m matrix
-     * @return {Transform} the resulting inverted matrix
+     * @param {Transform} m Transform
+     * @return {Transform}
      */
     Transform.inverse = function inverse(m) {
         // only need to consider 3x3 section for affine
@@ -422,7 +446,7 @@ define(function(require, exports, module) {
      *
      * @method interpret
      * @static
-     * @param {Transform} M tranform matrix
+     * @param {Transform} M transform matrix
      * @return {Object} matrix spec object with component matrices .translate,
      *    .rotate, .scale, .skew
      */
@@ -526,7 +550,7 @@ define(function(require, exports, module) {
      * @param {Transform} M1 f(M1,M2,0) = M1
      * @param {Transform} M2 f(M1,M2,1) = M2
      * @param {Number} t
-     * @return {Transform} resulting matrix
+     * @return {Transform}
      */
     Transform.average = function average(M1, M2, t) {
         t = (t === undefined) ? 0.5 : t;
@@ -557,7 +581,7 @@ define(function(require, exports, module) {
      * @static
      * @param {matrixSpec} spec object with component matrices .translate,
      *    .rotate, .scale, .skew
-     * @return {Transform} composed martix
+     * @return {Transform} composed transform
      */
     Transform.build = function build(spec) {
         var scaleMatrix = Transform.scale(spec.scale[0], spec.scale[1], spec.scale[2]);
