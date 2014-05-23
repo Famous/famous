@@ -344,7 +344,7 @@ define(function(require, exports, module) {
      * @return {Transform}
      */
     Transform.skewX = function skewX(angle) {
-        return [1, 0, 0, 0, Math.tan(-angle), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        return [1, 0, 0, 0, Math.tan(angle), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
     /**
@@ -356,7 +356,7 @@ define(function(require, exports, module) {
      * @return {Transform}
      */
     Transform.skewY = function skewY(angle) {
-        return [1, Math.tan(-angle), 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        return [1, Math.tan(angle), 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
     /**
