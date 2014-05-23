@@ -14,13 +14,13 @@ Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us,
 
 ## About
 
-Famo.us is a free and open source JavaScript platform for building mobile apps and desktop experiences. What makes Famo.us unique is its JavaScript rendering engine and 3D physics engine that gives developers the power and tools to build native quality apps and animations using pure JavaScript. Famo.us runs on iOS, Android, Kindle and Firefox devices and integrates with [Angular][famous-angular], Backbone, Meteor and Facebook React. [Famo.us University][famous-university] is a free live coding classroom that teaches all levels of developers how to utilize famo.us to build beautiful experiences on every screen.
+Famo.us is a free and open source JavaScript platform for building mobile apps and desktop experiences. What makes Famo.us unique is its JavaScript rendering engine and 3D physics engine that gives developers the power and tools to build native quality apps and animations using pure JavaScript. Famo.us runs on iOS, Android, Kindle and Firefox devices and integrates with [Angular][famous-angular], Backbone, Meteor and Facebook React. [Famo.us University][famous-university] is a free live coding classroom that teaches all levels of developers how to utilize Famo.us to build beautiful experiences on every screen.
 
 ## Installation
 
 ### Simple Installation - Famo.us Starter Kit
 
-To get up and running quickly, download our [starter kit][starter-kit]. We've loaded it with examples, demos, reference documentation, and higher-level guides; everything you need to get started.
+To get up and running quickly, download our [**starter kit**][starter-kit]. We've loaded it with examples, demos, reference documentation, and higher-level guides.
 
 ### Advanced Installation - Grunt Toolbelt
 
@@ -40,11 +40,15 @@ Preparing your project for distribution is then as simple as:
 
 Cloning this repository directly is primarily for those wishing to contribute to our codebase. Check out our [contributing instructions][contributing] to get involved. Since we use git submodules, all subfolders will be unpopulated unless you initialize and update your submodules. To clone from the command line, run
 
-    git clone git@github.com:Famous/famous.git
-    cd famous
+    git clone git@github.com:Famous/famous.git path/to/folder
+    cd path/to/folder
     git submodule update --init
     
-Note: this only provides the Famo.us folder and all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the `famous.css` file that is included in `famous/core`. Require.js is currently a hard dependency for using Famo.us.
+Or clone with the `--recursive` flag for a conveninent the one-liner
+
+    git clone git@github.com:Famous/famous.git --recursive path/to/folder
+    
+Note: cloning only provides the Famo.us folder with all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the `famous.css` file that is included in `famous/core`. Require.js is currently a hard dependency for using Famo.us.
 
 ## Famous.git Package
 
