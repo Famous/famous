@@ -343,7 +343,7 @@ define(function(require, exports, module) {
      * @param {Number} angle the angle between the top and left sides
      * @return {Transform}
      */
-    Transform.skewX = function skewX (angle) {
+    Transform.skewX = function skewX(angle) {
         return [1, 0, 0, 0, Math.tan(-angle), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
@@ -355,7 +355,7 @@ define(function(require, exports, module) {
      * @param {Number} angle the angle between the top and right sides
      * @return {Transform}
      */
-    Transform.skewY = function skewY (angle) {
+    Transform.skewY = function skewY(angle) {
         return [1, Math.tan(-angle), 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
