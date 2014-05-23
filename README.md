@@ -18,11 +18,11 @@ Famo.us is a free and open source JavaScript platform for building mobile apps a
 
 ## Installation
 
-### Starter Kit
+### Simple Installation - Famo.us Starter Kit
 
 To get up and running quickly, download our [starter kit][starter-kit]. We've loaded it with examples, demos, reference documentation, and higher-level guides; everything you need to get started.
 
-### Advanced Installation
+### Advanced Installation - Grunt Toolbelt
 
 If you would like to scaffold an app with Famo.us from the command line, install our [yeoman generator][github-generator] via npm.
 
