@@ -48,6 +48,7 @@ define(function(require, exports, module) {
         this._element = null;
         this._sizeDirty = false;
 
+        this._invisible = false;
         if (element) this.attach(element);
     }
 
@@ -257,6 +258,11 @@ define(function(require, exports, module) {
             return;
         }
 
+        if (this._invisible) {
+            this._invisible = false;
+            this._element.style.display = '';
+        }
+
         if (this._opacity !== opacity) {
             this._opacity = opacity;
             target.style.opacity = (opacity >= 1) ? '0.999999' : opacity;
@@ -277,6 +283,13 @@ define(function(require, exports, module) {
             this._matrix = matrix;
             var aaMatrix = this.size ? Transform.moveThen([-this.size[0]*context.origin[0], -this.size[1]*context.origin[1], 0], matrix) : matrix;
             _setMatrix(target, aaMatrix);
+        }
+    };
+
+    ElementOutput.prototype.cleanup = function cleanup() {
+        if (this._element) {
+            this._invisible = true;
+            this._element.style.display = 'none';
         }
     };
 
@@ -301,7 +314,13 @@ define(function(require, exports, module) {
      */
     ElementOutput.prototype.detach = function detach() {
         var target = this._element;
-        if (target) _removeEventListeners.call(this, target);
+        if (target) {
+            _removeEventListeners.call(this, target);
+            if (this._invisible) {
+                this._invisible = false;
+                this._element.style.display = '';
+            }
+        }
         this._element = null;
         return target;
     };
