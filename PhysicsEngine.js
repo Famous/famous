@@ -37,8 +37,8 @@ define(function(require, exports, module) {
     }
 
     var TIMESTEP = 17;
-    var MIN_TIME_STEP = 17;
-    var MAX_TIME_STEP = 1000 / 120;
+    var MIN_TIME_STEP = 1000 / 120;
+    var MAX_TIME_STEP = 17;
 
     /**
      * @property PhysicsEngine.DEFAULT_OPTIONS
