@@ -160,11 +160,12 @@ define(function(require, exports, module) {
      *    completion (t=1)
      */
     Transitionable.prototype.delay = function delay(duration, callback) {
-        this.set(this._engineInstance.get(), {duration: duration,
+        this.set(this.get(), {duration: duration,
             curve: function() {
                 return 0;
             }},
-            callback);
+            callback
+        );
     };
 
     /**
