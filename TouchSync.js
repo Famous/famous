@@ -144,6 +144,7 @@ define(function(require, exports, module) {
 
     // handle 'trackend'
     function _handleEnd(data) {
+        this._payload.count = data.count;
         this._eventOutput.emit('end', this._payload);
     }
 
