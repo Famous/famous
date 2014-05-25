@@ -63,23 +63,27 @@ define(function(require, exports, module) {
 
     var MINIMUM_TICK_TIME = 8;
 
-    function _clearPayload() {
-        var payload = this._payload;
-        payload.position = null;
-        payload.velocity = null;
-        payload.clientX  = undefined;
-        payload.clientY  = undefined;
-        payload.count    = undefined;
-        payload.touch    = undefined;
-    }
-
     // handle 'trackstart'
     function _handleStart(data) {
-        _clearPayload.call(this);
-
-        this._position = (this.options.direction !== undefined) ? 0 : [0, 0];
+        var velocity;
+        var delta;
+        if (this.options.direction !== undefined){
+            this._position = 0;
+            velocity = 0;
+            delta = 0;
+        }
+        else {
+            this._position = [0, 0];
+            velocity = [0, 0];
+            delta = [0, 0];
+        }
 
         var payload = this._payload;
+        payload.delta = delta;
+        payload.position = this._position;
+        payload.velocity = velocity;
+        payload.clientX = data.x;
+        payload.clientY = data.y;
         payload.count = data.count;
         payload.touch = data.identifier;
 
@@ -144,42 +148,7 @@ define(function(require, exports, module) {
 
     // handle 'trackend'
     function _handleEnd(data) {
-        var nextVel = (this.options.direction !== undefined) ? 0 : [0, 0];
-        var history = data.history;
-        var count = data.count;
-        if (history.length > 1) {
-            var currHistory = history[history.length - 1];
-            var prevHistory = history[history.length - 2];
-
-            var prevTime = prevHistory.timestamp;
-            var currTime = currHistory.timestamp;
-
-            var diffX = currHistory.x - prevHistory.x;
-            var diffY = currHistory.y - prevHistory.y;
-
-            if (this.options.rails) {
-                if (Math.abs(diffX) > Math.abs(diffY)) diffY = 0;
-                else diffX = 0;
-            }
-
-            var diffTime = Math.max(currTime - prevTime, MINIMUM_TICK_TIME);
-            var velX = diffX / diffTime;
-            var velY = diffY / diffTime;
-            var scale = this.options.scale;
-
-            if (this.options.direction === TouchSync.DIRECTION_X) nextVel = scale * velX;
-            else if (this.options.direction === TouchSync.DIRECTION_Y) nextVel = scale * velY;
-            else nextVel = [scale * velX, scale * velY];
-        }
-
-        var payload = this._payload;
-        payload.velocity = nextVel;
-        payload.clientX  = data.x;
-        payload.clientY  = data.y;
-        payload.count    = count;
-        payload.touch    = data.identifier;
-
-        this._eventOutput.emit('end', payload);
+        this._eventOutput.emit('end', this._payload);
     }
 
     /**

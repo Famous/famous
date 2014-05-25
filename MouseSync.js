@@ -54,6 +54,8 @@ define(function(require, exports, module) {
         this._position = null;      // to be deprecated
         this._prevCoord = undefined;
         this._prevTime = undefined;
+        this._down = false;
+        this._moved = false;
     }
 
     MouseSync.DEFAULT_OPTIONS = {
@@ -70,31 +72,34 @@ define(function(require, exports, module) {
 
     var _now = Date.now;
 
-    function _clearPayload() {
-        var payload = this._payload;
-        payload.delta    = null;
-        payload.position = null;
-        payload.velocity = null;
-        payload.clientX  = undefined;
-        payload.clientY  = undefined;
-        payload.offsetX  = undefined;
-        payload.offsetY  = undefined;
-    }
-
     function _handleStart(event) {
+        var delta;
+        var velocity;
         event.preventDefault(); // prevent drag
-        _clearPayload.call(this);
 
         var x = event.clientX;
         var y = event.clientY;
 
         this._prevCoord = [x, y];
         this._prevTime = _now();
+        this._down = true;
+        this._move = false;
 
-        this._position = (this.options.direction !== undefined) ? 0 : [0, 0];
+        if (this.options.direction !== undefined){
+            this._position = 0;
+            delta = 0;
+            velocity = 0;
+        }
+        else {
+            this._position = [0, 0];
+            delta = [0, 0];
+            velocity = [0, 0];
+        }
 
         var payload = this._payload;
+        payload.delta = delta;
         payload.position = this._position;
+        payload.velocity = velocity;
         payload.clientX = x;
         payload.clientY = y;
         payload.offsetX = event.offsetX;
@@ -161,17 +166,21 @@ define(function(require, exports, module) {
 
         this._prevCoord = [x, y];
         this._prevTime = currTime;
+        this._move = true;
     }
 
     function _handleEnd(event) {
-        if (!this._prevCoord) return;
+        if (!this._down) return;
+
         this._eventOutput.emit('end', this._payload);
         this._prevCoord = undefined;
         this._prevTime = undefined;
+        this._down = false;
+        this._move = false;
     }
 
     function _handleLeave(event) {
-        if (!this._prevCoord) return;
+        if (!this._down || !this._move) return;
 
         var boundMove = _handleMove.bind(this);
         var boundEnd = function(event) {
