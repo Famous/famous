@@ -143,6 +143,7 @@ define(function(require, exports, module) {
     Transitionable.prototype.reset = function reset(startState, startVelocity) {
         this._currentMethod = null;
         this._engineInstance = null;
+        this._callback = undefined;
         this.state = startState;
         this.velocity = startVelocity;
         this.currentAction = null;
