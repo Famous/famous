@@ -45,10 +45,10 @@ define(function(require, exports, module) {
             delta    : null,
             position : null,
             velocity : null,
-            clientX  : undefined,
-            clientY  : undefined,
-            offsetX  : undefined,
-            offsetY  : undefined
+            clientX  : 0,
+            clientY  : 0,
+            offsetX  : 0,
+            offsetY  : 0
         };
 
         this._position = null;      // to be deprecated
