@@ -31,12 +31,14 @@ define(function(require, exports, module) {
         this.options = {};
 
         this.properties = {};
+        this.attributes = {};
         this.content = '';
         this.classList = [];
         this.size = null;
 
         this._classesDirty = true;
         this._stylesDirty = true;
+        this._attributesDirty = true;
         this._sizeDirty = true;
         this._contentDirty = true;
 
@@ -50,6 +52,111 @@ define(function(require, exports, module) {
     Surface.prototype.constructor = Surface;
     Surface.prototype.elementType = 'div';
     Surface.prototype.elementClass = 'famous-surface';
+
+    /**
+     * Bind a callback function to an event type handled by this object.
+     *
+     * @method "on"
+     *
+     * @param {string} type event type key (for example, 'click')
+     * @param {function(string, Object)} fn handler callback
+     * @return {EventHandler} this
+     */
+    Surface.prototype.on = function on(type, fn) {
+        if (this._currTarget) this._currTarget.addEventListener(type, this.eventForwarder);
+        this.eventHandler.on(type, fn);
+    };
+
+    /**
+     * Unbind an event by type and handler.
+     *   This undoes the work of "on"
+     *
+     * @method removeListener
+     * @param {string} type event type key (for example, 'click')
+     * @param {function(string, Object)} fn handler
+     */
+    Surface.prototype.removeListener = function removeListener(type, fn) {
+        this.eventHandler.removeListener(type, fn);
+    };
+
+    /**
+     * Trigger an event, sending to all downstream handlers
+     *   listening for provided 'type' key.
+     *
+     * @method emit
+     *
+     * @param {string} type event type key (for example, 'click')
+     * @param {Object} [event] event data
+     * @return {EventHandler} this
+     */
+    Surface.prototype.emit = function emit(type, event) {
+        if (event && !event.origin) event.origin = this;
+        var handled = this.eventHandler.emit(type, event);
+        if (handled && event && event.stopPropagation) event.stopPropagation();
+        return handled;
+    };
+
+    /**
+     * Add event handler object to set of downstream handlers.
+     *
+     * @method pipe
+     *
+     * @param {EventHandler} target event handler target object
+     * @return {EventHandler} passed event handler
+     */
+    Surface.prototype.pipe = function pipe(target) {
+        return this.eventHandler.pipe(target);
+    };
+
+    /**
+     * Remove handler object from set of downstream handlers.
+     *   Undoes work of "pipe"
+     *
+     * @method unpipe
+     *
+     * @param {EventHandler} target target handler object
+     * @return {EventHandler} provided target
+     */
+    Surface.prototype.unpipe = function unpipe(target) {
+        return this.eventHandler.unpipe(target);
+    };
+
+    /**
+     * Return spec for this surface. Note that for a base surface, this is
+     *    simply an id.
+     *
+     * @method render
+     * @private
+     * @return {Object} render spec for this surface (spec id)
+     */
+    Surface.prototype.render = function render() {
+        return this.id;
+    };
+
+    /**
+     * Set HTML attributes on this Surface. Note that this will cause
+     *    dirtying and thus re-rendering, even if values do not change.
+     *
+     * @method setAttributes
+     * @param {Object} properties property dictionary of "key" => "value"
+     */
+    Surface.prototype.setAttributes = function setAttributes(attributes) {
+        for (var n in attributes) {
+            this.attributes[n] = attributes[n];
+        }
+        this._attributesDirty = true;
+    };
+
+    /**
+     * Get HTML attributes on this Surface.
+     *
+     * @method getAttributes
+     *
+     * @return {Object} Dictionary of this Surface's attributes.
+     */
+    Surface.prototype.getAttributes = function getAttributes() {
+        return this.attributes;
+    };
 
     /**
      * Set CSS-style properties on this Surface. Note that this will cause
@@ -168,6 +275,7 @@ define(function(require, exports, module) {
         if (options.size) this.setSize(options.size);
         if (options.classes) this.setClasses(options.classes);
         if (options.properties) this.setProperties(options.properties);
+        if (options.attributes) this.setAttributes(options.attributes);
         if (options.content) this.setContent(options.content);
     };
 
@@ -192,6 +300,96 @@ define(function(require, exports, module) {
             target.style[n] = '';
         }
     }
+
+    // Apply values of all Famous-managed attributes to the document element.
+    //  These will be deployed to the document on call to #setup().
+    function _applyAttributes(target) {
+        for (var n in this.attributes) {
+            target.setAttribute(n, this.attributes[n]);
+        }
+    }
+
+    // Clear all Famous-managed attributes from the document element.
+    // These will be deployed to the document on call to #setup().
+    function _cleanupAttributes(target) {
+        for (var n in this.attributes) {
+            target.removeAttribute(n);
+        }
+    }
+
+    /**
+     * Return a Matrix's webkit css representation to be used with the
+     *    CSS3 -webkit-transform style.
+     *    Example: -webkit-transform: matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,716,243,0,1)
+     *
+     * @method _formatCSSTransform
+     * @private
+     * @param {FamousMatrix} m matrix
+     * @return {string} matrix3d CSS style representation of the transform
+     */
+    function _formatCSSTransform(m) {
+        m[12] = Math.round(m[12] * devicePixelRatio) / devicePixelRatio;
+        m[13] = Math.round(m[13] * devicePixelRatio) / devicePixelRatio;
+
+        var result = 'matrix3d(';
+        for (var i = 0; i < 15; i++) {
+            result += (m[i] < 0.000001 && m[i] > -0.000001) ? '0,' : m[i] + ',';
+        }
+        result += m[15] + ')';
+        return result;
+    }
+
+    /**
+     * Directly apply given FamousMatrix to the document element as the
+     *   appropriate webkit CSS style.
+     *
+     * @method setMatrix
+     *
+     * @static
+     * @private
+     * @param {Element} element document element
+     * @param {FamousMatrix} matrix
+     */
+
+    var _setMatrix;
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        _setMatrix = function(element, matrix) {
+            element.style.zIndex = (matrix[14] * 1000000) | 0;    // fix for Firefox z-buffer issues
+            element.style.transform = _formatCSSTransform(matrix);
+        };
+    }
+    else if (usePrefix) {
+        _setMatrix = function(element, matrix) {
+            element.style.webkitTransform = _formatCSSTransform(matrix);
+        };
+    }
+    else {
+        _setMatrix = function(element, matrix) {
+            element.style.transform = _formatCSSTransform(matrix);
+        };
+    }
+
+    // format origin as CSS percentage string
+    function _formatCSSOrigin(origin) {
+        return (100 * origin[0]) + '% ' + (100 * origin[1]) + '%';
+    }
+
+     // Directly apply given origin coordinates to the document element as the
+     // appropriate webkit CSS style.
+    var _setOrigin = usePrefix ? function(element, origin) {
+        element.style.webkitTransformOrigin = _formatCSSOrigin(origin);
+    } : function(element, origin) {
+        element.style.transformOrigin = _formatCSSOrigin(origin);
+    };
+
+     // Shrink given document element until it is effectively invisible.
+    var _setInvisible = usePrefix ? function(element) {
+        element.style.webkitTransform = 'scale3d(0.0001,0.0001,1)';
+        element.style.opacity = 0;
+    } : function(element) {
+        element.style.transform = 'scale3d(0.0001,0.0001,1)';
+        element.style.opacity = 0;
+    };
 
     function _xyNotEquals(a, b) {
         return (a && b) ? (a[0] !== b[0] || a[1] !== b[1]) : a !== b;
@@ -222,6 +420,7 @@ define(function(require, exports, module) {
         this._currentTarget = target;
         this._stylesDirty = true;
         this._classesDirty = true;
+        this._attributesDirty = true;
         this._sizeDirty = true;
         this._contentDirty = true;
     };
@@ -250,6 +449,17 @@ define(function(require, exports, module) {
         if (this._stylesDirty) {
             _applyStyles.call(this, target);
             this._stylesDirty = false;
+        }
+
+        if (this._attributesDirty) {
+            _applyAttributes.call(this, target);
+            this._attributesDirty = false;
+        }
+
+        if (this._contentDirty) {
+            this.deploy(target);
+            this.eventHandler.emit('deploy');
+            this._contentDirty = false;
         }
 
         if (this.size) {
@@ -304,6 +514,7 @@ define(function(require, exports, module) {
         target.style.height = '';
         this._size = null;
         _cleanupStyles.call(this, target);
+        _cleanupAttributes.call(this, target);
         var classList = this.getClassList();
         _cleanupClasses.call(this, target);
         for (i = 0; i < classList.length; i++) target.classList.remove(classList[i]);
