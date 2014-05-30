@@ -184,9 +184,8 @@ define(function(require, exports, module) {
                 }
             };
 
-            if (!timeout) {
-                timeout = setTimeout(fn, wait);
-            }
+            clear(timeout);
+            timeout = setTimeout(fn, wait);
 
             return result;
         };
