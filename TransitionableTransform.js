@@ -63,7 +63,7 @@ define(function(require, exports, module) {
     /**
      * An optimized way of setting only the scale component of a Transform
      *
-     * @method setTranslate
+     * @method setScale
      * @chainable
      *
      * @param scale {Array}         New scale state
@@ -83,7 +83,7 @@ define(function(require, exports, module) {
     /**
      * An optimized way of setting only the rotational component of a Transform
      *
-     * @method setTranslate
+     * @method setRotate
      * @chainable
      *
      * @param eulerAngles {Array}   Euler angles for new rotation state
@@ -106,7 +106,7 @@ define(function(require, exports, module) {
     /**
      * An optimized way of setting only the skew component of a Transform
      *
-     * @method setTranslate
+     * @method setSkew
      * @chainable
      *
      * @param skewAngles {Array}    New skew state
@@ -129,7 +129,7 @@ define(function(require, exports, module) {
      * Setter for a TransitionableTransform with optional parameters to transition
      * between Transforms
      *
-     * @method setTranslate
+     * @method set
      * @chainable
      *
      * @param transform {Array}     New transform state
