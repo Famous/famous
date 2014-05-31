@@ -1,6 +1,6 @@
 {
   "name": "famous-events",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Famous eventing libraries.",
   "scripts": {
     "test": "grunt test"
