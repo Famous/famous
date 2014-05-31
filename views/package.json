@@ -1,0 +1,31 @@
+{
+  "name": "famous-views",
+  "version": "0.2.1",
+  "description": "Famo.us interaction components.",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/famous/views"
+  },
+  "keywords": [
+    "famous"
+  ],
+  "author": "famous",
+  "license": "MPL v2.0",
+  "bugs": {
+    "url": "https://github.com/famous/views/issues"
+  },
+  "homepage": "https://github.com/famous/views",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-eslint": "^0.4.0",
+    "grunt-jscs-checker": "^0.4.1",
+    "load-grunt-tasks": "^0.4.0",
+    "time-grunt": "^0.3.1"
+  },
+  "scripts": {
+    "test": "grunt test"
+  }
+}

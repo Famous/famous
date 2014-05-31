@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - '0.10'
+before_install:
+  - currentfolder=${PWD##*/}
+  - if [ "$currentfolder" != 'core' ]; then cd .. && eval "mv $currentfolder core" && cd core; fi
+
+  - npm install -g grunt-cli
+notifications:
+  email:
+    - dave@famo.us
+    - fetterman@famo.us
+    - myles@famo.us
