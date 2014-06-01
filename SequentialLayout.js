@@ -116,7 +116,7 @@ define(function(require, exports, module) {
 
         var currentNode = this._items;
         var result = [];
-        while (currentNode) {
+        while (currentNode && currentNode.get()) {
             var item = currentNode.get();
 
             var itemSize;

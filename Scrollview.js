@@ -353,7 +353,7 @@ define(function(require, exports, module) {
      * Sets the Scrollview instance's velocity. Until affected by input or another call of setVelocity
      *  the Scrollview instance will scroll at the passed-in velocity.
      * @method setVelocity
-     * @param {number} v TThe magnitude of the velocity.
+     * @param {number} v The magnitude of the velocity.
      */
     Scrollview.prototype.setVelocity = function setVelocity(v) {
         this._particle.setVelocity1D(v);
@@ -374,6 +374,12 @@ define(function(require, exports, module) {
             this._scroller.setOptions(options);
             this._optionsManager.setOptions(options);
         }
+
+        this._scroller.setOptions(this.options);
+        if (this.options.groupScroll)
+            this._scroller.pipe(this._eventInput);
+        else
+            this._scroller.unpipe(this._eventInput);
 
         this.drag.setOptions({strength: this.options.drag});
         this.friction.setOptions({strength: this.options.friction});
