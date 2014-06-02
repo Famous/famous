@@ -37,7 +37,7 @@ define(function(require, exports, module) {
      * @param [options.positionThreshold=0] {Number}            The position threshold to trigger a toggle
      * @param [options.transition=true] {Boolean|Object}        The toggle transition
      */
-    var DrawerLayout = function DrawerLayout(options) {
+    function DrawerLayout(options) {
         this.options = Object.create(DrawerLayout.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
@@ -143,8 +143,9 @@ define(function(require, exports, module) {
             return;
         }
 
-        var toggle = Math.abs(velocity) > velocityThreshold || (!this._isOpen && position > positionThreshold) || (this._isOpen && position < positionThreshold)
-        toggle ? this.toggle() : this.reset();
+        var shouldToggle = Math.abs(velocity) > velocityThreshold || (!this._isOpen && position > positionThreshold) || (this._isOpen && position < positionThreshold);
+        if (shouldToggle) this.toggle();
+        else this.reset();
     }
 
     /**
@@ -156,7 +157,7 @@ define(function(require, exports, module) {
     DrawerLayout.prototype.setOptions = function setOptions(options) {
         this._optionsManager.setOptions(options);
         if (options.side !== undefined) {
-            this._direction = _getDirectionFromSide(options.side)
+            this._direction = _getDirectionFromSide(options.side);
             this._orientation = _getOrientationFromSide(options.side);
         }
     };
@@ -250,7 +251,7 @@ define(function(require, exports, module) {
      * @param [transition] {Boolean|Object} transition definition
      */
     DrawerLayout.prototype.toggle = function toggle(transition) {
-        if (this._isOpen) this.close(transition)
+        if (this._isOpen) this.close(transition);
         else this.open(transition);
     };
 
@@ -261,7 +262,7 @@ define(function(require, exports, module) {
      * @param [transition] {Boolean|Object} transition definition
      */
     DrawerLayout.prototype.reset = function reset(transition) {
-        if (this._isOpen) this.open(transition)
+        if (this._isOpen) this.open(transition);
         else this.close(transition);
     };
 
