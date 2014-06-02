@@ -228,6 +228,16 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Basic setter function for force Vector
+     * @method setForce
+     * @return force {Array}
+     */
+    Particle.prototype.setForce = function setForce(force) {
+        this.force.set(force);
+        this.wake();
+    };
+
+    /**
      * 1-dimensional getter for velocity
      * @method getVelocity1D
      * @return velocity {Number}
