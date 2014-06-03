@@ -575,7 +575,6 @@ define(function(require, exports, module) {
      *  Get the x and y dimensions of the surface.
      *
      * @method getSize
-     * @param {boolean} actual return computed size rather than provided
      * @return {Array.Number} [x,y] size of surface
      */
     Surface.prototype.getSize = function getSize() {
