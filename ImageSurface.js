@@ -11,6 +11,8 @@
 define(function(require, exports, module) {
     var Surface = require('famous/core/Surface');
 
+    var imageCache = {};
+
     /**
      * A surface containing image content.
      *   This extends the Surface class.
@@ -37,6 +39,18 @@ define(function(require, exports, module) {
      * @param {string} imageUrl
      */
     ImageSurface.prototype.setContent = function setContent(imageUrl) {
+        if (this._imageUrl && this._imageUrl !== imageUrl) {
+            if (imageCache[this._imageUrl].count === 1)
+                imageCache[this._imageUrl] = null;
+            else
+                imageCache[this._imageUrl].count--;
+        }
+
+        if (!imageCache[imageUrl])
+            imageCache[imageUrl] = {count: 1, node: null};
+        else
+            imageCache[imageUrl].count++;
+
         this._imageUrl = imageUrl;
         this._contentDirty = true;
     };
@@ -49,6 +63,12 @@ define(function(require, exports, module) {
      * @param {Node} target document parent of this container
      */
     ImageSurface.prototype.deploy = function deploy(target) {
+        if (!imageCache[this._imageUrl].node) {
+            var img = new Image();
+            img.src = this._imageUrl;
+            imageCache[this._imageUrl].node = img;
+        }
+
         target.src = this._imageUrl || '';
     };
 
