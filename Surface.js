@@ -578,8 +578,8 @@ define(function(require, exports, module) {
      * @param {boolean} actual return computed size rather than provided
      * @return {Array.Number} [x,y] size of surface
      */
-    Surface.prototype.getSize = function getSize(actual) {
-        return actual ? this._size : (this.size || this._size);
+    Surface.prototype.getSize = function getSize() {
+        return this._size;
     };
 
     /**
