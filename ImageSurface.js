@@ -11,8 +11,6 @@
 define(function(require, exports, module) {
     var Surface = require('famous/core/Surface');
 
-    var imageCache = {};
-
     /**
      * A surface containing image content.
      *   This extends the Surface class.
