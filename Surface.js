@@ -238,6 +238,7 @@ define(function(require, exports, module) {
     Surface.prototype.commit = function commit(context) {
         if (!this._currentTarget) this.setup(context.allocator);
         var target = this._currentTarget;
+        var size = context.size;
 
         ElementOutput.prototype.commit.call(this, context);
 
@@ -262,12 +263,11 @@ define(function(require, exports, module) {
         if (this.size) {
             var origSize = context.size;
             size = [this.size[0], this.size[1]];
-            if (size[0] === undefined && origSize[0]) size[0] = origSize[0];
-            if (size[1] === undefined && origSize[1]) size[1] = origSize[1];
+            if (size[0] === undefined) size[0] = origSize[0];
+            else if (size[0] === true) size[0] = target.clientWidth;
+            if (size[1] === undefined) size[1] = origSize[1];
+            else if (size[1] === true) size[1] = target.clientHeight;
         }
-
-        if (size[0] === true) size[0] = target.clientWidth;
-        if (size[1] === true) size[1] = target.clientHeight;
 
         if (_xyNotEquals(this._size, size)) {
             if (!this._size) this._size = [0, 0];

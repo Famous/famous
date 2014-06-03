@@ -63,6 +63,7 @@ define(function(require, exports, module) {
      */
     ElementOutput.prototype.on = function on(type, fn) {
         if (this._element) this._element.addEventListener(type, this.eventForwarder);
+        this._eventOutput.on(type, fn);
     };
 
     /**
