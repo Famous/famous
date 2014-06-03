@@ -315,6 +315,21 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Removes a context from the run loop. Note: this does not do any
+     *     cleanup.
+     *
+     * @static
+     * @method deregisterContext
+     *
+     * @param {Context} context Context to deregister
+     */
+    Engine.deregisterContext = function deregisterContext(context) {
+        var i = contexts.indexOf(context);
+        if (i >= 0) contexts.splice(i, 1);
+    };
+
+
+    /**
      * Queue a function to be executed on the next tick of the
      *    Engine.
      *
