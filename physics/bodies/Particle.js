@@ -61,7 +61,6 @@ define(function(require, exports, module) {
         this._isSleeping     = false;
         this._engine         = null;
         this._eventOutput    = null;
-        this._positionGetter = null;
 
         this.transform = Transform.identity.slice();
 
@@ -175,9 +174,6 @@ define(function(require, exports, module) {
      * @return position {Array}
      */
     Particle.prototype.getPosition = function getPosition() {
-        if (this._positionGetter instanceof Function)
-            this.setPosition(this._positionGetter());
-
         this._engine.step();
         return this.position.get();
     };
@@ -190,15 +186,6 @@ define(function(require, exports, module) {
     Particle.prototype.getPosition1D = function getPosition1D() {
         this._engine.step();
         return this.position.x;
-    };
-
-    /**
-     * Defines the position from outside the Physics Engine
-     * @method positionFrom
-     * @param positionGetter {Function}
-     */
-    Particle.prototype.positionFrom = function positionFrom(positionGetter) {
-        this._positionGetter = positionGetter;
     };
 
     /**
