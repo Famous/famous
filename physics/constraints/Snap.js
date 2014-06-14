@@ -45,17 +45,13 @@ define(function(require, exports, module) {
     Snap.prototype.constructor = Snap;
 
     Snap.DEFAULT_OPTIONS = {
-        period        : 300,
+        period : 300,
         dampingRatio : 0.1,
         length : 0,
         anchor : undefined
     };
 
     /** const */ var pi = Math.PI;
-
-    function _calcEnergy(impulse, disp, dt) {
-        return Math.abs(impulse.dot(disp)/dt);
-    }
 
     /**
      * Basic options setter
@@ -78,20 +74,20 @@ define(function(require, exports, module) {
      * Set the anchor position
      *
      * @method setOptions
-     * @param {Array} v TODO
+     * @param anchor {Array}
      */
 
-    Snap.prototype.setAnchor = function setAnchor(v) {
+    Snap.prototype.setAnchor = function setAnchor(anchor) {
         if (this.options.anchor !== undefined) this.options.anchor = new Vector();
-        this.options.anchor.set(v);
+        this.options.anchor.set(anchor);
     };
 
     /**
      * Calculates energy of spring
      *
      * @method getEnergy
-     * @param {Object} target TODO
-     * @param {Object} source TODO
+     * @param target {Body} target physics body
+     * @param source {Body} source physics body
      * @return energy {Number}
      */
     Snap.prototype.getEnergy = function getEnergy(target, source) {
@@ -114,7 +110,7 @@ define(function(require, exports, module) {
      * @param dt {Number}           Delta time
      */
     Snap.prototype.applyConstraint = function applyConstraint(targets, source, dt) {
-        var options         = this.options;
+        var options      = this.options;
         var pDiff        = this.pDiff;
         var vDiff        = this.vDiff;
         var impulse1     = this.impulse1;
@@ -179,8 +175,6 @@ define(function(require, exports, module) {
                 impulse1.mult(-1).put(impulse2);
                 source.applyImpulse(impulse2);
             }
-
-            this.setEnergy(_calcEnergy(impulse1, pDiff, dt));
         }
     };
 
