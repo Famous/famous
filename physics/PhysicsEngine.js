@@ -24,7 +24,7 @@ define(function(require, exports, module) {
 
         this._particles      = [];   //list of managed particles
         this._bodies         = [];   //list of managed bodies
-        this._agents         = {};   //hash of managed agents
+        this._agentData      = {};   //hash of managed agents
         this._forces         = [];   //list of IDs of agents that are forces
         this._constraints    = [];   //list of IDs of agents that are constraints
 
@@ -106,7 +106,7 @@ define(function(require, exports, module) {
         var array = (body.isBody) ? this._bodies : this._particles;
         var index = array.indexOf(body);
         if (index > -1) {
-            for (var i = 0; i < Object.keys(this._agents).length; i++) this.detachFrom(i, body);
+            for (var i = 0; i < Object.keys(this._agentData).length; i++) this.detachFrom(i, body);
             array.splice(index,1);
         }
         if (this.getBodies().length === 0) this._hasBodies = false;
@@ -121,7 +121,7 @@ define(function(require, exports, module) {
         if (targets === undefined) targets = this.getParticlesAndBodies();
         if (!(targets instanceof Array)) targets = [targets];
 
-        this._agents[this._currAgentId] = {
+        this._agentData[this._currAgentId] = {
             agent   : agent,
             targets : targets,
             source  : source
@@ -159,7 +159,7 @@ define(function(require, exports, module) {
      * @param target {Body} The Body affected by the agent
      */
     PhysicsEngine.prototype.attachTo = function attachTo(agentID, target) {
-        _getBoundAgent.call(this, agentID).targets.push(target);
+        _getAgentData.call(this, agentID).targets.push(target);
     };
 
     /**
@@ -177,7 +177,7 @@ define(function(require, exports, module) {
         agentArray.splice(index,1);
 
         // detach agents array
-        delete this._agents[id];
+        delete this._agentData[id];
     };
 
     /**
@@ -188,7 +188,7 @@ define(function(require, exports, module) {
      * @param target {Body} The body to remove from the agent
      */
     PhysicsEngine.prototype.detachFrom = function detachFrom(id, target) {
-        var boundAgent = _getBoundAgent.call(this, id);
+        var boundAgent = _getAgentData.call(this, id);
         if (boundAgent.source === target) this.detach(id);
         else {
             var targets = boundAgent.targets;
@@ -204,14 +204,14 @@ define(function(require, exports, module) {
      * @method detachAll
      */
     PhysicsEngine.prototype.detachAll = function detachAll() {
-        this._agents        = {};
+        this._agentData     = {};
         this._forces        = [];
         this._constraints   = [];
         this._currAgentId   = 0;
     };
 
-    function _getBoundAgent(id) {
-        return this._agents[id];
+    function _getAgentData(id) {
+        return this._agentData[id];
     }
 
     /**
@@ -221,7 +221,7 @@ define(function(require, exports, module) {
      * @param id {AgentId}
      */
     PhysicsEngine.prototype.getAgent = function getAgent(id) {
-        return _getBoundAgent.call(this, id).agent;
+        return _getAgentData.call(this, id).agent;
     };
 
     /**
@@ -297,7 +297,7 @@ define(function(require, exports, module) {
     };
 
     function _updateForce(index) {
-        var boundAgent = _getBoundAgent.call(this, this._forces[index]);
+        var boundAgent = _getAgentData.call(this, this._forces[index]);
         boundAgent.agent.applyForce(boundAgent.targets, boundAgent.source);
     }
 
@@ -307,7 +307,7 @@ define(function(require, exports, module) {
     }
 
     function _updateConstraint(index, dt) {
-        var boundAgent = this._agents[this._constraints[index]];
+        var boundAgent = this._agentData[this._constraints[index]];
         return boundAgent.agent.applyConstraint(boundAgent.targets, boundAgent.source, dt);
     }
 
@@ -347,7 +347,7 @@ define(function(require, exports, module) {
         this.forEach(_updatePositions, dt);
     }
 
-    function _getEnergyParticles() {
+    function _getParticlesEnergy() {
         var energy = 0.0;
         var particleEnergy = 0.0;
         this.forEach(function(particle) {
@@ -358,19 +358,17 @@ define(function(require, exports, module) {
         return energy;
     }
 
-    function _getEnergyForces() {
+    function _getAgentsEnergy() {
         var energy = 0;
-        for (var index = this._forces.length - 1; index > -1; index--)
-            energy += this._forces[index].getEnergy() || 0.0;
+        for (var id in this._agentData)
+            energy += this.getAgentEnergy(id);
         return energy;
     }
 
-    function _getEnergyConstraints() {
-        var energy = 0;
-        for (var index = this._constraints.length - 1; index > -1; index--)
-            energy += this._constraints[index].getEnergy() || 0.0;
-        return energy;
-    }
+    PhysicsEngine.prototype.getAgentEnergy = function(agentId) {
+        var agentData = _getAgentData.call(this, agentId);
+        return agentData.agent.getEnergy(agentData.targets, agentData.source);
+    };
 
     /**
      * Calculates the kinetic energy of all Body objects and potential energy
@@ -381,7 +379,7 @@ define(function(require, exports, module) {
      * @return energy {Number}
      */
     PhysicsEngine.prototype.getEnergy = function getEnergy() {
-        return _getEnergyParticles.call(this) + _getEnergyForces.call(this) + _getEnergyConstraints.call(this);
+        return _getParticlesEnergy.call(this) + _getAgentsEnergy.call(this);
     };
 
     /**
