@@ -7,7 +7,6 @@
  * @copyright Famous Industries, Inc. 2014
  */
 
-//TODO: test options manager
 define(function(require, exports, module) {
     var Force = require('./Force');
     var Vector = require('famous/math/Vector');

@@ -20,7 +20,6 @@ define(function(require, exports, module) {
      */
     function Constraint() {
         this.options = this.options || {};
-        this._energy = 0.0;
         this._eventOutput = null;
     }
 
@@ -48,17 +47,7 @@ define(function(require, exports, module) {
      * @return energy {Number}
      */
     Constraint.prototype.getEnergy = function getEnergy() {
-        return this._energy;
-    };
-
-    /**
-     * Setter for energy
-     *
-     * @method setEnergy
-     * @param energy {Number}
-     */
-    Constraint.prototype.setEnergy = function setEnergy(energy) {
-        this._energy = energy;
+        return 0;
     };
 
     function _createEventOutput() {

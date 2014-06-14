@@ -20,7 +20,6 @@ define(function(require, exports, module) {
      */
     function Force(force) {
         this.force = new Vector(force);
-        this._energy = 0.0;
         this._eventOutput = null;
     }
 
@@ -51,17 +50,7 @@ define(function(require, exports, module) {
      * @return energy {Number}
      */
     Force.prototype.getEnergy = function getEnergy() {
-        return this._energy;
-    };
-
-    /*
-     * Setter for a force's potential energy.
-     *
-     * @method setEnergy
-     * @param energy {Number}
-     */
-    Force.prototype.setEnergy = function setEnergy(energy) {
-        this._energy = energy;
+        return 0;
     };
 
     function _createEventOutput() {
