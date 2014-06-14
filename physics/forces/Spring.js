@@ -150,10 +150,6 @@ define(function(require, exports, module) {
         options.damping = 4 * pi * options.dampingRatio / options.period;
     }
 
-    function _calcEnergy(strength, dist) {
-        return 0.5 * strength * dist * dist;
-    }
-
     function _init() {
         _setForceFunction.call(this, this.options.forceFunction);
         _calcStiffness.call(this);
@@ -222,8 +218,6 @@ define(function(require, exports, module) {
 
             target.applyForce(force);
             if (source) source.applyForce(force.mult(-1));
-
-            this.setEnergy(_calcEnergy(stiffness, dist));
         }
     };
 
@@ -234,10 +228,10 @@ define(function(require, exports, module) {
      * @param target {Body}     The physics body attached to the spring
      * @return energy {Number}
      */
-    Spring.prototype.getEnergy = function getEnergy(target) {
-        var options        = this.options;
+    Spring.prototype.getEnergy = function getEnergy(target, source) {
+        var options     = this.options;
         var restLength  = options.length;
-        var anchor      = options.anchor;
+        var anchor      = (source) ? source.position : options.anchor;
         var strength    = options.stiffness;
 
         var dist = anchor.sub(target.position).norm() - restLength;
