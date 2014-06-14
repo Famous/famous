@@ -228,14 +228,19 @@ define(function(require, exports, module) {
      * @param target {Body}     The physics body attached to the spring
      * @return energy {Number}
      */
-    Spring.prototype.getEnergy = function getEnergy(target, source) {
+    Spring.prototype.getEnergy = function getEnergy(targets, source) {
         var options     = this.options;
         var restLength  = options.length;
         var anchor      = (source) ? source.position : options.anchor;
         var strength    = options.stiffness;
 
-        var dist = anchor.sub(target.position).norm() - restLength;
-        return 0.5 * strength * dist * dist;
+        var energy = 0.0;
+        for (var i = 0; i < targets.length; i++){
+            var target = targets[i];
+            var dist = anchor.sub(target.position).norm() - restLength;
+            energy += 0.5 * strength * dist * dist;
+        }
+        return energy;
     };
 
     /**
