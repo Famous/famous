@@ -29,6 +29,8 @@ define(function(require, exports, module) {
      *
      */
     function Snap(options) {
+        Constraint.call(this);
+
         this.options = Object.create(this.constructor.DEFAULT_OPTIONS);
         if (options) this.setOptions(options);
 
@@ -37,8 +39,6 @@ define(function(require, exports, module) {
         this.vDiff  = new Vector();
         this.impulse1 = new Vector();
         this.impulse2 = new Vector();
-
-        Constraint.call(this);
     }
 
     Snap.prototype = Object.create(Constraint.prototype);
@@ -129,7 +129,7 @@ define(function(require, exports, module) {
                 var w2 = source.inverseMass;
                 var v2 = source.velocity;
                 vDiff.set(v1.sub(v2));
-                effMass = 1/(w1 + w2);
+                effMass = 1 / (w1 + w2);
             }
             else {
                 vDiff.set(v1);

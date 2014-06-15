@@ -20,7 +20,8 @@ define(function(require, exports, module) {
      */
     function Force(force) {
         this.force = new Vector(force);
-        this._eventOutput = null;
+        this._eventOutput = new EventHandler();
+        EventHandler.setOutputHandler(this, this._eventOutput);
     }
 
     /**
@@ -51,31 +52,6 @@ define(function(require, exports, module) {
      */
     Force.prototype.getEnergy = function getEnergy() {
         return 0.0;
-    };
-
-    function _createEventOutput() {
-        this._eventOutput = new EventHandler();
-        this._eventOutput.bindThis(this);
-        EventHandler.setOutputHandler(this, this._eventOutput);
-    }
-
-    Force.prototype.on = function on() {
-        _createEventOutput.call(this);
-        return this.on.apply(this, arguments);
-    };
-    Force.prototype.addListener = function addListener() {
-        _createEventOutput.call(this);
-        return this.addListener.apply(this, arguments);
-    };
-    Force.prototype.pipe = function pipe() {
-        _createEventOutput.call(this);
-        return this.pipe.apply(this, arguments);
-    };
-    Force.prototype.removeListener = function removeListener() {
-        return this.removeListener.apply(this, arguments);
-    };
-    Force.prototype.unpipe = function unpipe() {
-        return this.unpipe.apply(this, arguments);
     };
 
     module.exports = Force;
