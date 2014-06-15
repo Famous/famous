@@ -21,6 +21,8 @@ define(function(require, exports, module) {
      *  @param {Object} options options to set on drag
      */
     function Spring(options) {
+        Force.call(this);
+
         this.options = Object.create(this.constructor.DEFAULT_OPTIONS);
         if (options) this.setOptions(options);
 
@@ -28,7 +30,6 @@ define(function(require, exports, module) {
         this.disp = new Vector(0,0,0);
 
         _init.call(this);
-        Force.call(this);
     }
 
     Spring.prototype = Object.create(Force.prototype);
@@ -177,10 +178,10 @@ define(function(require, exports, module) {
             this.options.period = options.period;
         }
 
-        if (options.dampingRatio !== undefined) this.options.dampingRatio = optiforceFunction;
-        if (options.maxLength !== undefined) this.options.maxLons.dampingRatio;
+        if (options.dampingRatio !== undefined) this.options.dampingRatio = options.dampingRatio;
         if (options.length !== undefined) this.options.length = options.length;
-        if (options.forceFunction !== undefined) this.options.forceFunction = options.ength = options.maxLength;
+        if (options.forceFunction !== undefined) this.options.forceFunction = options.forceFunction;
+        if (options.maxLength !== undefined) this.options.maxLength = options.maxLength;
 
         _init.call(this);
         Force.prototype.setOptions.call(this, options);

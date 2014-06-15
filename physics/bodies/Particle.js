@@ -33,18 +33,17 @@ define(function(require, exports, module) {
      */
      function Particle(options) {
         options = options || {};
+        var defaults  = Particle.DEFAULT_OPTIONS;
 
         // registers
         this.position = new Vector();
         this.velocity = new Vector();
         this.force    = new Vector();
 
-        var defaults  = Particle.DEFAULT_OPTIONS;
-
-        // set vectors
-        this.setPosition(options.position || defaults.position);
-        this.setVelocity(options.velocity || defaults.velocity);
-        this.force.set(options.force || [0,0,0]);
+        // state variables
+        this._isSleeping     = true;
+        this._engine         = null;
+        this._eventOutput    = null;
 
         // set scalars
         this.mass = (options.mass !== undefined)
@@ -57,10 +56,10 @@ define(function(require, exports, module) {
 
         this.inverseMass = 1 / this.mass;
 
-        // state variables
-        this._isSleeping     = false;
-        this._engine         = null;
-        this._eventOutput    = null;
+        // set vectors
+        this.setPosition(options.position || defaults.position);
+        this.setVelocity(options.velocity || defaults.velocity);
+        this.force.set(options.force || [0,0,0]);
 
         this.transform = Transform.identity.slice();
 
@@ -83,22 +82,11 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Kinetic energy threshold needed to update the body
-     *
-     * @property SLEEP_TOLERANCE
-     * @type Number
-     * @static
-     * @default 1e-7
-     */
-    Particle.SLEEP_TOLERANCE = 1e-7;
-
-    /**
      * Axes by which a body can translate
      *
      * @property AXES
      * @type Hexadecimal
      * @static
-     * @default 1e-7
      */
     Particle.AXES = {
         X : 0x00, // hexadecimal for 0
@@ -195,7 +183,8 @@ define(function(require, exports, module) {
      */
     Particle.prototype.setVelocity = function setVelocity(velocity) {
         this.velocity.set(velocity);
-        this.wake();
+        if (!(velocity[0] === 0 || velocity[1] === 0 || velocity[2] === 0))
+            this.wake();
     };
 
     /**
@@ -205,7 +194,7 @@ define(function(require, exports, module) {
      */
     Particle.prototype.setVelocity1D = function setVelocity1D(x) {
         this.velocity.x = x;
-        this.wake();
+        if (x !== 0) this.wake();
     };
 
     /**
