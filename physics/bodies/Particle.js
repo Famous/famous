@@ -16,8 +16,8 @@ define(function(require, exports, module) {
     /**
      * A point body that is controlled by the Physics Engine. A particle has
      *   position and velocity states that are updated by the Physics Engine.
-     *   Ultimately, a particle is a _special type of modifier, and can be added to
-     *   the Famous render tree like any other modifier.
+     *   Ultimately, a particle is a special type of modifier, and can be added to
+     *   the Famo.us Scene Graph like any other modifier.
      *
      * @constructor
      * @class Particle
@@ -28,31 +28,25 @@ define(function(require, exports, module) {
      * @param {Array} [options.position] The position of the particle.
      * @param {Array} [options.velocity] The velocity of the particle.
      * @param {Number} [options.mass] The mass of the particle.
-     * @param {Hexadecimal} [options.axis] The axis a particle can move along. Can be bitwise ORed e.g., Particle.AXES.X, Particle.AXES.X | Particle.AXES.Y
-     *
      */
      function Particle(options) {
         options = options || {};
-        var defaults  = Particle.DEFAULT_OPTIONS;
+        var defaults = Particle.DEFAULT_OPTIONS;
 
         // registers
         this.position = new Vector();
         this.velocity = new Vector();
-        this.force    = new Vector();
+        this.force = new Vector();
 
         // state variables
-        this._isSleeping     = true;
-        this._engine         = null;
-        this._eventOutput    = null;
+        this._engine = null;
+        this._isSleeping = true;
+        this._eventOutput = null;
 
         // set scalars
         this.mass = (options.mass !== undefined)
             ? options.mass
             : defaults.mass;
-
-        this.axis = (options.axis !== undefined)
-            ? options.axis
-            : defaults.axis;
 
         this.inverseMass = 1 / this.mass;
 
@@ -77,21 +71,7 @@ define(function(require, exports, module) {
     Particle.DEFAULT_OPTIONS = {
         position : [0,0,0],
         velocity : [0,0,0],
-        mass : 1,
-        axis : undefined
-    };
-
-    /**
-     * Axes by which a body can translate
-     *
-     * @property AXES
-     * @type Hexadecimal
-     * @static
-     */
-    Particle.AXES = {
-        X : 0x00, // hexadecimal for 0
-        Y : 0x01, // hexadecimal for 1
-        Z : 0x02  // hexadecimal for 2
+        mass : 1
     };
 
     // Integrator for updating the particle's state
@@ -100,15 +80,22 @@ define(function(require, exports, module) {
 
     //Catalogue of outputted events
     var _events = {
-        start  : 'start',
+        start : 'start',
         update : 'update',
-        end    : 'end'
+        end : 'end'
     };
 
     // Cached timing function
-    var now = (function() {
-        return Date.now;
-    })();
+    var now = Date.now;
+
+    /**
+     * Determines if particle is active
+     * @method isActive
+     * @return {Boolean}
+     */
+    Particle.prototype.isActive = function isActive() {
+        return !this._isSleeping;
+    };
 
     /**
      * Stops the particle from updating
@@ -293,6 +280,7 @@ define(function(require, exports, module) {
      */
     Particle.prototype.integratePosition = function integratePosition(dt) {
         Particle.INTEGRATOR.integratePosition(this, dt);
+        this.emit(_events.update, this);
     };
 
     /**
@@ -324,25 +312,11 @@ define(function(require, exports, module) {
         this._engine.step();
 
         var position = this.position;
-        var axis = this.axis;
         var transform = this.transform;
-
-        if (axis !== undefined) {
-            if (axis & ~Particle.AXES.X) {
-                position.x = 0;
-            }
-            if (axis & ~Particle.AXES.Y) {
-                position.y = 0;
-            }
-            if (axis & ~Particle.AXES.Z) {
-                position.z = 0;
-            }
-        }
 
         transform[12] = position.x;
         transform[13] = position.y;
         transform[14] = position.z;
-
         return transform;
     };
 
@@ -363,7 +337,6 @@ define(function(require, exports, module) {
     function _createEventOutput() {
         this._eventOutput = new EventHandler();
         this._eventOutput.bindThis(this);
-        //overrides on/removeListener/pipe/unpipe methods
         EventHandler.setOutputHandler(this, this._eventOutput);
     }
 
