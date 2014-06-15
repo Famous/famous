@@ -28,9 +28,9 @@ define(function(require, exports, module) {
 
         this._particles      = [];   //list of managed particles
         this._bodies         = [];   //list of managed bodies
-        this._agentData      = {};   //hash of managed agents
-        this._forces         = [];   //list of IDs of agents that are forces
-        this._constraints    = [];   //list of IDs of agents that are constraints
+        this._agentData      = {};   //hash of managed agent data
+        this._forces         = [];   //list of Ids of agents that are forces
+        this._constraints    = [];   //list of Ids of agents that are constraints
 
         this._buffer         = 0.0;
         this._prevTime       = now();
@@ -41,9 +41,19 @@ define(function(require, exports, module) {
         this._eventHandler   = null;
     }
 
+    /** const */
     var TIMESTEP = 17;
     var MIN_TIME_STEP = 1000 / 120;
     var MAX_TIME_STEP = 17;
+
+    var now = Date.now;
+
+    //Catalogue of outputted events
+    var _events = {
+        start : 'start',
+        update : 'update',
+        end : 'end'
+    };
 
     /**
      * @property PhysicsEngine.DEFAULT_OPTIONS
@@ -65,12 +75,8 @@ define(function(require, exports, module) {
          * @attribute sleepTolerance
          * @type Number
          */
-        sleepTolerance  : 1e-7
+        sleepTolerance : 1e-7
     };
-
-    var now = (function() {
-        return Date.now;
-    })();
 
     /**
      * Options setter
@@ -345,7 +351,6 @@ define(function(require, exports, module) {
 
     function _updatePositions(particle, dt) {
         particle.integratePosition(dt);
-        particle.emit('update', particle);
     }
 
     function _integrate(dt) {
@@ -429,9 +434,10 @@ define(function(require, exports, module) {
 //        };
 //        _integrate.call(this, this._buffer);
 //        this._buffer = 0.0;
+
         _integrate.call(this, TIMESTEP);
 
-        this.emit('update', this);
+        this.emit(_events.update, this);
     };
 
     /**
@@ -453,23 +459,26 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Stops the Physics Engine from updating. Emits an 'end' event.
+     * Stops the Physics Engine update loop. Emits an 'end' event.
      * @method sleep
      */
     PhysicsEngine.prototype.sleep = function sleep() {
         if (this._isSleeping) return;
-        this.emit('end', this);
+        this.forEach(function(body) {
+            body.sleep();
+        });
+        this.emit(_events.end, this);
         this._isSleeping = true;
     };
 
     /**
-     * Starts the Physics Engine from updating. Emits an 'start' event.
+     * Restarts the Physics Engine update loop. Emits an 'start' event.
      * @method wake
      */
     PhysicsEngine.prototype.wake = function wake() {
         if (!this._isSleeping) return;
         this._prevTime = now();
-        this.emit('start', this);
+        this.emit(_events.start, this);
         this._isSleeping = false;
     };
 
