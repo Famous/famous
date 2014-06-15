@@ -34,7 +34,8 @@ define(function(require, exports, module) {
     Spring.prototype = Object.create(Force.prototype);
     Spring.prototype.constructor = Spring;
 
-    /** @const */ var pi = Math.PI;
+    /** @const */
+    var pi = Math.PI;
 
     /**
      * @property Spring.FORCE_FUNCTIONS
@@ -61,7 +62,7 @@ define(function(require, exports, module) {
 
         /**
          * A Hookean spring force, linear in the displacement
-         *      see: http://en.wikipedia.org/wiki/FENE
+         *      see: http://en.wikipedia.org/wiki/Hooke's_law
          * @attribute FENE
          * @type Function
          * @param {Number} dist current distance target is from source body
@@ -136,10 +137,6 @@ define(function(require, exports, module) {
         forceFunction : Spring.FORCE_FUNCTIONS.HOOK
     };
 
-    function _setForceFunction(fn) {
-        this.forceFunction = fn;
-    }
-
     function _calcStiffness() {
         var options = this.options;
         options.stiffness = Math.pow(2 * pi / options.period, 2);
@@ -151,7 +148,6 @@ define(function(require, exports, module) {
     }
 
     function _init() {
-        _setForceFunction.call(this, this.options.forceFunction);
         _calcStiffness.call(this);
         _calcDamping.call(this);
     }
@@ -160,7 +156,7 @@ define(function(require, exports, module) {
      * Basic options setter
      *
      * @method setOptions
-     * @param options {Objects}
+     * @param options {Object}
      */
     Spring.prototype.setOptions = function setOptions(options) {
         if (options.anchor !== undefined) {
@@ -184,15 +180,16 @@ define(function(require, exports, module) {
      * @param targets {Array.Body} Array of bodies to apply force to.
      */
     Spring.prototype.applyForce = function applyForce(targets, source) {
-        var force        = this.force;
-        var disp         = this.disp;
-        var options      = this.options;
+        var force = this.force;
+        var disp = this.disp;
+        var options = this.options;
 
-        var stiffness    = options.stiffness;
-        var damping      = options.damping;
-        var restLength   = options.length;
-        var lMax         = options.maxLength;
-        var anchor       = options.anchor || source.position;
+        var stiffness = options.stiffness;
+        var damping = options.damping;
+        var restLength = options.length;
+        var lMax = options.maxLength;
+        var anchor = options.anchor || source.position;
+        var forceFunction = options.forceFunction;
 
         for (var i = 0; i < targets.length; i++) {
             var target = targets[i];
@@ -209,7 +206,7 @@ define(function(require, exports, module) {
             stiffness *= m;
             damping   *= m;
 
-            disp.normalize(stiffness * this.forceFunction(dist, lMax))
+            disp.normalize(stiffness * forceFunction(dist, lMax))
                 .put(force);
 
             if (damping)
@@ -226,7 +223,7 @@ define(function(require, exports, module) {
      *
      * @method getEnergy
      * @param target {Body}     The physics body attached to the spring
-     * @return energy {Number}
+     * @return {Number}         The potential energy of the spring
      */
     Spring.prototype.getEnergy = function getEnergy(targets, source) {
         var options     = this.options;
@@ -241,17 +238,6 @@ define(function(require, exports, module) {
             energy += 0.5 * strength * dist * dist;
         }
         return energy;
-    };
-
-    /**
-     * Sets the anchor to a new position
-     *
-     * @method setAnchor
-     * @param anchor {Array}    New anchor of the spring
-     */
-    Spring.prototype.setAnchor = function setAnchor(anchor) {
-        if (!this.options.anchor) this.options.anchor = new Vector();
-        this.options.anchor.set(anchor);
     };
 
     module.exports = Spring;

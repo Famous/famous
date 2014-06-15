@@ -9,10 +9,14 @@ define(function(require, exports, module) {
     var EventHandler = require('famous/core/EventHandler');
 
     /**
-     * The Physics Engine is responsible for mediating Bodies and their
-     * interaction with forces and constraints. The Physics Engine handles the
-     * logic of adding and removing bodies, updating their state of the over
-     * time.
+     * The Physics Engine is responsible for mediating bodies with their
+     *   interaction with forces and constraints (agents). Specifically it
+     *   is responsible for:
+     *
+     *   - adding and removing bodies
+     *   - updating a body's state over time
+     *   - attaching and detaching agents
+     *   - sleeping upon equillibrium and waking upon excitation
      *
      * @class PhysicsEngine
      * @constructor
@@ -34,6 +38,9 @@ define(function(require, exports, module) {
         this._eventHandler   = null;
         this._currAgentId    = 0;
         this._hasBodies      = false;
+        this._eventHandler   = null;
+
+        this.wake();
     }
 
     var TIMESTEP = 17;
@@ -92,6 +99,7 @@ define(function(require, exports, module) {
             this._hasBodies = true;
         }
         else this._particles.push(body);
+        body.on('start', this.wake.bind(this));
         return body;
     };
 
@@ -365,6 +373,13 @@ define(function(require, exports, module) {
         return energy;
     }
 
+    /**
+     * Calculates the potential energy of an agent, like a spring, by its Id
+     *
+     * @method getAgentEnergy
+     * @param agentId {Number} The attached agent Id
+     * @return energy {Number}
+     */
     PhysicsEngine.prototype.getAgentEnergy = function(agentId) {
         var agentData = _getAgentData.call(this, agentId);
         return agentData.agent.getEnergy(agentData.targets, agentData.source);
@@ -389,10 +404,10 @@ define(function(require, exports, module) {
      * @method step
      */
     PhysicsEngine.prototype.step = function step() {
-//        if (this.getEnergy() < this.options.sleepTolerance) {
-//            this.sleep();
-//            return;
-//        };
+        if (this.isSleeping() || this.getEnergy() < this.options.sleepTolerance) {
+            this.sleep();
+            return;
+        };
 
         //set current frame's time
         var currTime = now();
@@ -415,7 +430,7 @@ define(function(require, exports, module) {
 //        this._buffer = 0.0;
         _integrate.call(this, TIMESTEP);
 
-//        this.emit('update', this);
+        this.emit('update', this);
     };
 
     /**
