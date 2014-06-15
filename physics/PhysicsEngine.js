@@ -129,6 +129,8 @@ define(function(require, exports, module) {
         if (targets === undefined) targets = this.getParticlesAndBodies();
         if (!(targets instanceof Array)) targets = [targets];
 
+        agent.on('change', this.wake.bind(this));
+
         this._agentData[this._currAgentId] = {
             agent   : agent,
             targets : targets,
