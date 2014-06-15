@@ -30,7 +30,7 @@ define(function(require, exports, module) {
      * @param options {Objects}
      */
     Constraint.prototype.setOptions = function setOptions(options) {
-        for (var key in options) this.options[key] = options[key];
+        this._eventOutput.emit('change', options);
     };
 
     /**
@@ -47,7 +47,7 @@ define(function(require, exports, module) {
      * @return energy {Number}
      */
     Constraint.prototype.getEnergy = function getEnergy() {
-        return 0;
+        return 0.0;
     };
 
     function _createEventOutput() {
