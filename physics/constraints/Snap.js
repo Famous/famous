@@ -68,6 +68,7 @@ define(function(require, exports, module) {
         if (options.length !== undefined) this.options.length = options.length;
         if (options.dampingRatio !== undefined) this.options.dampingRatio = options.dampingRatio;
         if (options.period !== undefined) this.options.period = options.period;
+        Constraint.prototype.setOptions.call(this, options);
     };
 
     /**

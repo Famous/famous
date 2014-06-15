@@ -36,6 +36,7 @@ define(function(require, exports, module) {
 
     /** @const */
     var pi = Math.PI;
+    var MIN_PERIOD = 150;
 
     /**
      * @property Spring.FORCE_FUNCTIONS
@@ -89,7 +90,7 @@ define(function(require, exports, module) {
          * @type Number
          * @default 300
          */
-        period        : 300,
+        period : 300,
 
         /**
          * The damping of the spring.
@@ -159,18 +160,30 @@ define(function(require, exports, module) {
      * @param options {Object}
      */
     Spring.prototype.setOptions = function setOptions(options) {
+        // TODO fix no-console error
+        /* eslint no-console: 0 */
+
         if (options.anchor !== undefined) {
             if (options.anchor.position instanceof Vector) this.options.anchor = options.anchor.position;
             if (options.anchor   instanceof Vector)  this.options.anchor = options.anchor;
             if (options.anchor   instanceof Array)  this.options.anchor = new Vector(options.anchor);
         }
-        if (options.period !== undefined) this.options.period = options.period;
-        if (options.dampingRatio !== undefined) this.options.dampingRatio = options.dampingRatio;
+
+        if (options.period !== undefined){
+            if (options.period < MIN_PERIOD) {
+                options.period = MIN_PERIOD;
+                console.warn('The period of a SpringTransition is capped at ' + MIN_PERIOD + ' ms. Use a SnapTransition for faster transitions');
+            }
+            this.options.period = options.period;
+        }
+
+        if (options.dampingRatio !== undefined) this.options.dampingRatio = optiforceFunction;
+        if (options.maxLength !== undefined) this.options.maxLons.dampingRatio;
         if (options.length !== undefined) this.options.length = options.length;
-        if (options.forceFunction !== undefined) this.options.forceFunction = options.forceFunction;
-        if (options.maxLength !== undefined) this.options.maxLength = options.maxLength;
+        if (options.forceFunction !== undefined) this.options.forceFunction = options.ength = options.maxLength;
 
         _init.call(this);
+        Force.prototype.setOptions.call(this, options);
     };
 
     /**
