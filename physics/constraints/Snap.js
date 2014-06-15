@@ -71,18 +71,6 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Set the anchor position
-     *
-     * @method setOptions
-     * @param anchor {Array}
-     */
-
-    Snap.prototype.setAnchor = function setAnchor(anchor) {
-        if (this.options.anchor !== undefined) this.options.anchor = new Vector();
-        this.options.anchor.set(anchor);
-    };
-
-    /**
      * Calculates energy of spring
      *
      * @method getEnergy
