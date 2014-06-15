@@ -38,9 +38,8 @@ define(function(require, exports, module) {
         if (options.angularMomentum) this.angularMomentum.set(options.angularMomentum);
         if (options.torque)          this.torque.set(options.torque);
 
-        this.setMomentsOfInertia();
-
         this.angularVelocity.w = 0;        //quaternify the angular velocity
+        this.setMomentsOfInertia();
 
         //registers
         this.pWorld = new Vector();        //placeholder for world space position
@@ -50,8 +49,6 @@ define(function(require, exports, module) {
     Body.DEFAULT_OPTIONS.orientation = [0,0,0,1];
     Body.DEFAULT_OPTIONS.angularVelocity = [0,0,0];
 
-    Body.AXES = Particle.AXES;
-    Body.SLEEP_TOLERANCE = Particle.SLEEP_TOLERANCE;
     Body.INTEGRATOR = Particle.INTEGRATOR;
 
     Body.prototype = Object.create(Particle.prototype);
