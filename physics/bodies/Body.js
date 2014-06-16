@@ -13,12 +13,13 @@ define(function(require, exports, module) {
     var Vector = require('famous/math/Vector');
     var Quaternion = require('famous/math/Quaternion');
     var Matrix = require('famous/math/Matrix');
+    var Integrator = require('../integrators/SymplecticEuler');
 
     /**
      * A unit controlled by the physics engine which extends the zero-dimensional
-     * Particle to include geometry. In addition to maintaining the state
-     * of a Particle its state includes orientation, angular velocity
-     * and angular momentum and responds to torque forces.
+     *   Particle to include geometry. In addition to maintaining the state
+     *   of a Particle its state includes orientation, angular velocity
+     *   and angular momentum and responds to torque forces.
      *
      * @class Body
      * @extends Particle
@@ -41,15 +42,13 @@ define(function(require, exports, module) {
         this.angularVelocity.w = 0;        //quaternify the angular velocity
         this.setMomentsOfInertia();
 
-        //registers
+        // registers
         this.pWorld = new Vector();        //placeholder for world space position
     }
 
     Body.DEFAULT_OPTIONS = Particle.DEFAULT_OPTIONS;
-    Body.DEFAULT_OPTIONS.orientation = [0,0,0,1];
-    Body.DEFAULT_OPTIONS.angularVelocity = [0,0,0];
-
-    Body.INTEGRATOR = Particle.INTEGRATOR;
+    Body.DEFAULT_OPTIONS.orientation = [0, 0, 0, 1];
+    Body.DEFAULT_OPTIONS.angularVelocity = [0, 0, 0];
 
     Body.prototype = Object.create(Particle.prototype);
     Body.prototype.constructor = Body;
@@ -63,7 +62,7 @@ define(function(require, exports, module) {
 
     /**
      * Setter for moment of inertia, which is necessary to give proper
-     * angular inertia depending on the geometry of the body.
+     *   angular inertia depending on the geometry of the body.
      *
      * @method setMomentsOfInertia
      */
@@ -83,7 +82,7 @@ define(function(require, exports, module) {
 
     /**
      * Determine world coordinates from the local coordinate system. Useful
-     * if the Body has rotated in space.
+     *   if the Body has rotated in space.
      *
      * @method toWorldCoordinates
      * @param localPosition {Vector} local coordinate vector
@@ -106,7 +105,7 @@ define(function(require, exports, module) {
 
     /**
      * Extends Particle.reset to reset orientation, angular velocity
-     * and angular momentum.
+     *   and angular momentum.
      *
      * @method reset
      * @param [p] {Array|Vector} position
@@ -155,7 +154,7 @@ define(function(require, exports, module) {
 
     /**
      * Extends Particle.applyForce with an optional argument
-     * to apply the force at an off-centered location, resulting in a torque.
+     *   to apply the force at an off-centered location, resulting in a torque.
      *
      * @method applyForce
      * @param force {Vector} force
@@ -179,7 +178,7 @@ define(function(require, exports, module) {
 
     /**
      * Extends Particle.getTransform to include a rotational component
-     * derived from the particle's orientation.
+     *   derived from the particle's orientation.
      *
      * @method getTransform
      * @return transform {Transform}
@@ -193,7 +192,7 @@ define(function(require, exports, module) {
 
     /**
      * Extends Particle._integrate to also update the rotational states
-     * of the body.
+     *   of the body.
      *
      * @method getTransform
      * @protected
@@ -213,7 +212,7 @@ define(function(require, exports, module) {
      * @param dt {Number} delta time
      */
     Body.prototype.integrateAngularMomentum = function integrateAngularMomentum(dt) {
-        Body.INTEGRATOR.integrateAngularMomentum(this, dt);
+        Integrator.integrateAngularMomentum(this, dt);
     };
 
     /**
@@ -223,7 +222,7 @@ define(function(require, exports, module) {
      * @param dt {Number} delta time
      */
     Body.prototype.integrateOrientation = function integrateOrientation(dt) {
-        Body.INTEGRATOR.integrateOrientation(this, dt);
+        Integrator.integrateOrientation(this, dt);
     };
 
     module.exports = Body;
