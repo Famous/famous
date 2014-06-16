@@ -8,7 +8,6 @@
  */
 
 define(function(require, exports, module) {
-    var OptionsManager = require('famous/core/OptionsManager');
 
     /**
      * Ordinary Differential Equation (ODE) Integrator.
@@ -28,58 +27,7 @@ define(function(require, exports, module) {
      * @constructor
      * @param {Object} options Options to set
      */
-    function SymplecticEuler(options) {
-        this.options = Object.create(SymplecticEuler.DEFAULT_OPTIONS);
-        this._optionsManager = new OptionsManager(this.options);
-
-        if (options) this.setOptions(options);
-    }
-
-    /**
-     * @property SymplecticEuler.DEFAULT_OPTIONS
-     * @type Object
-     * @protected
-     * @static
-     */
-    SymplecticEuler.DEFAULT_OPTIONS = {
-
-        /**
-         * The maximum velocity of a physics body
-         *      Range : [0, Infinity]
-         * @attribute velocityCap
-         * @type Number
-         */
-
-        velocityCap : undefined,
-
-        /**
-         * The maximum angular velocity of a physics body
-         *      Range : [0, Infinity]
-         * @attribute angularVelocityCap
-         * @type Number
-         */
-        angularVelocityCap : undefined
-    };
-
-    /*
-     * Setter for options
-     *
-     * @method setOptions
-     * @param {Object} options
-     */
-    SymplecticEuler.prototype.setOptions = function setOptions(options) {
-        this._optionsManager.patch(options);
-    };
-
-    /*
-     * Getter for options
-     *
-     * @method getOptions
-     * @return {Object} options
-     */
-    SymplecticEuler.prototype.getOptions = function getOptions() {
-        return this._optionsManager.value();
-    };
+    var SymplecticEuler = {};
 
     /*
      * Updates the velocity of a physics body from its accumulated force.
@@ -89,7 +37,7 @@ define(function(require, exports, module) {
      * @param {Body} physics body
      * @param {Number} dt delta time
      */
-    SymplecticEuler.prototype.integrateVelocity = function integrateVelocity(body, dt) {
+    SymplecticEuler.integrateVelocity = function integrateVelocity(body, dt) {
         var v = body.velocity;
         var w = body.inverseMass;
         var f = body.force;
@@ -108,11 +56,10 @@ define(function(require, exports, module) {
      * @param {Body} physics body
      * @param {Number} dt delta time
      */
-    SymplecticEuler.prototype.integratePosition = function integratePosition(body, dt) {
+    SymplecticEuler.integratePosition = function integratePosition(body, dt) {
         var p = body.position;
         var v = body.velocity;
 
-        if (this.options.velocityCap) v.cap(this.options.velocityCap).put(v);
         p.add(v.mult(dt)).put(p);
     };
 
@@ -124,13 +71,12 @@ define(function(require, exports, module) {
      * @param {Body} physics body (except a particle)
      * @param {Number} dt delta time
      */
-    SymplecticEuler.prototype.integrateAngularMomentum = function integrateAngularMomentum(body, dt) {
+    SymplecticEuler.integrateAngularMomentum = function integrateAngularMomentum(body, dt) {
         var L = body.angularMomentum;
         var t = body.torque;
 
         if (t.isZero()) return;
 
-        if (this.options.angularVelocityCap) t.cap(this.options.angularVelocityCap).put(t);
         L.add(t.mult(dt)).put(L);
         t.clear();
     };
@@ -143,7 +89,7 @@ define(function(require, exports, module) {
      * @param {Body} physics body (except a particle)
      * @param {Number} dt delta time
      */
-    SymplecticEuler.prototype.integrateOrientation = function integrateOrientation(body, dt) {
+    SymplecticEuler.integrateOrientation = function integrateOrientation(body, dt) {
         var q = body.orientation;
         var w = body.angularVelocity;
 
