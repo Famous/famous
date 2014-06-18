@@ -306,7 +306,6 @@ define(function(require, exports, module) {
     Particle.prototype._integrate = function _integrate(dt) {
         this.integrateVelocity(dt);
         this.integratePosition(dt);
-        this.emit(_events.update, this);
     };
 
     /**
