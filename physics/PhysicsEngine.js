@@ -34,7 +34,7 @@ define(function(require, exports, module) {
 
         this._buffer         = 0.0;
         this._prevTime       = now();
-        this._isSleeping     = true;
+        this._isSleeping     = false;
         this._eventHandler   = null;
         this._currAgentId    = 0;
         this._hasBodies      = false;
@@ -431,10 +431,7 @@ define(function(require, exports, module) {
      * @method step
      */
     PhysicsEngine.prototype.step = function step() {
-        if (this.isSleeping() || this.getEnergy() < this.options.sleepTolerance) {
-            this.sleep();
-            return;
-        };
+        if (this.isSleeping()) return;
 
         //set current frame's time
         var currTime = now();
@@ -459,6 +456,8 @@ define(function(require, exports, module) {
         _integrate.call(this, TIMESTEP);
 
         this.emit(_events.update, this);
+
+        if (this.getEnergy() < this.options.sleepTolerance) this.sleep();
     };
 
     /**
