@@ -121,6 +121,7 @@ define(function(require, exports, module) {
         this.emit(_events.start, this);
         this._isSleeping = false;
         this._prevTime = now();
+        if (this._engine) this._engine.wake();
     };
 
     /**
@@ -173,7 +174,7 @@ define(function(require, exports, module) {
      */
     Particle.prototype.setVelocity = function setVelocity(velocity) {
         this.velocity.set(velocity);
-        if (!(velocity[0] === 0 || velocity[1] === 0 || velocity[2] === 0))
+        if (!(velocity[0] === 0 && velocity[1] === 0 && velocity[2] === 0))
             this.wake();
     };
 
