@@ -50,7 +50,7 @@ define(function(require, exports, module) {
          * @return {Number} unscaled force
          */
         CONSTANT : function(v, options) {
-            return options.direction.put(this.evaluation);
+            options.direction.put(this.evaluation);
         },
 
         /**
@@ -61,7 +61,7 @@ define(function(require, exports, module) {
          * @return {Vector} unscaled force
          */
         LINEAR : function(v) {
-            return v.put(this.evaluation);
+            v.put(this.evaluation);
         },
 
         /**
@@ -72,21 +72,7 @@ define(function(require, exports, module) {
          * @return {Vector} unscaled force
          */
         RADIAL : function(v) {
-            return v.mult(-1).put(this.evaluation);
-        },
-
-        /**
-         * Spherical force
-         * @attribute SPHERE_ATTRACTOR
-         * @type Function
-         * @param v {Vector}        Current position of physics body
-         * @param options {Object}  An object with the radius of the sphere
-         *      Pass a {radius : Number} into the VectorField options
-         * @return {Vector} unscaled force
-         */
-        SPHERE_ATTRACTOR : function(v, options) {
-            var norm = v.norm();
-            return v.mult((options.radius - norm) / norm).put(this.evaluation);
+            v.mult(-1).put(this.evaluation);
         },
 
         /**
@@ -99,7 +85,7 @@ define(function(require, exports, module) {
          * @return {Vector} unscaled force
          */
         POINT_ATTRACTOR : function(v, options) {
-            return options.position.sub(v).put(this.evaluation);
+            options.position.sub(v).put(this.evaluation);
         }
     };
 
@@ -116,9 +102,9 @@ define(function(require, exports, module) {
          *    Range : [0, 10]
          * @attribute strength
          * @type Number
-         * @default 1
+         * @default .01
          */
-        strength : 1,
+        strength : .01,
 
         /**
          * Type of vectorfield
@@ -149,18 +135,13 @@ define(function(require, exports, module) {
         switch (field) {
             case FIELDS.CONSTANT:
                 if (!this.options.direction) this.options.direction = new Vector(0,1,0);
+                else if (this.options.direction instanceof Array) this.options.direction = new Vector(this.options.direction);
                 break;
             case FIELDS.POINT_ATTRACTOR:
                 if (!this.options.position) this.options.position = new Vector(0,0,0);
-                break;
-            case FIELDS.SPHERE_ATTRACTOR:
-                if (!this.options.radius) this.options.radius = 1;
+                else if (this.options.position instanceof Array) this.options.position = new Vector(this.options.position);
                 break;
         }
-    }
-
-    function _evaluate(v) {
-        return this.options.field.call(this, v, this.options);
     }
 
     /**
@@ -172,14 +153,40 @@ define(function(require, exports, module) {
     VectorField.prototype.applyForce = function applyForce(targets) {
         var force = this.force;
         var strength = this.options.strength;
+        var field = this.options.field;
 
         for (var i = 0; i < targets.length; i++) {
             var target = targets[i];
-            _evaluate.call(this, target.position)
-                .mult(target.mass * strength)
-                .put(force);
+            field.call(this, target.position, this.options);
+            this.evaluation.mult(target.mass * strength).put(force);
             target.applyForce(force);
         }
+    };
+
+    VectorField.prototype.getEnergy = function getEnergy(targets) {
+        var field = this.options.field;
+        var FIELDS = VectorField.FIELDS;
+
+        var energy = 0;
+        switch (field) {
+            case FIELDS.CONSTANT:
+                energy = targets.length * this.options.direction.norm();
+                break;
+            case FIELDS.RADIAL:
+                for (var i = 0; i < targets.length; i++){
+                    var target = targets[i];
+                    energy += target.position.norm();
+                }
+                break;
+            case FIELDS.POINT_ATTRACTOR:
+                for (var i = 0; i < targets.length; i++){
+                    var target = targets[i];
+                    energy += target.position.sub(this.options.position).norm();
+                }
+                break;
+        }
+        energy *= this.options.strength;
+        return energy;
     };
 
     module.exports = VectorField;

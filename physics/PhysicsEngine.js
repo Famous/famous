@@ -352,10 +352,10 @@ define(function(require, exports, module) {
         }
     }
 
-    function _updateVelocities(particle, dt) {
-        particle.integrateVelocity(dt);
+    function _updateVelocities(body, dt) {
+        body.integrateVelocity(dt);
         if (this.options.velocityCap)
-            particle.velocity.cap(this.options.velocityCap).put(particle.velocity);
+            body.velocity.cap(this.options.velocityCap).put(body.velocity);
     }
 
     function _updateAngularVelocities(body, dt) {
@@ -369,8 +369,9 @@ define(function(require, exports, module) {
         body.integrateOrientation(dt);
     }
 
-    function _updatePositions(particle, dt) {
-        particle.integratePosition(dt);
+    function _updatePositions(body, dt) {
+        body.integratePosition(dt);
+        body.emit(_events.update, body);
     }
 
     function _integrate(dt) {
