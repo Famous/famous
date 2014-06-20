@@ -142,7 +142,6 @@ define(function(require, exports, module) {
      * @param {string|Document Fragment} content HTML content
      */
     Surface.prototype.setContent = function setContent(content) {
-        console.log(content)
         if (this.content !== content) {
             this.content = content;
             this._contentDirty = true;
