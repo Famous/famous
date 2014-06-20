@@ -31,6 +31,7 @@ define(function(require, exports, module) {
         this.options = {};
 
         this.properties = {};
+        this.proportions = [];
         this.content = '';
         this.classList = [];
         this.size = null;
@@ -141,6 +142,7 @@ define(function(require, exports, module) {
      * @param {string|Document Fragment} content HTML content
      */
     Surface.prototype.setContent = function setContent(content) {
+        console.log(content)
         if (this.content !== content) {
             this.content = content;
             this._contentDirty = true;
@@ -169,6 +171,7 @@ define(function(require, exports, module) {
         if (options.classes) this.setClasses(options.classes);
         if (options.properties) this.setProperties(options.properties);
         if (options.content) this.setContent(options.content);
+        if (options.proportions) this.setProportions(options.proportions);
     };
 
     //  Apply to document all changes from removeClass() since last setup().
@@ -255,10 +258,12 @@ define(function(require, exports, module) {
         if (this.size) {
             var origSize = context.size;
             size = [this.size[0], this.size[1]];
-            if (size[0] === undefined) size[0] = origSize[0];
-            else if (size[0] === true) size[0] = target.clientWidth;
-            if (size[1] === undefined) size[1] = origSize[1];
-            else if (size[1] === true) size[1] = target.clientHeight;
+            if (size[0] === undefined && origSize[0]) size[0] = origSize[0];
+            if (size[1] === undefined && origSize[1]) size[1] = origSize[1];
+        } else if (this.proportions) {
+            size = [size[0], size[1]];
+            size[0] = size[0] * this.proportions[0];
+            size[1] = size[1] * this.proportions[1];
         }
 
         if (_xyNotEquals(this._size, size)) {
@@ -371,6 +376,28 @@ define(function(require, exports, module) {
         this.size = size ? [size[0], size[1]] : null;
         this._sizeDirty = true;
     };
+
+    /**
+     *  Get the x and y dimensions of the surface.
+     *
+     * @method getProportions
+     * @param {boolean} actual return computed size rather than provided
+     * @return {Array.Number} [x,y] size of surface
+     */
+    Surface.prototype.getProportions = function getProportions() {
+        return this.proportions;
+    };
+
+    /**
+     * Set x and y dimensions of the surface.
+     *
+     * @method setProportions
+     * @param {Array.Number} proportions as [width, height]
+     */
+    Surface.prototype.setProportions = function setProportions(proportions) {
+        this.proportions = proportions;
+    };
+
 
     module.exports = Surface;
 });
