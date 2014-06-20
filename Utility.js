@@ -85,5 +85,37 @@ define(function(require, exports, module) {
         return result;
     };
 
+    /*
+     *  Deep clone an object.
+     *  @param b {Object} Object to clone
+     *  @return a {Object} Cloned object.
+     */
+    Utility.clone = function clone(b) {
+        var a;
+        if (typeof b === 'object') {
+            a = {};
+            for (var key in b) {
+                if (typeof b[key] === 'object' && b[key] !== null) {
+                    if (b[key] instanceof Array) {
+                        a[key] = new Array(b[key].length);
+                        for (var i = 0; i < b[key].length; i++) {
+                            a[key][i] = Utility.clone(b[key][i]);
+                        }
+                    }
+                    else {
+                      a[key] = Utility.clone(b[key]);
+                    }
+                }
+                else {
+                    a[key] = b[key];
+                }
+            }
+        }
+        else {
+            a = b;
+        }
+        return a;
+    };
+
     module.exports = Utility;
 });
