@@ -75,7 +75,6 @@ define(function(require, exports, module) {
 
     function _newFrame() {
         if (this._inProgress && (_now() - this._prevTime) > this.options.stallTime) {
-            this._position = (this.options.direction === undefined) ? [0,0] : 0;
             this._inProgress = false;
 
             var finalVel = (Math.abs(this._prevVel) >= this.options.minimumEndSpeed)
@@ -96,7 +95,7 @@ define(function(require, exports, module) {
 
         if (!this._inProgress) {
             this._inProgress = true;
-
+            this._position = (this.options.direction === undefined) ? [0,0] : 0;
             payload = this._payload;
             payload.slip = true;
             payload.position = this._position;
