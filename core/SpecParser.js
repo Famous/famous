@@ -138,7 +138,25 @@ define(function(require, exports, module) {
                 nextSizeContext = parentContext.transform;
             }
             if (spec.align) align = spec.align;
-            if (spec.size) {
+
+            if (spec.proportions) {
+                var parentSize = parentContext.size;
+                size = [
+                    parentSize[0] * spec.proportions[0],
+                    parentSize[1] * spec.proportions[1]
+                ];
+
+                if (parentSize) {
+                    if (!align) align = origin;
+                    if (align && (align[0] || align[1])) transform = Transform.thenMove(transform, _vecInContext([align[0] * parentSize[0], align[1] * parentSize[1], 0], sizeContext));
+                    if (origin && (origin[0] || origin[1])) transform = Transform.moveThen([-origin[0] * size[0], -origin[1] * size[1], 0], transform);
+                }
+                nextSizeContext = parentContext.transform;
+                origin = null;
+                align = null;
+
+            }
+            else if (spec.size) {
                 var parentSize = parentContext.size;
                 size = [
                     spec.size[0] !== undefined ? spec.size[0] : parentSize[0],
