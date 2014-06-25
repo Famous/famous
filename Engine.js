@@ -95,11 +95,11 @@ define(function(require, exports, module) {
     function loop() {
         if (options.runLoop) {
             Engine.step();
-            requestAnimationFrame(loop);
+            window.requestAnimationFrame(loop);
         }
         else loopEnabled = false;
     }
-    requestAnimationFrame(loop);
+    window.requestAnimationFrame(loop);
 
     //
     // Upon main document window resize (unless on an "input" HTML element):
@@ -331,7 +331,7 @@ define(function(require, exports, module) {
             // kick off the loop only if it was stopped
             if (!loopEnabled && data.value) {
                 loopEnabled = true;
-                requestAnimationFrame(loop);
+                window.requestAnimationFrame(loop);
             }
         }
     });
