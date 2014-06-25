@@ -28,6 +28,20 @@ define(function(require, exports, module) {
 
     ImageSurface.cache = {};
 
+    ImageSurface.cacheEnabled = true;
+
+    ImageSurface.enableCache = function enableCache() {
+        ImageSurface.cacheEnabled = true;
+    };
+
+    ImageSurface.disableCache = function disableCache() {
+        ImageSurface.cacheEnabled = false;
+    };
+
+    ImageSurface.clearCache = function clearCache() {
+        ImageSurface.cache = {};
+    };
+
     ImageSurface.prototype = Object.create(Surface.prototype);
     ImageSurface.prototype.constructor = ImageSurface;
     ImageSurface.prototype.elementType = 'img';
@@ -63,7 +77,7 @@ define(function(require, exports, module) {
      * @param {Node} target document parent of this container
      */
     ImageSurface.prototype.deploy = function deploy(target) {
-        if (!this.constructor.cache[this._imageUrl].node) {
+        if (!this.constructor.cache[this._imageUrl].node && ImageSurface.cacheEnabled) {
             var img = new Image();
             img.src = this._imageUrl;
             this.constructor.cache[this._imageUrl].node = img;
