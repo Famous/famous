@@ -240,8 +240,6 @@ define(function(require, exports, module) {
         var target = this._currentTarget;
         var size = context.size;
 
-        ElementOutput.prototype.commit.call(this, context);
-
         if (this._classesDirty) {
             _cleanupClasses.call(this, target);
             var classList = this.getClassList();
@@ -252,12 +250,6 @@ define(function(require, exports, module) {
         if (this._stylesDirty) {
             _applyStyles.call(this, target);
             this._stylesDirty = false;
-        }
-
-        if (this._contentDirty) {
-            this.deploy(target);
-            this._eventOutput.emit('deploy');
-            this._contentDirty = false;
         }
 
         if (this.size) {
@@ -276,16 +268,6 @@ define(function(require, exports, module) {
             this._sizeDirty = true;
         }
 
-        if (this._classesDirty) {
-            _cleanupClasses.call(this, target);
-            var classList = this.getClassList();
-            for (var i = 0; i < classList.length; i++) target.classList.add(classList[i]);
-            this._classesDirty = false;
-        }
-        if (this._stylesDirty) {
-            _applyStyles.call(this, target);
-            this._stylesDirty = false;
-        }
         if (this._sizeDirty) {
             if (this._size) {
                 target.style.width = (this.size && this.size[0] === true) ? '' : this._size[0] + 'px';
@@ -293,11 +275,14 @@ define(function(require, exports, module) {
             }
             this._sizeDirty = false;
         }
+
         if (this._contentDirty) {
             this.deploy(target);
             this._eventOutput.emit('deploy');
             this._contentDirty = false;
         }
+
+        ElementOutput.prototype.commit.call(this, context);
     };
 
     /**

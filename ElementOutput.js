@@ -47,6 +47,8 @@ define(function(require, exports, module) {
         this.id = Entity.register(this);
         this._element = null;
         this._sizeDirty = false;
+        this._originDirty = false;
+        this._transformDirty = false;
 
         this._invisible = false;
         if (element) this.attach(element);
@@ -245,19 +247,15 @@ define(function(require, exports, module) {
         var origin = context.origin;
         var size = context.size;
 
-        if (_xyNotEquals(this._size, size)) {
-            if (!this._size) this._size = [0, 0];
-            this._size[0] = size[0];
-            this._size[1] = size[1];
-            this._sizeDirty = true;
-        }
-
         if (!matrix && this._matrix) {
             this._matrix = null;
             this._opacity = 0;
             _setInvisible(target);
             return;
         }
+
+        if (_xyNotEquals(this._origin, origin)) this._originDirty = true;
+        if (Transform.notEquals(this._matrix, matrix)) this._transformDirty = true;
 
         if (this._invisible) {
             this._invisible = false;
@@ -269,21 +267,30 @@ define(function(require, exports, module) {
             target.style.opacity = (opacity >= 1) ? '0.999999' : opacity;
         }
 
-        if (_xyNotEquals(this._origin, origin)) {
-            if (origin) {
-                if (!this._origin) this._origin = [0, 0];
-                this._origin[0] = origin[0];
-                this._origin[1] = origin[1];
+        if (this._transformDirty || this._originDirty || this._sizeDirty) {
+            if (this._sizeDirty) {
+                if (!this._size) this._size = [0, 0];
+                this._size[0] = size[0];
+                this._size[1] = size[1];
+                this._sizeDirty = false;
             }
-            else this._origin = null;
-            _setOrigin(target, this._origin);
-        }
 
-        if (Transform.notEquals(this._matrix, matrix)) {
+            if (this._originDirty) {
+                if (origin) {
+                    if (!this._origin) this._origin = [0, 0];
+                    this._origin[0] = origin[0];
+                    this._origin[1] = origin[1];
+                }
+                else this._origin = null;
+                _setOrigin(target, this._origin);
+                this._originDirty = false;
+            }
+
             if (!matrix) matrix = Transform.identity;
             this._matrix = matrix;
-            var aaMatrix = this.size ? Transform.moveThen([-this.size[0]*context.origin[0], -this.size[1]*context.origin[1], 0], matrix) : matrix;
+            var aaMatrix = this.size ? Transform.thenMove(matrix, [-this.size[0]*origin[0], -this.size[1]*origin[1], 0]) : matrix;
             _setMatrix(target, aaMatrix);
+            this._transformDirty = false;
         }
     };
 
