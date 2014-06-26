@@ -328,7 +328,6 @@ define(function(require, exports, module) {
         if (i >= 0) contexts.splice(i, 1);
     };
 
-
     /**
      * Queue a function to be executed on the next tick of the
      *    Engine.

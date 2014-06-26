@@ -24,11 +24,7 @@ define(function(require, exports, module) {
      * @class ElementOutput
      * @constructor
      *
-     * @param {Object} [options] default option overrides
-     * @param {Array.Number} [options.size] [width, height] in pixels
-     * @param {Array.string} [options.classes] CSS classes to set on inner content
-     * @param {Array} [options.properties] string dictionary of HTML attributes to set on target div
-     * @param {string} [options.content] inner (HTML) content of surface
+     * @param {Node} element document parent of this container
      */
     function ElementOutput(element) {
         this._matrix = null;
