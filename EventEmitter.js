@@ -72,8 +72,11 @@ define(function(require, exports, module) {
      * @return {EventEmitter} this
      */
     EventEmitter.prototype.removeListener = function removeListener(type, handler) {
-        var index = this.listeners[type].indexOf(handler);
-        if (index >= 0) this.listeners[type].splice(index, 1);
+        var listener = this.listeners[type];
+        if(listener !== undefined) {
+            var index = listener.indexOf(handler);
+            if (index >= 0) listener.splice(index, 1);
+        }
         return this;
     };
 
