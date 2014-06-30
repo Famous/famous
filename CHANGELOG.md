@@ -1,3 +1,23 @@
+## 0.2.2
+
+**famous/core:**
+
+- FIX `Scene` now has support for `align`.
+- UPDATE `requestAnimationFrame` scoped to `window`.
+
+**famous/inputs:**
+
+- FIX `ScrollSync` position type set on `start` instead of `reset` on end.
+- FIX `FastClick` typo fix.
+
+**famous/math:**
+- FIX `Vector` `.put` can be called from a `Vector` instead of only a `register`.
+
+**famous/physics:**
+
+- FIX `Walls` `.forEach` bug.
+
+
 ## 0.2.1
 
 **famous/core:**
@@ -107,10 +127,6 @@
 
 - FIX `NavigationBar` `optionsManager` typo
 
-
-## 0.1.1
-
-- Initial release
 
 ## 0.1.1
 
