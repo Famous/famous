@@ -70,6 +70,7 @@ define(function(require, exports, module) {
         var transformDefinition = definition.transform;
         var opacity = definition.opacity;
         var origin = definition.origin;
+        var align = definition.align;
         var size = definition.size;
         var transform = Transform.identity;
         if (transformDefinition instanceof Array) {
@@ -90,6 +91,7 @@ define(function(require, exports, module) {
             transform: transform,
             opacity: opacity,
             origin: origin,
+            align: align,
             size: size
         });
         return result;
