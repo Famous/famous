@@ -30,6 +30,7 @@ define(function(require, exports, module) {
      * @param {Array.Number} [options.origin] origin adjustment
      * @param {Array.Number} [options.align] align adjustment
      * @param {Array.Number} [options.size] size to apply to descendants
+     * @param {Array.Number} [options.propportions] proportions to apply to descendants
      */
     function StateModifier(options) {
         this._transformState = new TransitionableTransform(Transform.identity);
@@ -37,18 +38,21 @@ define(function(require, exports, module) {
         this._originState = new Transitionable([0, 0]);
         this._alignState = new Transitionable([0, 0]);
         this._sizeState = new Transitionable([0, 0]);
+        this._proportionsState = new Transitionable([0, 0]);
 
         this._modifier = new Modifier({
             transform: this._transformState,
             opacity: this._opacityState,
             origin: null,
             align: null,
-            size: null
+            size: null,
+            proportions: null
         });
 
         this._hasOrigin = false;
         this._hasAlign = false;
         this._hasSize = false;
+        this._hasProportions = false;
 
         if (options) {
             if (options.transform) this.setTransform(options.transform);
@@ -56,6 +60,7 @@ define(function(require, exports, module) {
             if (options.origin) this.setOrigin(options.origin);
             if (options.align) this.setAlign(options.align);
             if (options.size) this.setSize(options.size);
+            if (options.proportions) this.setProportions(options.proportions);
         }
     }
 
@@ -173,6 +178,33 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Set the proportions of this modifier, either statically or
+     *   through a provided Transitionable.
+     *
+     * @method setProportions
+     *
+     * @param {Array.Number} proportions two element array with values between 0 and 1.
+     * @param {Transitionable} transition Valid transitionable object
+     * @param {Function} callback callback to call after transition completes
+     * @return {StateModifier} this
+     */
+    StateModifier.prototype.setProportions = function setSize(proportions, transition, callback) {
+        if (proportions === null) {
+            if (this._hasProportions) {
+                this._modifier.proportionsFrom(null);
+                this._hasProportions = false;
+            }
+            return this;
+        }
+        else if (!this._hasProportions) {
+            this._hasProportions = true;
+            this._modifier.proportionsFrom(this._proportionsState);
+        }
+        this._proportionsState.set(proportions, transition, callback);
+        return this;
+    };
+
+    /**
      * Stop the transition.
      *
      * @method halt
@@ -183,6 +215,7 @@ define(function(require, exports, module) {
         this._originState.halt();
         this._alignState.halt();
         this._sizeState.halt();
+        this._proportionsState.halt();
     };
 
     /**
@@ -243,6 +276,16 @@ define(function(require, exports, module) {
      */
     StateModifier.prototype.getSize = function getSize() {
         return this._hasSize ? this._sizeState.get() : null;
+    };
+
+    /**
+     * Get the current state of the propportions component.
+     *
+     * @method getProportions
+     * @return {Object} size provider object
+     */
+    StateModifier.prototype.getProportions = function getProportions() {
+        return this._hasProportions ? this._proportionsState.get() : null;
     };
 
     /**
