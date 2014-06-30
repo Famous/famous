@@ -1,6 +1,6 @@
 {
   "name": "famous-physics",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Core engine controlling animations via physical simulation.",
   "scripts": {
     "test": "grunt test"
