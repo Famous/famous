@@ -44,7 +44,7 @@ define(function(require, exports, module) {
             if (startTime && currTime - startTime < clickThreshold) {
                 var clickEvt = new window.CustomEvent('click', {
                     'bubbles': true,
-                    'details': touch
+                    'detail': touch
                 });
                 recentlyDispatched[currTime] = event;
                 event.target.dispatchEvent(clickEvt);
