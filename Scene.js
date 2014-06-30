@@ -18,7 +18,7 @@ define(function(require, exports, module) {
      *
      * @class Scene
      * @constructor
-     * @param {Object} definition in the format of a render spec.
+     * @param {Object|Array|Spec} definition in the format of a render spec.
      */
     function Scene(definition) {
         this.id = null;
