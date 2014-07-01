@@ -225,10 +225,10 @@ define(function(require, exports, module) {
      */
     Quaternion.prototype.set = function set(v) {
         if (v instanceof Array) {
-            this.w = v[0];
-            this.x = v[1];
-            this.y = v[2];
-            this.z = v[3];
+            this.w = 0;
+            this.x = v[0];
+            this.y = v[1];
+            this.z = v[2];
         }
         else {
             this.w = v.w;

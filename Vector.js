@@ -20,7 +20,7 @@ define(function(require, exports, module) {
      * @param {number} z z element value
      */
     function Vector(x,y,z) {
-        if (arguments.length === 1) this.set(x);
+        if (arguments.length === 1 && x !== undefined) this.set(x);
         else {
             this.x = x || 0;
             this.y = y || 0;
@@ -286,9 +286,9 @@ define(function(require, exports, module) {
      * @return {Vector} this
      */
     Vector.prototype.set = function set(v) {
-        if (v instanceof Array)    return _setFromArray.call(this, v);
-        if (v instanceof Vector)   return _setFromVector.call(this, v);
+        if (v instanceof Array) return _setFromArray.call(this, v);
         if (typeof v === 'number') return _setFromNumber.call(this, v);
+        return _setFromVector.call(this, v);
     };
 
     Vector.prototype.setXYZ = function(x,y,z) {
