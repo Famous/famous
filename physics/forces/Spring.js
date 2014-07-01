@@ -7,6 +7,8 @@
  * @copyright Famous Industries, Inc. 2014
  */
 
+/*global console */
+
 define(function(require, exports, module) {
     var Force = require('./Force');
     var Vector = require('famous/math/Vector');
@@ -166,8 +168,8 @@ define(function(require, exports, module) {
 
         if (options.anchor !== undefined) {
             if (options.anchor.position instanceof Vector) this.options.anchor = options.anchor.position;
-            if (options.anchor   instanceof Vector)  this.options.anchor = options.anchor;
-            if (options.anchor   instanceof Array)  this.options.anchor = new Vector(options.anchor);
+            if (options.anchor instanceof Vector) this.options.anchor = options.anchor;
+            if (options.anchor instanceof Array)  this.options.anchor = new Vector(options.anchor);
         }
 
         if (options.period !== undefined){
@@ -201,7 +203,7 @@ define(function(require, exports, module) {
         var stiffness = options.stiffness;
         var damping = options.damping;
         var restLength = options.length;
-        var lMax = options.maxLength;
+        var maxLength = options.maxLength;
         var anchor = options.anchor || source.position;
         var forceFunction = options.forceFunction;
 
@@ -220,7 +222,7 @@ define(function(require, exports, module) {
             stiffness *= m;
             damping   *= m;
 
-            disp.normalize(stiffness * forceFunction(dist, lMax))
+            disp.normalize(stiffness * forceFunction(dist, maxLength))
                 .put(force);
 
             if (damping)
