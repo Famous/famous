@@ -26,20 +26,31 @@ define(function(require, exports, module) {
         Surface.apply(this, arguments);
     }
 
-    ImageSurface.cache = {};
-
-    ImageSurface.cacheEnabled = true;
+    var urlCache = [];
+    var countCache = [];
+    var nodeCache = [];
+    var cacheEnabled = true;
 
     ImageSurface.enableCache = function enableCache() {
-        ImageSurface.cacheEnabled = true;
+        cacheEnabled = true;
     };
 
     ImageSurface.disableCache = function disableCache() {
-        ImageSurface.cacheEnabled = false;
+        cacheEnabled = false;
     };
 
     ImageSurface.clearCache = function clearCache() {
-        ImageSurface.cache = {};
+        urlCache = [];
+        countCache = [];
+        nodeCache = [];
+    };
+
+    ImageSurface.getCache = function getCache() {
+        return {
+            urlCache: urlCache,
+            countCache: countCache,
+            nodeCache: countCache
+        }
     };
 
     ImageSurface.prototype = Object.create(Surface.prototype);
@@ -53,17 +64,25 @@ define(function(require, exports, module) {
      * @param {string} imageUrl
      */
     ImageSurface.prototype.setContent = function setContent(imageUrl) {
-        if (this._imageUrl && this._imageUrl !== imageUrl) {
-            if (this.constructor.cache[this._imageUrl].count === 1)
-                this.constructor.cache[this._imageUrl] = null;
-            else
-                this.constructor.cache[this._imageUrl].count--;
+        var urlIndex = urlCache.indexOf(this._imageUrl);
+        if (urlIndex !== -1) {
+            if (countCache[urlIndex] === 1) {
+                urlCache.splice(urlIndex, 1);
+                countCache.splice(urlIndex, 1);
+                nodeCache.splice(urlIndex, 1);
+            } else {
+                countCache[urlIndex]--;
+            }            
         }
 
-        if (!this.constructor.cache[imageUrl])
-            this.constructor.cache[imageUrl] = {count: 1, node: null};
-        else
-            this.constructor.cache[imageUrl].count++;
+        urlIndex = urlCache.indexOf(imageUrl);
+        if (urlIndex === -1) {
+            urlCache.push(imageUrl);
+            countCache.push(1);
+        }
+        else {
+            countCache[urlIndex]++;
+        }
 
         this._imageUrl = imageUrl;
         this._contentDirty = true;
@@ -77,10 +96,11 @@ define(function(require, exports, module) {
      * @param {Node} target document parent of this container
      */
     ImageSurface.prototype.deploy = function deploy(target) {
-        if (!this.constructor.cache[this._imageUrl].node && ImageSurface.cacheEnabled) {
+        var urlIndex = urlCache.indexOf(this._imageUrl);
+        if (nodeCache[urlIndex] === undefined && cacheEnabled) {
             var img = new Image();
-            img.src = this._imageUrl;
-            this.constructor.cache[this._imageUrl].node = img;
+            img.src = this._imageUrl || '';
+            nodeCache[urlIndex] = img;
         }
 
         target.src = this._imageUrl || '';
