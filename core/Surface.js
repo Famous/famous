@@ -260,17 +260,15 @@ define(function(require, exports, module) {
             this._contentDirty = false;
         }
 
-        if (this.proportions) {
-            size = [
-                size[0] * this.proportions[0],
-                size[1] * this.proportions[1]
-            ];
-        }
-        else if (this.size) {
+        if (this.size) {
             var origSize = size;
             size = [this.size[0], this.size[1]];
             if (size[0] === undefined && origSize[0]) size[0] = origSize[0];
             if (size[1] === undefined && origSize[1]) size[1] = origSize[1];
+        }
+        if (this.proportions) {
+            if (this.proportions[0]) size[0] = size[0] * this.proportions[0];
+            if (this.proportions[1]) size[1] = size[1] * this.proportions[1];
         }
 
         if (_xyNotEquals(this._size, size)) {
