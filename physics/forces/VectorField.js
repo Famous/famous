@@ -168,19 +168,22 @@ define(function(require, exports, module) {
         var FIELDS = VectorField.FIELDS;
 
         var energy = 0;
+
+        var i;
+        var target;
         switch (field) {
             case FIELDS.CONSTANT:
                 energy = targets.length * this.options.direction.norm();
                 break;
             case FIELDS.RADIAL:
-                for (var i = 0; i < targets.length; i++){
-                    var target = targets[i];
+                for (i = 0; i < targets.length; i++){
+                    target = targets[i];
                     energy += target.position.norm();
                 }
                 break;
             case FIELDS.POINT_ATTRACTOR:
-                for (var i = 0; i < targets.length; i++){
-                    var target = targets[i];
+                for (i = 0; i < targets.length; i++){
+                    target = targets[i];
                     energy += target.position.sub(this.options.position).norm();
                 }
                 break;
