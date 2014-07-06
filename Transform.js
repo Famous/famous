@@ -333,7 +333,7 @@ define(function(require, exports, module) {
      * @return {Transform}
      */
     Transform.skew = function skew(phi, theta, psi) {
-        return [1, 0, 0, 0, Math.tan(psi), 1, 0, 0, Math.tan(theta), Math.tan(phi), 1, 0, 0, 0, 0, 1];
+        return [1, Math.tan(theta), 0, 0, Math.tan(psi), 1, 0, 0, 0, Math.tan(phi), 1, 0, 0, 0, 0, 1];
     };
 
     /**
