@@ -44,7 +44,7 @@ Cloning this repository directly is primarily for those wishing to contribute to
     cd path/to/folder
     git submodule update --init
     
-Or clone with the `--recursive` flag for a conveninent the one-liner
+Or clone with the `--recursive` flag for a convenient one-liner
 
     git clone git@github.com:Famous/famous.git --recursive path/to/folder
     
