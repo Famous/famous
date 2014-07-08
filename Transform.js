@@ -186,6 +186,7 @@ define(function(require, exports, module) {
      */
     Transform.scale = function scale(x, y, z) {
         if (z === undefined) z = 1;
+        if (y === undefined) y = x;
         return [x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1];
     };
 
