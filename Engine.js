@@ -300,6 +300,17 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Returns a list of all contexts.
+     *
+     * @static
+     * @method getContexts
+     * @return {Array} contexts that are updated on each tick
+     */
+    Engine.getContexts = function getContexts() {
+        return contexts;
+    };
+
+    /**
      * Queue a function to be executed on the next tick of the
      *    Engine.
      *
