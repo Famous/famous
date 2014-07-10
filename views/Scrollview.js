@@ -98,7 +98,7 @@ define(function(require, exports, module) {
         this._onEdge = 0; // -1 for top, 1 for bottom
         this._pageSpringPosition = 0;
         this._edgeSpringPosition = 0;
-        this._touchVelocity = undefined;
+        this._touchVelocity = 0;
         this._earlyEnd = false;
         this._needsPaginationCheck = false;
 
@@ -172,7 +172,7 @@ define(function(require, exports, module) {
             if (velocity < -speedLimit) velocity = -speedLimit;
             else if (velocity > speedLimit) velocity = speedLimit;
             this.setVelocity(velocity);
-            this._touchVelocity = undefined;
+            this._touchVelocity = 0;
             this._needsPaginationCheck = true;
         }
     }
@@ -229,8 +229,6 @@ define(function(require, exports, module) {
     }
 
     function _handlePagination() {
-        if (!this._needsPaginationCheck) return;
-
         if (this._touchCount) return;
         if (this._springState === SpringStates.EDGE) return;
 
@@ -280,15 +278,13 @@ define(function(require, exports, module) {
     }
 
     function _normalizeState() {
-        var amount = 0;
+        var offset = 0;
         var position = this.getPosition();
         var nodeSize = _nodeSizeForDirection.call(this, this._node);
         var nextNode = this._node.getNext();
 
-        while (position > nodeSize + TOLERANCE && nextNode) {
-//            _shiftOrigin.call(this, -nodeSize);
-            amount -= nodeSize;
-            position -= nodeSize;
+        while (offset + position > nodeSize + TOLERANCE && nextNode) {
+            offset -= nodeSize;
             this._scroller.sequenceFrom(nextNode);
             this._node = nextNode;
             nextNode = this._node.getNext();
@@ -299,17 +295,15 @@ define(function(require, exports, module) {
         var previousNode = this._node.getPrevious();
         var previousNodeSize;
 
-        while (position < -TOLERANCE && previousNode) {
+        while (offset + position < -TOLERANCE && previousNode) {
             previousNodeSize = _nodeSizeForDirection.call(this, previousNode);
             this._scroller.sequenceFrom(previousNode);
             this._node = previousNode;
-//            _shiftOrigin.call(this, previousNodeSize);
-            position += previousNodeSize;
-            amount += previousNodeSize;
+            offset += previousNodeSize;
             previousNode = this._node.getPrevious();
         }
 
-        _shiftOrigin.call(this, amount);
+        if (offset) _shiftOrigin.call(this, offset);
     }
 
     function _shiftOrigin(amount) {
@@ -486,7 +480,8 @@ define(function(require, exports, module) {
         if (!this._node) return null;
 
         _normalizeState.call(this);
-        if (this.options.paginated) _handlePagination.call(this);
+        if (this.options.paginated && this._needsPaginationCheck)
+            _handlePagination.call(this);
 
         return this._scroller.render();
     };
