@@ -184,7 +184,15 @@ define(function(require, exports, module) {
         this._eventInput.on('end', _handleEnd);
 
         this._scroller.on('edgeHit', function(data) {
+            console.log('edge');
             this._edgeSpringPosition = data.position;
+            _handleEdge.call(this, this._scroller.onEdge());
+        }.bind(this));
+
+        this._scroller.on('offEdge', function() {
+            console.log('off edge');
+            this.sync.setOptions({scale: 1});
+            this._onEdge = this._scroller.onEdge();
         }.bind(this));
     }
 
@@ -205,22 +213,19 @@ define(function(require, exports, module) {
         return nodeSize;
     }
 
-    function _handleEdge(edgeDetected) {
-        if (!this._onEdge && edgeDetected) {
-            this.sync.setOptions({scale: this.options.edgeGrip});
-            if (!this._touchCount && this._springState !== SpringStates.EDGE) {
-                _setSpring.call(this, this._edgeSpringPosition, SpringStates.EDGE);
-            }
+    function _handleEdge(edge) {
+        this.sync.setOptions({scale: this.options.edgeGrip});
+        this._onEdge = edge;
+
+        if (!this._touchCount && this._springState !== SpringStates.EDGE) {
+            _setSpring.call(this, this._edgeSpringPosition, SpringStates.EDGE);
         }
-        else if (this._onEdge && !edgeDetected) {
-            this.sync.setOptions({scale: 1});
-            if (this._springState && Math.abs(this.getVelocity()) < 0.001) {
-                // reset agents, detaching the spring
-                _detachAgents.call(this);
-                _attachAgents.call(this);
-            }
+
+        if (this._springState && Math.abs(this.getVelocity()) < 0.001) {
+            // reset agents, detaching the spring
+            _detachAgents.call(this);
+            _attachAgents.call(this);
         }
-        this._onEdge = edgeDetected;
     }
 
     function _handlePagination() {
@@ -275,18 +280,21 @@ define(function(require, exports, module) {
     }
 
     function _normalizeState() {
+        var amount = 0;
         var position = this.getPosition();
         var nodeSize = _nodeSizeForDirection.call(this, this._node);
         var nextNode = this._node.getNext();
 
         while (position > nodeSize + TOLERANCE && nextNode) {
-            _shiftOrigin.call(this, -nodeSize);
+//            _shiftOrigin.call(this, -nodeSize);
+            amount -= nodeSize;
             position -= nodeSize;
             this._scroller.sequenceFrom(nextNode);
             this._node = nextNode;
             nextNode = this._node.getNext();
             nodeSize = _nodeSizeForDirection.call(this, this._node);
         }
+
 
         var previousNode = this._node.getPrevious();
         var previousNodeSize;
@@ -295,10 +303,13 @@ define(function(require, exports, module) {
             previousNodeSize = _nodeSizeForDirection.call(this, previousNode);
             this._scroller.sequenceFrom(previousNode);
             this._node = previousNode;
-            _shiftOrigin.call(this, previousNodeSize);
+//            _shiftOrigin.call(this, previousNodeSize);
             position += previousNodeSize;
+            amount += previousNodeSize;
             previousNode = this._node.getPrevious();
         }
+
+        _shiftOrigin.call(this, amount);
     }
 
     function _shiftOrigin(amount) {
@@ -474,7 +485,6 @@ define(function(require, exports, module) {
         if (!this._node) return null;
 
         _normalizeState.call(this);
-        _handleEdge.call(this, this._scroller.onEdge());
         if (this.options.paginated) _handlePagination.call(this);
 
         return this._scroller.render();
