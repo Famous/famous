@@ -107,13 +107,16 @@ define(function(require, exports, module) {
 
         this.setOptions(options);
 
+        this._displacement = 0;
+        this.totalShift = 0;
+
         _bindEvents.call(this);
     }
 
     Scrollview.DEFAULT_OPTIONS = {
         direction: Utility.Direction.Y,
         rails: true,
-        friction: 0.001,
+        friction: 0.005,
         drag: 0.0001,
         edgeGrip: 0.5,
         edgePeriod: 300,
@@ -157,7 +160,10 @@ define(function(require, exports, module) {
         this._touchVelocity = velocity;
 
         if (event.slip) this.setVelocity(velocity);
-        else this.setPosition(this.getPosition() + delta);
+        else {
+            this.setPosition(this.getPosition() + delta);
+            this._displacement += delta;
+        }
     }
 
     function _handleEnd(event) {
@@ -184,15 +190,21 @@ define(function(require, exports, module) {
         this._eventInput.on('end', _handleEnd);
 
         this._scroller.on('edgeHit', function(data) {
-            console.log('edge');
             this._edgeSpringPosition = data.position;
             _handleEdge.call(this, this._scroller.onEdge());
         }.bind(this));
 
         this._scroller.on('offEdge', function() {
-            console.log('off edge');
             this.sync.setOptions({scale: 1});
             this._onEdge = this._scroller.onEdge();
+        }.bind(this));
+
+        this._particle.on('update', function(particle){
+            this._displacement = particle.position.x - this.totalShift;;
+        }.bind(this));
+
+        this._particle.on('end', function(){
+            this._eventOutput.emit('atRest');
         }.bind(this));
     }
 
@@ -291,7 +303,6 @@ define(function(require, exports, module) {
             nodeSize = _nodeSizeForDirection.call(this, this._node);
         }
 
-
         var previousNode = this._node.getPrevious();
         var previousNodeSize;
 
@@ -310,6 +321,8 @@ define(function(require, exports, module) {
         this._edgeSpringPosition += amount;
         this._pageSpringPosition += amount;
         this.setPosition(this.getPosition() + amount);
+        this.totalShift += amount;
+
         if (this._springState === SpringStates.EDGE) {
             this.spring.setOptions({anchor: [this._edgeSpringPosition, 0, 0]});
         }
