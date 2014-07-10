@@ -12,7 +12,7 @@ define(function(require, exports, module) {
     var Matrix = require('famous/math/Matrix');
 
     /**
-     * Implements a circle, or spherical, geometry for an Body with
+     * Implements a circle, or spherical, geometry for a Body with
      * radius.
      *
      * @class Circle
