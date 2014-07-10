@@ -61,6 +61,8 @@ define(function(require, exports, module) {
         groupScroll: false
     };
 
+    var EDGE_TOLERANCE = 0.01; //slop for detecting passing the edge
+
     function _sizeForDir(size) {
         if (!size) size = this._contextSize;
         var dimension = (this.options.direction === Utility.Direction.X) ? 0 : 1;
@@ -244,8 +246,6 @@ define(function(require, exports, module) {
         var position = this._position;
         var result = [];
 
-        this._onEdge = 0;
-
         var offset = -this._positionOffset;
         var clipSize = _getClipSize.call(this);
         var currNode = this._node;
@@ -271,16 +271,26 @@ define(function(require, exports, module) {
         var edgeSize = (nodesSize !== undefined && nodesSize < clipSize) ? nodesSize : clipSize;
 
         if (!currNode && offset - position <= edgeSize) {
-            this._onEdge = 1;
-            this._eventOutput.emit('edgeHit', {
-                position: offset - edgeSize
-            });
+            if (this._onEdge !== 1){
+                this._onEdge = 1;
+                this._eventOutput.emit('edgeHit', {
+                    position: offset - edgeSize
+                });
+            }
         }
-        else if (!this._node.getPrevious() && position <= 0) {
-            this._onEdge = -1;
-            this._eventOutput.emit('edgeHit', {
-                position: 0
-            });
+        else if (!this._node.getPrevious() && position < -EDGE_TOLERANCE) {
+            if (this._onEdge !== -1) {
+                this._onEdge = -1;
+                this._eventOutput.emit('edgeHit', {
+                    position: 0
+                });
+            }
+        }
+        else {
+            if (this._onEdge !== 0){
+                this._onEdge = 0;
+                this._eventOutput.emit('offEdge');
+            }
         }
 
         // backwards
