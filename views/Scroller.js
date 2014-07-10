@@ -61,7 +61,7 @@ define(function(require, exports, module) {
         groupScroll: false
     };
 
-    var EDGE_TOLERANCE = 0.01; //slop for detecting passing the edge
+    var EDGE_TOLERANCE = 0.1; //slop for detecting passing the edge
 
     function _sizeForDir(size) {
         if (!size) size = this._contextSize;
