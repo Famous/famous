@@ -95,7 +95,7 @@ define(function(require, exports, module) {
          * @type Number
          * @default 0.5
          */
-        resitution : 0.5
+        restitution : 0.5
     };
 
     function _getEnergy() {
