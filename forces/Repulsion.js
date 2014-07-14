@@ -78,7 +78,7 @@ define(function(require, exports, module) {
 
         /**
          * An inverse squared distance decay function
-         * @attribute INVERSE
+         * @attribute GRAVITY
          * @type Function
          * @param {Number} r distance from the source body
          * @param {Number} cutoff a distance shift to avoid singularities
