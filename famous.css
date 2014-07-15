@@ -66,6 +66,7 @@ body {
     transform-style: preserve-3d; /* performance */
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
     pointer-events: auto;
 }
