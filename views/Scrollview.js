@@ -73,6 +73,10 @@ define(function(require, exports, module) {
 
         this._node = null;
 
+        // only necessary for page previous event
+        this._nodeSwitch = false;
+        this._currentIndex = 0;
+
         this._physicsEngine = new PhysicsEngine();
         this._particle = new Particle();
         this._physicsEngine.addBody(this._particle);
@@ -139,6 +143,10 @@ define(function(require, exports, module) {
         this.setVelocity(0);
         this._touchVelocity = 0;
         this._earlyEnd = false;
+
+        // for page previous event
+        this._nodeSwitch = false;
+        this._currentIndex = this._node.index;
     }
 
     function _handleMove(event) {
@@ -181,6 +189,8 @@ define(function(require, exports, module) {
             this._touchVelocity = 0;
             this._needsPaginationCheck = true;
         }
+
+        this._nodeSwitch = this._currentIndex !== this._node.index;
     }
 
     function _bindEvents() {
@@ -190,7 +200,7 @@ define(function(require, exports, module) {
         this._eventInput.on('end', _handleEnd);
 
         this._scroller.on('onEdge', function(data) {
-            this._edgeSpringPosition = data.position;
+            this._edgeSpringPosition = 0;
             _handleEdge.call(this, this._scroller.onEdge());
         }.bind(this));
 
@@ -199,11 +209,11 @@ define(function(require, exports, module) {
             this._onEdge = this._scroller.onEdge();
         }.bind(this));
 
-        this._particle.on('update', function(particle){
-            this._displacement = particle.position.x - this.totalShift;;
+        this._particle.on('update', function(particle) {
+            this._displacement = particle.position.x - this.totalShift;
         }.bind(this));
 
-        this._particle.on('end', function(){
+        this._particle.on('end', function() {
             this._eventOutput.emit('atRest');
         }.bind(this));
     }
@@ -253,12 +263,23 @@ define(function(require, exports, module) {
         // parameters to determine when to switch
         var nodeSize = _nodeSizeForDirection.call(this, this._node);
         var positionNext = position > 0.5 * nodeSize;
-        var velocityNext = velocity > 0;
+        var positionPrev = position < 0.5 * nodeSize && this._nodeSwitch;
 
-        if ((positionNext && !velocitySwitch) || (velocitySwitch && velocityNext)) this.goToNextPage();
-        else _setSpring.call(this, 0, SpringStates.PAGE);
+        var velocityNext = velocity > 0;
+        var velocityPrev = velocity < 0;
 
         this._needsPaginationCheck = false;
+
+        if ((positionNext && !velocitySwitch) || (velocitySwitch && velocityNext)) {
+            this.goToNextPage();
+            return;
+        }
+
+        if ((positionPrev && !velocitySwitch) || (velocitySwitch && velocityPrev)) {
+            this._eventOutput.emit('pageChange', {direction: -1});
+        }
+
+        _setSpring.call(this, 0, SpringStates.PAGE);
     }
 
     function _setSpring(position, springState) {
@@ -369,8 +390,39 @@ define(function(require, exports, module) {
         return nextNode;
     };
 
+    /**
+     * Paginates the Scrollview to an absolute page index
+     * @method goToPage
+     */
+    Scrollview.prototype.goToPage = function goToPage(index) {
+        var currentIndex = this._node.index;
+        var i;
+
+        if (currentIndex > index) {
+            for (i = 0; i < currentIndex - index; i++)
+                this.goToPreviousPage();
+        }
+
+        if (currentIndex < index) {
+            for (i = 0; i < index - currentIndex; i++)
+                this.goToNextPage();
+        }
+    };
+
     Scrollview.prototype.outputFrom = function outputFrom() {
         return this._scroller.outputFrom.apply(this._scroller, arguments);
+    };
+
+    /**
+     * Returns the absolute displacement of the Scrollview
+     * @method getDisplacement
+     * @param {number} [node] If specified, returns the position of the node at that index in the
+     * Scrollview instance's currently managed collection.
+     * @return {number} The position of either the specified node, or the Scrollview's current Node,
+     * in pixels translated.
+     */
+    Scrollview.prototype.getDisplacement = function getPosition() {
+        return this._displacement;
     };
 
     /**
