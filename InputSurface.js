@@ -29,7 +29,11 @@ define(function(require, exports, module) {
         this._name        = options.name || '';
 
         Surface.apply(this, arguments);
+
         this.on('click', this.focus.bind(this));
+        window.addEventListener('click', function(event) {
+            if (event.target !== this._currTarget) this.blur();
+        }.bind(this));
     }
     InputSurface.prototype = Object.create(Surface.prototype);
     InputSurface.prototype.constructor = InputSurface;

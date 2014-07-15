@@ -50,7 +50,7 @@ define(function(require, exports, module) {
             urlCache: urlCache,
             countCache: countCache,
             nodeCache: countCache
-        }
+        };
     };
 
     ImageSurface.prototype = Object.create(Surface.prototype);
@@ -72,7 +72,7 @@ define(function(require, exports, module) {
                 nodeCache.splice(urlIndex, 1);
             } else {
                 countCache[urlIndex]--;
-            }            
+            }
         }
 
         urlIndex = urlCache.indexOf(imageUrl);
