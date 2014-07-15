@@ -273,7 +273,7 @@ define(function(require, exports, module) {
         if (!currNode && offset - position <= edgeSize) {
             if (this._onEdge !== 1){
                 this._onEdge = 1;
-                this._eventOutput.emit('edgeHit', {
+                this._eventOutput.emit('onEdge', {
                     position: offset - edgeSize
                 });
             }
@@ -281,7 +281,7 @@ define(function(require, exports, module) {
         else if (!this._node.getPrevious() && position < -EDGE_TOLERANCE) {
             if (this._onEdge !== -1) {
                 this._onEdge = -1;
-                this._eventOutput.emit('edgeHit', {
+                this._eventOutput.emit('onEdge', {
                     position: 0
                 });
             }
