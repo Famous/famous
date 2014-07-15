@@ -7,8 +7,7 @@
  * @copyright Famous Industries, Inc. 2014
  */
 
-
-html {
+.famous-root {
     width: 100%;
     height: 100%;
     margin: 0px;
@@ -16,21 +15,6 @@ html {
     overflow: hidden;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-}
-
-body {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-perspective: 0;
-    perspective: none;
-    overflow: hidden;
 }
 
 .famous-container, .famous-group {
