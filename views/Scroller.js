@@ -310,7 +310,7 @@ define(function(require, exports, module) {
             }
         }
 
-        _normalizeState.call(this);
+//        _normalizeState.call(this);
         return result;
     }
 

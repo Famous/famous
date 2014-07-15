@@ -295,7 +295,7 @@ define(function(require, exports, module) {
         var nodeSize = _nodeSizeForDirection.call(this, this._node);
         var nextNode = this._node.getNext();
 
-        while (offset + position > nodeSize + TOLERANCE && nextNode) {
+        while (offset + position > nodeSize && nextNode) {
             offset -= nodeSize;
             this._scroller.sequenceFrom(nextNode);
             this._node = nextNode;
@@ -306,7 +306,7 @@ define(function(require, exports, module) {
         var previousNode = this._node.getPrevious();
         var previousNodeSize;
 
-        while (offset + position < -TOLERANCE && previousNode) {
+        while (offset + position < 0 && previousNode) {
             previousNodeSize = _nodeSizeForDirection.call(this, previousNode);
             this._scroller.sequenceFrom(previousNode);
             this._node = previousNode;
@@ -330,6 +330,44 @@ define(function(require, exports, module) {
             this.spring.setOptions({anchor: [this._pageSpringPosition, 0, 0]});
         }
     }
+
+    /**
+     * goToPreviousPage paginates your Scrollview instance backwards by one item.
+     * @method goToPreviousPage
+     * @return {ViewSequence} The previous node.
+     */
+    Scrollview.prototype.goToPreviousPage = function goToPreviousPage() {
+        if (!this._node) return null;
+        var previousNode = this._node.getPrevious();
+        if (previousNode) {
+            var previousNodeSize = _nodeSizeForDirection.call(this, previousNode);
+            this._scroller.sequenceFrom(previousNode);
+            this._node = previousNode;
+            _shiftOrigin.call(this, previousNodeSize);
+            _setSpring.call(this, 0, SpringStates.PAGE);
+        }
+        this._eventOutput.emit('pageChange', {direction: -1});
+        return previousNode;
+    };
+
+    /**
+     * goToNextPage paginates your Scrollview instance forwards by one item.
+     * @method goToNextPage
+     * @return {ViewSequence} The next node.
+     */
+    Scrollview.prototype.goToNextPage = function goToNextPage() {
+        if (!this._node) return null;
+        var nextNode = this._node.getNext();
+        if (nextNode) {
+            var currentNodeSize = _nodeSizeForDirection.call(this, this._node);
+            this._scroller.sequenceFrom(nextNode);
+            this._node = nextNode;
+            _shiftOrigin.call(this, -currentNodeSize);
+            _setSpring.call(this, 0, SpringStates.PAGE);
+        }
+        this._eventOutput.emit('pageChange', {direction: 1});
+        return nextNode;
+    };
 
     Scrollview.prototype.outputFrom = function outputFrom() {
         return this._scroller.outputFrom.apply(this._scroller, arguments);
@@ -414,49 +452,6 @@ define(function(require, exports, module) {
     };
 
     /**
-     * goToPreviousPage paginates your Scrollview instance backwards by one item.
-     * @method goToPreviousPage
-     * @return {ViewSequence} The previous node.
-     */
-    Scrollview.prototype.goToPreviousPage = function goToPreviousPage() {
-        if (!this._node) return null;
-        var previousNode = this._node.getPrevious();
-        if (previousNode) {
-            var currentPosition = this.getPosition();
-            var previousNodeSize = _nodeSizeForDirection.call(this, previousNode);
-            this._scroller.sequenceFrom(previousNode);
-            this._node = previousNode;
-            var previousSpringPosition = (currentPosition < TOLERANCE) ? -previousNodeSize : 0;
-            _setSpring.call(this, previousSpringPosition, SpringStates.PAGE);
-            _shiftOrigin.call(this, previousNodeSize);
-        }
-        this._eventOutput.emit('pageChange', {direction: -1});
-        return previousNode;
-    };
-
-    /**
-     * goToNextPage paginates your Scrollview instance forwards by one item.
-     * @method goToNextPage
-     * @return {ViewSequence} The next node.
-     */
-    Scrollview.prototype.goToNextPage = function goToNextPage() {
-        if (!this._node) return null;
-        var nextNode = this._node.getNext();
-        if (nextNode) {
-            var currentPosition = this.getPosition();
-            var currentNodeSize = _nodeSizeForDirection.call(this, this._node);
-            var nextNodeSize = _nodeSizeForDirection.call(this, nextNode);
-            this._scroller.sequenceFrom(nextNode);
-            this._node = nextNode;
-            var nextSpringPosition = (currentPosition > currentNodeSize - TOLERANCE) ? currentNodeSize + nextNodeSize : currentNodeSize;
-            _setSpring.call(this, nextSpringPosition, SpringStates.PAGE);
-            _shiftOrigin.call(this, -currentNodeSize);
-        }
-        this._eventOutput.emit('pageChange', {direction: 1});
-        return nextNode;
-    };
-
-    /**
      * Sets the collection of renderables under the Scrollview instance's control, by
      *  setting its current node to the passed in ViewSequence. If you
      *  pass in an array, the Scrollview instance will set its node as a ViewSequence instantiated with
@@ -491,7 +486,9 @@ define(function(require, exports, module) {
     Scrollview.prototype.render = function render() {
         if (!this._node) return null;
 
-        _normalizeState.call(this);
+        if (this._springState === SpringStates.NONE)
+            _normalizeState.call(this);
+
         if (this.options.paginated && this._needsPaginationCheck)
             _handlePagination.call(this);
 
