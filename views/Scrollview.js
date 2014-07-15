@@ -189,7 +189,7 @@ define(function(require, exports, module) {
         this._eventInput.on('update', _handleMove);
         this._eventInput.on('end', _handleEnd);
 
-        this._scroller.on('edgeHit', function(data) {
+        this._scroller.on('onEdge', function(data) {
             this._edgeSpringPosition = data.position;
             _handleEdge.call(this, this._scroller.onEdge());
         }.bind(this));
