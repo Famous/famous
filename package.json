@@ -1,6 +1,6 @@
 {
   "name": "famous-views",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Famo.us interaction components.",
   "scripts": {
     "test": "grunt test"
