@@ -403,6 +403,5 @@ define(function(require, exports, module) {
         this.proportions = proportions;
     };
 
-
     module.exports = Surface;
 });
