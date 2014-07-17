@@ -5,6 +5,7 @@ capable and performant front-end JavaScript framework out there. You can help by
 reporting bugs, fixing bugs, adding features, contributing new modules and by
 by providing feedback.
 
+
 ## Reporting bugs and other issues
 
 Famo.us is a framework that is always testing the limits of where browsers can go. As a result, it's likely that you may encounter bugs or other issues while developing with it.
@@ -119,6 +120,7 @@ repositories.
   * [utilities][utilities-issues]
   * [views][views-issues]
   * [widgets][widgets-issues]
+
 
 [famous-issues]: https://github.com/famous/famous/issues
 [core-issues]: https://github.com/famous/core/issues
