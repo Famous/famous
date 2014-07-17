@@ -138,7 +138,7 @@ define(function(require, exports, module) {
      *    dirtying and thus re-rendering, even if values do not change.
      *
      * @method setAttributes
-     * @param {Object} properties property dictionary of "key" => "value"
+    * @param {Object} attributes property dictionary of "key" => "value"
      */
     Surface.prototype.setAttributes = function setAttributes(attributes) {
         for (var n in attributes) {
