@@ -1,6 +1,6 @@
 {
   "name": "famous-utilities",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Famo.us static utility method library",
   "scripts": {
     "test": "grunt test"
