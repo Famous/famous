@@ -484,10 +484,11 @@ define(function(require, exports, module) {
         }
 
         this._scroller.setOptions(this.options);
+
         if (this.options.groupScroll)
-            this._scroller.pipe(this._eventInput);
+            this.subscribe(this._scroller);
         else
-            this._scroller.unpipe(this._eventInput);
+            this.unsubscribe(this._scroller);
 
         this.drag.setOptions({strength: this.options.drag});
         this.friction.setOptions({strength: this.options.friction});
