@@ -3,7 +3,7 @@
 Active involvement from the community is essential to help make famous the most
 capable and performant front-end JavaScript framework out there. You can help by
 reporting bugs, fixing bugs, adding features, contributing new modules and by
-by providing feedback.
+providing feedback.
 
 
 ## Reporting bugs and other issues
