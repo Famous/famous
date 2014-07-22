@@ -68,26 +68,59 @@ define(function(require, exports, module) {
      * @param {Number} [speedLimit=10] The highest scrolling speed you can reach.
      */
     function Scrollview(options) {
+        // patch options with defaults
         this.options = Object.create(Scrollview.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
 
-        this._node = null;
+        // create sub-components
+        this._scroller = new Scroller(this.options);
 
-        // only necessary for page previous event
-        this._nodeSwitch = false;
-        this._currentIndex = 0;
+        this.sync = new GenericSync(
+            ['scroll', 'touch'],
+            {
+                direction : this.options.direction,
+                scale : this.options.syncScale,
+                rails: this.options.rails
+            }
+        );
 
         this._physicsEngine = new PhysicsEngine();
         this._particle = new Particle();
         this._physicsEngine.addBody(this._particle);
 
-        this.spring = new Spring({anchor: [0, 0, 0]});
+        this.spring = new Spring({
+            anchor: [0, 0, 0],
+            period: this.options.edgePeriod,
+            dampingRatio: this.options.edgeDamp
+        });
+        this.drag = new Drag({
+            forceFunction: Drag.FORCE_FUNCTIONS.QUADRATIC,
+            strength: this.options.drag
+        });
+        this.friction = new Drag({
+            forceFunction: Drag.FORCE_FUNCTIONS.LINEAR,
+            strength: this.options.friction
+        });
 
-        this.drag = new Drag({forceFunction: Drag.FORCE_FUNCTIONS.QUADRATIC});
-        this.friction = new Drag({forceFunction: Drag.FORCE_FUNCTIONS.LINEAR});
+        // state
+        this._node = null;
+        this._touchCount = 0;
+        this._springState = SpringStates.NONE;
+        this._onEdge = 0; // -1 for top, 1 for bottom
+        this._pageSpringPosition = 0;
+        this._edgeSpringPosition = 0;
+        this._touchVelocity = 0;
+        this._earlyEnd = false;
+        this._needsPaginationCheck = false;
+        this._displacement = 0;
+        this._totalShift = 0;
+        this._nodeSwitch = false; // only necessary for page previous event
+        this._currentIndex = 0; // only necessary for page previous event
 
-        this.sync = new GenericSync(['scroll', 'touch'], {direction : this.options.direction});
+        // subcomponent logic
+        this._scroller.positionFrom(this.getPosition.bind(this));
 
+        // eventing
         this._eventInput = new EventHandler();
         this._eventOutput = new EventHandler();
 
@@ -97,24 +130,10 @@ define(function(require, exports, module) {
         EventHandler.setInputHandler(this, this._eventInput);
         EventHandler.setOutputHandler(this, this._eventOutput);
 
-        this._touchCount = 0;
-        this._springState = SpringStates.NONE;
-        this._onEdge = 0; // -1 for top, 1 for bottom
-        this._pageSpringPosition = 0;
-        this._edgeSpringPosition = 0;
-        this._touchVelocity = 0;
-        this._earlyEnd = false;
-        this._needsPaginationCheck = false;
-
-        this._scroller = new Scroller();
-        this._scroller.positionFrom(this.getPosition.bind(this));
-
-        this.setOptions(options);
-
-        this._displacement = 0;
-        this.totalShift = 0;
-
         _bindEvents.call(this);
+
+        // override default options with passed-in custom options
+        if (options) this.setOptions(options);
     }
 
     Scrollview.DEFAULT_OPTIONS = {
@@ -132,7 +151,8 @@ define(function(require, exports, module) {
         pageStopSpeed: 10,
         pageSwitchSpeed: 0.5,
         speedLimit: 10,
-        groupScroll: false
+        groupScroll: false,
+        syncScale: 1
     };
 
     function _handleStart(event) {
@@ -202,19 +222,21 @@ define(function(require, exports, module) {
         this._scroller.on('onEdge', function(data) {
             this._edgeSpringPosition = 0;
             _handleEdge.call(this, this._scroller.onEdge());
+            this._eventOutput.emit('onEdge');
         }.bind(this));
 
         this._scroller.on('offEdge', function() {
-            this.sync.setOptions({scale: 1});
+            this.sync.setOptions({scale: this.options.syncScale});
             this._onEdge = this._scroller.onEdge();
+            this._eventOutput.emit('offEdge');
         }.bind(this));
 
         this._particle.on('update', function(particle) {
-            this._displacement = particle.position.x - this.totalShift;
+            this._displacement = particle.position.x - this._totalShift;
         }.bind(this));
 
         this._particle.on('end', function() {
-            this._eventOutput.emit('atRest');
+            this._eventOutput.emit('settle');
         }.bind(this));
     }
 
@@ -342,7 +364,7 @@ define(function(require, exports, module) {
         this._edgeSpringPosition += amount;
         this._pageSpringPosition += amount;
         this.setPosition(this.getPosition() + amount);
-        this.totalShift += amount;
+        this._totalShift += amount;
 
         if (this._springState === SpringStates.EDGE) {
             this.spring.setOptions({anchor: [this._edgeSpringPosition, 0, 0]});
@@ -473,35 +495,37 @@ define(function(require, exports, module) {
      * @param {Options} options An object of configurable options for the Scrollview instance.
      */
     Scrollview.prototype.setOptions = function setOptions(options) {
-        if (options) {
-            if (options.direction !== undefined) {
-                if (options.direction === 'x') options.direction = Utility.Direction.X;
-                else if (options.direction === 'y') options.direction = Utility.Direction.Y;
-            }
-
-            this._scroller.setOptions(options);
-            this._optionsManager.setOptions(options);
+        // preprocess directionality
+        if (options.direction !== undefined) {
+            if (options.direction === 'x') options.direction = Utility.Direction.X;
+            else if (options.direction === 'y') options.direction = Utility.Direction.Y;
         }
 
-        this._scroller.setOptions(this.options);
-
-        if (this.options.groupScroll)
+        // propagate custom options to scroller
+        this._scroller.setOptions(options);
+        if (options.groupScroll)
             this.subscribe(this._scroller);
         else
             this.unsubscribe(this._scroller);
 
-        this.drag.setOptions({strength: this.options.drag});
-        this.friction.setOptions({strength: this.options.friction});
+        // propagate custom options to physics
+        if (options.drag) this.drag.setOptions({strength: options.drag});
+        if (options.friction) this.friction.setOptions({strength: options.friction});
+        if (options.edgePeriod || options.edgeDamp) {
+            this.spring.setOptions({
+                period: options.edgePeriod,
+                dampingRatio: options.edgeDamp
+            });
+        }
 
-        this.spring.setOptions({
-            period: this.options.edgePeriod,
-            dampingRatio: this.options.edgeDamp
-        });
-
-        this.sync.setOptions({
-            rails: this.options.rails,
-            direction: (this.options.direction === Utility.Direction.X) ? GenericSync.DIRECTION_X : GenericSync.DIRECTION_Y
-        });
+        // propagate custom options to sync
+        if (options.rails || options.direction || options.syncScale) {
+            this.sync.setOptions({
+                rails: options.rails,
+                direction: (options.direction === Utility.Direction.X) ? GenericSync.DIRECTION_X : GenericSync.DIRECTION_Y,
+                scale: options.syncScale
+            });
+        }
     };
 
     /**
