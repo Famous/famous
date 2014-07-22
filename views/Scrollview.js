@@ -107,7 +107,7 @@ define(function(require, exports, module) {
         this._node = null;
         this._touchCount = 0;
         this._springState = SpringStates.NONE;
-        this._onEdge = 0; // -1 for top, 1 for bottom
+        this._onEdge = EdgeStates.NONE;
         this._pageSpringPosition = 0;
         this._edgeSpringPosition = 0;
         this._touchVelocity = 0;
@@ -116,7 +116,7 @@ define(function(require, exports, module) {
         this._displacement = 0;
         this._totalShift = 0;
         this._nodeSwitch = false; // only necessary for page previous event
-        this._currentIndex = 0; // only necessary for page previous event
+        this._currentIndex = 0;   // only necessary for page previous event
 
         // subcomponent logic
         this._scroller.positionFrom(this.getPosition.bind(this));
@@ -156,6 +156,21 @@ define(function(require, exports, module) {
         syncScale: 1
     };
 
+
+    /** @enum */
+    var SpringStates = {
+        NONE: 0,
+        EDGE: 1,
+        PAGE: 2
+    };
+
+    /** @enum */
+    var EdgeStates = {
+        TOP:   -1,
+        NONE:   0,
+        BOTTOM: 1
+    };
+
     function _handleStart(event) {
         this._touchCount = event.count;
         if (event.count === undefined) this._touchCount = 1;
@@ -174,8 +189,8 @@ define(function(require, exports, module) {
         var velocity = -event.velocity;
         var delta = -event.delta;
 
-        if (this._onEdge && event.slip) {
-            if ((velocity < 0 && this._onEdge < 0) || (velocity > 0 && this._onEdge > 0)) {
+        if (this._onEdge !== EdgeStates.NONE && event.slip) {
+            if ((velocity < 0 && this._onEdge === EdgeStates.TOP) || (velocity > 0 && this._onEdge === EdgeStates.BOTTOM)) {
                 if (!this._earlyEnd) {
                     _handleEnd.call(this, event);
                     this._earlyEnd = true;
@@ -199,7 +214,7 @@ define(function(require, exports, module) {
         this._touchCount = event.count || 0;
         if (!this._touchCount) {
             _detachAgents.call(this);
-            if (this._onEdge) _setSpring.call(this, this._edgeSpringPosition, SpringStates.EDGE);
+            if (this._onEdge !== EdgeStates.NONE) _setSpring.call(this, this._edgeSpringPosition, SpringStates.EDGE);
             _attachAgents.call(this);
             var velocity = -event.velocity;
             var speedLimit = this.options.speedLimit;
@@ -221,7 +236,7 @@ define(function(require, exports, module) {
         this._eventInput.on('end', _handleEnd);
 
         this._scroller.on('onEdge', function(data) {
-            this._edgeSpringPosition = 0;
+            this._edgeSpringPosition = data.position;
             _handleEdge.call(this, this._scroller.onEdge());
             this._eventOutput.emit('onEdge');
         }.bind(this));
