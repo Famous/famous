@@ -166,7 +166,7 @@ define(function(require, exports, module) {
 
         // for page previous event
         this._nodeSwitch = false;
-        this._currentIndex = this._node.index;
+        this._currentIndex = this.getCurrentIndex();
     }
 
     function _handleMove(event) {
@@ -210,7 +210,7 @@ define(function(require, exports, module) {
             this._needsPaginationCheck = true;
         }
 
-        this._nodeSwitch = this._currentIndex !== this._node.index;
+        this._nodeSwitch = this._currentIndex !== this.getCurrentIndex();
     }
 
     function _bindEvents() {
@@ -375,7 +375,18 @@ define(function(require, exports, module) {
     }
 
     /**
+     * Returns the index of the first visible renderable
+     *
+     * @method getCurrentIndex
+     * @return {Number} The current index of the ViewSequence
+     */
+    Scrollview.prototype.getCurrentIndex = function getCurrentIndex() {
+        return this._node.index;
+    };
+
+    /**
      * goToPreviousPage paginates your Scrollview instance backwards by one item.
+     *
      * @method goToPreviousPage
      * @return {ViewSequence} The previous node.
      */
@@ -395,6 +406,7 @@ define(function(require, exports, module) {
 
     /**
      * goToNextPage paginates your Scrollview instance forwards by one item.
+     *
      * @method goToNextPage
      * @return {ViewSequence} The next node.
      */
@@ -413,11 +425,12 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Paginates the Scrollview to an absolute page index
+     * Paginates the Scrollview to an absolute page index.
+     *
      * @method goToPage
      */
     Scrollview.prototype.goToPage = function goToPage(index) {
-        var currentIndex = this._node.index;
+        var currentIndex = this.getCurrentIndex();
         var i;
 
         if (currentIndex > index) {
@@ -436,20 +449,23 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Returns the absolute displacement of the Scrollview
+     * Returns the absolute displacement of the Scrollview.
+     *
      * @method getDisplacement
      * @param {number} [node] If specified, returns the position of the node at that index in the
      * Scrollview instance's currently managed collection.
      * @return {number} The position of either the specified node, or the Scrollview's current Node,
      * in pixels translated.
      */
-    Scrollview.prototype.getDisplacement = function getPosition() {
+    Scrollview.prototype.getDisplacement = function getDisplacement() {
         return this._displacement;
     };
 
     /**
      * Returns the position associated with the Scrollview instance's current node
      *  (generally the node currently at the top).
+     *
+     * @deprecated
      * @method getPosition
      * @param {number} [node] If specified, returns the position of the node at that index in the
      * Scrollview instance's currently managed collection.
@@ -461,7 +477,21 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Sets position of the physics particle that controls Scrollview instance's "position"
+     * Returns the offset associated with the Scrollview instance's current node
+     *  (generally the node currently at the top).
+     *
+     * @method getOffset
+     * @param {number} [node] If specified, returns the position of the node at that index in the
+     * Scrollview instance's currently managed collection.
+     * @return {number} The position of either the specified node, or the Scrollview's current Node,
+     * in pixels translated.
+     */
+    Scrollview.prototype.getOffset = Scrollview.prototype.getPosition;
+
+    /**
+     * Sets the position of the physics particle that controls Scrollview instance's "position"
+     *
+     * @deprecated
      * @method setPosition
      * @param {number} x The amount of pixels you want your scrollview to progress by.
      */
@@ -470,7 +500,16 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Sets the offset of the physics particle that controls Scrollview instance's "position"
+     *
+     * @method setPosition
+     * @param {number} x The amount of pixels you want your scrollview to progress by.
+     */
+    Scrollview.prototype.setOffset = Scrollview.prototype.setPosition;
+
+    /**
      * Returns the Scrollview instance's velocity.
+     *
      * @method getVelocity
      * @return {Number} The velocity.
      */
@@ -482,6 +521,7 @@ define(function(require, exports, module) {
     /**
      * Sets the Scrollview instance's velocity. Until affected by input or another call of setVelocity
      *  the Scrollview instance will scroll at the passed-in velocity.
+     *
      * @method setVelocity
      * @param {number} v The magnitude of the velocity.
      */
@@ -491,6 +531,7 @@ define(function(require, exports, module) {
 
     /**
      * Patches the Scrollview instance's options with the passed-in ones.
+     *
      * @method setOptions
      * @param {Options} options An object of configurable options for the Scrollview instance.
      */
