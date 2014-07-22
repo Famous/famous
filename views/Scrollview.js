@@ -255,9 +255,11 @@ define(function(require, exports, module) {
             if (!this.options.paginated)
                 this._eventOutput.emit('settle');
             else {
-                if (this._springState !== SpringStates.EDGE || this._springState !== SpringStates.NONE)
+                if (this._springState !== SpringStates.EDGE || this._springState !== SpringStates.NONE){
                     this._eventOutput.emit('settle');
+                }
             }
+            if (!this.options.paginated) this._springState = SpringStates.NONE;
         }.bind(this));
     }
 
@@ -420,8 +422,8 @@ define(function(require, exports, module) {
             this._node = previousNode;
             _shiftOrigin.call(this, previousNodeSize);
             _setSpring.call(this, 0, SpringStates.PAGE);
+            this._eventOutput.emit('pageChange', {direction: -1});
         }
-        this._eventOutput.emit('pageChange', {direction: -1});
         return previousNode;
     };
 
@@ -440,8 +442,8 @@ define(function(require, exports, module) {
             this._node = nextNode;
             _shiftOrigin.call(this, -currentNodeSize);
             _setSpring.call(this, 0, SpringStates.PAGE);
+            this._eventOutput.emit('pageChange', {direction: 1});
         }
-        this._eventOutput.emit('pageChange', {direction: 1});
         return nextNode;
     };
 
