@@ -267,7 +267,7 @@ define(function(require, exports, module) {
 
         var edgeSize = (nodesSize !== undefined && nodesSize < clipSize) ? nodesSize : clipSize;
 
-        if (!currNode && offset - position <= edgeSize) {
+        if (!currNode && offset - position < edgeSize - EDGE_TOLERANCE) {
             if (this._onEdge !== 1){
                 this._onEdge = 1;
                 this._eventOutput.emit('onEdge', {
