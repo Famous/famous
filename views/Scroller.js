@@ -61,7 +61,7 @@ define(function(require, exports, module) {
         groupScroll: false
     };
 
-    var EDGE_TOLERANCE = 0.1; //slop for detecting passing the edge
+    var EDGE_TOLERANCE = 0; //slop for detecting passing the edge
 
     function _sizeForDir(size) {
         if (!size) size = this._contextSize;
@@ -265,13 +265,11 @@ define(function(require, exports, module) {
             }
         }
 
-        var edgeSize = (nodesSize !== undefined && nodesSize < clipSize) ? nodesSize : clipSize;
-
-        if (!currNode && offset - position < edgeSize - EDGE_TOLERANCE) {
+        if (!currNode && offset - position < clipSize - EDGE_TOLERANCE) {
             if (this._onEdge !== 1){
                 this._onEdge = 1;
                 this._eventOutput.emit('onEdge', {
-                    position: offset - edgeSize
+                    position: offset - clipSize
                 });
             }
         }
