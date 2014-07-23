@@ -151,7 +151,7 @@ define(function(require, exports, module) {
         pageDamp: 0.8,
         pageStopSpeed: 10,
         pageSwitchSpeed: 0.5,
-        speedLimit: 10,
+        speedLimit: 5,
         groupScroll: false,
         syncScale: 1
     };
@@ -176,6 +176,7 @@ define(function(require, exports, module) {
         if (event.count === undefined) this._touchCount = 1;
 
         _detachAgents.call(this);
+
         this.setVelocity(0);
         this._touchVelocity = 0;
         this._earlyEnd = false;
@@ -203,11 +204,20 @@ define(function(require, exports, module) {
         if (this._earlyEnd) return;
         this._touchVelocity = velocity;
 
-        if (event.slip) this.setVelocity(velocity);
-        else {
-            this.setPosition(this.getPosition() + delta);
-            this._displacement += delta;
+        if (event.slip) {
+            var speedLimit = this.options.speedLimit;
+            if (velocity < -speedLimit) velocity = -speedLimit;
+            else if (velocity > speedLimit) velocity = speedLimit;
+
+            this.setVelocity(velocity);
+
+            var deltaLimit = speedLimit * 16;
+            if (delta > deltaLimit) delta = deltaLimit;
+            else if (delta < -deltaLimit) delta = -deltaLimit;
         }
+
+        this.setPosition(this.getPosition() + delta);
+        this._displacement += delta;
 
         if (this._springState === SpringStates.NONE) _normalizeState.call(this);
     }
@@ -272,9 +282,8 @@ define(function(require, exports, module) {
 
     function _nodeSizeForDirection(node) {
         var direction = this.options.direction;
-        var nodeSize = (node.getSize() || this._scroller.getSize())[direction];
-        if (!nodeSize) nodeSize = this._scroller.getSize()[direction];
-        return nodeSize;
+        var nodeSize = node.getSize();
+        return (!nodeSize) ? this._scroller.getSize()[direction] : nodeSize[direction];
     }
 
     function _handleEdge(edge) {
@@ -408,7 +417,7 @@ define(function(require, exports, module) {
      * @return {ViewSequence} The previous node.
      */
     Scrollview.prototype.goToPreviousPage = function goToPreviousPage() {
-        if (!this._node) return null;
+        if (!this._node || this._onEdge === EdgeStates.TOP) return null;
 
         // if moving back to the current node
         if (this.getPosition() > 1 && this._springState === SpringStates.NONE) {
@@ -436,7 +445,7 @@ define(function(require, exports, module) {
      * @return {ViewSequence} The next node.
      */
     Scrollview.prototype.goToNextPage = function goToNextPage() {
-        if (!this._node) return null;
+        if (!this._node || this._onEdge === EdgeStates.BOTTOM) return null;
         var nextNode = this._node.getNext();
         if (nextNode) {
             var currentNodeSize = _nodeSizeForDirection.call(this, this._node);
@@ -471,19 +480,6 @@ define(function(require, exports, module) {
 
     Scrollview.prototype.outputFrom = function outputFrom() {
         return this._scroller.outputFrom.apply(this._scroller, arguments);
-    };
-
-    /**
-     * Returns the absolute displacement of the Scrollview.
-     *
-     * @method getDisplacement
-     * @param {number} [node] If specified, returns the position of the node at that index in the
-     * Scrollview instance's currently managed collection.
-     * @return {number} The position of either the specified node, or the Scrollview's current Node,
-     * in pixels translated.
-     */
-    Scrollview.prototype.getDisplacement = function getDisplacement() {
-        return this._displacement;
     };
 
     /**
