@@ -141,7 +141,7 @@ define(function(require, exports, module) {
         rails: true,
         friction: 0.005,
         drag: 0.0001,
-        edgeGrip: 0.5,
+        edgeGrip: 0.2,
         edgePeriod: 300,
         edgeDamp: 1,
         margin: 1000,       // mostly safe
@@ -207,6 +207,8 @@ define(function(require, exports, module) {
             this.setPosition(this.getPosition() + delta);
             this._displacement += delta;
         }
+
+        if (this._springState === SpringStates.NONE) _normalizeState.call(this);
     }
 
     function _handleEnd(event) {
