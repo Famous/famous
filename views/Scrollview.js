@@ -115,7 +115,7 @@ define(function(require, exports, module) {
         this._displacement = 0;
         this._totalShift = 0;
         this._nodeSwitch = false; // only necessary for page previous event
-        this._currentIndex = 0;   // only necessary for page previous event
+        this._previousIndex = 0;   // only necessary for page previous event
 
         // subcomponent logic
         this._scroller.positionFrom(this.getPosition.bind(this));
@@ -181,7 +181,7 @@ define(function(require, exports, module) {
 
         // for page previous event
         this._nodeSwitch = false;
-        this._currentIndex = this.getCurrentIndex();
+        this._previousIndex = this.getCurrentIndex();
     }
 
     function _handleMove(event) {
@@ -225,7 +225,7 @@ define(function(require, exports, module) {
             this._needsPaginationCheck = true;
         }
 
-        this._nodeSwitch = (this._currentIndex !== this.getCurrentIndex());
+        this._nodeSwitch = (this._previousIndex !== this.getCurrentIndex());
     }
 
     function _bindEvents() {
@@ -247,18 +247,13 @@ define(function(require, exports, module) {
         }.bind(this));
 
         this._particle.on('update', function(particle) {
+            if (this._springState === SpringStates.NONE) _normalizeState.call(this);
             this._displacement = particle.position.x - this._totalShift;
         }.bind(this));
 
         this._particle.on('end', function() {
-            if (!this.options.paginated)
+            if (!this.options.paginated || (this.options.paginated && this._springState !== SpringStates.NONE))
                 this._eventOutput.emit('settle');
-            else {
-                if (this._springState !== SpringStates.EDGE || this._springState !== SpringStates.NONE){
-                    this._eventOutput.emit('settle');
-                }
-            }
-            if (!this.options.paginated) this._springState = SpringStates.NONE;
         }.bind(this));
     }
 
@@ -316,14 +311,11 @@ define(function(require, exports, module) {
 
         if ((positionNext && !velocitySwitch) || (velocitySwitch && velocityNext)) {
             this.goToNextPage();
-            return;
         }
-
-        if ((positionPrev && !velocitySwitch) || (velocitySwitch && velocityPrev)) {
-            this._eventOutput.emit('pageChange', {direction: -1});
+        else if ((positionPrev && !velocitySwitch) || (velocitySwitch && velocityPrev)) {
+            this.goToPreviousPage();
         }
-
-        _setSpring.call(this, 0, SpringStates.PAGE);
+        else _setSpring.call(this, 0, SpringStates.PAGE);
     }
 
     function _setSpring(position, springState) {
@@ -414,6 +406,14 @@ define(function(require, exports, module) {
      */
     Scrollview.prototype.goToPreviousPage = function goToPreviousPage() {
         if (!this._node) return null;
+
+        // if moving back to the current node
+        if (this.getPosition() > 1 && this._springState === SpringStates.NONE) {
+            _setSpring.call(this, 0, SpringStates.PAGE);
+            return this._node;
+        }
+
+        // if moving to the previous node
         var previousNode = this._node.getPrevious();
         if (previousNode) {
             var previousNodeSize = _nodeSizeForDirection.call(this, previousNode);
@@ -629,9 +629,6 @@ define(function(require, exports, module) {
      * @return {number} Render spec for this component
      */
     Scrollview.prototype.render = function render() {
-        if (this._springState === SpringStates.NONE)
-            _normalizeState.call(this);
-
         if (this.options.paginated && this._needsPaginationCheck)
             _handlePagination.call(this);
 
