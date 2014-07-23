@@ -421,6 +421,8 @@ define(function(require, exports, module) {
         // if moving back to the current node
         if (this.getPosition() > 1 && this._springState === SpringStates.NONE) {
             _setSpring.call(this, 0, SpringStates.PAGE);
+            if (this.options.paginated)
+                this._eventOutput.emit('pageChange', {direction: -1});
             return this._node;
         }
 
@@ -575,9 +577,9 @@ define(function(require, exports, module) {
             this.unsubscribe(this._scroller);
 
         // physics sub-components
-        if (options.drag) this.drag.setOptions({strength: options.drag});
-        if (options.friction) this.friction.setOptions({strength: options.friction});
-        if (options.edgePeriod || options.edgeDamp) {
+        if (options.drag !== undefined) this.drag.setOptions({strength: options.drag});
+        if (options.friction !== undefined) this.friction.setOptions({strength: options.friction});
+        if (options.edgePeriod !== undefined || options.edgeDamp !== undefined) {
             this.spring.setOptions({
                 period: options.edgePeriod,
                 dampingRatio: options.edgeDamp
@@ -585,7 +587,7 @@ define(function(require, exports, module) {
         }
 
         // sync sub-component
-        if (options.rails || options.direction || options.syncScale) {
+        if (options.rails || options.direction !== undefined || options.syncScale !== undefined) {
             this.sync.setOptions({
                 rails: options.rails,
                 direction: (options.direction === Utility.Direction.X) ? GenericSync.DIRECTION_X : GenericSync.DIRECTION_Y,
