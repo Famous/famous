@@ -421,8 +421,7 @@ define(function(require, exports, module) {
         // if moving back to the current node
         if (this.getPosition() > 1 && this._springState === SpringStates.NONE) {
             _setSpring.call(this, 0, SpringStates.PAGE);
-            if (this.options.paginated)
-                this._eventOutput.emit('pageChange', {direction: -1});
+            this._eventOutput.emit('pageChange', {direction: -1});
             return this._node;
         }
 
@@ -452,9 +451,11 @@ define(function(require, exports, module) {
             var currentNodeSize = _nodeSizeForDirection.call(this, this._node);
             this._scroller.sequenceFrom(nextNode);
             this._node = nextNode;
+            //todo: better abstract this
+            if (this._previousIndex - this._node.index !== 0)
+                this._eventOutput.emit('pageChange', {direction: 1});
             _shiftOrigin.call(this, -currentNodeSize);
             _setSpring.call(this, 0, SpringStates.PAGE);
-            this._eventOutput.emit('pageChange', {direction: 1});
         }
         return nextNode;
     };
