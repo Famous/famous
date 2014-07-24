@@ -77,7 +77,7 @@ define(function(require, exports, module) {
     }
 
     function _getClipSize() {
-        if (this.options.clipSize) return this.options.clipSize;
+        if (this.options.clipSize !== undefined) return this.options.clipSize;
         else return _sizeForDir.call(this, this._contextSize);
     }
 
