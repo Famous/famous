@@ -359,11 +359,11 @@ define(function(require, exports, module) {
 
     function _normalizeState() {
         var offset = 0;
-        var position = this.getPosition();
+        var position = Math.round(this.getPosition());
         var nodeSize = _nodeSizeForDirection.call(this, this._node);
         var nextNode = this._node.getNext();
 
-        while (offset + position > nodeSize && nextNode) {
+        while (offset + position >= nodeSize && nextNode) {
             offset -= nodeSize;
             this._scroller.sequenceFrom(nextNode);
             this._node = nextNode;
@@ -374,7 +374,7 @@ define(function(require, exports, module) {
         var previousNode = this._node.getPrevious();
         var previousNodeSize;
 
-        while (offset + position < 0 && previousNode) {
+        while (offset + position <= 0 && previousNode) {
             previousNodeSize = _nodeSizeForDirection.call(this, previousNode);
             this._scroller.sequenceFrom(previousNode);
             this._node = previousNode;
