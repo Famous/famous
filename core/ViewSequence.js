@@ -50,6 +50,8 @@ define(function(require, exports, module) {
         this.loop = false;
         this.firstNode = null;
         this.lastNode = null;
+        this.size = null;
+        this.sizeDirty = true;
     };
 
     // Get value "i" slots away from the first index.
@@ -62,6 +64,19 @@ define(function(require, exports, module) {
     // Set value "i" slots away from the first index.
     ViewSequence.Backing.prototype.setValue = function setValue(i, value) {
         this.array[i - this.firstIndex] = value;
+    };
+
+    // Get sequence size from backing
+    ViewSequence.Backing.prototype.getSize = function getSize() {
+        var size = [0, 0];
+        for (var i = 0; i < this.array.length; i++) {
+            var nodeSize = this.array[i].getSize();
+            if (size[0] !== undefined) nodeSize[0] === undefined ? size[0] = undefined : size[0] += nodeSize[0];
+            if (size[1] !== undefined) nodeSize[1] === undefined ? size[1] = undefined : size[1] += nodeSize[1];
+        }
+        this.size = size;
+        this.sizeDirty = false;
+        return size;
     };
 
     // After splicing into the backing store, restore the indexes of each node correctly.
@@ -105,6 +120,7 @@ define(function(require, exports, module) {
                 index++;
             }
         }
+        this._.sizeDirty = true;
     };
 
     /**
@@ -182,6 +198,7 @@ define(function(require, exports, module) {
     ViewSequence.prototype.unshift = function unshift(value) {
         this._.array.unshift.apply(this._.array, arguments);
         this._.firstIndex -= arguments.length;
+        this._.sizeDirty = true;
     };
 
     /**
@@ -192,6 +209,7 @@ define(function(require, exports, module) {
      */
     ViewSequence.prototype.push = function push(value) {
         this._.array.push.apply(this._.array, arguments);
+        this._.sizeDirty = true;
     };
 
     /**
@@ -243,6 +261,7 @@ define(function(require, exports, module) {
         else if (this.index === this._.firstIndex + this._.array.length - 1) this._.lastNode = this;
         if (other.index === this._.firstIndex) this._.firstNode = other;
         else if (other.index === this._.firstIndex + this._.array.length - 1) this._.lastNode = other;
+        this._.sizeDirty = true;
     };
 
    /**
@@ -274,6 +293,7 @@ define(function(require, exports, module) {
      * @return {number} Render spec for this component
      */
     ViewSequence.prototype.render = function render() {
+        if (this._.sizeDirty) this._.getSize();
         var target = this.get();
         return target ? target.render.apply(target, arguments) : null;
     };
