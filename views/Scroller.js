@@ -78,7 +78,11 @@ define(function(require, exports, module) {
 
     function _getClipSize() {
         if (this.options.clipSize !== undefined) return this.options.clipSize;
-        else return _sizeForDir.call(this, this._contextSize);
+        if (this._contextSize[this.options.direction] > this._node._.size[this.options.direction]) {
+            return _sizeForDir.call(this, this._node._.size); 
+        } else {
+            return _sizeForDir.call(this, this._contextSize);   
+        }
     }
 
     /**
