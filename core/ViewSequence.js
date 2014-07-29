@@ -50,7 +50,7 @@ define(function(require, exports, module) {
         this.loop = false;
         this.firstNode = null;
         this.lastNode = null;
-        this.size = null;
+        this.size = [undefined, undefined];
         this.sizeDirty = true;
     };
 
