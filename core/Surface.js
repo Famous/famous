@@ -387,7 +387,7 @@ define(function(require, exports, module) {
         target.style.opacity = '';
         target.style.width = '';
         target.style.height = '';
-        this._size = null;
+        // this._size = null;
         _cleanupStyles.call(this, target);
         _cleanupAttributes.call(this, target);
         var classList = this.getClassList();

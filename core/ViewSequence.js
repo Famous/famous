@@ -71,12 +71,15 @@ define(function(require, exports, module) {
         if (index === undefined) index = this.array.length;
         var size = [0, 0];
         for (var i = 0; i < index; i++) {
-            var nodeSize = this.array[i].getSize();
+            var nodeSize = this.array[i].getSize() ? this.array[i].getSize() : this.array[i].size;
+            if (nodeSize === null) return;
             if (size[0] !== undefined) nodeSize[0] === undefined ? size[0] = undefined : size[0] += nodeSize[0];
             if (size[1] !== undefined) nodeSize[1] === undefined ? size[1] = undefined : size[1] += nodeSize[1];
         }
-        this.size = size;
-        this.sizeDirty = false;
+        if (index === this.array.length) {
+            this.size = size;
+            this.sizeDirty = false;
+        }
         return size;
     };
 
