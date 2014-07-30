@@ -66,10 +66,11 @@ define(function(require, exports, module) {
         this.array[i - this.firstIndex] = value;
     };
 
-    // Get sequence size from backing
-    ViewSequence.Backing.prototype.getSize = function getSize() {
+    // Get sequence size from backing up to index
+    ViewSequence.Backing.prototype.getSize = function getSize(index) {
+        if (index === undefined) index = this.array.length;
         var size = [0, 0];
-        for (var i = 0; i < this.array.length; i++) {
+        for (var i = 0; i < index; i++) {
             var nodeSize = this.array[i].getSize();
             if (size[0] !== undefined) nodeSize[0] === undefined ? size[0] = undefined : size[0] += nodeSize[0];
             if (size[1] !== undefined) nodeSize[1] === undefined ? size[1] = undefined : size[1] += nodeSize[1];
