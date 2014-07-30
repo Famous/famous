@@ -320,7 +320,6 @@ define(function(require, exports, module) {
         target.style.display = 'none';
         target.style.width = '';
         target.style.height = '';
-        // this._size = null;
         _cleanupStyles.call(this, target);
         var classList = this.getClassList();
         _cleanupClasses.call(this, target);
