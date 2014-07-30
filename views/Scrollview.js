@@ -498,6 +498,17 @@ define(function(require, exports, module) {
     Scrollview.prototype.getPosition = function getPosition() {
         return this._particle.getPosition1D();
     };
+    
+    /**
+     * Returns the absolute position associated with the Scrollview instance
+     *
+     * @method getAbsolutePosition
+     * @return {number} The position of the Scrollview's current Node,
+     * in pixels translated.
+     */
+    Scrollview.prototype.getAbsolutePosition = function getAbsolutePosition() {
+        return this._node._.getSize(this.getCurrentIndex())[this.options.direction] + this.getPosition();
+    };
 
     /**
      * Returns the offset associated with the Scrollview instance's current node
