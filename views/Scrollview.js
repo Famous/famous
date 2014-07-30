@@ -508,7 +508,7 @@ define(function(require, exports, module) {
      * in pixels translated.
      */
     Scrollview.prototype.getAbsolutePosition = function getAbsolutePosition() {
-        return this._node._.getSize(this.getCurrentIndex())[this.options.direction] + this.getPosition();
+        return this._node._.cumulativeSizes[this.getCurrentIndex()][this.options.direction] + this.getPosition();
     };
 
     /**
@@ -620,7 +620,7 @@ define(function(require, exports, module) {
      * @param {Array|ViewSequence} node Either an array of renderables or a Famous viewSequence.
      */
     Scrollview.prototype.sequenceFrom = function sequenceFrom(node) {
-        if (node instanceof Array) node = new ViewSequence({array: node});
+        if (node instanceof Array) node = new ViewSequence({array: node, trackSize: true});
         this._node = node;
         return this._scroller.sequenceFrom(node);
     };
