@@ -470,7 +470,7 @@ define(function(require, exports, module) {
      * @return {Array.Number} [x,y] size of surface
      */
     Surface.prototype.getSize = function getSize() {
-        return this._size;
+        return this._size ? this._size : this.size;
     };
 
     /**
