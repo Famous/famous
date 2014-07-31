@@ -83,6 +83,16 @@ define(function(require, exports, module) {
     View.prototype._add = View.prototype.add;
 
     /**
+     * Remove a child renderable from the view.
+     *
+     * @method remove
+     * @return {RenderNode}
+     */
+    View.prototype.remove = function remove() {
+        return this._node.remove.apply(this._node, arguments);
+    };
+
+    /**
      * Generate a render spec from the contents of this component.
      *
      * @private
