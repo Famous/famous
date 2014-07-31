@@ -66,6 +66,7 @@ define(function(require, exports, module) {
         var result;
         if (nodeStore.length > 0) {
             result = nodeStore.pop();
+            result.parentNode.appendChild(result);
         }
         else {
             result = document.createElement(type);
