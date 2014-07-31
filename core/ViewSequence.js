@@ -74,13 +74,14 @@ define(function(require, exports, module) {
         index = index || this.array.length;
         var size = [0, 0];
         for (var i = 0; i < index; i++) {
-            var nodeSize = this.array[i].getSize() ? this.array[i].getSize() : this.array[i].size;
+            var nodeSize = this.array[i].getSize();
             if (nodeSize === null) return;
+            if (nodeSize[0] === 0 || nodeSize[1] === 0) var trueSized = true;
             if (size[0] !== undefined) nodeSize[0] === undefined ? size[0] = undefined : size[0] += nodeSize[0];
             if (size[1] !== undefined) nodeSize[1] === undefined ? size[1] = undefined : size[1] += nodeSize[1];
             this.cumulativeSizes[i + 1] = size.slice();
         }
-        this.sizeDirty = false;
+        if (!trueSized) this.sizeDirty = false;
         return size;
     };
 
