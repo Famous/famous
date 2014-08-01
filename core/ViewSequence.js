@@ -73,10 +73,11 @@ define(function(require, exports, module) {
     ViewSequence.Backing.prototype.getSize = function getSize(index) {
         index = index || this.array.length;
         var size = [0, 0];
+        var trueSized;
         for (var i = 0; i < index; i++) {
-            var nodeSize = this.array[i].getSize();
+            var nodeSize = this.array[i].getSize() ? this.array[i].getSize() : this.array[i].size;
             if (nodeSize === null) return;
-            if (nodeSize[0] === 0 || nodeSize[1] === 0) var trueSized = true;
+            if (nodeSize[0] === true || nodeSize[1] === true || nodeSize[0] === 0 || nodeSize[1] === 0) trueSized = true;
             if (size[0] !== undefined) nodeSize[0] === undefined ? size[0] = undefined : size[0] += nodeSize[0];
             if (size[1] !== undefined) nodeSize[1] === undefined ? size[1] = undefined : size[1] += nodeSize[1];
             this.cumulativeSizes[i + 1] = size.slice();
