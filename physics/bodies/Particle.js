@@ -149,7 +149,7 @@ define(function(require, exports, module) {
 
     /**
      * Basic setter for position
-     * @method getPosition
+     * @method setPosition
      * @param position {Array|Vector}
      */
     Particle.prototype.setPosition = function setPosition(position) {
