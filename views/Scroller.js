@@ -147,7 +147,7 @@ define(function(require, exports, module) {
      * Sets the collection of renderables under the Scroller instance's control.
      *
      * @method sequenceFrom
-     * @param {Array|ViewSequence} items Either an array of renderables or a Famous viewSequence.
+     * @param node {Array|ViewSequence} Either an array of renderables or a Famous viewSequence.
      * @chainable
      */
     Scroller.prototype.sequenceFrom = function sequenceFrom(node) {
