@@ -108,6 +108,23 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Toggle CSS-style class from the list of classes on this Surface.
+     *   Note this will map directly to the HTML property of the actual
+     *   corresponding rendered <div>.
+     *
+     * @method toggleClass
+     * @param {string} className name of class to toggle
+     */
+    Surface.prototype.toggleClass = function removeClass(className) {
+        var i = this.classList.indexOf(className);
+        if (i >= 0) {
+            this.removeClass(className);
+        } else {
+            this.addClass(className);
+        }
+    };
+
+    /**
      * Reset class list to provided dictionary.
      * @method setClasses
      * @param {Array.string} classList
