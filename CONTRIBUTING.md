@@ -143,4 +143,4 @@ repositories.
 [esr]: http://www.catb.org/esr/
 [taoup]: http://www.catb.org/esr/writings/taoup/
 [modifying-ojects-considered-bad]: http://perfectionkills.com/whats-wrong-with-extending-the-dom/
-[cla]: http://famo.us/cla/individual
+[cla]: http://famo.us/cla
