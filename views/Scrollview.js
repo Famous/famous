@@ -114,8 +114,7 @@ define(function(require, exports, module) {
         this._needsPaginationCheck = false;
         this._displacement = 0;
         this._totalShift = 0;
-        this._nodeSwitch = false; // only necessary for page previous event
-        this._previousIndex = 0;   // only necessary for page previous event
+        this._cachedIndex = 0;
 
         // subcomponent logic
         this._scroller.positionFrom(this.getPosition.bind(this));
@@ -179,10 +178,6 @@ define(function(require, exports, module) {
         this.setVelocity(0);
         this._touchVelocity = 0;
         this._earlyEnd = false;
-
-        // for page previous event
-        this._nodeSwitch = false;
-        this._previousIndex = this.getCurrentIndex();
     }
 
     function _handleMove(event) {
@@ -236,8 +231,6 @@ define(function(require, exports, module) {
             this._touchVelocity = 0;
             this._needsPaginationCheck = true;
         }
-
-        this._nodeSwitch = (this._previousIndex !== this.getCurrentIndex());
     }
 
     function _bindEvents() {
@@ -245,6 +238,7 @@ define(function(require, exports, module) {
         this._eventInput.on('start', _handleStart);
         this._eventInput.on('update', _handleMove);
         this._eventInput.on('end', _handleEnd);
+        this._eventInput.on('trueSizeChange', function() {this._node._.getSize()}.bind(this))
 
         this._scroller.on('onEdge', function(data) {
             this._edgeSpringPosition = data.position;
@@ -313,7 +307,7 @@ define(function(require, exports, module) {
         // parameters to determine when to switch
         var nodeSize = _nodeSizeForDirection.call(this, this._node);
         var positionNext = position > 0.5 * nodeSize;
-        var positionPrev = position < 0.5 * nodeSize && this._nodeSwitch;
+        var positionPrev = position < 0.5 * nodeSize;
 
         var velocityNext = velocity > 0;
         var velocityPrev = velocity < 0;
@@ -421,7 +415,6 @@ define(function(require, exports, module) {
         // if moving back to the current node
         if (this.getPosition() > 1 && this._springState === SpringStates.NONE) {
             _setSpring.call(this, 0, SpringStates.PAGE);
-            this._eventOutput.emit('pageChange', {direction: -1});
             return this._node;
         }
 
@@ -433,7 +426,6 @@ define(function(require, exports, module) {
             this._node = previousNode;
             _shiftOrigin.call(this, previousNodeSize);
             _setSpring.call(this, 0, SpringStates.PAGE);
-            this._eventOutput.emit('pageChange', {direction: -1});
         }
         return previousNode;
     };
@@ -451,9 +443,6 @@ define(function(require, exports, module) {
             var currentNodeSize = _nodeSizeForDirection.call(this, this._node);
             this._scroller.sequenceFrom(nextNode);
             this._node = nextNode;
-            //todo: better abstract this
-            if (this._previousIndex - this._node.index !== 0)
-                this._eventOutput.emit('pageChange', {direction: 1});
             _shiftOrigin.call(this, -currentNodeSize);
             _setSpring.call(this, 0, SpringStates.PAGE);
         }
@@ -643,6 +632,14 @@ define(function(require, exports, module) {
     Scrollview.prototype.render = function render() {
         if (this.options.paginated && this._needsPaginationCheck)
             _handlePagination.call(this);
+
+        if (this._cachedIndex < this._node.index) {
+            this._eventOutput.emit('pageChange', {direction: 1, index: this._node.index});
+            this._cachedIndex = this._node.index;
+        } else if (this._cachedIndex > this._node.index) {
+            this._eventOutput.emit('pageChange', {direction: -1, index: this._node.index});
+            this._cachedIndex = this._node.index;
+        }
 
         return this._scroller.render();
     };
