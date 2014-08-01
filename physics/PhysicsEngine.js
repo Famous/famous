@@ -69,8 +69,9 @@ define(function(require, exports, module) {
 
     /**
      * Options setter
+     *
      * @method setOptions
-     * @param options {Object}
+     * @param opts {Object}
      */
     PhysicsEngine.prototype.setOptions = function setOptions(opts) {
         for (var key in opts) if (this.options[key]) this.options[key] = opts[key];
@@ -135,7 +136,7 @@ define(function(require, exports, module) {
      * attached agent which can be used to detach the agent.
      *
      * @method attach
-     * @param agent {Agent|Array.Agent} A force, constraint, or array of them.
+     * @param agents {Agent|Array.Agent} A force, constraint, or array of them.
      * @param [targets=All] {Body|Array.Body} The Body or Bodies affected by the agent
      * @param [source] {Body} The source of the agent
      * @return AgentId {Number}
@@ -166,7 +167,7 @@ define(function(require, exports, module) {
      * effect on its affected Bodies.
      *
      * @method detach
-     * @param agentID {AgentId} The agentId of a previously defined agent
+     * @param id {AgentId} The agentId of a previously defined agent
      */
     PhysicsEngine.prototype.detach = function detach(id) {
         // detach from forces/constraints array
@@ -183,7 +184,7 @@ define(function(require, exports, module) {
      * Remove a single Body from a previously defined agent.
      *
      * @method detach
-     * @param agentID {AgentId} The agentId of a previously defined agent
+     * @param id {AgentId} The agentId of a previously defined agent
      * @param target {Body} The body to remove from the agent
      */
     PhysicsEngine.prototype.detachFrom = function detachFrom(id, target) {

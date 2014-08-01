@@ -9,7 +9,7 @@
 
 define(function(require, exports, module) {
 
-    /*
+    /**
      * A library of curves which map an animation explicitly as a function of time.
      *
      * @class Easing
