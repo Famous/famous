@@ -1,6 +1,8 @@
 Famo.us
 =======
 
+[![Build Status](https://travis-ci.org/Famous/famous.svg?branch=master)](https://travis-ci.org/Famous/famous) [![devDependency Status](https://david-dm.org/Famous/famous/dev-status.svg)](https://david-dm.org/Famous/famous#info=devDependencies)
+
 Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us, we are now in open beta.
 
 | RESOURCE | LINK |
@@ -10,7 +12,8 @@ Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us,
 | **DOCS** | [Documentation][famous-docs] |
 | **HELP** | [IRC Channel][IRC] |
 | **DEMOS** | [Mobile Interactive Demos][famous-demos] (*built by the community*)|
-| **ANGULAR INTEGRATION** | [ng.us][famous-angular] |
+| **ANGULAR INTEGRATION** | [Famo.us/Angular][famous-angular] |
+| **ANGULAR DOWNLOAD** | [Angular Starter Kit][famous-angular-starter-kit] |
 
 ## About
 
@@ -89,12 +92,13 @@ Copyright (c) 2014 Famous Industries, Inc.
 
 
 [famous-site]: http://famo.us
-[starter-kit]: http://code.famo.us/famous-starter-kit/famous-starter-kit.zip
+[starter-kit]: http://code.famo.us/famous-starter-kit/famous-starter-kit.zip?source=repo
 [famous-university]: https://famo.us/university
 [famous-help]: https://famo.us/help
 [famous-docs]: http://famo.us/docs
 [famous-demos]: http://famo.us/demos
 [famous-angular]: http://famo.us/integrations/angular/
+[famous-angular-starter-kit]: http://code.famo.us/famous-angular/latest/famous-angular-starter-kit.zip?source=repo
 [IRC]: http://webchat.freenode.net/?channels=famous
 [mpl]: http://www.mozilla.org/MPL/2.0/
 [mpl-faq]: http://www.mozilla.org/MPL/2.0/FAQ.html
