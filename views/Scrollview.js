@@ -24,6 +24,16 @@ define(function(require, exports, module) {
     var TouchSync = require('famous/inputs/TouchSync');
     GenericSync.register({scroll : ScrollSync, touch : TouchSync});
 
+    /** @const */
+    var TOLERANCE = 0.5;
+
+    /** @enum */
+    var SpringStates = {
+        NONE: 0,
+        EDGE: 1,
+        PAGE: 2
+    };
+
     /**
      * Scrollview will lay out a collection of renderables sequentially in the specified direction, and will
      * allow you to scroll through them with mousewheel or touch events.
@@ -84,7 +94,7 @@ define(function(require, exports, module) {
         EventHandler.setOutputHandler(this, this._eventOutput);
 
         this._touchCount = 0;
-        this._springState = 0;
+        this._springState = SpringStates.NONE;
         this._onEdge = 0; // -1 for top, 1 for bottom
         this._pageSpringPosition = 0;
         this._edgeSpringPosition = 0;
@@ -99,9 +109,6 @@ define(function(require, exports, module) {
 
         _bindEvents.call(this);
     }
-
-    /** @const */
-    var TOLERANCE = 0.5;
 
     Scrollview.DEFAULT_OPTIONS = {
         direction: Utility.Direction.Y,
@@ -119,13 +126,6 @@ define(function(require, exports, module) {
         pageSwitchSpeed: 0.5,
         speedLimit: 10,
         groupScroll: false
-    };
-
-    /** @enum */
-    var SpringStates = {
-        NONE: 0,
-        EDGE: 1,
-        PAGE: 2
     };
 
     function _handleStart(event) {
