@@ -43,7 +43,7 @@ define(function(require, exports, module) {
         }
         else {
             while (oldContainer.hasChildNodes()) {
-                container.appendChild(oldContainer.removeChild(oldContainer.firstChild));
+                container.appendChild(oldContainer.firstChild);
             }
         }
 
