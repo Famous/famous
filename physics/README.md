@@ -85,5 +85,5 @@ one at http://mozilla.org/MPL/2.0/.
 
 
 [reference-documentation]: http://famo.us/docs
-[animating]: http://famo.us/guides/dev/animating.html
-[pitfalls]: http://famo.us/guides/dev/pitfalls.html
+[animating]: http://famo.us/guides/animations
+[pitfalls]: http://famo.us/guides/pitfalls
