@@ -21,7 +21,7 @@ define(function(require, exports, module) {
      *
      * @param {Object} [options] default option overrides
      * @param {Array.Number} [options.size] [width, height] in pixels
-     * @param {Array.string} [options.classes] CSS classes to set on inner content
+     * @param {Array.string} [options.classes] CSS classes to set on target div
      * @param {Array} [options.properties] string dictionary of HTML attributes to set on target div
      * @param {string} [options.content] inner (HTML) content of surface
      */
