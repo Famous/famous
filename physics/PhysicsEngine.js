@@ -106,7 +106,9 @@ define(function(require, exports, module) {
         var array = (body.isBody) ? this._bodies : this._particles;
         var index = array.indexOf(body);
         if (index > -1) {
-            for (var i = 0; i < Object.keys(this._agents).length; i++) this.detachFrom(i, body);
+            var i;
+            for (i = 0; i < this._forces.length; i++) this.detachFro(this._forces[i], body);
+            for (i = 0; i < this._constraints.length; i++) this.detachFrom(this._constraints[i], body);
             array.splice(index,1);
         }
         if (this.getBodies().length === 0) this._hasBodies = false;
