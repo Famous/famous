@@ -83,6 +83,9 @@ define(function(require, exports, module) {
                 }
             }
         }
+        else if (transformDefinition instanceof Function) {
+            transform = transformDefinition;
+        }
         else if (transformDefinition instanceof Object) {
             transform = _resolveTransformMatrix(transformDefinition);
         }

@@ -3,7 +3,7 @@
 Active involvement from the community is essential to help make famous the most
 capable and performant front-end JavaScript framework out there. You can help by
 reporting bugs, fixing bugs, adding features, contributing new modules and by
-by providing feedback.
+providing feedback.
 
 
 ## Reporting bugs and other issues
@@ -94,7 +94,7 @@ Bug fixes follow a [slightly different format](#bug-fixes).
 ### Bug fixes
 
 If you'd like to contribute a fix for a bug you've encountered, first read up on
-[how to report a bug][reporting-bugs-and-other-issues] and report it so we are
+[how to report a bug](#reporting-bugs-and-other-issues) and report it so we are
 aware of the issue. By filing the issue first, we may be able to provide you
 with some insight that guides you in the right direction.
 
