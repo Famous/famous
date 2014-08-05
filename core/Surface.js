@@ -266,7 +266,9 @@ define(function(require, exports, module) {
                 if (this._contentDirty || this._stylesDirty || this._classesDirty || this._size[0] === 0) {
                     var width = target.clientWidth;
                     if (this._size && this._size[0] !== width) {
+                        this._size[0] = width;
                         this._eventOutput.emit('trueSizeChange');
+                        this._sizeDirty = true;
                     } 
                     size[0] = width;  
                 } else {
@@ -278,7 +280,9 @@ define(function(require, exports, module) {
                 if (this._contentDirty || this._stylesDirty || this._classesDirty || this._size[1] === 0) {
                     var height = target.clientHeight;
                     if (this._size && this._size[1] !== height) {
+                        this._size[1] = height;
                         this._eventOutput.emit('trueSizeChange');
+                        this._sizeDirty = true;
                     } 
                     size[1] = height;
                 } else {
@@ -298,7 +302,6 @@ define(function(require, exports, module) {
             _applyStyles.call(this, target);
             this._stylesDirty = false;
         }
-
 
         if (_xyNotEquals(this._size, size)) {
             if (!this._size) this._size = [0, 0];
