@@ -224,6 +224,7 @@ define(function(require, exports, module) {
         this._classesDirty = true;
         this._sizeDirty = true;
         this._contentDirty = true;
+        this._transformDirty = true;
     };
 
     /**
