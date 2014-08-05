@@ -102,7 +102,7 @@ define(function(require, exports, module) {
      * @return {EventHandler} passed event handler
      */
     EventHandler.prototype.pipe = function pipe(target) {
-        if (target.subscribe instanceof Function) return target.subscribe(this);
+        // if (target.subscribe instanceof Function) return target.subscribe(this);
 
         var downstreamCtx = (target instanceof Function) ? this.downstreamFn : this.downstream;
         var index = downstreamCtx.indexOf(target);
@@ -124,7 +124,7 @@ define(function(require, exports, module) {
      * @return {EventHandler} provided target
      */
     EventHandler.prototype.unpipe = function unpipe(target) {
-        if (target.unsubscribe instanceof Function) return target.unsubscribe(this);
+        // if (target.unsubscribe instanceof Function) return target.unsubscribe(this);
 
         var downstreamCtx = (target instanceof Function) ? this.downstreamFn : this.downstream;
         var index = downstreamCtx.indexOf(target);
