@@ -34,6 +34,13 @@ define(function(require, exports, module) {
         PAGE: 2
     };
 
+    /** @enum */
+    var EdgeStates = {
+        TOP:   -1,
+        NONE:   0,
+        BOTTOM: 1
+    };
+
     /**
      * Scrollview will lay out a collection of renderables sequentially in the specified direction, and will
      * allow you to scroll through them with mousewheel or touch events.
@@ -154,21 +161,6 @@ define(function(require, exports, module) {
         syncScale: 1
     };
 
-
-    /** @enum */
-    var SpringStates = {
-        NONE: 0,
-        EDGE: 1,
-        PAGE: 2
-    };
-
-    /** @enum */
-    var EdgeStates = {
-        TOP:   -1,
-        NONE:   0,
-        BOTTOM: 1
-    };
-
     function _handleStart(event) {
         this._touchCount = event.count;
         if (event.count === undefined) this._touchCount = 1;
@@ -238,7 +230,10 @@ define(function(require, exports, module) {
         this._eventInput.on('start', _handleStart);
         this._eventInput.on('update', _handleMove);
         this._eventInput.on('end', _handleEnd);
-        this._eventInput.on('trueSizeChange', function() {this._node._.getSize()}.bind(this))
+
+        this._eventInput.on('trueSizeChange', function() {
+            this._node._.getSize();
+        }.bind(this));
 
         this._scroller.on('onEdge', function(data) {
             this._edgeSpringPosition = data.position;
