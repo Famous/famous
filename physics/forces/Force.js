@@ -42,7 +42,7 @@ define(function(require, exports, module) {
      */
     Force.prototype.applyForce = function applyForce(targets) {
         if (!(targets instanceof Array)) targets = [targets];
-        for (var i = 0; i < targets.length; i++) {
+        for (var i = 0, len = targets.length; i < len; i++) {
             var target = targets[i];
             target.applyForce(this.force);
         }
