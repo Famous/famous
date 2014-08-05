@@ -115,7 +115,7 @@ define(function(require, exports, module) {
      * @method toggleClass
      * @param {string} className name of class to toggle
      */
-    Surface.prototype.toggleClass = function removeClass(className) {
+    Surface.prototype.toggleClass = function toggleClass(className) {
         var i = this.classList.indexOf(className);
         if (i >= 0) {
             this.removeClass(className);
