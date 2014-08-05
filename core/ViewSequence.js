@@ -76,7 +76,7 @@ define(function(require, exports, module) {
         var trueSized;
         for (var i = 0; i < index; i++) {
             var nodeSize = this.array[i].getSize() ? this.array[i].getSize() : this.array[i].size;
-            if (nodeSize === null) return;
+            if (!nodeSize) return;
             if (nodeSize[0] === true || nodeSize[1] === true || nodeSize[0] === 0 || nodeSize[1] === 0) trueSized = true;
             if (size[0] !== undefined) nodeSize[0] === undefined ? size[0] = undefined : size[0] += nodeSize[0];
             if (size[1] !== undefined) nodeSize[1] === undefined ? size[1] = undefined : size[1] += nodeSize[1];
