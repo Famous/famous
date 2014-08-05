@@ -31,6 +31,7 @@ define(function(require, exports, module) {
      * @param {Array.Number} [options.cellSize=[250, 250]]  A two-value array which specifies the width and height
      * of each cell in your Gridlayout instance.
      * @param {Transition} [options.transition=false] The transiton that controls the Gridlayout instance's reflow.
+     * @param {Boolean} [options.followSequence=false] When true, it detects sequence change and reflows.
      */
     function GridLayout(options) {
         this.options = Object.create(GridLayout.DEFAULT_OPTIONS);
@@ -44,9 +45,22 @@ define(function(require, exports, module) {
         this._contextSizeCache = [0, 0];
         this._dimensionsCache = [0, 0];
         this._activeCount = 0;
+        if (this.options.followSequence) {
+          this._idIndexMap = {};
+        }
 
         this._eventOutput = new EventHandler();
         EventHandler.setOutputHandler(this, this._eventOutput);
+    }
+
+    var sequenceId = 0;
+    function _getSequenceId(obj) {
+      if (obj.id) {
+        return obj.id;
+      } else {
+        obj.id = 'GridLayout.sequence.id_' + sequenceId++;
+        return obj.id;
+      }
     }
 
     function _reflow(size, cols, rows) {
@@ -60,17 +74,40 @@ define(function(require, exports, module) {
         var currY = 0;
         var currX;
         var currIndex = 0;
+        var oldModifiers = this._modifiers;
+        var oldStates = this._states;
+        this._modifiers = [];
+        this._states = [];
+        var oldIdIndexMap;
+        if (this.options.followSequence) {
+          oldIdIndexMap = this._idIndexMap;
+          this._idIndexMap = {};
+          this._sequenceIdCache = [];
+        }
+        var sequence = this.sequence;
         for (var i = 0; i < rows; i++) {
             currX = 0;
             for (var j = 0; j < cols; j++) {
-                if (this._modifiers[currIndex] === undefined) {
+                var oldIndex = currIndex;
+                if (this.options.followSequence && sequence) {
+                    var id = _getSequenceId(sequence.get());
+                    oldIndex = oldIdIndexMap[id];
+                    this._idIndexMap[id] = currIndex;
+                    this._sequenceIdCache[currIndex] = id;
+                }
+                if (oldModifiers[oldIndex] === undefined) {
                     _createModifier.call(this, currIndex, [colSize, rowSize], [currX, currY, 0], 1);
                 }
                 else {
-                    _animateModifier.call(this, currIndex, [colSize, rowSize], [currX, currY, 0], 1);
+                    this._modifiers[currIndex] = oldModifiers[oldIndex];
+                    this._states[currIndex] = oldStates[oldIndex];
+                    oldModifiers[oldIndex] = null;
+                    oldStates[oldIndex] = null;
+                    _animateModifier.call(this, this._states[currIndex], [colSize, rowSize], [currX, currY, 0], 1);
                 }
 
                 currIndex++;
+                if (sequence) sequence = sequence.getNext();
                 currX += colSize + this.options.gutterSize[0];
             }
 
@@ -82,7 +119,11 @@ define(function(require, exports, module) {
 
         this._activeCount = rows * cols;
 
-        for (i = this._activeCount ; i < this._modifiers.length; i++) _animateModifier.call(this, i, [Math.round(colSize), Math.round(rowSize)], [0, 0], 0);
+        for (i = 0; i < oldStates.length; i++) {
+          if (oldStates[i]) {
+            _animateModifier.call(this, oldStates[i], [colSize, rowSize], [0, 0], 0);
+          }
+        }
 
         this._eventOutput.emit('reflow');
     }
@@ -105,9 +146,7 @@ define(function(require, exports, module) {
 
     }
 
-    function _animateModifier(index, size, position, opacity) {
-        var currState = this._states[index];
-
+    function _animateModifier(currState, size, position, opacity) {
         var currSize = currState.size;
         var currOpacity = currState.opacity;
         var currTransform = currState.transform;
@@ -121,6 +160,20 @@ define(function(require, exports, module) {
         currTransform.setTranslate(position, transition);
         currSize.set(size, transition);
         currOpacity.set(opacity, transition);
+    }
+
+    function _detectSequenceChange() {
+        if (!this._sequenceIdCache) return true;
+        var sequence = this.sequence;
+        var currIndex = 0;
+        while (sequence && currIndex < this._activeCount) {
+            if (sequence.get().id !== this._sequenceIdCache[currIndex]) {
+                return true;
+            }
+            currIndex++;
+            sequence = sequence.getNext();
+        }
+        return false;
     }
 
     GridLayout.DEFAULT_OPTIONS = {
@@ -179,7 +232,7 @@ define(function(require, exports, module) {
         var cols = this.options.dimensions[0];
         var rows = this.options.dimensions[1];
 
-        if (size[0] !== this._contextSizeCache[0] || size[1] !== this._contextSizeCache[1] || cols !== this._dimensionsCache[0] || rows !== this._dimensionsCache[1]) {
+        if (size[0] !== this._contextSizeCache[0] || size[1] !== this._contextSizeCache[1] || cols !== this._dimensionsCache[0] || rows !== this._dimensionsCache[1] || (this.options.followSequence && _detectSequenceChange.call(this))) {
             _reflow.call(this, size, cols, rows);
         }
 
