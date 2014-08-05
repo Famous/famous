@@ -318,7 +318,7 @@ define(function(require, exports, module) {
         if ((positionNext && !velocitySwitch) || (velocitySwitch && velocityNext)) {
             this.goToNextPage();
         }
-        else if ((positionPrev && !velocitySwitch) || (velocitySwitch && velocityPrev)) {
+        else if (velocitySwitch && velocityPrev) {
             this.goToPreviousPage();
         }
         else _setSpring.call(this, 0, SpringStates.PAGE);
