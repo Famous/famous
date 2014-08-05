@@ -76,9 +76,15 @@ define(function(require, exports, module) {
         var trueSized;
         for (var i = 0; i < index; i++) {
             var nodeSize = this.array[i].getSize() ? this.array[i].getSize() : this.array[i].size;
-            if (!nodeSize) return;
-            if (size[0] !== undefined) nodeSize[0] === undefined ? size[0] = undefined : size[0] += nodeSize[0];
-            if (size[1] !== undefined) nodeSize[1] === undefined ? size[1] = undefined : size[1] += nodeSize[1];
+            if (!nodeSize) return undefined;
+            if (size[0] !== undefined) {
+                if (nodeSize[0] === undefined) size[0] = undefined;
+                else size[0] += nodeSize[0];
+            }
+            if (size[1] !== undefined) {
+                if (nodeSize[1] === undefined) size[1] = undefined;
+                else size[1] += nodeSize[1];
+            }
             this.cumulativeSizes[i + 1] = size.slice();
         }
         this.sizeDirty = false;

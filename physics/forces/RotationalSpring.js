@@ -117,7 +117,7 @@ define(function(require, exports, module) {
      * Calculates the potential energy of the rotational spring.
      *
      * @method getEnergy
-     * @param {Body} target The physics body attached to the spring
+     * @param [targets] target The physics body attached to the spring
      */
     RotationalSpring.prototype.getEnergy = function getEnergy(targets) {
         var options     = this.options;

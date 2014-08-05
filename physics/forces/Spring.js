@@ -238,8 +238,8 @@ define(function(require, exports, module) {
      * Calculates the potential energy of the spring.
      *
      * @method getEnergy
-     * @param target {Body}     The physics body attached to the spring
-     * @return {Number}         The potential energy of the spring
+     * @param [targets] target  The physics body attached to the spring
+     * @return {source}         The potential energy of the spring
      */
     Spring.prototype.getEnergy = function getEnergy(targets, source) {
         var options     = this.options;

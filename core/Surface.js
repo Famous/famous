@@ -269,12 +269,12 @@ define(function(require, exports, module) {
                         this._size[0] = width;
                         this._eventOutput.emit('trueSizeChange');
                         this._sizeDirty = true;
-                    } 
-                    size[0] = width;  
+                    }
+                    size[0] = width;
                 } else {
                     size[0] = this._size[0];
                 }
-            } 
+            }
             if (size[1] === undefined) size[1] = origSize[1];
             else if (size[1] === true) {
                 if (this._contentDirty || this._stylesDirty || this._classesDirty || this._size[1] === 0) {
@@ -283,14 +283,14 @@ define(function(require, exports, module) {
                         this._size[1] = height;
                         this._eventOutput.emit('trueSizeChange');
                         this._sizeDirty = true;
-                    } 
+                    }
                     size[1] = height;
                 } else {
                     size[1] = this._size[1];
                 }
-            } 
+            }
         }
-        
+
         if (this._classesDirty) {
             _cleanupClasses.call(this, target);
             var classList = this.getClassList();
