@@ -284,6 +284,7 @@ define(function(require, exports, module) {
             this._size[0] = size[0];
             this._size[1] = size[1];
             this._sizeDirty = true;
+            if (this.size) this._transformDirty = true;
         }
 
         if (this._sizeDirty) {
