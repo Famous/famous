@@ -107,7 +107,7 @@ define(function(require, exports, module) {
         var index = array.indexOf(body);
         if (index > -1) {
             var i;
-            for (i = 0; i < this._forces.length; i++) this.detachFro(this._forces[i], body);
+            for (i = 0; i < this._forces.length; i++) this.detachFrom(this._forces[i], body);
             for (i = 0; i < this._constraints.length; i++) this.detachFrom(this._constraints[i], body);
             array.splice(index,1);
         }
