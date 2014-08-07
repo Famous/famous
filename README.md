@@ -113,3 +113,5 @@ Copyright (c) 2014 Famous Industries, Inc.
 [contributing-issues]: https://github.com/Famous/famous/blob/master/CONTRIBUTING.md#issues
 [irc-getting-started]: http://freenode.net/using_the_network.shtml
 [esr-questions]: http://www.catb.org/esr/faqs/smart-questions.html
+
+[![Analytics](https://ga-beacon.appspot.com/UA-34653957-5/famous/famous/README.md?pixel)](https://github.com/igrigorik/ga-beacon)
