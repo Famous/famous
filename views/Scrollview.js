@@ -630,12 +630,14 @@ define(function(require, exports, module) {
         if (this.options.paginated && this._needsPaginationCheck)
             _handlePagination.call(this);
 
-        if (this._cachedIndex < this._node.index) {
-            this._eventOutput.emit('pageChange', {direction: 1, index: this._node.index});
-            this._cachedIndex = this._node.index;
-        } else if (this._cachedIndex > this._node.index) {
-            this._eventOutput.emit('pageChange', {direction: -1, index: this._node.index});
-            this._cachedIndex = this._node.index;
+        if (this._node) {
+            if (this._cachedIndex < this._node.index) {
+                this._eventOutput.emit('pageChange', {direction: 1, index: this._node.index});
+                this._cachedIndex = this._node.index;
+            } else if (this._cachedIndex > this._node.index) {
+                this._eventOutput.emit('pageChange', {direction: -1, index: this._node.index});
+                this._cachedIndex = this._node.index;
+            }
         }
 
         return this._scroller.render();
