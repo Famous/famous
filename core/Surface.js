@@ -56,6 +56,7 @@ define(function(require, exports, module) {
      *    dirtying and thus re-rendering, even if values do not change.
      *
      * @method setProperties
+     * @chainable
      * @param {Object} properties property dictionary of "key" => "value"
      */
     Surface.prototype.setProperties = function setProperties(properties) {
@@ -63,6 +64,7 @@ define(function(require, exports, module) {
             this.properties[n] = properties[n];
         }
         this._stylesDirty = true;
+        return this;
     };
 
     /**
@@ -82,6 +84,7 @@ define(function(require, exports, module) {
      *   corresponding rendered <div>.
      *
      * @method addClass
+     * @chainable
      * @param {string} className name of class to add
      */
     Surface.prototype.addClass = function addClass(className) {
@@ -89,6 +92,7 @@ define(function(require, exports, module) {
             this.classList.push(className);
             this._classesDirty = true;
         }
+        return this;
     };
 
     /**
@@ -97,6 +101,7 @@ define(function(require, exports, module) {
      *   corresponding rendered <div>.
      *
      * @method removeClass
+     * @chainable
      * @param {string} className name of class to remove
      */
     Surface.prototype.removeClass = function removeClass(className) {
@@ -105,6 +110,7 @@ define(function(require, exports, module) {
             this._dirtyClasses.push(this.classList.splice(i, 1)[0]);
             this._classesDirty = true;
         }
+        return this;
     };
 
     /**
@@ -122,11 +128,13 @@ define(function(require, exports, module) {
         } else {
             this.addClass(className);
         }
+        return this;
     };
 
     /**
      * Reset class list to provided dictionary.
      * @method setClasses
+     * @chainable
      * @param {Array.string} classList
      */
     Surface.prototype.setClasses = function setClasses(classList) {
@@ -138,6 +146,7 @@ define(function(require, exports, module) {
         for (i = 0; i < removal.length; i++) this.removeClass(removal[i]);
         // duplicates are already checked by addClass()
         for (i = 0; i < classList.length; i++) this.addClass(classList[i]);
+        return this;
     };
 
     /**
@@ -155,6 +164,7 @@ define(function(require, exports, module) {
      *    causes a re-rendering if the content has changed.
      *
      * @method setContent
+     * @chainable
      * @param {string|Document Fragment} content HTML content
      */
     Surface.prototype.setContent = function setContent(content) {
@@ -162,6 +172,7 @@ define(function(require, exports, module) {
             this.content = content;
             this._contentDirty = true;
         }
+        return this;
     };
 
     /**
@@ -179,6 +190,7 @@ define(function(require, exports, module) {
      * Set options for this surface
      *
      * @method setOptions
+     * @chainable
      * @param {Object} [options] overrides for default options.  See constructor.
      */
     Surface.prototype.setOptions = function setOptions(options) {
@@ -186,6 +198,7 @@ define(function(require, exports, module) {
         if (options.classes) this.setClasses(options.classes);
         if (options.properties) this.setProperties(options.properties);
         if (options.content) this.setContent(options.content);
+        return this;
     };
 
     //  Apply to document all changes from removeClass() since last setup().
@@ -383,11 +396,13 @@ define(function(require, exports, module) {
      * Set x and y dimensions of the surface.
      *
      * @method setSize
+     * @chainable
      * @param {Array.Number} size as [width, height]
      */
     Surface.prototype.setSize = function setSize(size) {
         this.size = size ? [size[0], size[1]] : null;
         this._sizeDirty = true;
+        return this;
     };
 
     module.exports = Surface;
