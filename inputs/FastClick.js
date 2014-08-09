@@ -15,6 +15,7 @@ define(function(require, exports, module) {
      *   This is used to speed up clicks on some browsers.
      */
     if (!window.CustomEvent) return;
+    var clickTolerance = 5;
     var clickThreshold = 300;
     var clickWindow = 500;
     var potentialClicks = {};
@@ -25,14 +26,18 @@ define(function(require, exports, module) {
         var timestamp = _now();
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
-            potentialClicks[touch.identifier] = timestamp;
+            potentialClicks[touch.identifier] = { startTime: timestamp, position: [touch.clientX, touch.clientY] };
         }
     });
 
     window.addEventListener('touchmove', function(event) {
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
-            delete potentialClicks[touch.identifier];
+            var potentialClick = potentialClicks[touch.identifier];
+            if (potentialClick) {
+                if (Math.abs(potentialClick.position[0] - touch.clientX) > clickTolerance || Math.abs(potentialClick.position[1] - touch.clientY) > clickTolerance)
+                    delete potentialClicks[touch.identifier];
+            }
         }
     });
 
@@ -40,14 +45,18 @@ define(function(require, exports, module) {
         var currTime = _now();
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
-            var startTime = potentialClicks[touch.identifier];
-            if (startTime && currTime - startTime < clickThreshold) {
-                var clickEvt = new window.CustomEvent('click', {
-                    'bubbles': true,
-                    'detail': touch
-                });
-                recentlyDispatched[currTime] = event;
-                event.target.dispatchEvent(clickEvt);
+            var potentialClick = potentialClicks[touch.identifier];
+            if (potentialClick) {
+                var startTime = potentialClick.startTime;
+                if (startTime && currTime - startTime < clickThreshold) {
+                    var clickEvt = new window.CustomEvent('click', {
+                        'bubbles': true,
+                        'detail': touch
+                    });
+                    recentlyDispatched[currTime] = event;
+                    console.log('fastclick triggered')
+                    event.target.dispatchEvent(clickEvt);
+                }
             }
             delete potentialClicks[touch.identifier];
         }
