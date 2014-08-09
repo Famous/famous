@@ -39,6 +39,7 @@ define(function(require, exports, module) {
         this._stylesDirty = true;
         this._sizeDirty = true;
         this._contentDirty = true;
+        this._trueSizeCheck = true;
 
         this._dirtyClasses = [];
 
@@ -263,20 +264,48 @@ define(function(require, exports, module) {
             var classList = this.getClassList();
             for (var i = 0; i < classList.length; i++) target.classList.add(classList[i]);
             this._classesDirty = false;
+            this._trueSizeCheck = true;
         }
 
         if (this._stylesDirty) {
             _applyStyles.call(this, target);
             this._stylesDirty = false;
+            this._trueSizeCheck = true;
         }
 
         if (this.size) {
             var origSize = context.size;
             size = [this.size[0], this.size[1]];
             if (size[0] === undefined) size[0] = origSize[0];
-            else if (size[0] === true) size[0] = target.clientWidth;
+            else if (size[0] === true) {
+                if (this._trueSizeCheck || this._size[0] === 0) {
+                    var width = target.clientWidth;
+                    if (this._size && this._size[0] !== width) {
+                        this._size[0] = width;
+                        this._eventOutput.emit('trueSizeChange');
+                        this._sizeDirty = true;
+                    }
+                    size[0] = width;
+                    this._trueSizeCheck = false;
+                } else {
+                    size[0] = this._size[0];
+                }
+            }
             if (size[1] === undefined) size[1] = origSize[1];
-            else if (size[1] === true) size[1] = target.clientHeight;
+            else if (size[1] === true) {
+                if (this._trueSizeCheck || this._size[1] === 0) {
+                    var height = target.clientHeight;
+                    if (this._size && this._size[1] !== height) {
+                        this._size[1] = height;
+                        this._eventOutput.emit('trueSizeChange');
+                        this._sizeDirty = true;
+                    }
+                    size[1] = height;
+                    this._trueSizeCheck = false;
+                } else {
+                    size[1] = this._size[1];
+                }
+            }
         }
 
         if (_xyNotEquals(this._size, size)) {
@@ -298,6 +327,7 @@ define(function(require, exports, module) {
             this.deploy(target);
             this._eventOutput.emit('deploy');
             this._contentDirty = false;
+            this._trueSizeCheck = true;
         }
 
         ElementOutput.prototype.commit.call(this, context);
@@ -320,7 +350,6 @@ define(function(require, exports, module) {
         target.style.display = 'none';
         target.style.width = '';
         target.style.height = '';
-        this._size = null;
         _cleanupStyles.call(this, target);
         var classList = this.getClassList();
         _cleanupClasses.call(this, target);

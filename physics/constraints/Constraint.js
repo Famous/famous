@@ -20,8 +20,8 @@ define(function(require, exports, module) {
      */
     function Constraint() {
         this.options = this.options || {};
-        this._energy = 0.0;
-        this._eventOutput = null;
+        this._eventOutput = new EventHandler();
+        EventHandler.setOutputHandler(this, this._eventOutput);
     }
 
     /*
@@ -31,7 +31,7 @@ define(function(require, exports, module) {
      * @param options {Objects}
      */
     Constraint.prototype.setOptions = function setOptions(options) {
-        for (var key in options) this.options[key] = options[key];
+        this._eventOutput.emit('change', options);
     };
 
     /**
@@ -48,42 +48,7 @@ define(function(require, exports, module) {
      * @return energy {Number}
      */
     Constraint.prototype.getEnergy = function getEnergy() {
-        return this._energy;
-    };
-
-    /**
-     * Setter for energy
-     *
-     * @method setEnergy
-     * @param energy {Number}
-     */
-    Constraint.prototype.setEnergy = function setEnergy(energy) {
-        this._energy = energy;
-    };
-
-    function _createEventOutput() {
-        this._eventOutput = new EventHandler();
-        this._eventOutput.bindThis(this);
-        EventHandler.setOutputHandler(this, this._eventOutput);
-    }
-
-    Constraint.prototype.on = function on() {
-        _createEventOutput.call(this);
-        return this.on.apply(this, arguments);
-    };
-    Constraint.prototype.addListener = function addListener() {
-        _createEventOutput.call(this);
-        return this.addListener.apply(this, arguments);
-    };
-    Constraint.prototype.pipe = function pipe() {
-        _createEventOutput.call(this);
-        return this.pipe.apply(this, arguments);
-    };
-    Constraint.prototype.removeListener = function removeListener() {
-        return this.removeListener.apply(this, arguments);
-    };
-    Constraint.prototype.unpipe = function unpipe() {
-        return this.unpipe.apply(this, arguments);
+        return 0.0;
     };
 
     module.exports = Constraint;
