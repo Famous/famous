@@ -54,7 +54,6 @@ define(function(require, exports, module) {
                         'detail': touch
                     });
                     recentlyDispatched[currTime] = event;
-                    console.log('fastclick triggered')
                     event.target.dispatchEvent(clickEvt);
                 }
             }
