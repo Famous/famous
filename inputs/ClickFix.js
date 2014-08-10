@@ -16,7 +16,7 @@ define(function(require, exports, module) {
     var clickTolerance = 5;
     var potentialClick = null;
 
-    window.addEventListener('mousedown', function (event) {
+    window.addEventListener('mousedown', function(event) {
         potentialClick = {
             position: [event.clientX, event.clientY],
             target: event.target
