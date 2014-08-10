@@ -22,8 +22,8 @@ define(function(require, exports, module) {
             target: event.target
         };
 
-        event.target.addEventListener('mousemove', _handleMove, true);
-        event.target.addEventListener('mouseup', _handleEnd, true);
+        window.addEventListener('mousemove', _handleMove, true);
+        window.addEventListener('mouseup', _handleEnd, true);
     }, true);
 
     function _handleMove(event) {
@@ -34,8 +34,8 @@ define(function(require, exports, module) {
     }
 
     function _handleEnd(event) {
-        event.target.removeEventListener('mousemove', _handleMove);
-        event.target.removeEventListener('mouseup', _handleEnd);
+        window.removeEventListener('mousemove', _handleMove);
+        window.removeEventListener('mouseup', _handleEnd);
     }
 
     window.addEventListener('click', function(event) {
