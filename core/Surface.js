@@ -347,7 +347,7 @@ define(function(require, exports, module) {
                         this._sizeDirty = true;
                     }
                     size[0] = width;
-                    this._trueSizeCheck = false;
+                    if (size[1] !== true) this._trueSizeCheck = false;
                 } else {
                     size[0] = this._size[0];
                 }
