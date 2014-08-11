@@ -23,7 +23,7 @@ define(function(require, exports, module) {
 
     var _event  = 'prerender';
 
-    var getTime = (window.performance && performance.now) ?
+    var getTime = (window.performance && window.performance.now) ?
         function() {
             return window.performance.now();
         }
