@@ -69,6 +69,16 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Returns the width and the height of the ScrollContainer instance.
+     *
+     * @method getSize
+     * @return {Array} A two value array of the ScrollContainer instance's current width and height (in that order).
+     */
+    ScrollContainer.prototype.getSize = function getSize() {
+        return this.container.getSize.apply(this.container, arguments);
+    };
+
+    /**
      * Generate a render spec from the contents of this component.
      *
      * @private
