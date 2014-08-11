@@ -139,7 +139,8 @@ define(function(require, exports, module) {
     }
 
     function _handleMove(event) {
-        var velocity, delta;
+        var velocity
+        var delta;
         if (typeof event.delta === 'number') {
             velocity = -event.velocity;
             delta = -event.delta;
