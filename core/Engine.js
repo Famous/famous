@@ -130,7 +130,7 @@ define(function(require, exports, module) {
             return;
 
         initialized = true;
-        
+
         // prevent scrolling via browser
         window.addEventListener('touchmove', function(event) {
             event.preventDefault();
