@@ -318,6 +318,7 @@ define(function(require, exports, module) {
         this._eventOutput.emit('recall');
         this.recall(target);
         target.style.display = 'none';
+        target.style.opacity = '';
         target.style.width = '';
         target.style.height = '';
         this._size = null;
