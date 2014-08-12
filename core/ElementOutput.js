@@ -251,6 +251,7 @@ define(function(require, exports, module) {
         }
 
         if (_xyNotEquals(this._origin, origin)) this._originDirty = true;
+        if (_xyNotEquals(this._size, size)) this._sizeDirty = true;
         if (Transform.notEquals(this._matrix, matrix)) this._transformDirty = true;
 
         if (this._invisible) {
@@ -284,7 +285,7 @@ define(function(require, exports, module) {
 
             if (!matrix) matrix = Transform.identity;
             this._matrix = matrix;
-            var aaMatrix = this.size ? Transform.thenMove(matrix, [-this._size[0]*origin[0], -this._size[1]*origin[1], 0]) : matrix;
+            var aaMatrix = this._size ? Transform.thenMove(matrix, [-this._size[0]*origin[0], -this._size[1]*origin[1], 0]) : matrix;
             _setMatrix(target, aaMatrix);
             this._transformDirty = false;
         }

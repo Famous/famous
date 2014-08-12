@@ -41,35 +41,9 @@ Preparing your project for distribution is then as simple as:
 
 ## Contributing
 
-Cloning this repository directly is primarily for those wishing to contribute to our codebase. Check out our [contributing instructions][contributing] to get involved. Since we use git submodules, all subfolders will be unpopulated unless you initialize and update your submodules. To clone from the command line, run
-
-    git clone git@github.com:Famous/famous.git path/to/folder
-    cd path/to/folder
-    git submodule update --init
+Cloning this repository directly is primarily for those wishing to contribute to our codebase. Check out our [contributing instructions][contributing] to get involved. 
     
-Or clone with the `--recursive` flag for a convenient one-liner
-
-    git clone git@github.com:Famous/famous.git --recursive path/to/folder
-    
-Note: cloning only provides the Famo.us folder with all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the `famous.css` file that is included in `famous/core`. Require.js is currently a hard dependency for using Famo.us.
-
-## Famous.git Package
-
-This package contains the submodules necessary to be productive in Famo.us.  They are all hosted on [our github organization][famous-organization-github].  
-
-| Submodule | Description |
-| --------- | ----------- |
-| core.git | The low level componentry of Famo.us, plus the required famous.css stylesheet. |
-| events.git | Events are used for communication between objects in Famous. |
-| inputs.git | The inputs library is used to interpret user input to the device. |
-| math.git | A simple math library used throughout the core. |
-| modifiers.git | Implementations of the core/Modifier pattern which output transforms to the render tree. |
-| physics.git | Core engine controlling animations via physical simulation. |
-| surfaces.git | Surfaces extend core/Surface and encapsulate common HTML tags like `<img>` and `<canvas>`.|
-| transitions.git | Transitions are used to create animation, usually by providing input to a Modifier. |
-| utilities.git | Utilities hosts various helper classes and static methods. |
-| views.git | Views are visually interactable components for use in applications. |
-| widgets.git | Widgets are small visually interactable components for use in applications with their own styling. |
+Note: cloning only provides the Famo.us folder with all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the `famous.css` file that is included in `famous/core`. Require.js is currently a hard dependency to work off of the Famo.us head.
   
 ## Documentation
 

@@ -7,6 +7,5 @@ before_install:
 
 notifications:
   email:
-    - dave@famo.us
-    - fetterman@famo.us
+    - mike@famo.us
     - myles@famo.us
