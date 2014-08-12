@@ -29,6 +29,7 @@ define(function(require, exports, module) {
     var OptionsManager = require('./OptionsManager');
 
     var Engine = {};
+    var initialized = false;
 
     var contexts = [];
     var nextTickQueue = [];
@@ -125,6 +126,11 @@ define(function(require, exports, module) {
      * @method initialize
      */
     function initialize() {
+        if (initialized)
+            return;
+
+        initialized = true;
+        
         // prevent scrolling via browser
         window.addEventListener('touchmove', function(event) {
             event.preventDefault();
@@ -132,7 +138,6 @@ define(function(require, exports, module) {
         document.body.classList.add('famous-root');
         document.documentElement.classList.add('famous-root');
     }
-    var initialized = false;
 
     /**
      * Add event handler object to set of downstream handlers.
