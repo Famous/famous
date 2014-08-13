@@ -12,8 +12,14 @@ define(function(require, exports, module) {
     var EventHandler = require('./EventHandler');
     var Transform = require('./Transform');
 
-    var usePrefix = document.body.style.webkitTransform !== undefined;
     var devicePixelRatio = window.devicePixelRatio || 1;
+
+    var usePrefix = true;
+    if (!document.body) {
+        document.addEventListener('DOMContentLoaded', function() {
+            usePrefix = document.body.style.webkitTransform !== undefined;
+        });
+    } else usePrefix = document.body.style.webkitTransform !== undefined;
 
     /**
      * A base class for viewable content and event
