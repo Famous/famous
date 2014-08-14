@@ -151,7 +151,7 @@ define(function(require, exports, module) {
      *
      * @method setSize
      *
-     * @param {Array.Number} size two element array with values between 0 and 1.
+     * @param {Array.Number} size two element array of [width, height]
      * @param {Transitionable} transition Valid transitionable object
      * @param {Function} callback callback to call after transition completes
      * @return {StateModifier} this
