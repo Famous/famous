@@ -45,7 +45,7 @@ define(function(require, exports, module) {
         container: {
             properties: {overflow : 'hidden'}
         },
-        scrollview: {direction: Utility.Direction.X}
+        scrollview: {direction: Utility.Direction.Y}
     };
 
     /**
