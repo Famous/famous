@@ -236,6 +236,7 @@ define(function(require, exports, module) {
         }
         target.style.display = '';
         this.attach(target);
+        this._opacity = null;
         this._currentTarget = target;
         this._stylesDirty = true;
         this._classesDirty = true;
