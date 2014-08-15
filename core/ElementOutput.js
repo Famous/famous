@@ -251,7 +251,6 @@ define(function(require, exports, module) {
         }
 
         if (_xyNotEquals(this._origin, origin)) this._originDirty = true;
-        if (_xyNotEquals(this._size, size)) this._sizeDirty = true;
         if (Transform.notEquals(this._matrix, matrix)) this._transformDirty = true;
 
         if (this._invisible) {
