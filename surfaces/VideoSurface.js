@@ -53,9 +53,10 @@ define(function(require, exports, module) {
      * @param {Boolean} [options.autoplay] HTML autoplay
      */
     VideoSurface.prototype.setOptions = function setOptions(options) {
-        for (var key in VideoSurface.DEFAULT_OPTIONS) {
-            if (options[key] !== undefined) this.options[key] = options[key];
-        }
+        if (options.size) this.setSize(options.size);
+        if (options.classes) this.setClasses(options.classes);
+        if (options.properties) this.setProperties(options.properties);
+        if (options.autoplay) this.options.autoplay = options.autoplay;
     };
 
     /**
