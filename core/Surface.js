@@ -277,8 +277,9 @@ define(function(require, exports, module) {
             var origSize = context.size;
             size = [this.size[0], this.size[1]];
             if (size[0] === undefined) size[0] = origSize[0];
-            else if (size[0] === true) {
-                if (this._trueSizeCheck || this._size[0] === 0) {
+            if (size[1] === undefined) size[1] = origSize[1];
+            if (size[0] === true || size[1] === true) {
+                if (size[0] === true && (this._trueSizeCheck || this._size[0] === 0)) {
                     var width = target.clientWidth;
                     if (this._size && this._size[0] !== width) {
                         this._size[0] = width;
@@ -286,14 +287,10 @@ define(function(require, exports, module) {
                         this._sizeDirty = true;
                     }
                     size[0] = width;
-                    if (size[1] !== true) this._trueSizeCheck = false;
                 } else {
-                    size[0] = this._size[0];
+                    if (this._size) size[0] = this._size[0];
                 }
-            }
-            if (size[1] === undefined) size[1] = origSize[1];
-            else if (size[1] === true) {
-                if (this._trueSizeCheck || this._size[1] === 0) {
+                if (size[1] === true && (this._trueSizeCheck || this._size[1] === 0)) {
                     var height = target.clientHeight;
                     if (this._size && this._size[1] !== height) {
                         this._size[1] = height;
@@ -301,10 +298,10 @@ define(function(require, exports, module) {
                         this._sizeDirty = true;
                     }
                     size[1] = height;
-                    this._trueSizeCheck = false;
                 } else {
-                    size[1] = this._size[1];
+                    if (this._size) size[1] = this._size[1];
                 }
+                this._trueSizeCheck = false;
             }
         }
 
