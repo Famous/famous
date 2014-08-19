@@ -88,10 +88,11 @@ define(function(require, exports, module) {
     /**
     * Returns the cumulative size of the renderables in the view sequence
     * @method getCumulativeSize
-    * @return {array} a two value array of the view sequence's cumulative size
+    * @return {array} a two value array of the view sequence's cumulative size up to the index.
     */
-    Scroller.prototype.getCumulativeSize = function() {
-        return this._node._.cumulativeSizes[this._node._.cumulativeSizes.length - 1]
+    Scroller.prototype.getCumulativeSize = function(index) {
+        if (index === undefined) index = this._node._.cumulativeSizes.length - 1;
+        return this._node._.getSize(index);
     };
 
     /**
