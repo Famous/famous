@@ -232,7 +232,7 @@ define(function(require, exports, module) {
         this._eventInput.on('end', _handleEnd);
 
         this._eventInput.on('trueSizeChange', function() {
-            this._node._.getSize();
+            this._node._.calculateSize();
         }.bind(this));
 
         this._scroller.on('onEdge', function(data) {
@@ -495,7 +495,7 @@ define(function(require, exports, module) {
      * in pixels translated.
      */
     Scrollview.prototype.getAbsolutePosition = function getAbsolutePosition() {
-        return this._scroller.getCumulativeSize()[this.options.direction] + this.getPosition();
+        return this._scroller.getCumulativeSize(this.getCurrentIndex())[this.options.direction] + this.getPosition();
     };
 
     /**
