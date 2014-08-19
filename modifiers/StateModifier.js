@@ -66,7 +66,9 @@ define(function(require, exports, module) {
      * @method setTransform
      *
      * @param {Transform} transform Transform to transition to.
-     * @param {Transitionable} [transition] Valid transitionable object
+     * @param {Transitionable} transition object of type {duration: number, curve:
+     *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+     *    instantaneous.
      * @param {Function} [callback] callback to call after transition completes
      * @return {StateModifier} this
      */
@@ -82,7 +84,9 @@ define(function(require, exports, module) {
      * @method setOpacity
      *
      * @param {Number} opacity Opacity value to transition to.
-     * @param {Transitionable} transition Valid transitionable object
+     * @param {Transitionable} transition object of type {duration: number, curve:
+     *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+     *    instantaneous.
      * @param {Function} callback callback to call after transition completes
      * @return {StateModifier} this
      */
@@ -98,7 +102,9 @@ define(function(require, exports, module) {
      * @method setOrigin
      *
      * @param {Array.Number} origin two element array with values between 0 and 1.
-     * @param {Transitionable} transition Valid transitionable object
+     * @param {Transitionable} transition object of type {duration: number, curve:
+     *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+     *    instantaneous.
      * @param {Function} callback callback to call after transition completes
      * @return {StateModifier} this
      */
@@ -125,7 +131,9 @@ define(function(require, exports, module) {
      * @method setAlign
      *
      * @param {Array.Number} align two element array with values between 0 and 1.
-     * @param {Transitionable} transition Valid transitionable object
+     * @param {Transitionable} transition object of type {duration: number, curve:
+     *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+     *    instantaneous.
      * @param {Function} callback callback to call after transition completes
      * @return {StateModifier} this
      */
@@ -151,8 +159,10 @@ define(function(require, exports, module) {
      *
      * @method setSize
      *
-     * @param {Array.Number} size two element array with values between 0 and 1.
-     * @param {Transitionable} transition Valid transitionable object
+     * @param {Array.Number} size two element array of [width, height]
+     * @param {Transitionable} transition object of type {duration: number, curve:
+     *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+     *    instantaneous.
      * @param {Function} callback callback to call after transition completes
      * @return {StateModifier} this
      */

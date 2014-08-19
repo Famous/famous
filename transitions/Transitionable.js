@@ -206,7 +206,7 @@ define(function(require, exports, module) {
      * @method halt
      */
     Transitionable.prototype.halt = function halt() {
-        this.set(this.get());
+        return this.set(this.get());
     };
 
     module.exports = Transitionable;

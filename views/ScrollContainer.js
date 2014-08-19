@@ -45,7 +45,7 @@ define(function(require, exports, module) {
         container: {
             properties: {overflow : 'hidden'}
         },
-        scrollview: {direction: Utility.Direction.X}
+        scrollview: {direction: Utility.Direction.Y}
     };
 
     /**
@@ -66,6 +66,16 @@ define(function(require, exports, module) {
      */
     ScrollContainer.prototype.sequenceFrom = function sequenceFrom() {
         return this.scrollview.sequenceFrom.apply(this.scrollview, arguments);
+    };
+
+    /**
+     * Returns the width and the height of the ScrollContainer instance.
+     *
+     * @method getSize
+     * @return {Array} A two value array of the ScrollContainer instance's current width and height (in that order).
+     */
+    ScrollContainer.prototype.getSize = function getSize() {
+        return this.container.getSize.apply(this.container, arguments);
     };
 
     /**
