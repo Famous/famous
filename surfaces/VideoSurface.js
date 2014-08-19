@@ -24,7 +24,7 @@ define(function(require, exports, module) {
      * @param {Array.Number} [options.size] [width, height] in pixels
      * @param {Array.string} [options.classes] CSS classes to set on inner content
      * @param {Array} [options.properties] string dictionary of HTML attributes to set on target div
-     * @param {string} [options.content] inner (HTML) content of surface
+     * @param {String} [options.src] videoUrl URL
      * @param {boolean} [options.autoplay] autoplay
      */
     function VideoSurface(options) {
@@ -53,8 +53,13 @@ define(function(require, exports, module) {
      * @param {Boolean} [options.autoplay] HTML autoplay
      */
     VideoSurface.prototype.setOptions = function setOptions(options) {
-        for (var key in VideoSurface.DEFAULT_OPTIONS) {
-            if (options[key] !== undefined) this.options[key] = options[key];
+        if (options.size) this.setSize(options.size);
+        if (options.classes) this.setClasses(options.classes);
+        if (options.properties) this.setProperties(options.properties);
+        if (options.autoplay) this.options.autoplay = options.autoplay;
+        if (options.src) {
+            this._videoUrl = options.src;
+            this._contentDirty = true;
         }
     };
 

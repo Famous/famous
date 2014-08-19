@@ -3,7 +3,7 @@
 Active involvement from the community is essential to help make famous the most
 capable and performant front-end JavaScript framework out there. You can help by
 reporting bugs, fixing bugs, adding features, contributing new modules and by
-by providing feedback.
+providing feedback.
 
 
 ## Reporting bugs and other issues
@@ -94,46 +94,11 @@ Bug fixes follow a [slightly different format](#bug-fixes).
 ### Bug fixes
 
 If you'd like to contribute a fix for a bug you've encountered, first read up on
-[how to report a bug][reporting-bugs-and-other-issues] and report it so we are
+[how to report a bug](#reporting-bugs-and-other-issues) and report it so we are
 aware of the issue. By filing the issue first, we may be able to provide you
 with some insight that guides you in the right direction.
 
-## Issues
-
-Famo.us is composed of several repositories, and it helps if bugs are filed in
-the issues section of the right repository. To help you check if your issue has
-already been filed or to help you file it in the right place in case it hasn't
-we've created the following guidelines:
-
-Below is a list of links to the issues page for all the famous framework
-repositories.
-
-* [famous][famous-issues]
-  * [core][core-issues]
-  * [events][events-issues]
-  * [inputs][inputs-issues]
-  * [math][math-issues]
-  * [modifiers][modifiers-issues]
-  * [physics][physics-issues]
-  * [surfaces][surfaces-issues]
-  * [transitions][transitions-issues]
-  * [utilities][utilities-issues]
-  * [views][views-issues]
-  * [widgets][widgets-issues]
-
-
 [famous-issues]: https://github.com/famous/famous/issues
-[core-issues]: https://github.com/famous/core/issues
-[events-issues]: https://github.com/famous/events/issues
-[inputs-issues]: https://github.com/famous/inputs/issues
-[math-issues]: https://github.com/famous/math/issues
-[modifiers-issues]: https://github.com/famous/modifiers/issues
-[physics-issues]: https://github.com/famous/physics/issues
-[surfaces-issues]: https://github.com/famous/surfaces/issues
-[transitions-issues]: https://github.com/famous/transitions/issues
-[utilities-issues]: https://github.com/famous/utilities/issues
-[views-issues]: https://github.com/famous/views/issues
-[widgets-issues]: https://github.com/famous/widgets/issues
 
 [famous]: https://github.com/famous/famous
 [git-branching-model]: http://nvie.com/posts/a-successful-git-branching-model/
@@ -143,4 +108,4 @@ repositories.
 [esr]: http://www.catb.org/esr/
 [taoup]: http://www.catb.org/esr/writings/taoup/
 [modifying-ojects-considered-bad]: http://perfectionkills.com/whats-wrong-with-extending-the-dom/
-[cla]: http://famo.us/cla/individual
+[cla]: http://famo.us/cla

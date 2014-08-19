@@ -226,7 +226,7 @@ define(function(require, exports, module) {
      * Sets the progress (between 0 and 1) for the content's displacement
      *
      * @method setProgress
-     * @param position {Number}             position
+     * @param progress {Number}             position
      * @param [transition] {Boolean|Object} transition definition
      * @param [callback] {Function}         callback
      */

@@ -284,7 +284,7 @@ define(function(require, exports, module) {
 
             if (!matrix) matrix = Transform.identity;
             this._matrix = matrix;
-            var aaMatrix = this.size ? Transform.thenMove(matrix, [-this._size[0]*origin[0], -this._size[1]*origin[1], 0]) : matrix;
+            var aaMatrix = this._size ? Transform.thenMove(matrix, [-this._size[0]*origin[0], -this._size[1]*origin[1], 0]) : matrix;
             _setMatrix(target, aaMatrix);
             this._transformDirty = false;
         }

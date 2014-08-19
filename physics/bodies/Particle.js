@@ -149,7 +149,7 @@ define(function(require, exports, module) {
 
     /**
      * Basic setter for position
-     * @method getPosition
+     * @method setPosition
      * @param position {Array|Vector}
      */
     Particle.prototype.setPosition = function setPosition(position) {
@@ -159,7 +159,7 @@ define(function(require, exports, module) {
     /**
      * 1-dimensional setter for position
      * @method setPosition1D
-     * @param value {Number}
+     * @param x {Number}
      */
     Particle.prototype.setPosition1D = function setPosition1D(x) {
         this.position.x = x;
@@ -211,7 +211,7 @@ define(function(require, exports, module) {
     /**
      * 1-dimensional setter for velocity
      * @method setVelocity1D
-     * @param velocity {Number}
+     * @param x {Number}
      */
     Particle.prototype.setVelocity1D = function setVelocity1D(x) {
         this.velocity.x = x;

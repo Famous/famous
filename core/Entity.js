@@ -24,7 +24,7 @@ define(function(require, exports, module) {
      *
      * @private
      * @method get
-     * @param {Number} id entity reigstration id
+     * @param {Number} id entity registration id
      * @return {Surface} entity in the global index
      */
     function get(id) {
@@ -36,7 +36,7 @@ define(function(require, exports, module) {
      *
      * @private
      * @method set
-     * @param {Number} id entity reigstration id
+     * @param {Number} id entity registration id
      * @return {Surface} entity to add to the global index
      */
     function set(id, entity) {
@@ -62,7 +62,7 @@ define(function(require, exports, module) {
      *
      * @private
      * @method unregister
-     * @param {Number} id entity reigstration id
+     * @param {Number} id entity registration id
      */
     function unregister(id) {
         set(id, null);
