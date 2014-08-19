@@ -6,9 +6,9 @@
  * @license MPL 2.0
  * @copyright Famous Industries, Inc. 2014
  */
-
 define(function(require, exports, module) {
     var TwoFingerSync = require('./TwoFingerSync');
+    var OptionsManager = require('../core/OptionsManager');
 
     /**
      * Handles piped in two-finger touch events to increase or decrease scale via pinching / expanding.
@@ -25,6 +25,7 @@ define(function(require, exports, module) {
         TwoFingerSync.call(this);
 
         this.options = Object.create(RotateSync.DEFAULT_OPTIONS);
+        this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 
         this._angle = 0;
@@ -91,7 +92,7 @@ define(function(require, exports, module) {
      * @param {Number} [options.scale] scale velocity by this factor
      */
     RotateSync.prototype.setOptions = function setOptions(options) {
-        if (options.scale !== undefined) this.options.scale = options.scale;
+        return this._optionsManager.setOptions(options);
     };
 
     module.exports = RotateSync;

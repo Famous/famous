@@ -6,10 +6,10 @@
  * @license MPL 2.0
  * @copyright Famous Industries, Inc. 2014
  */
-
 define(function(require, exports, module) {
-    var EventHandler = require('famous/core/EventHandler');
-    var Engine = require('famous/core/Engine');
+    var EventHandler = require('../core/EventHandler');
+    var Engine = require('../core/Engine');
+    var OptionsManager = require('../core/OptionsManager');
 
     /**
      * Handles piped in mousewheel events.
@@ -33,6 +33,7 @@ define(function(require, exports, module) {
      */
     function ScrollSync(options) {
         this.options = Object.create(ScrollSync.DEFAULT_OPTIONS);
+        this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 
         this._payload = {
@@ -63,7 +64,8 @@ define(function(require, exports, module) {
         rails: false,
         scale: 1,
         stallTime: 50,
-        lineHeight: 40
+        lineHeight: 40,
+        preventDefault: true
     };
 
     ScrollSync.DIRECTION_X = 0;
@@ -91,7 +93,7 @@ define(function(require, exports, module) {
     }
 
     function _handleMove(event) {
-        event.preventDefault();
+        if (this.options.preventDefault) event.preventDefault();
 
         if (!this._inProgress) {
             this._inProgress = true;
@@ -188,11 +190,7 @@ define(function(require, exports, module) {
      * @param {Number} [options.scale] constant factor to scale velocity output
      */
     ScrollSync.prototype.setOptions = function setOptions(options) {
-        if (options.direction !== undefined) this.options.direction = options.direction;
-        if (options.minimumEndSpeed !== undefined) this.options.minimumEndSpeed = options.minimumEndSpeed;
-        if (options.rails !== undefined) this.options.rails = options.rails;
-        if (options.scale !== undefined) this.options.scale = options.scale;
-        if (options.stallTime !== undefined) this.options.stallTime = options.stallTime;
+        return this._optionsManager.setOptions(options);
     };
 
     module.exports = ScrollSync;
