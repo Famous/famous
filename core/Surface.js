@@ -298,7 +298,6 @@ define(function(require, exports, module) {
                     var width = target.clientWidth;
                     if (this._size && this._size[0] !== width) {
                         this._size[0] = width;
-                        this._eventOutput.emit('trueSizeChange');
                         this._sizeDirty = true;
                     }
                     size[0] = width;
@@ -309,7 +308,6 @@ define(function(require, exports, module) {
                     var height = target.clientHeight;
                     if (this._size && this._size[1] !== height) {
                         this._size[1] = height;
-                        this._eventOutput.emit('trueSizeChange');
                         this._sizeDirty = true;
                     }
                     size[1] = height;
@@ -332,6 +330,7 @@ define(function(require, exports, module) {
                 target.style.width = (this.size && this.size[0] === true) ? '' : this._size[0] + 'px';
                 target.style.height = (this.size && this.size[1] === true) ?  '' : this._size[1] + 'px';
             }
+            this._eventOutput.emit('resize');
             this._sizeDirty = false;
         }
 
