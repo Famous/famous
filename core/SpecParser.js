@@ -139,33 +139,17 @@ define(function(require, exports, module) {
             if (spec.align) align = spec.align;
 
             if (spec.size || spec.proportions) {
-                var parentSize = parentContext.size;
+                var parentSize = size;
+                size = [size[0], size[1]];
 
                 if (spec.size) {
-                    size = [
-                        spec.size[0] !== undefined ? spec.size[0] : parentSize[0],
-                        spec.size[1] !== undefined ? spec.size[1] : parentSize[1]
-                    ];
+                    if (spec.size[0] !== undefined) size[0] = spec.size[0];
+                    if (spec.size[1] !== undefined) size[1] = spec.size[1];
                 }
+
                 if (spec.proportions) {
-                    if (spec.proportions[0] !== undefined && spec.proportions !== undefined) {
-                        size = [
-                            parentSize[0] * spec.proportions[0],
-                            parentSize[1] * spec.proportions[1]
-                        ];
-                    }
-                    else if (spec.proportions[0] !== undefined && spec.proportions[1] === undefined) {
-                        size = [
-                            parentSize[0] * spec.proportions[0],
-                            size[1]
-                        ];
-                    }
-                    else if (spec.proportions[0] === undefined && spec.proportions[1] !== undefined) {
-                        size = [
-                            size[0],
-                            parentSize[1] * spec.proportions[1]
-                        ];
-                    }
+                    if (spec.proportions[0] !== undefined) size[0] = size[0] * spec.proportions[0];
+                    if (spec.proportions[1] !== undefined) size[1] = size[1] * spec.proportions[1];
                 }
 
                 if (parentSize) {
@@ -173,10 +157,10 @@ define(function(require, exports, module) {
                     if (align && (align[0] || align[1])) transform = Transform.thenMove(transform, _vecInContext([align[0] * parentSize[0], align[1] * parentSize[1], 0], sizeContext));
                     if (origin && (origin[0] || origin[1])) transform = Transform.moveThen([-origin[0] * size[0], -origin[1] * size[1], 0], transform);
                 }
+
                 nextSizeContext = parentContext.transform;
                 origin = null;
                 align = null;
-
             }
 
             this._parseSpec(target, {
