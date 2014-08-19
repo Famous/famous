@@ -71,9 +71,13 @@ define(function(require, exports, module) {
 
     // Get sequence size from backing up to index
     ViewSequence.Backing.prototype.getSize = function getSize(index) {
+        return this.cumulativeSizes[index];
+    };
+
+    // Calculates cumulative size
+    ViewSequence.Backing.prototype.calculateSize = function calculateSize(index) {
         index = index || this.array.length;
         var size = [0, 0];
-        var trueSized;
         for (var i = 0; i < index; i++) {
             var nodeSize = this.array[i].getSize() ? this.array[i].getSize() : this.array[i].size;
             if (!nodeSize) return undefined;
@@ -305,7 +309,7 @@ define(function(require, exports, module) {
      * @return {number} Render spec for this component
      */
     ViewSequence.prototype.render = function render() {
-        if (this._.trackSize && this._.sizeDirty) this._.getSize();
+        if (this._.trackSize && this._.sizeDirty) this._.calculateSize();
         var target = this.get();
         return target ? target.render.apply(target, arguments) : null;
     };

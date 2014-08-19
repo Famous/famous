@@ -78,12 +78,22 @@ define(function(require, exports, module) {
 
     function _getClipSize() {
         if (this.options.clipSize !== undefined) return this.options.clipSize;
-        if (this._contextSize[this.options.direction] > this._node._.cumulativeSizes[this._node._.cumulativeSizes.length - 1][this.options.direction]) {
-            return _sizeForDir.call(this, this._node._.cumulativeSizes[this._node._.cumulativeSizes.length - 1]);
+        if (this._contextSize[this.options.direction] > this.getCumulativeSize()[this.options.direction]) {
+            return _sizeForDir.call(this, this.getCumulativeSize());
         } else {
             return _sizeForDir.call(this, this._contextSize);
         }
     }
+
+    /**
+    * Returns the cumulative size of the renderables in the view sequence
+    * @method getCumulativeSize
+    * @return {array} a two value array of the view sequence's cumulative size up to the index.
+    */
+    Scroller.prototype.getCumulativeSize = function(index) {
+        if (index === undefined) index = this._node._.cumulativeSizes.length - 1;
+        return this._node._.getSize(index);
+    };
 
     /**
      * Patches the Scroller instance's options with the passed-in ones.
