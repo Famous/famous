@@ -349,6 +349,10 @@ define(function(require, exports, module) {
     function _normalizeState() {
         var offset = 0;
         var position = Math.round(this.getPosition());
+
+        var position = this.getPosition();
+        position += (position < 0 ? -0.5 : 0.5) >> 0;
+
         var nodeSize = _nodeSizeForDirection.call(this, this._node);
         var nextNode = this._node.getNext();
 
@@ -491,7 +495,7 @@ define(function(require, exports, module) {
      * in pixels translated.
      */
     Scrollview.prototype.getAbsolutePosition = function getAbsolutePosition() {
-        return this._node._.cumulativeSizes[this.getCurrentIndex()][this.options.direction] + this.getPosition();
+        return this._scroller.getCumulativeSize()[this.options.direction] + this.getPosition();
     };
 
     /**
