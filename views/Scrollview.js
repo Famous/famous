@@ -232,7 +232,7 @@ define(function(require, exports, module) {
         this._eventInput.on('update', _handleMove);
         this._eventInput.on('end', _handleEnd);
 
-        this._eventInput.on('trueSizeChange', function() {
+        this._eventInput.on('resize', function() {
             this._node._.calculateSize();
         }.bind(this));
 
