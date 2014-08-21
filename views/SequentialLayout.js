@@ -104,18 +104,18 @@ define(function(require, exports, module) {
      * @return {number} Render spec for this component
      */
     SequentialLayout.prototype.render = function render() {
-        var length = 0,
-            secondaryDirection = (this.options.direction + 1) % 2,
-            currentNode = this._items,
-            item,
-            itemSize,
-            output,
-            result = [],
-            i = 0;
+        var length = 0;
+        var secondaryDirection = (this.options.direction + 1) % 2;
+        var currentNode = this._items;
+        var item;
+        var itemSize;
+        var output;
+        var result = [];
+        var i = 0;
 
         this._size = [0, 0];
 
-        while(currentNode) {
+        while (currentNode) {
             item = currentNode.get();
             if (!item) break;
 
