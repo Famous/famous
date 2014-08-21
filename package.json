@@ -2,9 +2,6 @@
   "name": "famous",
   "version": "0.2.2",
   "description": "Famo.us is a JavaScript framework for everyone who wants to build beautiful experiences on any device.",
-  "scripts": {
-    "test": "grunt test"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/famous/famous"
