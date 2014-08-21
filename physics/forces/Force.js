@@ -41,10 +41,9 @@ define(function(require, exports, module) {
      * @param targets {Array.Body} Array of bodies to apply force to.
      */
     Force.prototype.applyForce = function applyForce(targets) {
-        if (!(targets instanceof Array)) targets = [targets];
+        if (!(targets instanceof Array)) return targets.applyForce(this.force); // just in case this is called with a single body.
         for (var i = 0, len = targets.length; i < len; i++) {
-            var target = targets[i];
-            target.applyForce(this.force);
+            targets[i].applyForce(this.force);
         }
     };
 
