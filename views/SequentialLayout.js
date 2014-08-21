@@ -104,29 +104,30 @@ define(function(require, exports, module) {
      * @return {number} Render spec for this component
      */
     SequentialLayout.prototype.render = function render() {
-        var length = 0,
-            secondaryDirection = (this.options.direction + 1) % 2,
-            currentNode = this._items,
-            item,
-            itemSize,
-            output,
-            result = [],
-            i = 0;
+        var length = 0;
+        var secondaryDirection = (this.options.direction + 1) % 2;
+        var currentNode = this._items;
+        var item;
+        var itemSize;
+        var output;
+        var result = [];
+        var i = 0;
 
         this._size = [0, 0];
 
-        while(currentNode) {
+        while (currentNode) {
             item = currentNode.get();
             if (!item) break;
 
             if (item.getSize) itemSize = item.getSize();
-            if (!itemSize) itemSize = this.options.defaultItemSize;
 
             output = this._outputFunction.call(this, item, length, i++);
             result.push(output);
 
-            if (itemSize[this.options.direction] && (itemSize[this.options.direction] !== true)) length += itemSize[this.options.direction] + this.options.itemSpacing;
-            if (itemSize[secondaryDirection] > this._size[secondaryDirection]) this._size[secondaryDirection] = itemSize[secondaryDirection];
+            if (itemSize) {
+                if (itemSize[this.options.direction]) length += itemSize[this.options.direction];
+                if (itemSize[secondaryDirection] > this._size[secondaryDirection]) this._size[secondaryDirection] = itemSize[secondaryDirection];
+            }
 
             currentNode = currentNode.getNext();
         }
