@@ -120,13 +120,14 @@ define(function(require, exports, module) {
             if (!item) break;
 
             if (item.getSize) itemSize = item.getSize();
-            if (!itemSize) itemSize = this.options.defaultItemSize;
 
             output = this._outputFunction.call(this, item, length, i++);
             result.push(output);
 
-            if (itemSize[this.options.direction] && (itemSize[this.options.direction] !== true)) length += itemSize[this.options.direction] + this.options.itemSpacing;
-            if (itemSize[secondaryDirection] > this._size[secondaryDirection]) this._size[secondaryDirection] = itemSize[secondaryDirection];
+            if (itemSize) {
+                if (itemSize[this.options.direction]) length += itemSize[this.options.direction];
+                if (itemSize[secondaryDirection] > this._size[secondaryDirection]) this._size[secondaryDirection] = itemSize[secondaryDirection];
+            }
 
             currentNode = currentNode.getNext();
         }
