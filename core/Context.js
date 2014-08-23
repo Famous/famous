@@ -14,7 +14,7 @@ define(function(require, exports, module) {
     var Transform = require('./Transform');
     var Transitionable = require('famous/transitions/Transitionable');
 
-    var usePrefix = ('webkitPerspective' in document.documentElement);
+    var usePrefix = !('perspective' in document.documentElement.style);
     var _originZeroZero = [0, 0];
 
     function _getElementSize(element) {
