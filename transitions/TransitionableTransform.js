@@ -212,11 +212,16 @@ define(function(require, exports, module) {
      * @method halt
      */
     TransitionableTransform.prototype.halt = function halt() {
-        this._final = this.get();
         this.translate.halt();
         this.rotate.halt();
         this.skew.halt();
         this.scale.halt();
+
+        this._final = this.get();
+        this._finalTranslate = this.translate.get();
+        this._finalRotate = this.rotate.get();
+        this._finalSkew = this.skew.get();
+        this._finalScale = this.scale.get();
     };
 
     module.exports = TransitionableTransform;
