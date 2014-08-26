@@ -266,16 +266,16 @@ define(function(require, exports, module) {
         }
 
         var sizeNode = this._node;
-        var nodesSize = _sizeForDir.call(this, sizeNode.getSize()) || 0;
+        var nodesSize = _sizeForDir.call(this, sizeNode.getSize());
         if (offset < clipSize) {
             while (sizeNode && nodesSize < clipSize) {
                 sizeNode = sizeNode.getPrevious();
-                if (sizeNode) nodesSize += _sizeForDir.call(this, sizeNode.getSize()) || 0;
+                if (sizeNode) nodesSize += _sizeForDir.call(this, sizeNode.getSize());
             }
             sizeNode = this._node;
             while (sizeNode && nodesSize < clipSize) {
                 sizeNode = sizeNode.getNext();
-                if (sizeNode) nodesSize += _sizeForDir.call(this, sizeNode.getSize()) || 0;
+                if (sizeNode) nodesSize += _sizeForDir.call(this, sizeNode.getSize());
             }
         }
 
@@ -307,7 +307,7 @@ define(function(require, exports, module) {
         offset = -this._positionOffset;
         if (currNode) {
             size = currNode.getSize ? currNode.getSize() : this._contextSize;
-            offset -= _sizeForDir.call(this, size) || 0;
+            offset -= _sizeForDir.call(this, size);
         }
 
         while (currNode && ((offset - position) > -(clipSize + this.options.margin))) {
@@ -315,7 +315,7 @@ define(function(require, exports, module) {
             currNode = currNode.getPrevious ? currNode.getPrevious() : null;
             if (currNode) {
                 size = currNode.getSize ? currNode.getSize() : this._contextSize;
-                offset -= _sizeForDir.call(this, size) || 0;
+                offset -= _sizeForDir.call(this, size);
             }
         }
 
