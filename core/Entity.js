@@ -6,6 +6,7 @@
  * @license MPL 2.0
  * @copyright Famous Industries, Inc. 2014
  */
+/*global global */
 
 define(function(require, exports, module) {
     /**
@@ -16,8 +17,9 @@ define(function(require, exports, module) {
      * @static
      * @class Entity
      */
-
-    var entities = [];
+    // Shim for global and window so you don't break node.js support
+    var bossMode = global || window;
+    var entities = bossMode.famousEntities = bossMode.famousEntities || [];
 
     /**
      * Get entity from global index.
