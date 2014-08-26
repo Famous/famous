@@ -70,11 +70,13 @@ define(function(require, exports, module) {
     };
 
     // Get sequence size from backing up to index
+    // TODO: remove from viewSequence with proper abstraction
     ViewSequence.Backing.prototype.getSize = function getSize(index) {
         return this.cumulativeSizes[index];
     };
 
     // Calculates cumulative size
+    // TODO: remove from viewSequence with proper abstraction
     ViewSequence.Backing.prototype.calculateSize = function calculateSize(index) {
         index = index || this.array.length;
         var size = [0, 0];
