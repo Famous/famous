@@ -249,8 +249,8 @@ define(function(require, exports, module) {
      * @param {string} key
      * @return {Object} engine options
      */
-    Engine.getOptions = function getOptions() {
-        return optionsManager.getOptions.apply(optionsManager, arguments);
+    Engine.getOptions = function getOptions(key) {
+        return optionsManager.getOptions(key);
     };
 
     /**
