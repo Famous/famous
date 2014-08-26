@@ -234,24 +234,6 @@ define(function(require, exports, module) {
         };
     };
 
-    function _normalizeState() {
-        var nodeSize = _sizeForDir.call(this, this._node.getSize());
-        var nextNode = this._node && this._node.getNext ? this._node.getNext() : null;
-        while (nextNode && this._position + this._positionOffset >= nodeSize) {
-            this._positionOffset -= nodeSize;
-            this._node = nextNode;
-            nodeSize = _sizeForDir.call(this, this._node.getSize());
-            nextNode = this._node && this._node.getNext ? this._node.getNext() : null;
-        }
-        var prevNode = this._node && this._node.getPrevious ? this._node.getPrevious() : null;
-        while (prevNode && this._position + this._positionOffset < 0) {
-            var prevNodeSize = _sizeForDir.call(this, prevNode.getSize());
-            this._positionOffset += prevNodeSize;
-            this._node = prevNode;
-            prevNode = this._node && this._node.getPrevious ? this._node.getPrevious() : null;
-        }
-    }
-
     function _innerRender() {
         var size = null;
         var position = this._position;
@@ -319,7 +301,6 @@ define(function(require, exports, module) {
             }
         }
 
-//        _normalizeState.call(this);
         return result;
     }
 
