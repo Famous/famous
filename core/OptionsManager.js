@@ -116,7 +116,7 @@ define(function(require, exports, module) {
      * @return {Object} associated object or full options hash
      */
     OptionsManager.prototype.get = function get(key) {
-        return key ? this._value[key] || this._value;
+        return key ? this._value[key] : this._value;
     };
 
     /**
