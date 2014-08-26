@@ -101,11 +101,13 @@ define(function(require, exports, module) {
      * @param {Options} options An object of configurable options for the Scroller instance.
      */
     Scroller.prototype.setOptions = function setOptions(options) {
+        if (options.groupScroll !== this.options.groupScroll) {
+            if (options.groupScroll)
+                this.group.pipe(this._eventOutput);
+            else
+                this.group.unpipe(this._eventOutput);
+        }
         this._optionsManager.setOptions(options);
-        if (this.options.groupScroll)
-            this.group.pipe(this._eventOutput);
-        else
-            this.group.unpipe(this._eventOutput);
     };
 
     /**
