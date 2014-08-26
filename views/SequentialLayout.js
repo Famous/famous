@@ -105,7 +105,7 @@ define(function(require, exports, module) {
      */
     SequentialLayout.prototype.render = function render() {
         var length             = 0;
-        var secondaryDirection = (this.options.direction + 1) ^ 1;
+        var secondaryDirection = this.options.direction ^ 1;
         var currentNode        = this._items;
         var item               = null;
         var itemSize           = [];
