@@ -580,20 +580,20 @@ define(function(require, exports, module) {
         this._scroller.setOptions(options);
 
         // physics sub-components
-        if (options.drag !== undefined) this.drag.setOptions({strength: options.drag});
-        if (options.friction !== undefined) this.friction.setOptions({strength: options.friction});
+        if (options.drag !== undefined) this.drag.setOptions({strength: this.options.drag});
+        if (options.friction !== undefined) this.friction.setOptions({strength: this.options.friction});
         if (options.edgePeriod !== undefined || options.edgeDamp !== undefined) {
             this.spring.setOptions({
-                period: options.edgePeriod,
-                dampingRatio: options.edgeDamp
+                period: this.options.edgePeriod,
+                dampingRatio: this.options.edgeDamp
             });
         }
 
         // sync sub-component
         if (options.rails || options.direction !== undefined || options.syncScale !== undefined || options.preventDefault) {
             this.sync.setOptions({
-                rails: options.rails,
-                direction: (options.direction === Utility.Direction.X) ? GenericSync.DIRECTION_X : GenericSync.DIRECTION_Y,
+                rails: this.options.rails,
+                direction: (this.options.direction === Utility.Direction.X) ? GenericSync.DIRECTION_X : GenericSync.DIRECTION_Y,
                 scale: this.options.syncScale,
                 preventDefault: this.options.preventDefault
             });
