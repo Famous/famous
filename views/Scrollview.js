@@ -376,6 +376,20 @@ define(function(require, exports, module) {
         }
 
         if (offset) _shiftOrigin.call(this, offset);
+
+        if (this._node) {
+            if (this._node.index !== this._cachedIndex) {
+                if (this.getPosition() < 0.5 * nodeSize) {
+                    this._cachedIndex = this._node.index;
+                    this._eventOutput.emit('pageChange', {direction: -1, index: this._cachedIndex});
+                }
+            } else {
+                if (this.getPosition() > 0.5 * nodeSize) {
+                    this._cachedIndex = this._node.index + 1;
+                    this._eventOutput.emit('pageChange', {direction: 1, index: this._cachedIndex});
+                }
+            }
+        }
     }
 
     function _shiftOrigin(amount) {
@@ -633,18 +647,7 @@ define(function(require, exports, module) {
      * @return {number} Render spec for this component
      */
     Scrollview.prototype.render = function render() {
-        if (this.options.paginated && this._needsPaginationCheck)
-            _handlePagination.call(this);
-
-        if (this._node) {
-            if (this._cachedIndex < this._node.index) {
-                this._eventOutput.emit('pageChange', {direction: 1, index: this._node.index});
-                this._cachedIndex = this._node.index;
-            } else if (this._cachedIndex > this._node.index) {
-                this._eventOutput.emit('pageChange', {direction: -1, index: this._node.index});
-                this._cachedIndex = this._node.index;
-            }
-        }
+        if (this.options.paginated && this._needsPaginationCheck) _handlePagination.call(this);
 
         return this._scroller.render();
     };
