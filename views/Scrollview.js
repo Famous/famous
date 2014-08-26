@@ -564,6 +564,13 @@ define(function(require, exports, module) {
             else if (options.direction === 'y') options.direction = Utility.Direction.Y;
         }
 
+        if (options.groupScroll !== this.options.groupScroll) {
+            if (options.groupScroll)
+                this.subscribe(this._scroller);
+            else
+                this.unsubscribe(this._scroller);
+        }
+
         // patch custom options
         this._optionsManager.setOptions(options);
 
@@ -571,10 +578,6 @@ define(function(require, exports, module) {
 
         // scroller sub-component
         this._scroller.setOptions(options);
-        if (options.groupScroll)
-            this.subscribe(this._scroller);
-        else
-            this.unsubscribe(this._scroller);
 
         // physics sub-components
         if (options.drag !== undefined) this.drag.setOptions({strength: options.drag});
