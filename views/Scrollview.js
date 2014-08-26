@@ -591,7 +591,7 @@ define(function(require, exports, module) {
             this.sync.setOptions({
                 rails: options.rails,
                 direction: (options.direction === Utility.Direction.X) ? GenericSync.DIRECTION_X : GenericSync.DIRECTION_Y,
-                scale: options.syncScale,
+                scale: this.options.syncScale,
                 preventDefault: this.options.preventDefault
             });
         }
