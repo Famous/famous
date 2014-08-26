@@ -36,6 +36,11 @@ define(function(require, exports, module) {
 
         this.container.add(this.scrollview);
 
+        this._eventInput = new EventHandler();
+        EventHandler.setInputHandler(this, this._eventInput);
+
+        this._eventInput.pipe(this.scrollview);
+
         this._eventOutput = new EventHandler();
         EventHandler.setOutputHandler(this, this._eventOutput);
 
