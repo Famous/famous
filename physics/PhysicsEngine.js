@@ -127,6 +127,8 @@ define(function(require, exports, module) {
      * Remove a body from the engine. Detaches body from all forces and
      *   constraints.
      *
+     * TODO: Fix for in loop
+     *
      * @method removeBody
      * @param body {Body}
      */
@@ -134,7 +136,7 @@ define(function(require, exports, module) {
         var array = (body.isBody) ? this._bodies : this._particles;
         var index = array.indexOf(body);
         if (index > -1) {
-            for (var i = 0; i < Object.keys(this._agentData).length; i++) this.detachFrom(i, body);
+            for (agent in this._agentData) this.detachFrom(agent[id], body);
             array.splice(index,1);
         }
         if (this.getBodies().length === 0) this._hasBodies = false;
@@ -153,6 +155,7 @@ define(function(require, exports, module) {
 
         this._agentData[this._currAgentId] = {
             agent   : agent,
+            id      : this._currAgentId,
             targets : targets,
             source  : source
         };
