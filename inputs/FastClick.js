@@ -15,6 +15,7 @@ define(function(require, exports, module) {
      *   This is used to speed up clicks on some browsers.
      */
     if (!window.CustomEvent) return;
+    var clickTolerance = 5;
     var clickThreshold = 300;
     var clickWindow = 500;
     var potentialClicks = {};
@@ -54,13 +55,28 @@ define(function(require, exports, module) {
     });
 
     window.addEventListener('click', function(event) {
+        if (!(event instanceof window.MouseEvent)) return;
+
         var currTime = _now();
         for (var i in recentlyDispatched) {
-            var previousEvent = recentlyDispatched[i];
             if (currTime - i < clickWindow) {
-                if (event instanceof window.MouseEvent && event.target === previousEvent.target) event.stopPropagation();
+                var previousEvent = recentlyDispatched[i];
+
+                if (event.target === previousEvent.target) {
+                    event.stopPropagation();
+                    return;
+                }
+
+                for (var j = 0; j < previousEvent.changedTouches.length; j++) {
+                    var touch = previousEvent.changedTouches[j];
+                    if (Math.abs(event.clientX - touch.clientX) < clickTolerance || Math.abs(event.clientY - touch.clientY) < clickTolerance) {
+                        event.stopPropagation();
+                        return;
+                    }
+                }
+
+                delete recentlyDispatched[i];
             }
-            else delete recentlyDispatched[i];
         }
     }, true);
 });
