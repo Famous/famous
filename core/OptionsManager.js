@@ -109,14 +109,14 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Look up value by key
+     * Look up value by key or get the full options hash
      * @method get
      *
      * @param {string} key key
-     * @return {Object} associated object
+     * @return {Object} associated object or full options hash
      */
     OptionsManager.prototype.get = function get(key) {
-        return this._value[key];
+        return key ? this._value[key] : this._value;
     };
 
     /**
@@ -139,17 +139,6 @@ define(function(require, exports, module) {
         this._value[key] = value;
         if (this.eventOutput && value !== originalValue) this.eventOutput.emit('change', {id: key, value: value});
         return this;
-    };
-
-    /**
-     * Return entire object contents of this OptionsManager.
-     *
-     * @method value
-     *
-     * @return {Object} current state of options
-     */
-    OptionsManager.prototype.value = function value() {
-        return this._value;
     };
 
     /**
