@@ -69,8 +69,8 @@ define(function(require, exports, module) {
         }
         else {
             result = document.createElement(type);
-            this.container.appendChild(result);
         }
+        this.container.appendChild(result);
         this.nodeCount++;
         return result;
     };
