@@ -58,6 +58,7 @@ define(function(require, exports, module) {
         this._prevTime = undefined;
         this._down = false;
         this._moved = false;
+        this._documentActive = false;
     }
 
     MouseSync.DEFAULT_OPTIONS = {
@@ -109,6 +110,8 @@ define(function(require, exports, module) {
         payload.offsetY = event.offsetY;
 
         this._eventOutput.emit('start', payload);
+        this._documentActive = false;
+        
     }
 
     function _handleMove(event) {
@@ -182,18 +185,25 @@ define(function(require, exports, module) {
         this._move = false;
     }
 
+    /**
+     *  Switches the mousemove listener to the document body, if propagation is enabled.
+     *  @method _handleLeave
+     *  @private
+     */
     function _handleLeave(event) {
         if (!this._down || !this._move) return;
 
-        var boundMove = _handleMove.bind(this);
-        var boundEnd = function(event) {
-            _handleEnd.call(this, event);
-            document.removeEventListener('mousemove', boundMove);
-            document.removeEventListener('mouseup', boundEnd);
-        }.bind(this, event);
-
-        document.addEventListener('mousemove', boundMove);
-        document.addEventListener('mouseup', boundEnd);
+        if (!this._documentActive) {
+          var boundMove = _handleMove.bind(this);
+          var boundEnd = function(event) {
+              _handleEnd.call(this, event);
+              document.removeEventListener('mousemove', boundMove);
+              document.removeEventListener('mouseup', boundEnd);
+          }.bind(this, event);
+          document.addEventListener('mousemove', boundMove);
+          document.addEventListener('mouseup', boundEnd);
+          this._documentActive = true;
+        }
     }
 
     /**
