@@ -11,18 +11,32 @@ define(function(require, exports, module) {
     var OptionsManager = require('../core/OptionsManager');
 
     /**
-     * Handles piped in mouse drag events. Outputs an object with two
-     *   properties, position and velocity.
-     *   Emits 'start', 'update' and 'end' events with DOM event passthroughs,
-     *   with position, velocity, and a delta key.
+     * Handles piped in mouse drag events. Outputs an object with the position delta from last frame, position from start,
+     * current velocity averaged out over the velocitySampleLength (set via options), clientX, clientY, offsetX, and offsetY.
+     *
+     * Emits 'start', 'update' and 'end' events. Designed to be used either as a standalone MouseSync, or as part of a
+     * GenericSync.
      *
      * @class MouseSync
      * @constructor
      *
-     * @param [options] {Object}             default options overrides
-     * @param [options.direction] {Number}   read from a particular axis
-     * @param [options.rails] {Boolean}      read from axis with greatest differential
-     * @param [options.propogate] {Boolean}  add listened to document on mouseleave
+     * @example
+     *   var Surface = require('famous/core/Surface');
+     *   var MouseSync = require('famous/inputs/MouseSync');
+     *
+     *   var surface = new Surface({ size: [100, 100] });
+     *   var mouseSync = new MouseSync();
+     *   surface.pipe(mouseSync);
+     *
+     *   mouseSync.on('start', function (e) { // react to start });
+     *   mouseSync.on('update', function (e) { // react to update });
+     *   mouseSync.on('end', function (e) { // react to end });
+     *
+     * @param [options] {Object}                An object of the following configurable options.
+     * @param [options.direction] {Number}      Read from a particular axis. Valid options are: undefined, 0 or 1. 0 corresponds to x, and 1 to y. Default is undefined, which allows both x and y.
+     * @param [options.rails] {Boolean}         Read from axis with the greatest differential.
+     * @param [options.velocitySampleLength] {Number}  Number of previous frames to check velocity against.
+     * @param [options.propogate] {Boolean}     Add a listener to document on mouseleave. This allows drag events to continue across the entire page.
      */
     function MouseSync(options) {
         this.options =  Object.create(MouseSync.DEFAULT_OPTIONS);
@@ -53,6 +67,7 @@ define(function(require, exports, module) {
             offsetY  : 0
         };
 
+        this._positionHistory = [];
         this._position = null;      // to be deprecated
         this._prevCoord = undefined;
         this._prevTime = undefined;
@@ -66,6 +81,7 @@ define(function(require, exports, module) {
         rails: false,
         scale: 1,
         propogate: true,  // events piped to document on mouseleave
+        velocitySampleLength: 10,
         preventDefault: true
     };
 
@@ -74,8 +90,12 @@ define(function(require, exports, module) {
 
     var MINIMUM_TICK_TIME = 8;
 
-    var _now = Date.now;
-
+    /**
+     *  Triggered by mousedown.
+     *
+     *  @method _handleStart
+     *  @private
+     */
     function _handleStart(event) {
         var delta;
         var velocity;
@@ -85,11 +105,11 @@ define(function(require, exports, module) {
         var y = event.clientY;
 
         this._prevCoord = [x, y];
-        this._prevTime = _now();
+        this._prevTime = Date.now();
         this._down = true;
         this._move = false;
 
-        if (this.options.direction !== undefined){
+        if (this.options.direction !== undefined) {
             this._position = 0;
             delta = 0;
             velocity = 0;
@@ -109,11 +129,21 @@ define(function(require, exports, module) {
         payload.offsetX = event.offsetX;
         payload.offsetY = event.offsetY;
 
+        this._positionHistory.push({
+            position: payload.position.slice ? payload.position.slice(0) : payload.position,
+            time: this._prevTime
+        });
+
         this._eventOutput.emit('start', payload);
         this._documentActive = false;
-        
     }
 
+    /**
+     *  Triggered by mousemove.
+     *
+     *  @method _handleMove
+     *  @private
+     */
     function _handleMove(event) {
         if (!this._prevCoord) return;
 
@@ -123,7 +153,7 @@ define(function(require, exports, module) {
         var x = event.clientX;
         var y = event.clientY;
 
-        var currTime = _now();
+        var currTime = Date.now();
 
         var diffX = x - prevCoord[0];
         var diffY = y - prevCoord[1];
@@ -133,10 +163,7 @@ define(function(require, exports, module) {
             else diffX = 0;
         }
 
-        var diffTime = Math.max(currTime - prevTime, MINIMUM_TICK_TIME); // minimum tick time
-
-        var velX = diffX / diffTime;
-        var velY = diffY / diffTime;
+        var diffTime = Math.max(currTime - this._positionHistory[0].time, MINIMUM_TICK_TIME); // minimum tick time
 
         var scale = this.options.scale;
         var nextVel;
@@ -144,17 +171,20 @@ define(function(require, exports, module) {
 
         if (this.options.direction === MouseSync.DIRECTION_X) {
             nextDelta = scale * diffX;
-            nextVel = scale * velX;
             this._position += nextDelta;
+            nextVel = scale * (this._position - this._positionHistory[0].position) / diffTime;
         }
         else if (this.options.direction === MouseSync.DIRECTION_Y) {
             nextDelta = scale * diffY;
-            nextVel = scale * velY;
             this._position += nextDelta;
+            nextVel = scale * (this._position - this._positionHistory[0].position) / diffTime;
         }
         else {
             nextDelta = [scale * diffX, scale * diffY];
-            nextVel = [scale * velX, scale * velY];
+            nextVel = [
+                scale * (this._position[0] - this._positionHistory[0].position[0]) / diffTime,
+                scale * (this._position[0] - this._positionHistory[0].position[1]) / diffTime
+            ];
             this._position[0] += nextDelta[0];
             this._position[1] += nextDelta[1];
         }
@@ -168,6 +198,15 @@ define(function(require, exports, module) {
         payload.offsetX  = event.offsetX;
         payload.offsetY  = event.offsetY;
 
+        if (this._positionHistory.length === this.options.velocitySampleLength) {
+          this._positionHistory.shift();
+        }
+
+        this._positionHistory.push({
+          position: payload.position.slice ? payload.position.slice(0) : payload.position,
+          time: currTime
+        });
+
         this._eventOutput.emit('update', payload);
 
         this._prevCoord = [x, y];
@@ -175,6 +214,13 @@ define(function(require, exports, module) {
         this._move = true;
     }
 
+    /**
+     *  Triggered by mouseup on the element or document body if propagation is enabled, or
+     *  mouseleave if propagation is off.
+     *
+     *  @method _handleEnd
+     *  @private
+     */
     function _handleEnd(event) {
         if (!this._down) return;
 
@@ -183,6 +229,7 @@ define(function(require, exports, module) {
         this._prevTime = undefined;
         this._down = false;
         this._move = false;
+        this._positionHistory = [];
     }
 
     /**
