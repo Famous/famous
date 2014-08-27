@@ -13,16 +13,29 @@ define(function(require, exports, module) {
 
     /**
      * Handles piped in touch events. Emits 'start', 'update', and 'events'
-     *   events with position, velocity, acceleration, and touch id.
-     *   Useful for dealing with inputs on touch devices.
-     *
+     *   events with delta, position, velocity, acceleration, clientX, clientY, count, and touch id.
+     *   Useful for dealing with inputs on touch devices. Designed to be used either as standalone, or
+     *   included in a GenericSync.
      *
      * @class TouchSync
      * @constructor
      *
+     * @example
+     *   var Surface = require('famous/core/Surface');
+     *   var TouchSync = require('famous/inputs/TouchSync');
+     *
+     *   var surface = new Surface({ size: [100, 100] });
+     *   var touchSync = new TouchSync();
+     *   surface.pipe(touchSync);
+     *
+     *   touchSync.on('start', function (e) { // react to start });
+     *   touchSync.on('update', function (e) { // react to update });
+     *   touchSync.on('end', function (e) { // react to end });*
+     *
      * @param [options] {Object}             default options overrides
      * @param [options.direction] {Number}   read from a particular axis
      * @param [options.rails] {Boolean}      read from axis with greatest differential
+     * @param [options.velocitySampleLength] {Number}  Number of previous frames to check velocity against.
      * @param [options.scale] {Number}       constant factor to scale velocity output
      */
     function TouchSync(options) {
@@ -56,6 +69,7 @@ define(function(require, exports, module) {
     TouchSync.DEFAULT_OPTIONS = {
         direction: undefined,
         rails: false,
+        velocitySampleLength: 10,
         scale: 1
     };
 
@@ -64,7 +78,11 @@ define(function(require, exports, module) {
 
     var MINIMUM_TICK_TIME = 8;
 
-    // handle 'trackstart'
+    /**
+     *  Triggered by trackstart.
+     *  @method _handleStart
+     *  @private
+     */
     function _handleStart(data) {
         var velocity;
         var delta;
@@ -91,28 +109,42 @@ define(function(require, exports, module) {
         this._eventOutput.emit('start', payload);
     }
 
-    // handle 'trackmove'
+    /**
+     *  Triggered by trackmove.
+     *  @method _handleMove
+     *  @private
+     */
     function _handleMove(data) {
         var history = data.history;
 
         var currHistory = history[history.length - 1];
         var prevHistory = history[history.length - 2];
 
-        var prevTime = prevHistory.timestamp;
+        var distantHistory = history[history.length - this.options.velocitySampleLength] ?
+          history[history.length - this.options.velocitySampleLength] :
+          history[history.length - 2];
+
+        var distantTime = distantHistory.timestamp;
         var currTime = currHistory.timestamp;
 
         var diffX = currHistory.x - prevHistory.x;
         var diffY = currHistory.y - prevHistory.y;
 
+        var velDiffX = currHistory.x - distantHistory.x;
+        var velDiffY = currHistory.y - distantHistory.y;
+
         if (this.options.rails) {
             if (Math.abs(diffX) > Math.abs(diffY)) diffY = 0;
             else diffX = 0;
+
+            if (Math.abs(velDiffX) > Math.abs(velDiffY)) velDiffY = 0;
+            else velDiffX = 0;
         }
 
-        var diffTime = Math.max(currTime - prevTime, MINIMUM_TICK_TIME);
+        var diffTime = Math.max(currTime - distantTime, MINIMUM_TICK_TIME);
 
-        var velX = diffX / diffTime;
-        var velY = diffY / diffTime;
+        var velX = velDiffX / diffTime;
+        var velY = velDiffY / diffTime;
 
         var scale = this.options.scale;
         var nextVel;
@@ -147,7 +179,11 @@ define(function(require, exports, module) {
         this._eventOutput.emit('update', payload);
     }
 
-    // handle 'trackend'
+    /**
+     *  Triggered by trackend.
+     *  @method _handleEnd
+     *  @private
+     */
     function _handleEnd(data) {
         this._payload.count = data.count;
         this._eventOutput.emit('end', this._payload);
