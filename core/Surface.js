@@ -62,6 +62,7 @@ define(function(require, exports, module) {
      */
     Surface.prototype.setAttributes = function setAttributes(attributes) {
         for (var n in attributes) {
+            if (n === 'style') throw new Error("Cannot set styles via 'setAttributes' as it will break Famo.us.  Use 'setProperties' instead.");
             this.attributes[n] = attributes[n];
         }
         this._attributesDirty = true;
