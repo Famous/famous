@@ -37,7 +37,7 @@ define(function(require, exports, module) {
      * @private
      * @method set
      * @param {Number} id entity registration id
-     * @return {Surface} entity to add to the global index
+     * @param {Surface} entity to add to the global index
      */
     function set(id, entity) {
         entities[id] = entity;
