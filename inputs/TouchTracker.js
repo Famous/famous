@@ -24,7 +24,7 @@ define(function(require, exports, module) {
     }
 
     function _handleStart(event) {
-        if(event.touches.length !== 1) return;
+        if (event.touches.length !== 1) return;
         this.isTouched = true;
 
         for (var i = 0; i < event.changedTouches.length; i++) {
@@ -36,7 +36,7 @@ define(function(require, exports, module) {
     }
 
     function _handleMove(event) {
-        if(event.touches.length !== 1) return;
+        if (event.touches.length !== 1) return;
 
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
@@ -50,7 +50,7 @@ define(function(require, exports, module) {
     }
 
     function _handleEnd(event) {
-        if(!this.isTouched) return;
+        if (!this.isTouched) return;
         this.isTouched = false;
 
         for (var i = 0; i < event.changedTouches.length; i++) {
