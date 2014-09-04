@@ -24,6 +24,9 @@ define(function(require, exports, module) {
     }
 
     function _handleStart(event) {
+        if (event.touches.length !== 1) return;
+        this.isTouched = true;
+
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             var data = _timestampTouch(touch, event, null);
@@ -33,6 +36,8 @@ define(function(require, exports, module) {
     }
 
     function _handleMove(event) {
+        if (event.touches.length !== 1) return;
+
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             var history = this.touchHistory[touch.identifier];
@@ -45,6 +50,9 @@ define(function(require, exports, module) {
     }
 
     function _handleEnd(event) {
+        if (!this.isTouched) return;
+        this.isTouched = false;
+
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             var history = this.touchHistory[touch.identifier];
@@ -93,6 +101,8 @@ define(function(require, exports, module) {
         this.eventInput.on('touchend', _handleEnd.bind(this));
         this.eventInput.on('touchcancel', _handleEnd.bind(this));
         this.eventInput.on('unpipe', _handleUnpipe.bind(this));
+
+        this.isTouched = false;
     }
 
     /**
