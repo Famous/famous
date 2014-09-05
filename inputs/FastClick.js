@@ -18,6 +18,7 @@ define(function(require, exports, module) {
       if (!window.CustomEvent) return;
       var clickThreshold = 300;
       var clickWindow = 500;
+      var positionWindow = 35;
       var potentialClicks = {};
       var recentlyDispatched = {};
       var _now = Date.now;
@@ -59,7 +60,14 @@ define(function(require, exports, module) {
           for (var i in recentlyDispatched) {
               var previousEvent = recentlyDispatched[i];
               if (currTime - i < clickWindow) {
-                  if (event instanceof window.MouseEvent && event.target === previousEvent.target) event.stopPropagation();
+                  if (event instanceof window.MouseEvent) {
+                      for (var j = 0; j < previousEvent.changedTouches.length; j++) {
+                          var touch = previousEvent.changedTouches[j];
+                          if (Math.abs(event.clientX - touch.clientX) < positionWindow &&
+                              Math.abs(event.clientY - touch.clientY) < positionWindow
+                          ) event.stopPropagation();
+                      }
+                  }
               }
               else delete recentlyDispatched[i];
           }
