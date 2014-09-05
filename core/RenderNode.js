@@ -10,6 +10,11 @@
 define(function(require, exports, module) {
     var Entity = require('./Entity');
     var SpecParser = require('./SpecParser');
+    var BFS = require('../search/BreadthFirstSearch');
+    var EntityCleaner = require('../search/EntityCleaner');
+
+    // @static
+    var ID = 0;
 
     /**
      * A wrapper for inserting a renderable component (like a Modifer or
@@ -18,9 +23,11 @@ define(function(require, exports, module) {
      * @class RenderNode
      * @constructor
      *
+     * @param {Object} parentNode Parent to a rendernode
      * @param {Object} object Target renderable component
      */
-    function RenderNode(object) {
+    function RenderNode(parentNode, object) {
+        this._parent = parentNode;
         this._object = null;
         this._child = null;
         this._hasMultipleChildren = false;
@@ -31,10 +38,29 @@ define(function(require, exports, module) {
         this._prevResults = {};
 
         this._childResult = null;
+        this._id = ID++;
 
         if (object) this.set(object);
     }
 
+    /**
+     *  Remove the references to the childNode from the parent.
+     *  @param parentNode {RenderNode} Parent node to search from.
+     *  @param childNode {RenderNode} Child node to remove.
+     *  @static
+     */
+    RenderNode.cleanup = function cleanup(parentNode, childNode) {
+      if (parentNode._hasMultipleChildren) {
+          var index = parentNode._child.indexOf(childNode);
+          parentNode._child.splice(index, 1);
+          if (parentNode._child.length == 1) {
+              parentNode.set(parentNode._child[0]);
+          }
+      }
+      else if (parentNode._child == childNode) {
+          parentNode.constructor.call(parentNode, parentNode._parent);
+      }
+    }
     /**
      * Append a renderable to the list of this node's children.
      *   This produces a new RenderNode in the tree.
@@ -45,7 +71,13 @@ define(function(require, exports, module) {
      * @return {RenderNode} new render node wrapping child
      */
     RenderNode.prototype.add = function add(child) {
-        var childNode = (child instanceof RenderNode) ? child : new RenderNode(child);
+        var childNode;
+        if (child instanceof RenderNode) {
+            childNode._parent = this;
+        }
+        else {
+            childNode = new RenderNode(this, child);
+        }
         if (this._child instanceof Array) this._child.push(childNode);
         else if (this._child) {
             this._child = [this._child, childNode];
@@ -56,6 +88,32 @@ define(function(require, exports, module) {
 
         return childNode;
     };
+
+    /**
+     *  Remove a child node, and anything underneath it from the render tree.
+     *  This also unregisters it from the entity.
+     *  @param child {Renderable} Renderable to remove from the tree.
+     *  @method remove
+     */
+    RenderNode.prototype.remove = function remove(child) {
+      var childNode = BFS(this, child);
+      if (!childNode) return;
+      var parentNode = childNode._parent;
+      RenderNode.cleanup(parentNode, childNode);
+      var allocator = findAllocator(parentNode);
+      EntityCleaner(childNode, allocator);
+    }
+
+    /**
+     *  Traverse up the tree to find the allocator (on the context).
+     */
+    function findAllocator (node) {
+        if (node._allocator) return node._allocator;
+        while (node._parent || node._allocator) {
+            if (node._allocator) return node._allocator;
+            node = node._parent;
+        }
+    }
 
     /**
      * Return the single wrapped object.  Returns null if this node has multiple child nodes.

@@ -34,7 +34,7 @@ define(function(require, exports, module) {
         this.container = container;
         this._allocator = new ElementAllocator(container);
 
-        this._node = new RenderNode();
+        this._node = new RenderNode(this);
         this._eventOutput = new EventHandler();
         this._size = _getElementSize(this.container);
 
@@ -71,6 +71,19 @@ define(function(require, exports, module) {
      */
     Context.prototype.add = function add(obj) {
         return this._node.add(obj);
+    };
+
+    /**
+     * Remove renderables from this Context's render tree. If there are children underneath
+     * a renderable, they will also be removed and cleaned up.
+     *
+     * @method remove
+     *
+     * @param {Object} obj renderable object
+     * @return {RenderNode} RenderNode wrapping this object, if not already a RenderNode
+     */
+    Context.prototype.remove = function remove(obj) {
+        return this._node.remove(obj);
     };
 
     /**
