@@ -51,10 +51,11 @@ define(function(require, exports, module) {
      * Returns ContextualLayout instance's options.
      *
      * @method setOptions
+     * @param {string} key
      * @return {Options} options The instance's object of configurable options.
      */
-    ContextualView.prototype.getOptions = function getOptions() {
-        return this._optionsManager.getOptions();
+    ContextualView.prototype.getOptions = function getOptions(key) {
+        return this._optionsManager.getOptions(key);
     };
 
     /**
