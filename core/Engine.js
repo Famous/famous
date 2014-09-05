@@ -129,8 +129,6 @@ define(function(require, exports, module) {
         window.addEventListener('touchmove', function(event) {
             event.preventDefault();
         }, true);
-        document.body.classList.add('famous-root');
-        document.documentElement.classList.add('famous-root');
     }
     var initialized = false;
 
