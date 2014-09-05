@@ -38,10 +38,13 @@ define(function(require, exports, module) {
      * Adds a force to a physics body's force accumulator.
      *
      * @method applyForce
-     * @param body {Body}
+     * @param targets {Array.Body} Array of bodies to apply force to.
      */
-    Force.prototype.applyForce = function applyForce(body) {
-        body.applyForce(this.force);
+    Force.prototype.applyForce = function applyForce(targets) {
+        if (!(targets instanceof Array)) return targets.applyForce(this.force); // just in case this is called with a single body.
+        for (var i = 0, len = targets.length; i < len; i++) {
+            targets[i].applyForce(this.force);
+        }
     };
 
     /**
