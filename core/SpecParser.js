@@ -82,7 +82,7 @@ define(function(require, exports, module) {
         ];
     }
 
-    var _originZeroZero = [0, 0];
+    var _zeroZero = [0, 0];
 
     // From the provided renderSpec tree, recursively compose opacities,
     //    origins, transforms, and sizes corresponding to each surface id from
@@ -101,7 +101,7 @@ define(function(require, exports, module) {
         if (typeof spec === 'number') {
             id = spec;
             transform = parentContext.transform;
-            align = parentContext.align || parentContext.origin;
+            align = parentContext.align || _zeroZero;
             if (parentContext.size && align && (align[0] || align[1])) {
                 var alignAdjust = [align[0] * parentContext.size[0], align[1] * parentContext.size[1], 0];
                 transform = Transform.thenMove(transform, _vecInContext(alignAdjust, sizeContext));
@@ -109,8 +109,8 @@ define(function(require, exports, module) {
             this.result[id] = {
                 transform: transform,
                 opacity: parentContext.opacity,
-                origin: parentContext.origin || _originZeroZero,
-                align: parentContext.align || parentContext.origin || _originZeroZero,
+                origin: parentContext.origin || _zeroZero,
+                align: parentContext.align || _zeroZero,
                 size: parentContext.size
             };
         }
@@ -145,7 +145,6 @@ define(function(require, exports, module) {
                     spec.size[1] !== undefined ? spec.size[1] : parentSize[1]
                 ];
                 if (parentSize) {
-                    if (!align) align = origin;
                     if (align && (align[0] || align[1])) transform = Transform.thenMove(transform, _vecInContext([align[0] * parentSize[0], align[1] * parentSize[1], 0], sizeContext));
                     if (origin && (origin[0] || origin[1])) transform = Transform.moveThen([-origin[0] * size[0], -origin[1] * size[1], 0], transform);
                 }

@@ -14,7 +14,7 @@ define(function(require, exports, module) {
     var Transform = require('./Transform');
     var Transitionable = require('famous/transitions/Transitionable');
 
-    var _originZeroZero = [0, 0];
+    var _zeroZero = [0, 0];
 
     function _getElementSize(element) {
         return [element.clientWidth, element.clientHeight];
@@ -45,8 +45,8 @@ define(function(require, exports, module) {
             allocator: this._allocator,
             transform: Transform.identity,
             opacity: 1,
-            origin: _originZeroZero,
-            align: null,
+            origin: _zeroZero,
+            align: _zeroZero,
             size: this._size
         };
 
