@@ -1,4 +1,3 @@
-
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -138,17 +137,27 @@ define(function(require, exports, module) {
                 nextSizeContext = parentContext.transform;
             }
             if (spec.align) align = spec.align;
-            if (spec.size) {
-                var parentSize = parentContext.size;
-                size = [
-                    spec.size[0] !== undefined ? spec.size[0] : parentSize[0],
-                    spec.size[1] !== undefined ? spec.size[1] : parentSize[1]
-                ];
+
+            if (spec.size || spec.proportions) {
+                var parentSize = size;
+                size = [size[0], size[1]];
+
+                if (spec.size) {
+                    if (spec.size[0] !== undefined) size[0] = spec.size[0];
+                    if (spec.size[1] !== undefined) size[1] = spec.size[1];
+                }
+
+                if (spec.proportions) {
+                    if (spec.proportions[0] !== undefined) size[0] = size[0] * spec.proportions[0];
+                    if (spec.proportions[1] !== undefined) size[1] = size[1] * spec.proportions[1];
+                }
+
                 if (parentSize) {
                     if (!align) align = origin;
                     if (align && (align[0] || align[1])) transform = Transform.thenMove(transform, _vecInContext([align[0] * parentSize[0], align[1] * parentSize[1], 0], sizeContext));
                     if (origin && (origin[0] || origin[1])) transform = Transform.moveThen([-origin[0] * size[0], -origin[1] * size[1], 0], transform);
                 }
+
                 nextSizeContext = parentContext.transform;
                 origin = null;
                 align = null;

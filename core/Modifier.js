@@ -37,6 +37,7 @@ define(function(require, exports, module) {
         this._originGetter = null;
         this._alignGetter = null;
         this._sizeGetter = null;
+        this._proportionGetter = null;
 
         /* TODO: remove this when deprecation complete */
         this._legacyStates = {};
@@ -47,6 +48,7 @@ define(function(require, exports, module) {
             origin: null,
             align: null,
             size: null,
+            proportions: null,
             target: null
         };
 
@@ -56,6 +58,7 @@ define(function(require, exports, module) {
             if (options.origin) this.originFrom(options.origin);
             if (options.align) this.alignFrom(options.align);
             if (options.size) this.sizeFrom(options.size);
+            if (options.proportions) this.proportionsFrom(options.proportions);
         }
     }
 
@@ -148,6 +151,24 @@ define(function(require, exports, module) {
         else {
             this._sizeGetter = null;
             this._output.size = size;
+        }
+        return this;
+    };
+
+    /**
+     * Set function, object, or numerical array to provide proportions, as [percent of width, percent of height].
+     *
+     * @method proportionsFrom
+     *
+     * @param {Object} proportions provider object
+     * @return {Modifier} this
+     */
+    Modifier.prototype.proportionsFrom = function proportionsFrom(proportions) {
+        if (proportions instanceof Function) this._proportionGetter = proportions;
+        else if (proportions instanceof Object && proportions.get) this._proportionGetter = proportions.get.bind(proportions);
+        else {
+            this._proportionGetter = null;
+            this._output.proportions = proportions;
         }
         return this;
     };
@@ -270,6 +291,28 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Deprecated: Prefer proportionsFrom with static origin array, or use a Transitionable with those proportions.
+     * @deprecated
+     * @method setProportions
+     * @param {Array.Number} proportions two element array of [percent of width, percent of height]
+     * @param {Transitionable} transition Valid transitionable object
+     * @param {Function} callback callback to call after transition completes
+     * @return {Modifier} this
+     */
+    Modifier.prototype.setProportions = function setProportions(proportions, transition, callback) {
+        if (proportions && (transition || this._legacyStates.proportions)) {
+            if (!this._legacyStates.proportions) {
+                this._legacyStates.proportions = new Transitionable(this._output.proportions || [0, 0]);
+            }
+            if (!this._proportionGetter) this.proportionsFrom(this._legacyStates.proportions);
+
+            this._legacyStates.proportions.set(proportions, transition, callback);
+            return this;
+        }
+        else return this.proportionsFrom(proportions);
+    };
+
+    /**
      * Deprecated: Prefer to stop transform in your provider object.
      * @deprecated
      * @method halt
@@ -280,11 +323,13 @@ define(function(require, exports, module) {
         if (this._legacyStates.origin) this._legacyStates.origin.halt();
         if (this._legacyStates.align) this._legacyStates.align.halt();
         if (this._legacyStates.size) this._legacyStates.size.halt();
+        if (this._legacyStates.proportions) this._legacyStates.proportions.halt();
         this._transformGetter = null;
         this._opacityGetter = null;
         this._originGetter = null;
         this._alignGetter = null;
         this._sizeGetter = null;
+        this._proportionGetter = null;
     };
 
     /**
@@ -347,6 +392,16 @@ define(function(require, exports, module) {
         return this._sizeGetter ? this._sizeGetter() : this._output.size;
     };
 
+    /**
+     * Deprecated: Prefer to use your provided proportions or output of your proportions provider.
+     * @deprecated
+     * @method getProportions
+     * @return {Object} proportions provider object
+     */
+    Modifier.prototype.getProportions = function getProportions() {
+        return this._proportionGetter ? this._proportionGetter() : this._output.proportions;
+    };
+
     // call providers on tick to receive render spec elements to apply
     function _update() {
         if (this._transformGetter) this._output.transform = this._transformGetter();
@@ -354,6 +409,7 @@ define(function(require, exports, module) {
         if (this._originGetter) this._output.origin = this._originGetter();
         if (this._alignGetter) this._output.align = this._alignGetter();
         if (this._sizeGetter) this._output.size = this._sizeGetter();
+        if (this._proportionGetter) this._output.proportions = this._proportionGetter();
     }
 
     /**
