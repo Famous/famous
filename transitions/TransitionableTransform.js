@@ -219,5 +219,20 @@ define(function(require, exports, module) {
         this.scale.halt();
     };
 
+    /**
+     * Delays the transition
+     *
+     * @method delay
+     * @param duration {Number} Duration delay in milliseconds
+     * @param callback {Function} Zero-argument function to call on observed completion (t=1)
+     */
+    TransitionableTransform.prototype.delay = function delay(duration, callback) {
+        this._final = this.get();
+        this.rotate.delay(duration);
+        this.skew.delay(duration);
+        this.scale.delay(duration);
+        this.translate.delay(duration, callback);
+    };
+
     module.exports = TransitionableTransform;
 });
