@@ -139,8 +139,15 @@ define(function(require, exports, module) {
     }
 
     function _handleMove(event) {
-        var velocity = -event.velocity;
-        var delta = -event.delta;
+        var velocity
+        var delta;
+        if (typeof event.delta === 'number') {
+            velocity = -event.velocity;
+            delta = -event.delta;
+        } else {
+            velocity = -event.velocity[this.options.direction];
+            delta = -event.delta[this.options.direction];
+        }
 
         if (this._onEdge && event.slip) {
             if ((velocity < 0 && this._onEdge < 0) || (velocity > 0 && this._onEdge > 0)) {
@@ -166,7 +173,7 @@ define(function(require, exports, module) {
             _detachAgents.call(this);
             if (this._onEdge) _setSpring.call(this, this._edgeSpringPosition, SpringStates.EDGE);
             _attachAgents.call(this);
-            var velocity = -event.velocity;
+            var velocity = typeof event.velocity === 'number' ? -event.velocity : -event.velocity[this.options.direction];
             var speedLimit = this.options.speedLimit;
             if (event.slip) speedLimit *= this.options.edgeGrip;
             if (velocity < -speedLimit) velocity = -speedLimit;
