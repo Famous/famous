@@ -334,6 +334,12 @@ define(function(require, exports, module) {
             this._trueSizeCheck = true;
         }
 
+        if (this._attributesDirty) {
+            _applyAttributes.call(this, target);
+            this._attributesDirty = false;
+            this._trueSizeCheck = true;
+        }
+
         if (this.size) {
             var origSize = context.size;
             size = [this.size[0], this.size[1]];
@@ -362,11 +368,6 @@ define(function(require, exports, module) {
                 }
                 this._trueSizeCheck = false;
             }
-        }
-
-        if (this._attributesDirty) {
-            _applyAttributes.call(this, target);
-            this._attributesDirty = false;
         }
 
         if (_xyNotEquals(this._size, size)) {
