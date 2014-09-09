@@ -39,6 +39,8 @@ define(function(require, exports, module) {
 
         if (options.loop !== undefined) this._.loop = options.loop;
 
+        if (options.trackSize !== undefined) this._.trackSize = options.trackSize;
+
         this._previousNode = null;
         this._nextNode = null;
     }
@@ -50,6 +52,9 @@ define(function(require, exports, module) {
         this.loop = false;
         this.firstNode = null;
         this.lastNode = null;
+        this.cumulativeSizes = [[0, 0]];
+        this.sizeDirty = true;
+        this.trackSize = false;
     };
 
     // Get value "i" slots away from the first index.
@@ -62,6 +67,34 @@ define(function(require, exports, module) {
     // Set value "i" slots away from the first index.
     ViewSequence.Backing.prototype.setValue = function setValue(i, value) {
         this.array[i - this.firstIndex] = value;
+    };
+
+    // Get sequence size from backing up to index
+    // TODO: remove from viewSequence with proper abstraction
+    ViewSequence.Backing.prototype.getSize = function getSize(index) {
+        return this.cumulativeSizes[index];
+    };
+
+    // Calculates cumulative size
+    // TODO: remove from viewSequence with proper abstraction
+    ViewSequence.Backing.prototype.calculateSize = function calculateSize(index) {
+        index = index || this.array.length;
+        var size = [0, 0];
+        for (var i = 0; i < index; i++) {
+            var nodeSize = this.array[i].getSize();
+            if (!nodeSize) return undefined;
+            if (size[0] !== undefined) {
+                if (nodeSize[0] === undefined) size[0] = undefined;
+                else size[0] += nodeSize[0];
+            }
+            if (size[1] !== undefined) {
+                if (nodeSize[1] === undefined) size[1] = undefined;
+                else size[1] += nodeSize[1];
+            }
+            this.cumulativeSizes[i + 1] = size.slice();
+        }
+        this.sizeDirty = false;
+        return size;
     };
 
     // After splicing into the backing store, restore the indexes of each node correctly.
@@ -105,6 +138,7 @@ define(function(require, exports, module) {
                 index++;
             }
         }
+        if (this._.trackSize) this._.sizeDirty = true;
     };
 
     /**
@@ -182,6 +216,7 @@ define(function(require, exports, module) {
     ViewSequence.prototype.unshift = function unshift(value) {
         this._.array.unshift.apply(this._.array, arguments);
         this._.firstIndex -= arguments.length;
+        if (this._.trackSize) this._.sizeDirty = true;
     };
 
     /**
@@ -192,6 +227,7 @@ define(function(require, exports, module) {
      */
     ViewSequence.prototype.push = function push(value) {
         this._.array.push.apply(this._.array, arguments);
+        if (this._.trackSize) this._.sizeDirty = true;
     };
 
     /**
@@ -243,6 +279,7 @@ define(function(require, exports, module) {
         else if (this.index === this._.firstIndex + this._.array.length - 1) this._.lastNode = this;
         if (other.index === this._.firstIndex) this._.firstNode = other;
         else if (other.index === this._.firstIndex + this._.array.length - 1) this._.lastNode = other;
+        if (this._.trackSize) this._.sizeDirty = true;
     };
 
    /**
@@ -274,6 +311,7 @@ define(function(require, exports, module) {
      * @return {number} Render spec for this component
      */
     ViewSequence.prototype.render = function render() {
+        if (this._.trackSize && this._.sizeDirty) this._.calculateSize();
         var target = this.get();
         return target ? target.render.apply(target, arguments) : null;
     };

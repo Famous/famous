@@ -61,9 +61,11 @@ define(function(require, exports, module) {
         groupScroll: false
     };
 
+    var EDGE_TOLERANCE = 0; //slop for detecting passing the edge
+
     function _sizeForDir(size) {
         if (!size) size = this._contextSize;
-        var dimension = (this.options.direction === Utility.Direction.X) ? 0 : 1;
+        var dimension = this.options.direction;
         return (size[dimension] === undefined) ? this._contextSize[dimension] : size[dimension];
     }
 
@@ -75,9 +77,23 @@ define(function(require, exports, module) {
     }
 
     function _getClipSize() {
-        if (this.options.clipSize) return this.options.clipSize;
-        else return _sizeForDir.call(this, this._contextSize);
+        if (this.options.clipSize !== undefined) return this.options.clipSize;
+        if (this._contextSize[this.options.direction] > this.getCumulativeSize()[this.options.direction]) {
+            return _sizeForDir.call(this, this.getCumulativeSize());
+        } else {
+            return _sizeForDir.call(this, this._contextSize);
+        }
     }
+
+    /**
+    * Returns the cumulative size of the renderables in the view sequence
+    * @method getCumulativeSize
+    * @return {array} a two value array of the view sequence's cumulative size up to the index.
+    */
+    Scroller.prototype.getCumulativeSize = function(index) {
+        if (index === undefined) index = this._node._.cumulativeSizes.length - 1;
+        return this._node._.getSize(index);
+    };
 
     /**
      * Patches the Scroller instance's options with the passed-in ones.
@@ -85,14 +101,13 @@ define(function(require, exports, module) {
      * @param {Options} options An object of configurable options for the Scroller instance.
      */
     Scroller.prototype.setOptions = function setOptions(options) {
+        if (options.groupScroll !== this.options.groupScroll) {
+            if (options.groupScroll)
+                this.group.pipe(this._eventOutput);
+            else
+                this.group.unpipe(this._eventOutput);
+        }
         this._optionsManager.setOptions(options);
-
-        if (this.options.groupScroll) {
-          this.group.pipe(this._eventOutput);
-        }
-        else {
-          this.group.unpipe(this._eventOutput);
-        }
     };
 
     /**
@@ -221,30 +236,10 @@ define(function(require, exports, module) {
         };
     };
 
-    function _normalizeState() {
-        var nodeSize = _sizeForDir.call(this, this._node.getSize());
-        var nextNode = this._node && this._node.getNext ? this._node.getNext() : null;
-        while (nextNode && this._position + this._positionOffset >= nodeSize) {
-            this._positionOffset -= nodeSize;
-            this._node = nextNode;
-            nodeSize = _sizeForDir.call(this, this._node.getSize());
-            nextNode = this._node && this._node.getNext ? this._node.getNext() : null;
-        }
-        var prevNode = this._node && this._node.getPrevious ? this._node.getPrevious() : null;
-        while (prevNode && this._position + this._positionOffset < 0) {
-            var prevNodeSize = _sizeForDir.call(this, prevNode.getSize());
-            this._positionOffset += prevNodeSize;
-            this._node = prevNode;
-            prevNode = this._node && this._node.getPrevious ? this._node.getPrevious() : null;
-        }
-    }
-
     function _innerRender() {
         var size = null;
         var position = this._position;
         var result = [];
-
-        this._onEdge = 0;
 
         var offset = -this._positionOffset;
         var clipSize = _getClipSize.call(this);
@@ -268,19 +263,27 @@ define(function(require, exports, module) {
             }
         }
 
-        var edgeSize = (nodesSize !== undefined && nodesSize < clipSize) ? nodesSize : clipSize;
-
-        if (!currNode && offset - position <= edgeSize) {
-            this._onEdge = 1;
-            this._eventOutput.emit('edgeHit', {
-                position: offset - edgeSize
-            });
+        if (!currNode && offset - position < clipSize - EDGE_TOLERANCE) {
+            if (this._onEdge !== 1){
+                this._onEdge = 1;
+                this._eventOutput.emit('onEdge', {
+                    position: offset - clipSize
+                });
+            }
         }
-        else if (!this._node.getPrevious() && position <= 0) {
-            this._onEdge = -1;
-            this._eventOutput.emit('edgeHit', {
-                position: 0
-            });
+        else if (!this._node.getPrevious() && position < -EDGE_TOLERANCE) {
+            if (this._onEdge !== -1) {
+                this._onEdge = -1;
+                this._eventOutput.emit('onEdge', {
+                    position: 0
+                });
+            }
+        }
+        else {
+            if (this._onEdge !== 0){
+                this._onEdge = 0;
+                this._eventOutput.emit('offEdge');
+            }
         }
 
         // backwards
@@ -291,7 +294,7 @@ define(function(require, exports, module) {
             offset -= _sizeForDir.call(this, size);
         }
 
-        while (currNode && ((offset - position) > -(_getClipSize.call(this) + this.options.margin))) {
+        while (currNode && ((offset - position) > -(clipSize + this.options.margin))) {
             _output.call(this, currNode, offset, result);
             currNode = currNode.getPrevious ? currNode.getPrevious() : null;
             if (currNode) {
@@ -300,7 +303,6 @@ define(function(require, exports, module) {
             }
         }
 
-        _normalizeState.call(this);
         return result;
     }
 

@@ -9,10 +9,14 @@ define(function(require, exports, module) {
     var EventHandler = require('famous/core/EventHandler');
 
     /**
-     * The Physics Engine is responsible for mediating Bodies and their
-     * interaction with forces and constraints. The Physics Engine handles the
-     * logic of adding and removing bodies, updating their state of the over
-     * time.
+     * The Physics Engine is responsible for mediating bodies with their
+     *   interaction with forces and constraints (agents). Specifically, it
+     *   is responsible for:
+     *
+     *   - adding and removing bodies
+     *   - updating a body's state over time
+     *   - attaching and detaching agents
+     *   - sleeping upon equillibrium and waking upon excitation
      *
      * @class PhysicsEngine
      * @constructor
@@ -24,9 +28,9 @@ define(function(require, exports, module) {
 
         this._particles      = [];   //list of managed particles
         this._bodies         = [];   //list of managed bodies
-        this._agents         = {};   //hash of managed agents
-        this._forces         = [];   //list of IDs of agents that are forces
-        this._constraints    = [];   //list of IDs of agents that are constraints
+        this._agentData      = {};   //hash of managed agent data
+        this._forces         = [];   //list of Ids of agents that are forces
+        this._constraints    = [];   //list of Ids of agents that are constraints
 
         this._buffer         = 0.0;
         this._prevTime       = now();
@@ -34,11 +38,22 @@ define(function(require, exports, module) {
         this._eventHandler   = null;
         this._currAgentId    = 0;
         this._hasBodies      = false;
+        this._eventHandler   = null;
     }
 
+    /** const */
     var TIMESTEP = 17;
     var MIN_TIME_STEP = 1000 / 120;
     var MAX_TIME_STEP = 17;
+
+    var now = Date.now;
+
+    // Catalogue of outputted events
+    var _events = {
+        start : 'start',
+        update : 'update',
+        end : 'end'
+    };
 
     /**
      * @property PhysicsEngine.DEFAULT_OPTIONS
@@ -56,16 +71,28 @@ define(function(require, exports, module) {
         constraintSteps : 1,
 
         /**
-         * The energy threshold before the Engine stops updating
+         * The energy threshold required for the Physics Engine to update
          * @attribute sleepTolerance
          * @type Number
          */
-        sleepTolerance  : 1e-7
-    };
+        sleepTolerance : 1e-7,
 
-    var now = (function() {
-        return Date.now;
-    })();
+        /**
+         * The maximum velocity magnitude of a physics body
+         *      Range : [0, Infinity]
+         * @attribute velocityCap
+         * @type Number
+         */
+        velocityCap : undefined,
+
+        /**
+         * The maximum angular velocity magnitude of a physics body
+         *      Range : [0, Infinity]
+         * @attribute angularVelocityCap
+         * @type Number
+         */
+        angularVelocityCap : undefined
+    };
 
     /**
      * Options setter
@@ -79,7 +106,7 @@ define(function(require, exports, module) {
 
     /**
      * Method to add a physics body to the engine. Necessary to update the
-     * body over time.
+     *   body over time.
      *
      * @method addBody
      * @param body {Body}
@@ -92,12 +119,15 @@ define(function(require, exports, module) {
             this._hasBodies = true;
         }
         else this._particles.push(body);
+        body.on('start', this.wake.bind(this));
         return body;
     };
 
     /**
      * Remove a body from the engine. Detaches body from all forces and
-     * constraints.
+     *   constraints.
+     *
+     * TODO: Fix for in loop
      *
      * @method removeBody
      * @param body {Body}
@@ -106,7 +136,7 @@ define(function(require, exports, module) {
         var array = (body.isBody) ? this._bodies : this._particles;
         var index = array.indexOf(body);
         if (index > -1) {
-            for (var i = 0; i < Object.keys(this._agents).length; i++) this.detachFrom(i, body);
+            for (var agent in this._agentData) this.detachFrom(agent.id, body);
             array.splice(index,1);
         }
         if (this.getBodies().length === 0) this._hasBodies = false;
@@ -121,8 +151,11 @@ define(function(require, exports, module) {
         if (targets === undefined) targets = this.getParticlesAndBodies();
         if (!(targets instanceof Array)) targets = [targets];
 
-        this._agents[this._currAgentId] = {
+        agent.on('change', this.wake.bind(this));
+
+        this._agentData[this._currAgentId] = {
             agent   : agent,
+            id      : this._currAgentId,
             targets : targets,
             source  : source
         };
@@ -133,7 +166,7 @@ define(function(require, exports, module) {
 
     /**
      * Attaches a force or constraint to a Body. Returns an AgentId of the
-     * attached agent which can be used to detach the agent.
+     *   attached agent which can be used to detach the agent.
      *
      * @method attach
      * @param agents {Agent|Array.Agent} A force, constraint, or array of them.
@@ -142,6 +175,8 @@ define(function(require, exports, module) {
      * @return AgentId {Number}
      */
     PhysicsEngine.prototype.attach = function attach(agents, targets, source) {
+        this.wake();
+
         if (agents instanceof Array) {
             var agentIDs = [];
             for (var i = 0; i < agents.length; i++)
@@ -159,12 +194,12 @@ define(function(require, exports, module) {
      * @param target {Body} The Body affected by the agent
      */
     PhysicsEngine.prototype.attachTo = function attachTo(agentID, target) {
-        _getBoundAgent.call(this, agentID).targets.push(target);
+        _getAgentData.call(this, agentID).targets.push(target);
     };
 
     /**
      * Undoes PhysicsEngine.attach. Removes an agent and its associated
-     * effect on its affected Bodies.
+     *   effect on its affected Bodies.
      *
      * @method detach
      * @param id {AgentId} The agentId of a previously defined agent
@@ -177,7 +212,7 @@ define(function(require, exports, module) {
         agentArray.splice(index,1);
 
         // detach agents array
-        delete this._agents[id];
+        delete this._agentData[id];
     };
 
     /**
@@ -188,7 +223,7 @@ define(function(require, exports, module) {
      * @param target {Body} The body to remove from the agent
      */
     PhysicsEngine.prototype.detachFrom = function detachFrom(id, target) {
-        var boundAgent = _getBoundAgent.call(this, id);
+        var boundAgent = _getAgentData.call(this, id);
         if (boundAgent.source === target) this.detach(id);
         else {
             var targets = boundAgent.targets;
@@ -204,14 +239,14 @@ define(function(require, exports, module) {
      * @method detachAll
      */
     PhysicsEngine.prototype.detachAll = function detachAll() {
-        this._agents        = {};
+        this._agentData     = {};
         this._forces        = [];
         this._constraints   = [];
         this._currAgentId   = 0;
     };
 
-    function _getBoundAgent(id) {
-        return this._agents[id];
+    function _getAgentData(id) {
+        return this._agentData[id];
     }
 
     /**
@@ -221,7 +256,7 @@ define(function(require, exports, module) {
      * @param id {AgentId}
      */
     PhysicsEngine.prototype.getAgent = function getAgent(id) {
-        return _getBoundAgent.call(this, id).agent;
+        return _getAgentData.call(this, id).agent;
     };
 
     /**
@@ -256,7 +291,7 @@ define(function(require, exports, module) {
 
     /**
      * Iterates over every Particle and applies a function whose first
-     * argument is the Particle
+     *   argument is the Particle
      *
      * @method forEachParticle
      * @param fn {Function} Function to iterate over
@@ -270,7 +305,7 @@ define(function(require, exports, module) {
 
     /**
      * Iterates over every Body that isn't a Particle and applies
-     * a function whose first argument is the Body
+     *   a function whose first argument is the Body
      *
      * @method forEachBody
      * @param fn {Function} Function to iterate over
@@ -285,7 +320,7 @@ define(function(require, exports, module) {
 
     /**
      * Iterates over every Body and applies a function whose first
-     * argument is the Body
+     *   argument is the Body
      *
      * @method forEach
      * @param fn {Function} Function to iterate over
@@ -297,7 +332,7 @@ define(function(require, exports, module) {
     };
 
     function _updateForce(index) {
-        var boundAgent = _getBoundAgent.call(this, this._forces[index]);
+        var boundAgent = _getAgentData.call(this, this._forces[index]);
         boundAgent.agent.applyForce(boundAgent.targets, boundAgent.source);
     }
 
@@ -307,7 +342,7 @@ define(function(require, exports, module) {
     }
 
     function _updateConstraint(index, dt) {
-        var boundAgent = this._agents[this._constraints[index]];
+        var boundAgent = this._agentData[this._constraints[index]];
         return boundAgent.agent.applyConstraint(boundAgent.targets, boundAgent.source, dt);
     }
 
@@ -320,22 +355,26 @@ define(function(require, exports, module) {
         }
     }
 
-    function _updateVelocities(particle, dt) {
-        particle.integrateVelocity(dt);
+    function _updateVelocities(body, dt) {
+        body.integrateVelocity(dt);
+        if (this.options.velocityCap)
+            body.velocity.cap(this.options.velocityCap).put(body.velocity);
     }
 
     function _updateAngularVelocities(body, dt) {
         body.integrateAngularMomentum(dt);
         body.updateAngularVelocity();
+        if (this.options.angularVelocityCap)
+            body.angularVelocity.cap(this.options.angularVelocityCap).put(body.angularVelocity);
     }
 
     function _updateOrientations(body, dt) {
         body.integrateOrientation(dt);
     }
 
-    function _updatePositions(particle, dt) {
-        particle.integratePosition(dt);
-        particle.emit('update', particle);
+    function _updatePositions(body, dt) {
+        body.integratePosition(dt);
+        body.emit(_events.update, body);
     }
 
     function _integrate(dt) {
@@ -347,54 +386,55 @@ define(function(require, exports, module) {
         this.forEach(_updatePositions, dt);
     }
 
-    function _getEnergyParticles() {
+    function _getParticlesEnergy() {
         var energy = 0.0;
         var particleEnergy = 0.0;
         this.forEach(function(particle) {
             particleEnergy = particle.getEnergy();
             energy += particleEnergy;
-            if (particleEnergy < particle.sleepTolerance) particle.sleep();
         });
         return energy;
     }
 
-    function _getEnergyForces() {
+    function _getAgentsEnergy() {
         var energy = 0;
-        for (var index = this._forces.length - 1; index > -1; index--)
-            energy += this._forces[index].getEnergy() || 0.0;
-        return energy;
-    }
-
-    function _getEnergyConstraints() {
-        var energy = 0;
-        for (var index = this._constraints.length - 1; index > -1; index--)
-            energy += this._constraints[index].getEnergy() || 0.0;
+        for (var id in this._agentData)
+            energy += this.getAgentEnergy(id);
         return energy;
     }
 
     /**
+     * Calculates the potential energy of an agent, like a spring, by its Id
+     *
+     * @method getAgentEnergy
+     * @param agentId {Number} The attached agent Id
+     * @return energy {Number}
+     */
+    PhysicsEngine.prototype.getAgentEnergy = function(agentId) {
+        var agentData = _getAgentData.call(this, agentId);
+        return agentData.agent.getEnergy(agentData.targets, agentData.source);
+    };
+
+    /**
      * Calculates the kinetic energy of all Body objects and potential energy
-     * of all attached agents.
+     *   of all attached agents.
      *
      * TODO: implement.
      * @method getEnergy
      * @return energy {Number}
      */
     PhysicsEngine.prototype.getEnergy = function getEnergy() {
-        return _getEnergyParticles.call(this) + _getEnergyForces.call(this) + _getEnergyConstraints.call(this);
+        return _getParticlesEnergy.call(this) + _getAgentsEnergy.call(this);
     };
 
     /**
      * Updates all Body objects managed by the physics engine over the
-     * time duration since the last time step was called.
+     *   time duration since the last time step was called.
      *
      * @method step
      */
     PhysicsEngine.prototype.step = function step() {
-//        if (this.getEnergy() < this.options.sleepTolerance) {
-//            this.sleep();
-//            return;
-//        };
+        if (this.isSleeping()) return;
 
         //set current frame's time
         var currTime = now();
@@ -415,13 +455,17 @@ define(function(require, exports, module) {
 //        };
 //        _integrate.call(this, this._buffer);
 //        this._buffer = 0.0;
+
         _integrate.call(this, TIMESTEP);
 
-//        this.emit('update', this);
+        this.emit(_events.update, this);
+
+        if (this.getEnergy() < this.options.sleepTolerance) this.sleep();
     };
 
     /**
      * Tells whether the Physics Engine is sleeping or awake.
+     *
      * @method isSleeping
      * @return {Boolean}
      */
@@ -430,21 +474,38 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Stops the Physics Engine from updating. Emits an 'end' event.
+     * Tells whether the Physics Engine is sleeping or awake.
+     *
+     * @method isActive
+     * @return {Boolean}
+     */
+    PhysicsEngine.prototype.isActive = function isSleeping() {
+        return !this._isSleeping;
+    };
+
+    /**
+     * Stops the Physics Engine update loop. Emits an 'end' event.
+     *
      * @method sleep
      */
     PhysicsEngine.prototype.sleep = function sleep() {
-        this.emit('end', this);
+        if (this._isSleeping) return;
+        this.forEach(function(body) {
+            body.sleep();
+        });
+        this.emit(_events.end, this);
         this._isSleeping = true;
     };
 
     /**
-     * Starts the Physics Engine from updating. Emits an 'start' event.
+     * Restarts the Physics Engine update loop. Emits an 'start' event.
+     *
      * @method wake
      */
     PhysicsEngine.prototype.wake = function wake() {
+        if (!this._isSleeping) return;
         this._prevTime = now();
-        this.emit('start', this);
+        this.emit(_events.start, this);
         this._isSleeping = false;
     };
 

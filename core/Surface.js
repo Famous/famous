@@ -31,14 +31,17 @@ define(function(require, exports, module) {
         this.options = {};
 
         this.properties = {};
+        this.attributes = {};
         this.content = '';
         this.classList = [];
         this.size = null;
 
         this._classesDirty = true;
         this._stylesDirty = true;
+        this._attributesDirty = true;
         this._sizeDirty = true;
         this._contentDirty = true;
+        this._trueSizeCheck = true;
 
         this._dirtyClasses = [];
 
@@ -50,6 +53,32 @@ define(function(require, exports, module) {
     Surface.prototype.constructor = Surface;
     Surface.prototype.elementType = 'div';
     Surface.prototype.elementClass = 'famous-surface';
+
+    /**
+     * Set HTML attributes on this Surface. Note that this will cause
+     *    dirtying and thus re-rendering, even if values do not change.
+     *
+     * @method setAttributes
+    * @param {Object} attributes property dictionary of "key" => "value"
+     */
+    Surface.prototype.setAttributes = function setAttributes(attributes) {
+        for (var n in attributes) {
+            if (n === 'style') throw new Error('Cannot set styles via "setAttributes" as it will break Famo.us.  Use "setProperties" instead.');
+            this.attributes[n] = attributes[n];
+        }
+        this._attributesDirty = true;
+    };
+
+    /**
+     * Get HTML attributes on this Surface.
+     *
+     * @method getAttributes
+     *
+     * @return {Object} Dictionary of this Surface's attributes.
+     */
+    Surface.prototype.getAttributes = function getAttributes() {
+        return this.attributes;
+    };
 
     /**
      * Set CSS-style properties on this Surface. Note that this will cause
@@ -197,6 +226,7 @@ define(function(require, exports, module) {
         if (options.size) this.setSize(options.size);
         if (options.classes) this.setClasses(options.classes);
         if (options.properties) this.setProperties(options.properties);
+        if (options.attributes) this.setAttributes(options.attributes);
         if (options.content) this.setContent(options.content);
         return this;
     };
@@ -220,6 +250,22 @@ define(function(require, exports, module) {
     function _cleanupStyles(target) {
         for (var n in this.properties) {
             target.style[n] = '';
+        }
+    }
+
+    // Apply values of all Famous-managed attributes to the document element.
+    //  These will be deployed to the document on call to #setup().
+    function _applyAttributes(target) {
+        for (var n in this.attributes) {
+            target.setAttribute(n, this.attributes[n]);
+        }
+    }
+
+    // Clear all Famous-managed attributes from the document element.
+    // These will be deployed to the document on call to #setup().
+    function _cleanupAttributes(target) {
+        for (var n in this.attributes) {
+            target.removeAttribute(n);
         }
     }
 
@@ -253,6 +299,7 @@ define(function(require, exports, module) {
         this._currentTarget = target;
         this._stylesDirty = true;
         this._classesDirty = true;
+        this._attributesDirty = true;
         this._sizeDirty = true;
         this._contentDirty = true;
         this._originDirty = true;
@@ -278,20 +325,49 @@ define(function(require, exports, module) {
             var classList = this.getClassList();
             for (var i = 0; i < classList.length; i++) target.classList.add(classList[i]);
             this._classesDirty = false;
+            this._trueSizeCheck = true;
         }
 
         if (this._stylesDirty) {
             _applyStyles.call(this, target);
             this._stylesDirty = false;
+            this._trueSizeCheck = true;
+        }
+
+        if (this._attributesDirty) {
+            _applyAttributes.call(this, target);
+            this._attributesDirty = false;
+            this._trueSizeCheck = true;
         }
 
         if (this.size) {
             var origSize = context.size;
             size = [this.size[0], this.size[1]];
             if (size[0] === undefined) size[0] = origSize[0];
-            else if (size[0] === true) size[0] = target.clientWidth;
             if (size[1] === undefined) size[1] = origSize[1];
-            else if (size[1] === true) size[1] = target.clientHeight;
+            if (size[0] === true || size[1] === true) {
+                if (size[0] === true && (this._trueSizeCheck || this._size[0] === 0)) {
+                    var width = target.clientWidth;
+                    if (this._size && this._size[0] !== width) {
+                        this._size[0] = width;
+                        this._sizeDirty = true;
+                    }
+                    size[0] = width;
+                } else {
+                    if (this._size) size[0] = this._size[0];
+                }
+                if (size[1] === true && (this._trueSizeCheck || this._size[1] === 0)) {
+                    var height = target.clientHeight;
+                    if (this._size && this._size[1] !== height) {
+                        this._size[1] = height;
+                        this._sizeDirty = true;
+                    }
+                    size[1] = height;
+                } else {
+                    if (this._size) size[1] = this._size[1];
+                }
+                this._trueSizeCheck = false;
+            }
         }
 
         if (_xyNotEquals(this._size, size)) {
@@ -306,6 +382,7 @@ define(function(require, exports, module) {
                 target.style.width = (this.size && this.size[0] === true) ? '' : this._size[0] + 'px';
                 target.style.height = (this.size && this.size[1] === true) ?  '' : this._size[1] + 'px';
             }
+            this._eventOutput.emit('resize');
             this._sizeDirty = false;
         }
 
@@ -313,6 +390,7 @@ define(function(require, exports, module) {
             this.deploy(target);
             this._eventOutput.emit('deploy');
             this._contentDirty = false;
+            this._trueSizeCheck = true;
         }
 
         ElementOutput.prototype.commit.call(this, context);
@@ -336,8 +414,8 @@ define(function(require, exports, module) {
         target.style.opacity = '';
         target.style.width = '';
         target.style.height = '';
-        this._size = null;
         _cleanupStyles.call(this, target);
+        _cleanupAttributes.call(this, target);
         var classList = this.getClassList();
         _cleanupClasses.call(this, target);
         for (i = 0; i < classList.length; i++) target.classList.remove(classList[i]);
