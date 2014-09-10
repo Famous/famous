@@ -68,11 +68,13 @@ define(function(require, exports, module) {
      *
      * @method select
      */
-    ToggleButton.prototype.select = function select() {
+    ToggleButton.prototype.select = function select(suppressEvent) {
         this.selected = true;
         this.arbiter.show(this.onSurface, this.options.inTransition);
 //        this.arbiter.setMode(ToggleButton.ON, this.options.inTransition);
-        this._eventOutput.emit('select');
+        if (!suppressEvent) {
+            this._eventOutput.emit('select');
+        }
     };
 
     /**
@@ -81,10 +83,12 @@ define(function(require, exports, module) {
      *
      * @method deselect
      */
-    ToggleButton.prototype.deselect = function deselect() {
+    ToggleButton.prototype.deselect = function deselect(suppressEvent) {
         this.selected = false;
         this.arbiter.show(this.offSurface, this.options.outTransition);
-        this._eventOutput.emit('deselect');
+        if (!suppressEvent) {
+            this._eventOutput.emit('deselect');
+        }
     };
 
     /**
