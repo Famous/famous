@@ -93,7 +93,7 @@ define(function(require, exports, module) {
     Utility.clone = function clone(b) {
         var a;
         if (typeof b === 'object') {
-            a = {};
+            a = (b instanceof Array) ? [] : {};
             for (var key in b) {
                 if (typeof b[key] === 'object' && b[key] !== null) {
                     if (b[key] instanceof Array) {
