@@ -30,7 +30,9 @@ define(function(require, exports, module) {
         this._finalScale = [1, 1, 1];
 
         this.translate = new Transitionable(this._finalTranslate);
-        this.rotate = new Transitionable(this._finalRotate);
+        this.rotateX = new Transitionable(this._finalRotate[0]);
+        this.rotateY = new Transitionable(this._finalRotate[1]);
+        this.rotateZ = new Transitionable(this._finalRotate[2]);
         this.skew = new Transitionable(this._finalSkew);
         this.scale = new Transitionable(this._finalScale);
 
@@ -40,7 +42,7 @@ define(function(require, exports, module) {
     function _build() {
         return Transform.build({
             translate: this.translate.get(),
-            rotate: this.rotate.get(),
+            rotate: [this.rotateX.get(), this.rotateY.get(), this.rotateZ.get()],
             skew: this.skew.get(),
             scale: this.scale.get()
         });
@@ -103,9 +105,23 @@ define(function(require, exports, module) {
      * @return {TransitionableTransform}
      */
     TransitionableTransform.prototype.setRotate = function setRotate(eulerAngles, transition, callback) {
-        this._finalRotate = eulerAngles;
+        console.log("oh yeah");
+        console.log(eulerAngles[0] === null);
+        console.log(eulerAngles[1] === null);
+        console.log(eulerAngles[2] === null);
+        if (eulerAngles[0] !== null) {
+            this.rotateX.set(eulerAngles[0], transition, callback);
+            this._finalRotate[0] = eulerAngles[0];
+        }
+        if (eulerAngles[1] !== null) {
+            this.rotateY.set(eulerAngles[1], transition, callback);
+            this._finalRotate[1] = eulerAngles[1];
+        }
+        if (eulerAngles[2] !== null) {
+            this.rotateZ.set(eulerAngles[2], transition, callback);
+            this._finalRotate[2] = eulerAngles[2];
+        }
         this._final = _buildFinal.call(this);
-        this.rotate.set(eulerAngles, transition, callback);
         return this;
     };
 
@@ -150,7 +166,9 @@ define(function(require, exports, module) {
 
         var _callback = callback ? Utility.after(4, callback) : null;
         this.translate.set(components.translate, transition, _callback);
-        this.rotate.set(components.rotate, transition, _callback);
+        this.rotateX.set(components.rotate[0], transition, _callback);
+        this.rotateY.set(components.rotate[1], transition, _callback);
+        this.rotateZ.set(components.rotate[2], transition, _callback);
         this.skew.set(components.skew, transition, _callback);
         this.scale.set(components.scale, transition, _callback);
         return this;
@@ -165,7 +183,9 @@ define(function(require, exports, module) {
      */
     TransitionableTransform.prototype.setDefaultTransition = function setDefaultTransition(transition) {
         this.translate.setDefault(transition);
-        this.rotate.setDefault(transition);
+        this.rotateX.setDefault(transition);
+        this.rotateY.setDefault(transition);
+        this.rotateZ.setDefault(transition);
         this.skew.setDefault(transition);
         this.scale.setDefault(transition);
     };
@@ -203,7 +223,7 @@ define(function(require, exports, module) {
      * @return {Boolean}
      */
     TransitionableTransform.prototype.isActive = function isActive() {
-        return this.translate.isActive() || this.rotate.isActive() || this.scale.isActive() || this.skew.isActive();
+        return this.translate.isActive() || this.rotateX.isActive() || this.rotateY.isActive() || this.rotateZ.isActive() || this.scale.isActive() || this.skew.isActive();
     };
 
     /**
@@ -214,7 +234,9 @@ define(function(require, exports, module) {
     TransitionableTransform.prototype.halt = function halt() {
         this._final = this.get();
         this.translate.halt();
-        this.rotate.halt();
+        this.rotateX.halt();
+        this.rotateY.halt();
+        this.rotateZ.halt();
         this.skew.halt();
         this.scale.halt();
     };
