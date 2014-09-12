@@ -114,7 +114,10 @@ define(function(require, exports, module) {
      * @return {ViewSequence} previous node.
      */
     ViewSequence.prototype.getPrevious = function getPrevious() {
-        if (this.index === this._.firstIndex) {
+        if (this._.array.length === 0) {
+            this._previousNode = null;
+        }
+        else if (this.index === this._.firstIndex) {
             if (this._.loop) {
                 this._previousNode = this._.lastNode || new (this.constructor)({_: this._, index: this._.firstIndex + this._.array.length - 1});
                 this._previousNode._nextNode = this;
@@ -137,7 +140,10 @@ define(function(require, exports, module) {
      * @return {ViewSequence} previous node.
      */
     ViewSequence.prototype.getNext = function getNext() {
-        if (this.index === this._.firstIndex + this._.array.length - 1) {
+        if (this._.array.length === 0) {
+            this._nextNode = null;
+        }
+        else if (this.index === this._.firstIndex + this._.array.length - 1) {
             if (this._.loop) {
                 this._nextNode = this._.firstNode || new (this.constructor)({_: this._, index: this._.firstIndex});
                 this._nextNode._previousNode = this;
