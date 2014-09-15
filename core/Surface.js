@@ -374,16 +374,14 @@ define(function(require, exports, module) {
             if (!this._size) this._size = [0, 0];
             this._size[0] = size[0];
             this._size[1] = size[1];
-            this._sizeDirty = true;
-        }
 
-        if (this._sizeDirty) {
             if (this._size) {
                 target.style.width = (this.size && this.size[0] === true) ? '' : this._size[0] + 'px';
                 target.style.height = (this.size && this.size[1] === true) ?  '' : this._size[1] + 'px';
             }
+
             this._eventOutput.emit('resize');
-            this._sizeDirty = false;
+            this._sizeDirty = true;
         }
 
         if (this._contentDirty) {
