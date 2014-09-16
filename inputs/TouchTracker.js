@@ -24,6 +24,9 @@ define(function(require, exports, module) {
     }
 
     function _handleStart(event) {
+        if (event.touches.length > this.touchLimit) return;
+        this.isTouched = true;
+
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             var data = _timestampTouch(touch, event, null);
@@ -33,6 +36,8 @@ define(function(require, exports, module) {
     }
 
     function _handleMove(event) {
+        if (event.touches.length > this.touchLimit) return;
+
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             var history = this.touchHistory[touch.identifier];
@@ -45,6 +50,8 @@ define(function(require, exports, module) {
     }
 
     function _handleEnd(event) {
+        if (!this.isTouched) return;
+
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             var history = this.touchHistory[touch.identifier];
@@ -54,6 +61,8 @@ define(function(require, exports, module) {
                 delete this.touchHistory[touch.identifier];
             }
         }
+
+        this.isTouched = false;
     }
 
     function _handleUnpipe() {
@@ -76,10 +85,14 @@ define(function(require, exports, module) {
      *
      * @class TouchTracker
      * @constructor
-     * @param {Boolean} selective if false, save state for each touch.
+     * @param {Object} options default options overrides
+     * @param [options.selective] {Boolean} selective if false, saves state for each touch
+     * @param [options.touchLimit] {Number} touchLimit upper bound for emitting events based on number of touches
      */
-    function TouchTracker(selective) {
-        this.selective = selective;
+    function TouchTracker(options) {
+        this.selective = options.selective;
+        this.touchLimit = options.touchLimit || 1;
+
         this.touchHistory = {};
 
         this.eventInput = new EventHandler();
@@ -93,6 +106,8 @@ define(function(require, exports, module) {
         this.eventInput.on('touchend', _handleEnd.bind(this));
         this.eventInput.on('touchcancel', _handleEnd.bind(this));
         this.eventInput.on('unpipe', _handleUnpipe.bind(this));
+
+        this.isTouched = false;
     }
 
     /**
