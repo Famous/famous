@@ -130,12 +130,12 @@ define(function(require, exports, module) {
                 if (itemSize[secondaryDirection] > this._size[secondaryDirection]) this._size[secondaryDirection] = itemSize[secondaryDirection];
             }
 
-            if (this.options.itemSpacing) length += this.options.itemSpacing;
-
             currentNode = currentNode.getNext();
+
+            if (this.options.itemSpacing && currentNode) length += this.options.itemSpacing;
         }
 
-        this._size[this.options.direction] = length - this.options.itemSpacing;
+        this._size[this.options.direction] = length;
 
         return result;
     };
