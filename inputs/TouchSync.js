@@ -24,6 +24,7 @@ define(function(require, exports, module) {
      * @param [options.direction] {Number}   read from a particular axis
      * @param [options.rails] {Boolean}      read from axis with greatest differential
      * @param [options.scale] {Number}       constant factor to scale velocity output
+     * @param [options.touchLimit] {Number}  touchLimit upper bound for emitting events based on number of touches
      */
     function TouchSync(options) {
         this.options =  Object.create(TouchSync.DEFAULT_OPTIONS);
@@ -31,7 +32,9 @@ define(function(require, exports, module) {
         if (options) this.setOptions(options);
 
         this._eventOutput = new EventHandler();
-        this._touchTracker = new TouchTracker();
+        this._touchTracker = new TouchTracker({
+            touchLimit: this.options.touchLimit
+        });
 
         EventHandler.setOutputHandler(this, this._eventOutput);
         EventHandler.setInputHandler(this, this._touchTracker);
@@ -56,7 +59,8 @@ define(function(require, exports, module) {
     TouchSync.DEFAULT_OPTIONS = {
         direction: undefined,
         rails: false,
-        scale: 1
+        scale: 1,
+        touchLimit: 1
     };
 
     TouchSync.DIRECTION_X = 0;
