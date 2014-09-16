@@ -94,7 +94,7 @@ define(function(require, exports, module) {
      */
     CanvasSurface.prototype.getContext = function getContext(contextId) {
         this._contextId = contextId;
-        return this._currTarget ? this._currTarget.getContext(contextId) : this._backBuffer.getContext(contextId);
+        return this._currentTarget ? this._currentTarget.getContext(contextId) : this._backBuffer.getContext(contextId);
     };
 
     /**
@@ -107,9 +107,9 @@ define(function(require, exports, module) {
     CanvasSurface.prototype.setSize = function setSize(size, canvasSize) {
         Surface.prototype.setSize.apply(this, arguments);
         if (canvasSize) this._canvasSize = [canvasSize[0], canvasSize[1]];
-        if (this._currTarget) {
-            this._currTarget.width = this._canvasSize[0];
-            this._currTarget.height = this._canvasSize[1];
+        if (this._currentTarget) {
+            this._currentTarget.width = this._canvasSize[0];
+            this._currentTarget.height = this._canvasSize[1];
         }
     };
 
