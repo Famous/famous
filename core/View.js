@@ -48,8 +48,8 @@ define(function(require, exports, module) {
      * @param {string} key key
      * @return {Object} associated object
      */
-    View.prototype.getOptions = function getOptions() {
-        return this._optionsManager.value();
+    View.prototype.getOptions = function getOptions(key) {
+        return this._optionsManager.getOptions(key);
     };
 
     /*

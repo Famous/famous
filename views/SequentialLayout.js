@@ -35,7 +35,8 @@ define(function(require, exports, module) {
     }
 
     SequentialLayout.DEFAULT_OPTIONS = {
-        direction: Utility.Direction.Y
+        direction: Utility.Direction.Y,
+        itemSpacing: 0
     };
 
     SequentialLayout.DEFAULT_OUTPUT_FUNCTION = function DEFAULT_OUTPUT_FUNCTION(input, offset, index) {
@@ -129,10 +130,12 @@ define(function(require, exports, module) {
                 if (itemSize[secondaryDirection] > this._size[secondaryDirection]) this._size[secondaryDirection] = itemSize[secondaryDirection];
             }
 
+            if (this.options.itemSpacing) length += this.options.itemSpacing;
+
             currentNode = currentNode.getNext();
         }
 
-        this._size[this.options.direction] = length;
+        this._size[this.options.direction] = length - this.options.itemSpacing;
 
         return result;
     };

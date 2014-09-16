@@ -14,11 +14,18 @@ define(function(require, exports, module) {
     var Transform = require('./Transform');
     var Transitionable = require('famous/transitions/Transitionable');
 
-    var _originZeroZero = [0, 0];
+    var _zeroZero = [0, 0];
+    var usePrefix = !('perspective' in document.documentElement.style);
 
     function _getElementSize(element) {
         return [element.clientWidth, element.clientHeight];
     }
+
+    var _setPerspective = usePrefix ? function(element, perspective) {
+        element.style.webkitPerspective = perspective ? perspective.toFixed() + 'px' : '';
+    } : function(element, perspective) {
+        element.style.perspective = perspective ? perspective.toFixed() + 'px' : '';
+    };
 
     /**
      * The top-level container for a Famous-renderable piece of the document.
@@ -45,8 +52,8 @@ define(function(require, exports, module) {
             allocator: this._allocator,
             transform: Transform.identity,
             opacity: 1,
-            origin: _originZeroZero,
-            align: null,
+            origin: _zeroZero,
+            align: _zeroZero,
             size: this._size
         };
 
@@ -127,8 +134,7 @@ define(function(require, exports, module) {
         }
         var perspective = this._perspectiveState.get();
         if (perspective !== this._perspective) {
-            this.container.style.perspective = perspective ? perspective.toFixed() + 'px' : '';
-            this.container.style.webkitPerspective = perspective ? perspective.toFixed() : '';
+            _setPerspective(this.container, perspective);
             this._perspective = perspective;
         }
 

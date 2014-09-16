@@ -20,8 +20,8 @@ define(function(require, exports, module) {
      */
     function Force(force) {
         this.force = new Vector(force);
-        this._energy = 0.0;
-        this._eventOutput = null;
+        this._eventOutput = new EventHandler();
+        EventHandler.setOutputHandler(this, this._eventOutput);
     }
 
     /**
@@ -31,7 +31,7 @@ define(function(require, exports, module) {
      * @param options {Objects}
      */
     Force.prototype.setOptions = function setOptions(options) {
-        for (var key in options) this.options[key] = options[key];
+        this._eventOutput.emit('change', options);
     };
 
     /**
@@ -51,42 +51,7 @@ define(function(require, exports, module) {
      * @return energy {Number}
      */
     Force.prototype.getEnergy = function getEnergy() {
-        return this._energy;
-    };
-
-    /*
-     * Setter for a force's potential energy.
-     *
-     * @method setEnergy
-     * @param energy {Number}
-     */
-    Force.prototype.setEnergy = function setEnergy(energy) {
-        this._energy = energy;
-    };
-
-    function _createEventOutput() {
-        this._eventOutput = new EventHandler();
-        this._eventOutput.bindThis(this);
-        EventHandler.setOutputHandler(this, this._eventOutput);
-    }
-
-    Force.prototype.on = function on() {
-        _createEventOutput.call(this);
-        return this.on.apply(this, arguments);
-    };
-    Force.prototype.addListener = function addListener() {
-        _createEventOutput.call(this);
-        return this.addListener.apply(this, arguments);
-    };
-    Force.prototype.pipe = function pipe() {
-        _createEventOutput.call(this);
-        return this.pipe.apply(this, arguments);
-    };
-    Force.prototype.removeListener = function removeListener() {
-        return this.removeListener.apply(this, arguments);
-    };
-    Force.prototype.unpipe = function unpipe() {
-        return this.unpipe.apply(this, arguments);
+        return 0.0;
     };
 
     module.exports = Force;

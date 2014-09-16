@@ -6,10 +6,10 @@
  * @license MPL 2.0
  * @copyright Famous Industries, Inc. 2014
  */
-
 define(function(require, exports, module) {
     var TouchTracker = require('./TouchTracker');
-    var EventHandler = require('famous/core/EventHandler');
+    var EventHandler = require('../core/EventHandler');
+    var OptionsManager = require('../core/OptionsManager');
 
     /**
      * Handles piped in touch events. Emits 'start', 'update', and 'events'
@@ -27,6 +27,7 @@ define(function(require, exports, module) {
      */
     function TouchSync(options) {
         this.options =  Object.create(TouchSync.DEFAULT_OPTIONS);
+        this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 
         this._eventOutput = new EventHandler();
@@ -163,9 +164,7 @@ define(function(require, exports, module) {
      * @param [options.scale] {Number}       constant factor to scale velocity output
      */
     TouchSync.prototype.setOptions = function setOptions(options) {
-        if (options.direction !== undefined) this.options.direction = options.direction;
-        if (options.rails !== undefined) this.options.rails = options.rails;
-        if (options.scale !== undefined) this.options.scale = options.scale;
+        return this._optionsManager.setOptions(options);
     };
 
     /**

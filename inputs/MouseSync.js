@@ -6,9 +6,9 @@
  * @license MPL 2.0
  * @copyright Famous Industries, Inc. 2014
  */
-
 define(function(require, exports, module) {
-    var EventHandler = require('famous/core/EventHandler');
+    var EventHandler = require('../core/EventHandler');
+    var OptionsManager = require('../core/OptionsManager');
 
     /**
      * Handles piped in mouse drag events. Outputs an object with two
@@ -26,6 +26,8 @@ define(function(require, exports, module) {
      */
     function MouseSync(options) {
         this.options =  Object.create(MouseSync.DEFAULT_OPTIONS);
+        this._optionsManager = new OptionsManager(this.options);
+
         if (options) this.setOptions(options);
 
         this._eventInput = new EventHandler();
@@ -62,7 +64,8 @@ define(function(require, exports, module) {
         direction: undefined,
         rails: false,
         scale: 1,
-        propogate: true  // events piped to document on mouseleave
+        propogate: true,  // events piped to document on mouseleave
+        preventDefault: true
     };
 
     MouseSync.DIRECTION_X = 0;
@@ -75,7 +78,7 @@ define(function(require, exports, module) {
     function _handleStart(event) {
         var delta;
         var velocity;
-        event.preventDefault(); // prevent drag
+        if (this.options.preventDefault) event.preventDefault(); // prevent drag
 
         var x = event.clientX;
         var y = event.clientY;
@@ -214,10 +217,7 @@ define(function(require, exports, module) {
      * @param [options.propogate] {Boolean}  add listened to document on mouseleave
      */
     MouseSync.prototype.setOptions = function setOptions(options) {
-        if (options.direction !== undefined) this.options.direction = options.direction;
-        if (options.rails !== undefined) this.options.rails = options.rails;
-        if (options.scale !== undefined) this.options.scale = options.scale;
-        if (options.propogate !== undefined) this.options.propogate = options.propogate;
+        return this._optionsManager.setOptions(options);
     };
 
     module.exports = MouseSync;

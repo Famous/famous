@@ -62,7 +62,7 @@ define(function(require, exports, module) {
      * @return {TextareaSurface} this, allowing method chaining.
      */
     TextareaSurface.prototype.focus = function focus() {
-        if (this._currTarget) this._currTarget.focus();
+        if (this._currentTarget) this._currentTarget.focus();
         return this;
     };
 
@@ -73,7 +73,7 @@ define(function(require, exports, module) {
      * @return {TextareaSurface} this, allowing method chaining.
      */
     TextareaSurface.prototype.blur = function blur() {
-        if (this._currTarget) this._currTarget.blur();
+        if (this._currentTarget) this._currentTarget.blur();
         return this;
     };
 
@@ -98,8 +98,8 @@ define(function(require, exports, module) {
      * @return {string} value of element
      */
     TextareaSurface.prototype.getValue = function getValue() {
-        if (this._currTarget) {
-            return this._currTarget.value;
+        if (this._currentTarget) {
+            return this._currentTarget.value;
         }
         else {
             return this._value;

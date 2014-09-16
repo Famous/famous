@@ -84,7 +84,7 @@ define(function(require, exports, module) {
     };
 
     function _getEnergy() {
-        return this.particle.getEnergy() + this.spring.getEnergy(this.particle);
+        return this.particle.getEnergy() + this.spring.getEnergy([this.particle]);
     }
 
     function _setAbsoluteRestTolerance() {
