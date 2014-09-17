@@ -34,9 +34,9 @@ define(function(require, exports, module) {
 
         this._ratios = new Transitionable(this.options.ratios);
         this._nodes = [];
+        this._size = [0, 0];
 
         this._cachedDirection = null;
-        this._cachedTotalLength = false;
         this._cachedLengths = [];
         this._cachedTransforms = null;
         this._ratiosDirty = false;
@@ -95,6 +95,17 @@ define(function(require, exports, module) {
         }
     }
 
+    function _trueSizedDirty(ratios, direction) {
+        for (var i = 0; i < ratios.length; i++) {
+            if (typeof ratios[i] !== 'number') {
+                if (this._nodes[i].getSize()[direction] !== this._cachedLengths[i])
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Generate a render spec from the contents of this component.
      *
@@ -149,6 +160,17 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Gets the size of the context the FlexibleLayout exists within.
+     *
+     * @method getSize
+     *
+     * @return {Array} Size of the FlexibleLayout in pixels [width, height]
+     */
+    FlexibleLayout.prototype.getSize = function getSize() {
+        return this._size;
+    };
+
+    /**
      * Apply changes from this component to the corresponding document element.
      * This includes changes to classes, styles, size, content, opacity, origin,
      * and matrix transforms.
@@ -168,10 +190,14 @@ define(function(require, exports, module) {
         var length = parentSize[direction];
         var size;
 
-        if (length !== this._cachedTotalLength || this._ratiosDirty || this._ratios.isActive() || direction !== this._cachedDirection) {
+        if (length !== this._size[direction] || this._ratiosDirty || this._ratios.isActive() || direction !== this._cachedDirection || _trueSizedDirty.call(this, ratios, direction)) {
             _reflow.call(this, ratios, length, direction);
 
-            if (length !== this._cachedTotalLength) this._cachedTotalLength = length;
+            if (length !== this._size[direction]) {
+                this._size[0] = parentSize[0];
+                this._size[1] = parentSize[1];
+            }
+
             if (direction !== this._cachedDirection) this._cachedDirection = direction;
             if (this._ratiosDirty) this._ratiosDirty = false;
         }
