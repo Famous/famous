@@ -41,7 +41,6 @@ define(function(require, exports, module) {
         this._cachedTransforms = null;
         this._ratiosDirty = false;
 
-
         this._eventOutput = new EventHandler();
         EventHandler.setOutputHandler(this, this._eventOutput);
     }

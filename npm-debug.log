@@ -1,0 +1,34 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'run', 'lint' ]
+2 info using npm@2.0.0
+3 info using node@v0.10.28
+4 verbose node symlink /usr/local/bin/node
+5 verbose run-script [ 'prelint', 'lint', 'postlint' ]
+6 info prelint famous@0.2.2
+7 info lint famous@0.2.2
+8 verbose unsafe-perm in lifecycle true
+9 info famous@0.2.2 Failed to exec lint script
+10 verbose stack Error: famous@0.2.2 lint: `npm run lint-eslint && npm run lint-jscs`
+10 verbose stack Exit status 1
+10 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:212:16)
+10 verbose stack     at ChildProcess.EventEmitter.emit (events.js:98:17)
+10 verbose stack     at maybeClose (child_process.js:753:16)
+10 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:820:5)
+11 verbose pkgid famous@0.2.2
+12 verbose cwd /Users/mike/famous/famous
+13 error Darwin 13.1.0
+14 error argv "node" "/usr/local/bin/npm" "run" "lint"
+15 error node v0.10.28
+16 error npm  v2.0.0
+17 error code ELIFECYCLE
+18 error famous@0.2.2 lint: `npm run lint-eslint && npm run lint-jscs`
+18 error Exit status 1
+19 error Failed at the famous@0.2.2 lint script.
+19 error This is most likely a problem with the famous package,
+19 error not with npm itself.
+19 error Tell the author that this fails on your system:
+19 error     npm run lint-eslint && npm run lint-jscs
+19 error You can get their info via:
+19 error     npm owner ls famous
+19 error There is likely additional logging output above.
+20 verbose exit [ 1, true ]
