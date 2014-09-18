@@ -48,6 +48,15 @@ define(function(require, exports, module) {
 
     var transitionMethods = {};
 
+    Transitionable.register = function register(methods) {
+        var success = true;
+        for (var method in methods) {
+            if (!Transitionable.registerMethod(method, methods[method]))
+                success = false;
+        }
+        return success;
+    };
+
     Transitionable.registerMethod = function registerMethod(name, engineClass) {
         if (!(name in transitionMethods)) {
             transitionMethods[name] = engineClass;
