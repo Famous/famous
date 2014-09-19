@@ -188,6 +188,16 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Return index of the provided item in the backing array
+     *
+     * @method indexOf
+     * @return {Number} index or <tt>-1</tt> if not found
+     */
+    ViewSequence.prototype.indexOf = function indexOf(item) {
+        return this._.array.indexOf(item);
+    };
+
+    /**
      * Return index of this ViewSequence node.
      *
      * @method getIndex
