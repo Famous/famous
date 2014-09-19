@@ -85,6 +85,9 @@ define(function(require, exports, module) {
      * @return {InputSurface} this, allowing method chaining.
      */
     InputSurface.prototype.setValue = function setValue(str) {
+        if (this._type === 'checkbox' && typeof str === 'boolean') {
+            this._currentTarget.checked = str;
+        }
         this._value = str;
         this._contentDirty = true;
         return this;
@@ -112,6 +115,9 @@ define(function(require, exports, module) {
      */
     InputSurface.prototype.getValue = function getValue() {
         if (this._currentTarget) {
+            if (this._type === 'checkbox') {
+                return this._currentTarget.checked;
+            }
             return this._currentTarget.value;
         }
         else {
