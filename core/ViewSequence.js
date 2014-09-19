@@ -138,7 +138,7 @@ define(function(require, exports, module) {
                 index++;
             }
         }
-        if (this._.trackSize) this._.sizeDirty = true;
+        if (this.trackSize) this.sizeDirty = true;
     };
 
     /**
