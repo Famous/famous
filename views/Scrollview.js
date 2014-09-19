@@ -88,7 +88,9 @@ define(function(require, exports, module) {
                 direction : this.options.direction,
                 scale : this.options.syncScale,
                 rails: this.options.rails,
-                preventDefault: this.options.preventDefault
+                preventDefault: this.options.preventDefault !== undefined
+                    ? this.options.preventDefault
+                    : this.options.direction !== Utility.Direction.Y
             }
         );
 
