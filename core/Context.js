@@ -12,7 +12,7 @@ define(function(require, exports, module) {
     var EventHandler = require('./EventHandler');
     var ElementAllocator = require('./ElementAllocator');
     var Transform = require('./Transform');
-    var Transitionable = require('famous/transitions/Transitionable');
+    var Transitionable = require('../transitions/Transitionable');
 
     var _zeroZero = [0, 0];
     var usePrefix = !('perspective' in document.documentElement.style);

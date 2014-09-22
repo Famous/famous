@@ -21,8 +21,8 @@ define(function(require, exports, module) {
      * @constructor
      *
      * @example
-     *   var Surface = require('famous/core/Surface');
-     *   var MouseSync = require('famous/inputs/MouseSync');
+     *   var Surface = require('../core/Surface');
+     *   var MouseSync = require('../inputs/MouseSync');
      *
      *   var surface = new Surface({ size: [100, 100] });
      *   var mouseSync = new MouseSync();

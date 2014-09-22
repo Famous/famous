@@ -8,9 +8,9 @@
  */
 
 define(function(require, exports, module) {
-    var Utility = require('famous/utilities/Utility');
-    var View = require('famous/core/View');
-    var GridLayout = require('famous/views/GridLayout');
+    var Utility = require('../utilities/Utility');
+    var View = require('../core/View');
+    var GridLayout = require('../views/GridLayout');
     var ToggleButton = require('./ToggleButton');
 
     /**

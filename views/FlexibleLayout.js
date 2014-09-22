@@ -8,11 +8,11 @@
  */
 
 define(function(require, exports, module) {
-    var Entity = require('famous/core/Entity');
-    var Transform = require('famous/core/Transform');
-    var OptionsManager = require('famous/core/OptionsManager');
-    var EventHandler = require('famous/core/EventHandler');
-    var Transitionable = require('famous/transitions/Transitionable');
+    var Entity = require('../core/Entity');
+    var Transform = require('../core/Transform');
+    var OptionsManager = require('../core/OptionsManager');
+    var EventHandler = require('../core/EventHandler');
+    var Transitionable = require('../transitions/Transitionable');
 
     /**
      * A layout which divides a context into sections based on a proportion

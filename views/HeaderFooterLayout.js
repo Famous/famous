@@ -8,10 +8,10 @@
  */
 
 define(function(require, exports, module) {
-    var Entity = require('famous/core/Entity');
-    var RenderNode = require('famous/core/RenderNode');
-    var Transform = require('famous/core/Transform');
-    var OptionsManager = require('famous/core/OptionsManager');
+    var Entity = require('../core/Entity');
+    var RenderNode = require('../core/RenderNode');
+    var Transform = require('../core/Transform');
+    var OptionsManager = require('../core/OptionsManager');
 
     /**
      * A layout which will arrange three renderables into a header and footer area of defined size,

@@ -11,8 +11,8 @@ define(function(require, exports, module) {
     var Transform = require('./Transform');
 
     /* TODO: remove these dependencies when deprecation complete */
-    var Transitionable = require('famous/transitions/Transitionable');
-    var TransitionableTransform = require('famous/transitions/TransitionableTransform');
+    var Transitionable = require('../transitions/Transitionable');
+    var TransitionableTransform = require('../transitions/TransitionableTransform');
 
     /**
      *

@@ -8,7 +8,7 @@
  */
 
 define(function(require, exports, module) {
-    var Utility = require('famous/utilities/Utility');
+    var Utility = require('../utilities/Utility');
 
     /**
      * Transition meta-method to support transitioning multiple

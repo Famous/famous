@@ -8,20 +8,20 @@
  */
 
 define(function(require, exports, module) {
-    var PhysicsEngine = require('famous/physics/PhysicsEngine');
-    var Particle = require('famous/physics/bodies/Particle');
-    var Drag = require('famous/physics/forces/Drag');
-    var Spring = require('famous/physics/forces/Spring');
+    var PhysicsEngine = require('../physics/PhysicsEngine');
+    var Particle = require('../physics/bodies/Particle');
+    var Drag = require('../physics/forces/Drag');
+    var Spring = require('../physics/forces/Spring');
 
-    var EventHandler = require('famous/core/EventHandler');
-    var OptionsManager = require('famous/core/OptionsManager');
-    var ViewSequence = require('famous/core/ViewSequence');
-    var Scroller = require('famous/views/Scroller');
-    var Utility = require('famous/utilities/Utility');
+    var EventHandler = require('../core/EventHandler');
+    var OptionsManager = require('../core/OptionsManager');
+    var ViewSequence = require('../core/ViewSequence');
+    var Scroller = require('../views/Scroller');
+    var Utility = require('../utilities/Utility');
 
-    var GenericSync = require('famous/inputs/GenericSync');
-    var ScrollSync = require('famous/inputs/ScrollSync');
-    var TouchSync = require('famous/inputs/TouchSync');
+    var GenericSync = require('../inputs/GenericSync');
+    var ScrollSync = require('../inputs/ScrollSync');
+    var TouchSync = require('../inputs/TouchSync');
     GenericSync.register({scroll : ScrollSync, touch : TouchSync});
 
     /** @const */

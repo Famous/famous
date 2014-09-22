@@ -9,7 +9,7 @@
 
 define(function(require, exports, module) {
     var Force = require('./Force');
-    var Vector = require('famous/math/Vector');
+    var Vector = require('../../math/Vector');
 
     /**
      *  Repulsion is a force that repels (attracts) bodies away (towards)

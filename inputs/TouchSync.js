@@ -21,8 +21,8 @@ define(function(require, exports, module) {
      * @constructor
      *
      * @example
-     *   var Surface = require('famous/core/Surface');
-     *   var TouchSync = require('famous/inputs/TouchSync');
+     *   var Surface = require('../core/Surface');
+     *   var TouchSync = require('../inputs/TouchSync');
      *
      *   var surface = new Surface({ size: [100, 100] });
      *   var touchSync = new TouchSync();

@@ -9,7 +9,7 @@
 
 define(function(require, exports, module) {
     var Constraint = require('./Constraint');
-    var Vector = require('famous/math/Vector');
+    var Vector = require('../../math/Vector');
 
     /**
      *  A constraint that keeps a physics body a given distance away from a given

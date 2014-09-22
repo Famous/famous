@@ -1,11 +1,11 @@
 define(function(require, exports, module) {
-    var Transform = require('famous/core/Transform');
-    var Modifier = require('famous/core/Modifier');
-    var RenderNode = require('famous/core/RenderNode');
-    var Utility = require('famous/utilities/Utility');
-    var OptionsManager = require('famous/core/OptionsManager');
-    var Transitionable = require('famous/transitions/Transitionable');
-    var TransitionableTransform = require('famous/transitions/TransitionableTransform');
+    var Transform = require('../core/Transform');
+    var Modifier = require('../core/Modifier');
+    var RenderNode = require('../core/RenderNode');
+    var Utility = require('../utilities/Utility');
+    var OptionsManager = require('../core/OptionsManager');
+    var Transitionable = require('../transitions/Transitionable');
+    var TransitionableTransform = require('../transitions/TransitionableTransform');
 
     /**
      * Lightbox, using transitions, shows and hides different renderables. Lightbox can essentially be

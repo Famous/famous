@@ -8,11 +8,11 @@
  */
 
 define(function(require, exports, module) {
-    var RenderNode = require('famous/core/RenderNode');
-    var Transform = require('famous/core/Transform');
-    var OptionsManager = require('famous/core/OptionsManager');
-    var Transitionable = require('famous/transitions/Transitionable');
-    var EventHandler = require('famous/core/EventHandler');
+    var RenderNode = require('../core/RenderNode');
+    var Transform = require('../core/Transform');
+    var OptionsManager = require('../core/OptionsManager');
+    var Transitionable = require('../transitions/Transitionable');
+    var EventHandler = require('../core/EventHandler');
 
     /**
      * A layout which will arrange two renderables: a featured content, and a

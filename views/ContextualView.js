@@ -8,10 +8,10 @@
  */
 
 define(function(require, exports, module) {
-    var Entity = require('famous/core/Entity');
-    var Transform = require('famous/core/Transform');
-    var EventHandler = require('famous/core/EventHandler');
-    var OptionsManager = require('famous/core/OptionsManager');
+    var Entity = require('../core/Entity');
+    var Transform = require('../core/Transform');
+    var EventHandler = require('../core/EventHandler');
+    var OptionsManager = require('../core/OptionsManager');
 
     /**
      * ContextualView is an interface for creating views that need to

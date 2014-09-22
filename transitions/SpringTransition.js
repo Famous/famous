@@ -10,10 +10,10 @@
 /*global console*/
 
 define(function(require, exports, module) {
-    var PE = require('famous/physics/PhysicsEngine');
-    var Particle = require('famous/physics/bodies/Particle');
-    var Spring = require('famous/physics/forces/Spring');
-    var Vector = require('famous/math/Vector');
+    var PE = require('../physics/PhysicsEngine');
+    var Particle = require('../physics/bodies/Particle');
+    var Spring = require('../physics/forces/Spring');
+    var Vector = require('../math/Vector');
 
     /**
      * SpringTransition is a method of transitioning between two values (numbers,

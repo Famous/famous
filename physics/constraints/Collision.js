@@ -9,7 +9,7 @@
 
 define(function(require, exports, module) {
     var Constraint = require('./Constraint');
-    var Vector = require('famous/math/Vector');
+    var Vector = require('../../math/Vector');
 
     /**
      *  Allows for two circular bodies to collide and bounce off each other.

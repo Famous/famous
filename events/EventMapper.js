@@ -8,7 +8,7 @@
  */
 
 define(function(require, exports, module) {
-    var EventHandler = require('famous/core/EventHandler');
+    var EventHandler = require('../core/EventHandler');
 
     /**
      * EventMapper routes events to various event destinations

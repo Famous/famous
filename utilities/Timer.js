@@ -19,7 +19,7 @@ define(function(require, exports, module) {
      * @class Timer
      * @constructor
      */
-    var FamousEngine = require('famous/core/Engine');
+    var FamousEngine = require('../core/Engine');
 
     var _event  = 'prerender';
 

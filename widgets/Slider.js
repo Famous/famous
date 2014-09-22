@@ -8,16 +8,16 @@
  */
 
 define(function(require, exports, module) {
-    var Surface = require('famous/core/Surface');
-    var CanvasSurface = require('famous/surfaces/CanvasSurface');
-    var Transform = require('famous/core/Transform');
-    var EventHandler = require('famous/core/EventHandler');
-    var Utilities = require('famous/math/Utilities');
-    var OptionsManager = require('famous/core/OptionsManager');
+    var Surface = require('../core/Surface');
+    var CanvasSurface = require('../surfaces/CanvasSurface');
+    var Transform = require('../core/Transform');
+    var EventHandler = require('../core/EventHandler');
+    var Utilities = require('../math/Utilities');
+    var OptionsManager = require('../core/OptionsManager');
 
-    var MouseSync = require('famous/inputs/MouseSync');
-    var TouchSync = require('famous/inputs/TouchSync');
-    var GenericSync = require('famous/inputs/GenericSync');
+    var MouseSync = require('../inputs/MouseSync');
+    var TouchSync = require('../inputs/TouchSync');
+    var GenericSync = require('../inputs/GenericSync');
 
     GenericSync.register({
         mouse : MouseSync,

@@ -8,14 +8,14 @@
  */
 
 define(function(require, exports, module) {
-    var Transform = require('famous/core/Transform');
-    var Transitionable = require('famous/transitions/Transitionable');
-    var EventHandler = require('famous/core/EventHandler');
-    var Utilities = require('famous/math/Utilities');
+    var Transform = require('../core/Transform');
+    var Transitionable = require('../transitions/Transitionable');
+    var EventHandler = require('../core/EventHandler');
+    var Utilities = require('../math/Utilities');
 
-    var GenericSync = require('famous/inputs/GenericSync');
-    var MouseSync = require('famous/inputs/MouseSync');
-    var TouchSync = require('famous/inputs/TouchSync');
+    var GenericSync = require('../inputs/GenericSync');
+    var MouseSync = require('../inputs/MouseSync');
+    var TouchSync = require('../inputs/TouchSync');
     GenericSync.register({'mouse': MouseSync, 'touch': TouchSync});
 
     /**

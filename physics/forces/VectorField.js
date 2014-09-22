@@ -9,7 +9,7 @@
 
 define(function(require, exports, module) {
     var Force = require('./Force');
-    var Vector = require('famous/math/Vector');
+    var Vector = require('../../math/Vector');
 
     /**
      *  A force that moves a physics body to a location with a spring motion.

@@ -8,9 +8,9 @@
  */
 
 define(function(require, exports, module) {
-    var Surface = require('famous/core/Surface');
-    var EventHandler = require('famous/core/EventHandler');
-    var RenderController = require('famous/views/RenderController');
+    var Surface = require('../core/Surface');
+    var EventHandler = require('../core/EventHandler');
+    var RenderController = require('../views/RenderController');
 
     /**
      * A view for transitioning between two surfaces based

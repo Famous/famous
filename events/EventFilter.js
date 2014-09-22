@@ -8,7 +8,7 @@
  */
 
 define(function(require, exports, module) {
-    var EventHandler = require('famous/core/EventHandler');
+    var EventHandler = require('../core/EventHandler');
 
     /**
      * EventFilter regulates the broadcasting of events based on

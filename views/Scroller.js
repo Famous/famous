@@ -1,11 +1,11 @@
 define(function(require, exports, module) {
-    var Entity = require('famous/core/Entity');
-    var Group = require('famous/core/Group');
-    var OptionsManager = require('famous/core/OptionsManager');
-    var Transform = require('famous/core/Transform');
-    var Utility = require('famous/utilities/Utility');
-    var ViewSequence = require('famous/core/ViewSequence');
-    var EventHandler = require('famous/core/EventHandler');
+    var Entity = require('../core/Entity');
+    var Group = require('../core/Group');
+    var OptionsManager = require('../core/OptionsManager');
+    var Transform = require('../core/Transform');
+    var Utility = require('../utilities/Utility');
+    var ViewSequence = require('../core/ViewSequence');
+    var EventHandler = require('../core/EventHandler');
 
     /**
      * Scroller lays out a collection of renderables, and will browse through them based on

@@ -9,7 +9,7 @@
 
 define(function(require, exports, module) {
     var Body = require('./Body');
-    var Matrix = require('famous/math/Matrix');
+    var Matrix = require('../../math/Matrix');
 
     /**
      * Implements a circle, or spherical, geometry for a Body with

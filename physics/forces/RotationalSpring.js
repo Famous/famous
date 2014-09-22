@@ -11,7 +11,7 @@
 define(function(require, exports, module) {
     var Force = require('./Force');
     var Spring = require('./Spring');
-    var Quaternion = require('famous/math/Quaternion');
+    var Quaternion = require('../../math/Quaternion');
 
     /**
      *  A force that rotates a physics body back to target Euler angles.
