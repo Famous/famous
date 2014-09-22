@@ -22,11 +22,11 @@ define(function(require, exports, module) {
 
     /**
      * Creates a mapping function with a cache.
-     * This is the main entrypoint for this object.
+     * This is the main entry point for this object.
      * @static
      * @method create
      * @param {function} mappingFunction mapping
-     * @return {function} memoized mapping function
+     * @return {function} memorized mapping function
      */
     CachedMap.create = function create(mappingFunction) {
         var instance = new CachedMap(mappingFunction);
@@ -34,7 +34,7 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Retrieve items from cache or from mapping functin.
+     * Retrieve items from cache or from mapping function.
      *
      * @method get
      * @param {Object} input input key

@@ -26,9 +26,15 @@ define(function(require, exports, module) {
      * @param {Array<Number>} [options.inOrigin] A two value array of numbers between one and zero that defines the state of a shown renderables
      * origin upon intially being transitioned in.
      * @param {Array<Number>} [options.outOrigin] A two value array of numbers between one and zero that defines the state of a shown renderable
-     * once fully hidden.
+     * origin once fully hidden.
      * @param {Array<Number>} [options.showOrigin] A two value array of numbers between one and zero that defines the state of a shown renderables
      * origin upon succesfully being shown.
+     * @param {Array<Number>} [options.inAlign] A two value array of numbers between one and zero that defines the state of a shown renderables
+     * align upon intially being transitioned in.
+     * @param {Array<Number>} [options.outAlign] A two value array of numbers between one and zero that defines the state of a shown renderable
+     * align once fully hidden.
+     * @param {Array<Number>} [options.showAlign] A two value array of numbers between one and zero that defines the state of a shown renderables
+     * align upon succesfully being shown.
      * @param {Transition} [options.inTransition=true] The transition in charge of showing a renderable.
      * @param {Transition} [options.outTransition=true]  The transition in charge of removing your previous renderable when
      * you show a new one, or hiding your current renderable.
