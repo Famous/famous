@@ -1,0 +1,27 @@
+{
+  "name": "famous",
+  "version": "0.2.2",
+  "homepage": "https://github.com/Famous/famous",
+  "authors": [
+    "Myles Borins <myles@famo.us>"
+  ],
+  "description": "Famo.us is a JavaScript framework for everyone who wants to build beautiful experiences on any device.",
+  "main": "src/",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "Famo.us",
+    "3D"
+  ],
+  "license": "MPLv2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
