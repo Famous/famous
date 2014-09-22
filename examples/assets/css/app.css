@@ -1,0 +1,28 @@
+html {
+    background-color: #000;
+    color: #fff;
+}
+
+.famousRedText{
+    color: #fa5c4f;
+}
+
+.famousRedBackground{
+    background-color: #fa5c4f;
+}
+
+.famousBlueText{
+    color: #3cf;
+}
+
+.famousBlueBackground{
+    background-color: #3cf;
+}
+
+.graph {
+    background-color: black;
+    background-image:
+    linear-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px), linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.25) 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(transparent 3px, black 3px, black 238px, transparent 238px), linear-gradient(90deg, white 3px, transparent 3px, transparent 238px, white 238px);
+    background-size:
+    40px 40px, 240px 240px, 40px 40px, 240px 240px, 240px 240px, 240px 240px
+}

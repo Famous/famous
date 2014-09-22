@@ -21,7 +21,8 @@
     "build-global": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --standalone --ref $FAMOUS_REF --out dist/famous-global.js",
     "build-global-min": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --standalone --ref $FAMOUS_REF --out dist/famous-global.min.js",
     "build-css": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --css --ref $FAMOUS_REF --out dist/famous.css",
-    "build-docs": "famous-doc-generator --base src/ --out docs/ --pathPrefix ../"
+    "build-docs": "famous-doc-generator --base src/ --out docs/ --pathPrefix ../",
+    "build-examples": "famous-examples-generator -i ./examples"
   },
   "author": "famous",
   "license": "MPL v2.0",
@@ -33,6 +34,7 @@
     "eslint": "^0.8.2",
     "famous-dist-generator": "^0.1.2",
     "famous-doc-generator": "^0.3.1",
+    "famous-examples-generator": "^0.1.0",
     "jscs": "^1.5.9"
   },
   "dependencies": {
