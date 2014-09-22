@@ -1,4 +1,4 @@
-Surfaces: Famo.us render targets [![Build Status](https://travis-ci.org/Famous/surfaces.svg)](https://travis-ci.org/Famous/surfaces)
+Surfaces: Famo.us render targets
 ================================
 
 Surfaces are extensions of core/Surface and are the primary concrete interface 
@@ -10,8 +10,10 @@ to the visual document elements.
 - CanvasSurface.js: A Surface containing an HTML5 Canvas element.
 - ContainerSurface.js:  An object designed to contain surfaces and set 
   properties to be applied to all of them at once.
+- FormContainerSurface.js: A Surface containing form content
 - ImageSurface.js: A Surface containing image content.
 - InputSurface.js: A Surface in the form of an HTML input element.
+- SubmitInputSurface.js: A Surface to Submit an input.
 - TextareaSurface.js: A Surface in the form of an HTML textarea element.
 - VideoSurface.js: A Surface containing video content.
 
@@ -21,10 +23,6 @@ to the visual document elements.
 - [Reference Docs][reference-documentation]
 - [Surfaces][surfaces]
 - [Pitfalls][pitfalls]
-
-# Maintainer
-- mark@famo.us
-
 
 ## License
 

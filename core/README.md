@@ -1,4 +1,4 @@
-Core: Famous core libraries [![Build Status](https://travis-ci.org/Famous/core.svg)](https://travis-ci.org/Famous/core)
+Core: Famous core libraries
 ===========================
 
 The low level componentry of Famo.us, including the required CSS stylesheet.
@@ -33,12 +33,6 @@ The low level componentry of Famo.us, including the required CSS stylesheet.
 - [Layout][layout]
 - [Events][events]
 - [Pitfalls][pitfalls]
-
-
-## Maintainer
-
-- Mark Lu <mark@famo.us>
-
 
 ## License
 

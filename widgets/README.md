@@ -1,4 +1,4 @@
-Widgets: Small app views within Famo.us [![Build Status](https://travis-ci.org/Famous/widgets.svg)](https://travis-ci.org/Famous/widgets)
+Widgets: Small app views within Famo.us
 =======================================
 
 This widget library is a collection of small views with app-specific styling.
@@ -9,6 +9,7 @@ This widget library is a collection of small views with app-specific styling.
 
 - NavigationBar.js: A view for display for displaying the title of the current
   page, as well as icons for navigating backwards and opening further options.
+- Slider.js:  A view for a slider.
 - TabBar.js:  A view for display various tabs that dispatch events based on the
   id of the button that was clicked
 - ToggleButton.js:  A view for transistioning between two surfaces based  on a
@@ -20,10 +21,6 @@ This widget library is a collection of small views with app-specific styling.
 - [Reference Docs][reference-documentation]
 - [Render Tree][render-tree]
 - [Layout][layout]
-
-## Owners/Committers
-- Mark Lu <mark@famo.us>
-
 
 ## License
 

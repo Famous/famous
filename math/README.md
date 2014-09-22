@@ -1,4 +1,4 @@
-Math: A math library for Famo.us [![Build Status](https://travis-ci.org/Famous/math.svg)](https://travis-ci.org/Famous/math)
+Math: A math library for Famo.us
 ================================
 
 A simple math library used throughout the core.
@@ -7,20 +7,16 @@ A simple math library used throughout the core.
 ## Files
 
 - Matrix.js: Simple math libary for 3x3 numerical matrices.
+- Quaternion.js: Simple library for using [Quaternions][quaternion]
 - Random.js: Extremely simple uniform random number generator library wrapping
   Math.random().
-- Quaternion.js: Simple library for using [Quaternions][quaternion]
+- Utilities.js: A collection of static methods to help with math functions (clamp + numerical array length)
 - Vector.js: Three-element numerical vector library.
 
 
 ## Documentation
 
 - [Reference Docs][reference-documentation]
-
-
-## Maintainer
-
-- David Valdman <david@famo.us>
 
 
 ## License

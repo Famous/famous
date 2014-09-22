@@ -1,4 +1,4 @@
-Physics: Famo.us core physics engine [![Build Status](https://travis-ci.org/Famous/physics.svg)](https://travis-ci.org/Famous/physics)
+Physics: Famo.us core physics engine
 ====================================
 
 Core engine controlling animations via physical simulation.
@@ -36,8 +36,6 @@ Core engine controlling animations via physical simulation.
 - forces/VectorField.js:  A force that moves a physics body to a location with a spring motion.
 - integrators/SymplecticEuler.js:  Ordinary Differential Equation (ODE)
   Integrator. Manages updating a physics body's state over time.
-- integrators/verlet.js:  Manages updating a physics body's state over time.
-  (deprecated)
 - PhysicsEngine.js: The Physics Engine is responsible for mediating Bodies and 
   their interaction with forces and constraints.
 
@@ -47,10 +45,6 @@ Core engine controlling animations via physical simulation.
 - [Reference Docs][reference-documentation]
 - [Animating][animating]
 - [Pitfalls][pitfalls]
-
-## Maintainer
-
-- David Valdman <david@famo.us>
 
 
 ## Famous Physics Framework

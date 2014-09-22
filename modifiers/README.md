@@ -1,4 +1,4 @@
-Modifiers: Famous modifier objects [![Build Status](https://travis-ci.org/Famous/modifiers.svg)](https://travis-ci.org/Famous/modifiers)
+Modifiers: Famous modifier objects
 ==================================
 
 Implementations of the core/Modifier pattern which output transforms to the
@@ -8,8 +8,7 @@ render tree.
 ## Files
 
 - Draggable.js: Makes added render nodes responsive to drag behavior.
-- Lift.js: Lifts a rendernode further down the render chain to a new different
-  parent context
+- Fader.js: Modifier that allows you to fade the opacity of affected renderables in and out.
 - ModifierChain.js: A class to add and remove a chain of modifiers at a single
   point in the render tree.
 - StateModifier.js: A collection of visual changes to be applied to another
@@ -24,12 +23,6 @@ render tree.
 - [Layout][layout]
 - [Animating][animating]
 - [Pitfalls][pitfalls]
-
-
-## Maintainer
-
-- Mark Lu <mark@famo.us>
-
 
 ## License
 

@@ -1,4 +1,4 @@
-Transitions: Famo.us animation library [![Build Status](https://travis-ci.org/Famous/transitions.svg)](https://travis-ci.org/Famous/transitions)
+Transitions: Famo.us animation library
 ======================================
 
 Transitions are used to create animation, usually by providing input to a 
@@ -33,10 +33,6 @@ Modifier.
 - [Reference Docs][reference-documentation]
 - [Animations][animations]
 - [Pitfalls][pitfalls]
-
-## Maintainer
-
-- David Valdman <david@famo.us>
 
 
 ## License

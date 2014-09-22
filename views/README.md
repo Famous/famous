@@ -6,16 +6,24 @@ Views are visually interactable components for use in applications.
 
 ## Files
 
+- ContextualView.js: ContextualView is an interface for creating views that need
+  to be aware of their parent's transform, size, and/or origin.
 - Deck.js: A Sequential Layout that can be opened and closed with animations.
+- DrawerLayout.js: A layout which will arrange two renderables: a featured content, and a
+  concealed drawer. The drawer can be revealed from any side of the
+  content (left, top, right, bottom) by dragging the content.
 - EdgeSwapper.js: Container which handles swapping renderables from the edge of
   its parent context.
+- FlexibleLayout.js: A layout which divides a context into sections based on a proportion
+  of the total sum of ratios.  FlexibleLayout can either lay renderables out vertically
+  or horizontally.
 - Flipper.js: Allows you to link two renderables as front and back sides that
   can be 'flipped' back and forth along a chosen axis.
 - GridLayout.js: A layout which divides a context into several evenly-sized grid
   cells.
 - HeaderFooterLayout.js: A layout which will arrange three renderables into a
   header and footer area of defined size, and a content area of flexible size.
-- Lightbox.js:
+- Lightbox.js: Lightbox, using transitions, shows and hides different renderables.
 - RenderController.js: Show, hide, or switch between different renderables with
   a configurable transitions and in/out states
 - ScrollContainer.js: A scrollview added within a container surface.
@@ -29,10 +37,6 @@ Views are visually interactable components for use in applications.
 - [Reference Docs][reference-documentation]
 - [Render Tree][render-tree]
 - [Layout][layout]
-
-# Maintainer
-
-- Mark Lu <mark@famo.us>
 
 
 ## License

@@ -1,4 +1,4 @@
-Inputs: Famous user input libraries [![Build Status](https://travis-ci.org/Famous/inputs.svg)](https://travis-ci.org/Famous/inputs)
+Inputs: Famous user input libraries
 ===================================
 
 The inputs library is used to interpret user input to the device. Its primary 
@@ -7,6 +7,8 @@ concept is the 'Sync' interface.
 
 ## Files
 
+- Accumulator.js: Accumulates differentials of event sources that emit a `delta` attribute taking a Number or Array of Number types. The accumulated value is stored in a getter/setter.
+- DesktopEmulationMode.js: Emulate desktop input on mobile devices
 - FastClick.js: FastClick is an override shim to speed up clicks on some browsers.
 - GenericSync.js: Combines multiple types of event handling into one standardized interface.
 - MouseSync.js:  Handles piped in mouse drag events.
@@ -26,11 +28,6 @@ concept is the 'Sync' interface.
 ## Documentation
 
 - [Reference Docs][reference-documentation]
-
-
-## Maintainer
-
-- Mark Lu <mark@famo.us>
 
 
 ## License

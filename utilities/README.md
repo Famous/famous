@@ -15,11 +15,6 @@ Utilities hosts various helper classes and static methods
 - [Reference Docs][reference-documentation]
 
 
-# Maintainer
-
-- Mark Lu <mark@famo.us>
-
-
 ## License
 
 Copyright (c) 2014 Famous Industries, Inc.
