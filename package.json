@@ -22,7 +22,7 @@
   },
   "homepage": "https://famo.us",
   "devDependencies": {
-    "eslint": "^0.7.4",
+    "eslint": "^0.8.2",
     "jscs": "^1.5.9"
   },
   "dependencies": {
