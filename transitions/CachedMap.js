@@ -26,7 +26,7 @@ define(function(require, exports, module) {
      * @static
      * @method create
      * @param {function} mappingFunction mapping
-     * @return {function} memorized mapping function
+     * @return {function} memoized mapping function
      */
     CachedMap.create = function create(mappingFunction) {
         var instance = new CachedMap(mappingFunction);
