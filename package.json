@@ -11,8 +11,8 @@
   ],
   "scripts": {
     "test": "npm run lint -s",
-    "lint-eslint": "eslint core/ events/ inputs/ math/ modifiers/ physics/ surfaces/ transitions/ utilities/ views/ widgets/",
-    "lint-jscs": "jscs core/ events/ inputs/ math/ modifiers/ physics/ surfaces/ transitions/ utilities/ views/ widgets/",
+    "lint-eslint": "eslint src/",
+    "lint-jscs": "jscs src/",
     "lint": "npm run lint-eslint && npm run lint-jscs"
   },
   "author": "famous",
