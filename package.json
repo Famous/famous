@@ -26,9 +26,13 @@
     "jscs": "^1.5.9"
   },
   "dependencies": {
+    "cssify": "^0.6.0",
     "deamdify": "^0.1.1"
   },
   "browserify": {
-    "transform": "deamdify"
+    "transform": [
+      "cssify",
+      "deamdify"
+    ]
   }
 }
