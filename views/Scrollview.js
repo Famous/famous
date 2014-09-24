@@ -425,6 +425,11 @@ define(function(require, exports, module) {
     Scrollview.prototype.goToPreviousPage = function goToPreviousPage() {
         if (!this._node || this._onEdge === EdgeStates.TOP) return null;
 
+        if (this._cachedIndex !== this._node.index) {
+            this._cachedIndex = this._node.index;
+            this._eventOutput.emit('pageChange', {direction: -1, index: this._cachedIndex});
+        }
+
         // if moving back to the current node
         if (this.getPosition() > 1 && this._springState === SpringStates.NONE) {
             _setSpring.call(this, 0, SpringStates.PAGE);
@@ -458,6 +463,10 @@ define(function(require, exports, module) {
             this._node = nextNode;
             _shiftOrigin.call(this, -currentNodeSize);
             _setSpring.call(this, 0, SpringStates.PAGE);
+        }
+        if (this._cachedIndex !== this._node.index) {
+            this._cachedIndex = this._node.index;
+            this._eventOutput.emit('pageChange', {direction: 1, index: this._cachedIndex});
         }
         return nextNode;
     };
