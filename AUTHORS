@@ -8,22 +8,63 @@
 # The email address is not required for organizations.
 #
 # Please keep this list sorted alphabetically by first name.
+# This list can be generated using the git command:
+# git log --all --format='%aN <%aE>' | sort -u
 
-Adam Cmiel <adamcmiel@gmail.com>
-Andrew de Andrade <andrew@famo.us> <andrew@deandrade.com.br>
-Andrew Kerr <arkerr@gatech.edu>
-Benjamin Cronin <benjamin.cronin@gmail.com>
-Brian Maissy <brian.maissy@gmail.com>
-Dave Fetterman <fetterman@famo.us> <fettermania@gmail.com>
+Adam Cmiel <adam@famo.us>
+Adnan Wahab <mail@adnanwahab.com>
+Adrian Rossouw <adrian@daemon.co.za>
+Alexander Gugel <alexander.gugel@gmail.com>
+Andrew de Andrade <andrew@deandrade.com.br>
+Antmanler <antmanler@gmail.com>
+Arkady Pevzner <arkady.pevzner@gmail.com> <arkady@famo.us>
+Austen Talbot <austentalbot@gmail.com>
+Avi Haiat <thaiat@ipelia.com>
+Carl A. Fahlstrom <carl.fahlstrom@gmail.com>
+Cem Turan <cem2ran@gmail.com>
+Christopher Cook <christopher.cook@webprofusion.com>
+Cliff Crosland <cliffcrosland@gmail.com>
+Contra <contra@maricopa.edu>
+Corey Wilson <corey@ereatah.com>
+Daniel Lewis <Thecontrarian@users.noreply.github.com>
+Dave Fetterman <fettermania@gmail.com>
 David Valdman <david@famo.us> <dmvaldman@gmail.com>
-Eric Miller <eric@simpleascouldbe.com>
-Felix Tripier <felix@famo.us> <ftripier@gmail.com>
-George Bonner <georgebonnr@gmail.com>
-Hongxu Liu <shu@famo.us> <djshu.us@gmail.com>
+Denis Gorbachev <Denis.Gorbachev@faster-than-wind.ru>
+DnMllr <yajnavalkya@cox.net>
+Eric Schoffstall <contra@wearefractal.com>
+Felix Tripier <ftripier@gmail.com>
+gregorylull <gregorylull@gmail.com>
+Hongxu Liu <djshu.us@gmail.com>
+Imtiaz Majeed <imtiazmaj@gmail.com>
+J. Andrew Brassington <jabbrass@zoho.com>
+James Snowden <jamesvsnowden@me.com>
+Joe Johnston <joe@simple10.com>
+John Hurliman <jhurliman@jhurliman.org>
+Jonathan Reem <jonathan.reem@gmail.com>
+Joseph Orbegoso Pea <trusktr@gmail.com>
+Joseph Sample <joseph.michael.sample@gmail.com>
+Kyle Craft <craftjk@gmail.com>
+MajorBreakfast <mail@josefbrandl.de>
 Mark Lu <mark@famo.us> <marklu@marklu.net>
-Mike O'Brien <mike@famo.us> <michael.obrien.a@gmail.com>
-Rafael Cosman <rcosman@stanford.edu> <rafaelcosman@gmail.com>
-Reza Ali <reza@famo.us> <syed.reza.ali@gmail.com>
-Ryan Martin <ryan@famo.us> <ryan@ensomniac.com> <senoviaqaz@gmail.com>
-Tom Watson <tom@famo.us> <drclick@mac.com>
-Tim Chin <tim@famo.us> <timjchin@gmail.com>
+Mark Marijnissen <markmarijnissen@gmail.com>
+Max Xu <deepthought@gmail.com>
+Michael O'Brien <michael.obrien.a@gmail.com>
+Morten Henriksen <mh@gi2.dk>
+Murillo <mmbfreitas@hotmail.com>
+Myles Borins <myles.borins@gmail.com> <myles@famo.us>
+Nitin  Saroha <nitinsaroha6@hotmail.com>
+Oleg Slobodskoi <oleg008@gmail.com>
+Peter Finley <peter.finley@gmail.com>
+Peter Kiers <pkiers@MacBook-Pro-van-Peter.local>
+Pierre-Eric Marchandet <pemarchandet@gmail.com>
+Raphaël Benitte <benitteraphael@gmail.com>
+Sing Li <sli@makawave.com>
+skoczen <skoczen@gmail.com>
+Thomas L. <thomas.laurent.gm@gmail.com>
+Tim Chin <timjchin@gmail.com> <tim@famo.us>
+Tom Hornos <tom.hornos@gmail.com>
+Travis Cherry <travis_cherry@premierinc.com>
+Wayland Woodruff <waylandwoodruff@gmail.com>
+Will Gester <will@famo.us> <willgester@gmail.com>
+Zach Gardner <zgardner@keyholesoftware.com>
+Zack Brown <z@charybrown.com>
