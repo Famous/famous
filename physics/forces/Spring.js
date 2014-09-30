@@ -207,18 +207,25 @@ define(function(require, exports, module) {
         var anchor = options.anchor || source.position;
         var forceFunction = options.forceFunction;
 
-        for (var i = 0; i < targets.length; i++) {
-            var target = targets[i];
-            var p2 = target.position;
-            var v2 = target.velocity;
+        var i;
+        var target;
+        var p2;
+        var v2;
+        var dist;
+        var m;
+
+        for (i = 0; i < targets.length; i++) {
+            target = targets[i];
+            p2 = target.position;
+            v2 = target.velocity;
 
             anchor.sub(p2).put(disp);
-            var dist = disp.norm() - restLength;
+            dist = disp.norm() - restLength;
 
             if (dist === 0) return;
 
             //if dampingRatio specified, then override strength and damping
-            var m      = target.mass;
+            m      = target.mass;
             stiffness *= m;
             damping   *= m;
 

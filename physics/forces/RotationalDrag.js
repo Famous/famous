@@ -72,8 +72,12 @@ define(function(require, exports, module) {
         var force          = this.force;
 
         //TODO: rotational drag as function of inertia
-        for (var index = 0; index < targets.length; index++) {
-            var particle = targets[index];
+
+        var index;
+        var particle;
+
+        for (index = 0; index < targets.length; index++) {
+            particle = targets[index];
             forceFunction(particle.angularVelocity).mult(-100*strength).put(force);
             particle.applyTorque(force);
         }

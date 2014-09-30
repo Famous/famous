@@ -155,8 +155,11 @@ define(function(require, exports, module) {
         var strength = this.options.strength;
         var field = this.options.field;
 
-        for (var i = 0; i < targets.length; i++) {
-            var target = targets[i];
+        var i;
+        var target;
+
+        for (i = 0; i < targets.length; i++) {
+            target = targets[i];
             field.call(this, target.position, this.options);
             this.evaluation.mult(target.mass * strength).put(force);
             target.applyForce(force);
