@@ -222,6 +222,8 @@ define(function(require, exports, module) {
         this._finalRotate = this.rotate.get();
         this._finalSkew = this.skew.get();
         this._finalScale = this.scale.get();
+
+        return this;
     };
 
     module.exports = TransitionableTransform;
