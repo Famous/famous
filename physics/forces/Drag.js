@@ -95,8 +95,11 @@ define(function(require, exports, module) {
         var strength        = this.options.strength;
         var forceFunction   = this.options.forceFunction;
         var force           = this.force;
-        for (var index = 0; index < targets.length; index++) {
-            var particle = targets[index];
+        var index;
+        var particle;
+
+        for (index = 0; index < targets.length; index++) {
+            particle = targets[index];
             forceFunction(particle.velocity).mult(-strength).put(force);
             particle.applyForce(force);
         }

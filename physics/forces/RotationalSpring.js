@@ -92,16 +92,21 @@ define(function(require, exports, module) {
         var forceFunction = options.forceFunction;
         var maxLength = options.maxLength;
 
-        for (var i = 0; i < targets.length; i++) {
-            var target = targets[i];
+        var i;
+        var target;
+        var dist;
+        var m;
+
+        for (i = 0; i < targets.length; i++) {
+            target = targets[i];
 
             disp.set(anchor.sub(target.orientation));
-            var dist = disp.norm() - restLength;
+            dist = disp.norm() - restLength;
 
             if (dist === 0) return;
 
             //if dampingRatio specified, then override strength and damping
-            var m      = target.mass;
+            m      = target.mass;
             stiffness *= m;
             damping   *= m;
 

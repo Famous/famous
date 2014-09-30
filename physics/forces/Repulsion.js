@@ -166,7 +166,7 @@ define(function(require, exports, module) {
      * Adds a drag force to a physics body's force accumulator.
      *
      * @method applyForce
-     * @param targets {Array.Body}  Array of bodies to apply force to
+     * @param targets {Array.Body}  Array of bodies to apply force to.
      * @param source {Body}         The source of the force
      */
     Repulsion.prototype.applyForce = function applyForce(targets, source) {
@@ -184,16 +184,22 @@ define(function(require, exports, module) {
 
         if (strength === 0) return;
 
-        for (var index in targets) {
-            var particle = targets[index];
+        var length = targets.length;
+        var particle;
+        var m1;
+        var p1;
+        var r;
+
+        while (length--) {
+            particle = targets[length];
 
             if (particle === source) continue;
 
-            var m1 = particle.mass;
-            var p1 = particle.position;
+            m1 = particle.mass;
+            p1 = particle.position;
 
             disp.set(p1.sub(anchor));
-            var r = disp.norm();
+            r = disp.norm();
 
             if (r < rMax && r > rMin) {
                 force.set(disp.normalize(strength * m1 * decayFn(r, cutoff)).cap(cap));
