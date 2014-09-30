@@ -347,7 +347,7 @@ define(function(require, exports, module) {
             if (size[1] === undefined) size[1] = origSize[1];
             if (size[0] === true || size[1] === true) {
                 if (size[0] === true && (this._trueSizeCheck || this._size[0] === 0)) {
-                    var width = target.clientWidth;
+                    var width = target.offsetWidth;
                     if (this._size && this._size[0] !== width) {
                         this._size[0] = width;
                         this._sizeDirty = true;
@@ -357,7 +357,7 @@ define(function(require, exports, module) {
                     if (this._size) size[0] = this._size[0];
                 }
                 if (size[1] === true && (this._trueSizeCheck || this._size[1] === 0)) {
-                    var height = target.clientHeight;
+                    var height = target.offsetHeight;
                     if (this._size && this._size[1] !== height) {
                         this._size[1] = height;
                         this._sizeDirty = true;
