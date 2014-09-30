@@ -118,7 +118,7 @@ define(function(require, exports, module) {
         if (!len) {
             this._previousNode = null;
         }
-        else if (this.index === this._.firstIndex + len - 1) {
+        else if (this.index === this._.firstIndex) {
             if (this._.loop) {
                 this._previousNode = this._.lastNode || new (this.constructor)({_: this._, index: this._.firstIndex + len - 1});
                 this._previousNode._nextNode = this;
