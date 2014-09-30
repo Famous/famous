@@ -34,5 +34,6 @@
       "cssify",
       "deamdify"
     ]
-  }
+  },
+  "readme": "README.md"
 }
