@@ -77,20 +77,6 @@ npm test
 ```
 The created `node_modules` folder will be ignored in your push by our `.gitignore` file.
 
-
-### Branch grouping tokens
-
-All pull requests submitted to Famo.us should occur on a new branch. For these
-branches, we at famous use a short token indicating the nature of the branch in
-question followed by a solidus (`/`) and a kebab-cased string describing the
-branch. We are using the following tokens:
-
-    bug   // bug fixes
-    wip   // work in progress
-    feat  // feature
-
-Bug fixes follow a [slightly different format](#bug-fixes).
-
 ### Bug fixes
 
 If you'd like to contribute a fix for a bug you've encountered, first read up on
