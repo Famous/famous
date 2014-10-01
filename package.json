@@ -13,7 +13,14 @@
     "test": "npm run lint -s",
     "lint-eslint": "eslint src/",
     "lint-jscs": "jscs src/",
-    "lint": "npm run lint-eslint && npm run lint-jscs"
+    "lint": "npm run lint-eslint && npm run lint-jscs",
+    "build": "FAMOUS_REF=v0.3.0-alpha npm run build-all",
+    "build-all": "npm run build-requirejs && npm run build-requirejs-min && npm run build-global && npm run build-global-min && npm run build-css",
+    "build-requirejs": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --requirejs --ref $FAMOUS_REF --out dist/famous.js",
+    "build-requirejs-min": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --requirejs --ref $FAMOUS_REF --minify --out dist/famous.min.js",
+    "build-global": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --standalone --ref $FAMOUS_REF --out dist/famous-global.js",
+    "build-global-min": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --standalone --ref $FAMOUS_REF --out dist/famous-global.min.js",
+    "build-css": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --css --ref $FAMOUS_REF --out dist/famous.css",
   },
   "author": "famous",
   "license": "MPL v2.0",
@@ -23,6 +30,7 @@
   "homepage": "https://famo.us",
   "devDependencies": {
     "eslint": "^0.8.2",
+    "famous-dist-generator": "^0.1.2",
     "jscs": "^1.5.9"
   },
   "dependencies": {
