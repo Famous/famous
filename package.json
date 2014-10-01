@@ -1,6 +1,6 @@
 {
   "name": "famous",
-  "version": "0.2.2",
+  "version": "0.3.0-rc",
   "description": "Famo.us is a JavaScript framework for everyone who wants to build beautiful experiences on any device.",
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
     "lint-eslint": "eslint src/",
     "lint-jscs": "jscs src/",
     "lint": "npm run lint-eslint && npm run lint-jscs",
-    "build": "FAMOUS_REF=v0.3.0-alpha npm run build-all",
+    "build": "FAMOUS_REF=v0.3.0-rc npm run build-all",
     "build-all": "npm run build-requirejs && npm run build-requirejs-min && npm run build-global && npm run build-global-min && npm run build-css",
     "build-requirejs": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --requirejs --ref $FAMOUS_REF --out dist/famous.js",
     "build-requirejs-min": "FAMOUS_GITHUB_REPO_URL=${PWD} famous-dist-generator --requirejs --ref $FAMOUS_REF --minify --out dist/famous.min.js",
