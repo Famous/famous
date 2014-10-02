@@ -28,12 +28,12 @@ define(function(require, exports, module) {
      * @param {boolean} [options.autoplay] autoplay
      */
     function VideoSurface(options) {
+        Surface.apply(this, arguments);
         this._videoUrl = undefined;
         this.options = Object.create(VideoSurface.DEFAULT_OPTIONS);
         if (options) this.setOptions(options);
-
-        Surface.apply(this, arguments);
     }
+
     VideoSurface.prototype = Object.create(Surface.prototype);
     VideoSurface.prototype.constructor = VideoSurface;
 
