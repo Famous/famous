@@ -28,7 +28,7 @@ define(function(require, exports, module) {
         this._size = null;
         this._outputFunction = SequentialLayout.DEFAULT_OUTPUT_FUNCTION;
 
-        this.options = Object.create(this.constructor.DEFAULT_OPTIONS);
+        this.options = Utility.clone(this.constructor.DEFAULT_OPTIONS || SequentialLayout.DEFAULT_OPTIONS);
         this.optionsManager = new OptionsManager(this.options);
 
         if (options) this.setOptions(options);
