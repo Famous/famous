@@ -61,7 +61,12 @@ define(function(require, exports, module) {
         return toggle ? Transform.identity : quaternion.getTransform();
     });
 
-    mainContext.add(new Modifier({origin: [.5, .5]})).add(modifier).add(surface);
+    mainContext.add(
+      new Modifier({
+        origin: [.5, .5],
+        align: [.5, .5]
+      })
+    ).add(modifier).add(surface);
 
     var toggle = true;
     Engine.on('click', function() {
