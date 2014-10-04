@@ -49,7 +49,8 @@ define(function(require, exports, module) {
     var smallQuaternion = new Quaternion(185, 1, 1, 1);
 
     var rotationModifier = new Modifier({
-        origin: [0.5, 0.5]
+        origin: [.5, .5],
+        align: [.5, .5]
     });
 
     // Bind the box's rotation to the quaternion
