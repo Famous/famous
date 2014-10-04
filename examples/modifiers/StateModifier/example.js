@@ -45,7 +45,8 @@ define(function(require, exports, module) {
     });
 
     var myModifier = new StateModifier({
-        origin: [0.5, 0.5]
+        origin: [.5, .5],
+        align: [.5, .5]
     });
    
     mainContext.add(myModifier).add(mySurface);
