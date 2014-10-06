@@ -24,7 +24,7 @@ define(function(require, exports, module) {
      */
     function ToggleButton(options) {
         this.options = {
-            content: '',
+            content: ['', ''],
             offClasses: ['off'],
             onClasses: ['on'],
             size: undefined,
@@ -119,9 +119,11 @@ define(function(require, exports, module) {
      */
     ToggleButton.prototype.setOptions = function setOptions(options) {
         if (options.content !== undefined) {
+            if (!(options.content instanceof Array))
+                options.content = [options.content, options.content];
             this.options.content = options.content;
-            this.offSurface.setContent(this.options.content);
-            this.onSurface.setContent(this.options.content);
+            this.offSurface.setContent(this.options.content[0]);
+            this.onSurface.setContent(this.options.content[1]);
         }
         if (options.offClasses) {
             this.options.offClasses = options.offClasses;
