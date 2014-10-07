@@ -183,7 +183,7 @@ define(function(require, exports, module) {
             nextDelta = [scale * diffX, scale * diffY];
             nextVel = [
                 scale * (this._position[0] - this._positionHistory[0].position[0]) / diffTime,
-                scale * (this._position[0] - this._positionHistory[0].position[1]) / diffTime
+                scale * (this._position[1] - this._positionHistory[0].position[1]) / diffTime
             ];
             this._position[0] += nextDelta[0];
             this._position[1] += nextDelta[1];
