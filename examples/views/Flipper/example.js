@@ -2,12 +2,11 @@
  * Flipper
  * -------------
  *
- * GridLayout is a layout which divides a context into several evenly-sized grid cells.
- * If dimensions are provided, the grid is evenly subdivided with children
- * cells representing their own context, otherwise the cellSize property is used to compute
- * dimensions so that items of cellSize will fit.
+ * Flipper is a custom view with back and fromt faces.
+ * A renderable each can be set as front and back surface of the flipper.
+ * Use flipper.setAngle to later set the rotation of flipper to one face or somewhere inbetween
  *
- * In this example, we make a 4x2 grid with 8 surfaces with varying hues.
+ * In this example, we make a Flipper with red/blue surfaces and flips it on click.
  */
 define(function(require, exports, module) {
     var Engine     = require("famous/core/Engine");
