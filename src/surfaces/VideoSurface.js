@@ -38,7 +38,11 @@ define(function(require, exports, module) {
     VideoSurface.prototype.constructor = VideoSurface;
 
     VideoSurface.DEFAULT_OPTIONS = {
-        autoplay: false
+        autoplay: false,
+        controls: false,
+        loop: false,
+        muted: false,
+        poster: ''
     };
 
     VideoSurface.prototype.elementType = 'video';
@@ -57,6 +61,10 @@ define(function(require, exports, module) {
         if (options.classes) this.setClasses(options.classes);
         if (options.properties) this.setProperties(options.properties);
         if (options.autoplay) this.options.autoplay = options.autoplay;
+        if (options.controls) this.options.controls = options.controls;
+        if (options.loop) this.options.loop = options.loop;
+        if (options.muted) this.options.muted = options.muted;
+        if (options.poster) this.options.poster = options.poster;
         if (options.src) {
             this._videoUrl = options.src;
             this._contentDirty = true;
@@ -85,6 +93,10 @@ define(function(require, exports, module) {
     VideoSurface.prototype.deploy = function deploy(target) {
         target.src = this._videoUrl;
         target.autoplay = this.options.autoplay;
+        target.controls = this.options.controls;
+        target.loop = this.options.loop;
+        target.muted = this.options.muted;
+        target.poster = this.options.poster;
     };
 
     /**
