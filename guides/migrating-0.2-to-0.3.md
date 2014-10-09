@@ -15,9 +15,10 @@ If you started your project using the _Famo.us Starter Kit_ — this would have 
 
 ### Upgrading a _Grunt Toolbelt_ / Yeoman installation
 
-If you started your project with the advanced installation steps (i.e., via `$ yo famous`), change line 30 in your project's `bower.json` file to:
+If you started your project with the advanced installation steps (i.e., via `$ yo famous`), change lines 29 and 30 in your project's `bower.json` file to:
 
 ```
+"famous-polyfills": "~0.3.0",
 "famous": "~0.3.0"
 ```
 
