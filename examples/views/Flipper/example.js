@@ -2,9 +2,10 @@
  * Flipper
  * -------------
  *
- * Flipper is a custom view with back and fromt faces.
+ * Flipper is a custom view with back and front faces.
  * A renderable each can be set as front and back surface of the flipper.
- * Use flipper.setAngle to later set the rotation of flipper to one face or somewhere inbetween
+ * Use flipper.setAngle(theta, transition) to later set the rotation of flipper to one face or somewhere inbetween.
+ * Use flipper.flip() for the more generic case of flipping 180 degrees (It internally uses setAngle with a flag)
  *
  * In this example, we make a Flipper with red/blue surfaces and flips it on click.
  */
