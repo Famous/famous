@@ -18,14 +18,14 @@
     - Fixed opacity issues on setup and cleanup
     - Now resets origin on setup
     - Added guard for precommited size to allow Surface's getSize call to be non nullification
-    - Fixed issue taht when the size of a Surface changes, the transform matrix is recalculated to account for non [0, 0] origins
+    - Fixed issue that when the size of a Surface changes, the transform matrix is recalculated to account for non [0, 0] origins
     - "true" sized Surfaces now use the offsetWidth and offsetHeight property find their size in order to account for padding and border
     
 - Famous/inputs
     - Added guard to TouchTracker to avoid collisions with two finger sync    
     
 - Famous/physics
-    - PhysicsEngine detatchBody now works as intended
+    - PhysicsEngine removeBody now works as intended
     
 - Famous/surfaces
     - Fixed VideoSurface setOptions
