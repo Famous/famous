@@ -64,15 +64,18 @@ define(function(require, exports, module) {
                 {
                     transform: Transform.inFront,
                     origin: [0, 0.5],
+                    align: [0, 0.5],
                     target: this.back
                 },
                 {
                     origin: [0.5, 0.5],
+                    align: [0.5, 0.5],
                     target: this.title
                 },
                 {
                     transform: Transform.inFront,
                     origin: [1, 0.5],
+                    align: [1, 0.5],
                     target: this.more
                 }
             ]
