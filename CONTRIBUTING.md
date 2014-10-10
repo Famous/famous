@@ -1,8 +1,8 @@
 # Contributing to Famo.us
 
-Active involvement from the community is essential to help make famous the most
+Active involvement from the community is essential to help make Famo.us the most
 capable and performant front-end JavaScript framework out there. You can help by
-reporting bugs, fixing bugs, adding features, contributing new modules and by
+reporting bugs, fixing bugs, adding features, contributing new modules and
 providing feedback.
 
 
@@ -51,9 +51,9 @@ Driessen][git-branching-model]. Here's an overview:
 
 1. Make sure you have a [GitHub account](https://github.com/signup/free)
 2. [Fork famous][fork-famous]
-3. Keep your fork up to date. Famo.us is a fast moving project, and things are
+3. Keep your fork up to date. Famo.us is a fast-moving project, and things are
    changing all the time. It's important that any changes you make are based on
-   the most recent version of famous, since it's possible that something may
+   the most recent version of Famo.us, since it's possible that something may
    have changed that breaks your pull request or invalidates its need.
 4. Make sure you have a [Contributor License Agreement][cla] on file.
 5. Read on ...
