@@ -1,6 +1,6 @@
 # Migrating from Famo.us v0.2 to v0.3
 
-The [v0.3 release of Famo.us](https://github.com/Famous/famous/releases/tag/0.3.0) is packed with new features, bug fixes -- and a few breaking changes that you'll need to patch for when you upgrade. In this guide, we'll go over how to smoothly migrate your applications from Famo.us 0.2 to 0.3, and point to some cool new features while we're at it. As always, see the [changelog](https://github.com/Famous/famous/releases/tag/0.3.0) for a complete list of changes. We welcome [pull requests](https://github.com/Famous/famous/pulls) if you want to suggest additions to this guide.
+The [v0.3 release of Famo.us](https://github.com/Famous/famous/releases/tag/0.3.0) is packed with new features, bug fixes — and a few breaking changes that you'll need to patch for when you upgrade. In this guide, we'll go over how to smoothly migrate your applications from Famo.us 0.2 to 0.3, and point to some cool new features while we're at it. As always, see the [changelog](https://github.com/Famous/famous/releases/tag/0.3.0) for a complete list of changes. We welcome [pull requests](https://github.com/Famous/famous/pulls) if you want to suggest additions to this guide.
 
 ## Upgrading
 
