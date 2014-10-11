@@ -47,7 +47,7 @@ Then run:
 npm install
 ```
 
-You will also need to include the [famousify](http://github.com/FamousTools/famousify) transform to allow you to continue requiring famous with referencing the src folder
+You will also need to include the [famousify](http://github.com/FamousTools/famousify) transform to allow you to continue requiring famous with referencing the src/ folder
 
 ```
 npm install --save famousify
