@@ -327,35 +327,35 @@ define(function(require, exports, module) {
      *
      * @method skew
      * @static
-     * @param {Number} xz skew happens along x, the value is the negative angle about z
+     * @param {Number} xz skew happens along x, the value is the positive angle about z
      * @param {Number} yz skew happens along y, the value is the positive angle about z
      * @param {Number} xy skew happens along x, the value is the positive angle about y
-     * @param {Number} zy skew happens along z, the value is the negative angle about y
+     * @param {Number} zy skew happens along z, the value is the positive angle about y
      * @param {Number} zx skew happens along z, the value is the positive angle about x
-     * @param {Number} yx skew happens along y, the value is the negative angle about x
+     * @param {Number} yx skew happens along y, the value is the positive angle about x
      * @return {Transform}
      */
     Transform.skew = function skew(xz, yz, xy, zy, zx, yx) {
-        return [1, Math.tan(yz), Math.tan(zy), 0, Math.tan(xz), 1, Math.tan(zx), 0, Math.tan(xy), Math.tan(yx), 1, 0, 0, 0, 0, 1];
+        return [1, Math.tan(yz), -Math.tan(zy), 0, -Math.tan(xz), 1, Math.tan(zx), 0, Math.tan(xy), -Math.tan(yx), 1, 0, 0, 0, 0, 1];
     };
 
     /**
      * Return a Transform representation of a skew in the x-direction
-     * behaves like CSS skewX
+     * behaves similar to CSS skewX
      * equivalent to Transform.skewXZ
      *
      * @method skewX
      * @static
-     * @param {Number} angle skew happens along x, the value is the negative angle about z
+     * @param {Number} angle skew happens along x, the value is the positive angle about z
      * @return {Transform}
      */
     Transform.skewX = function skewX(angle) {
-        return [1, 0, 0, 0, Math.tan(angle), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        return [1, 0, 0, 0, -Math.tan(angle), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
     /**
      * Return a Transform representation of a skew in the y-direction
-     * behaves like CSS skewY
+     * behaves similar to CSS skewY
      * equivalent to Transform.skewYZ
      *
      * @method skewY
@@ -372,11 +372,11 @@ define(function(require, exports, module) {
      *
      * @method skewXZ
      * @static
-     * @param {Number} xz skew happens along x, the value is the negative angle about z
+     * @param {Number} xz skew happens along x, the value is the positive angle about z
      * @return {Transform}
      */
     Transform.skewXZ = function skewXZ(xz) {
-        return [1, 0, 0, 0, Math.tan(xz), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        return [1, 0, 0, 0, -Math.tan(xz), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
     /**
@@ -408,11 +408,11 @@ define(function(require, exports, module) {
      *
      * @method skewZY
      * @static
-     * @param {Number} zy skew happens along z, the value is the negative angle about y
+     * @param {Number} zy skew happens along z, the value is the positive angle about y
      * @return {Transform}
      */
     Transform.skewZY = function skewZY(zy) {
-        return [1, 0, Math.tan(zy), 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        return [1, 0, -Math.tan(zy), 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
     /**
@@ -432,11 +432,11 @@ define(function(require, exports, module) {
      *
      * @method skewYX
      * @static
-     * @param {Number} yx skew happens along y, the value is the negative angle about x
+     * @param {Number} yx skew happens along y, the value is the positive angle about x
      * @return {Transform}
      */
     Transform.skewYX = function skewYX(yx) {
-        return [1, 0, 0, 0, 0, 1, 0, 0, 0, Math.tan(yx), 1, 0, 0, 0, 0, 1];
+        return [1, 0, 0, 0, 0, 1, 0, 0, 0, -Math.tan(yx), 1, 0, 0, 0, 0, 1];
     };
 
     /**
