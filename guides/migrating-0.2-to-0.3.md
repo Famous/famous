@@ -6,7 +6,7 @@ The [v0.3 release of Famo.us](https://github.com/Famous/famous/releases/tag/0.3.
 
 ### Upgrading a _Starter Kit_ installation
 
-If you started your project using the _Famo.us Starter Kit_ -- this would have been a .ZIP file download -- the easiest way to upgrade is to change the reference to the Famo.us CDN in your project's `index.html`. In the starter-kit, this file is located at `boilerplate/index.html`. You'll want to change line 19 and 20 to:
+If you started your project using the _Famo.us Starter Kit_ — this would have been a .ZIP file download — the easiest way to upgrade is to change the reference to the Famo.us CDN in your project's `index.html`. In the starter-kit, this file is located at `boilerplate/index.html`. You'll want to change line 19 and 20 to:
 
 ````
 <link rel="stylesheet" type="text/css" href="http://code.famo.us/famous/0.3/famous.css" />
@@ -83,7 +83,7 @@ The `initial-scale=1` setting will ensure that the content is displayed correctl
 First, let's look at the breaking changes in the v0.3 release of Famo.us:
 
 ###src folder
-All src code is now found in a src/ folder.  This will cause issues with any pathing you are are currently relying on.  Please see the above sections that describe how to properly update your tooling stack accordingly.
+All src code is now found in a src/ folder.  This will cause issues with any pathing you are currently relying on.  Please see the above sections that describe how to properly update your tooling stack accordingly.
 
 ### Align & origin
 
