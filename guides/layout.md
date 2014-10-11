@@ -2,12 +2,11 @@ Layout
 ================================================================================
 
 Layout in Famo.us is managed by `Transforms` and `Modifiers`. `Transforms`
-encapsulate the [CSS3 transform specification](https://developer.mozilla.org/en-US/docs/Web/CSS/transform)
-which define the position, orientation and distortion of a node. While a
+encapsulate the [CSS3 transform specification](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) which define the position, orientation and distortion of a node. While a
 `Transform` is a static object, representing a snapshot in time, a `Modifier`
 encapsulates varying `Transforms` over time. `Modifiers` also bundle layout
 properties like `size`, `origin` and `align` that allow for alignment and justification. 
-`Modifiers` can be directly added to the Famo.us Scene Graph, acting on the nodes beneath them.
+`Modifiers` are directly added to the Famo.us Scene Graph, acting on the nodes beneath them.
 
 Overview
 ================================================================================
@@ -26,8 +25,7 @@ Overview
 <a name="transforms">Transforms</a>
 --------------------------------------------------------------------------------
 
-`Transforms` correspond directly to a [CSS3 transformation matrix](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
-A `Transform` combines `translation`, `rotation`, `scale` and `skew` components
+`Transforms` correspond directly to a [CSS3 transformation matrix](https://developer.mozilla.org/en-US/docs/Web/CSS/transform). A `Transform` combines `translation`, `rotation`, `scale` and `skew` components
 into a 16-element array.
 
 |Component|Description|Default Value|
@@ -66,7 +64,7 @@ Complex `Transforms` can be built up from the above primitives in two ways
 - Nesting `Modifiers` with `Transforms` in the Scene Graph
 - Composing `Transforms`
 
-For this guide, we will focus on the latter. See the Scene Graph guide for the former.
+For this guide, we will focus on the latter. (See the Scene Graph guide for the former.)
 `Transform` composition is done through the `.multiply` method. Though `.multiply` 
 is useful for composing arbitrary transforms, it is heavyweight for simple compositions, 
 such as composing a translation on a rotation. Famo.us provides optimized methods for these 
@@ -84,7 +82,7 @@ use cases.
 <a name="breakdown">Breaking Down Transforms</a>
 --------------------------------------------------------------------------------
 
-Complex `Transforms` can be broken up into their individual components via the methods
+Complex `Transforms` can be broken up into their individual components via the following methods
 
 | Method | Description |
 |--------|-------------|
@@ -97,8 +95,8 @@ Complex `Transforms` can be broken up into their individual components via the m
 `Transforms` by themselves can't be added to the Scene Graph. In order to apply
 a `Transform` to a renderable, a `Modifier` is necessary. A `Modifier` is a node,
 and can be directly added to the Scene Graph. A `Modifier` is best thought of as
-a shell that accepts primitives, like `Transforms` that can modify the nodes (which
-can be other `Modifiers`) below them either by applying a `Transform`, `opacity`
+a shell that accepts primitives, like `Transforms`, that modify nodes (which
+can be other `Modifiers`) below them by applying either a `Transform`, `opacity`
 or alignment.
 
 Below we demonstrate applying a translational `Transform` to a `Surface` 100px
@@ -125,19 +123,19 @@ and `align`.
 <a name="alignment">Alignment & Sizing</a>
 --------------------------------------------------------------------------------
 In addition to positioning, `Modifiers` can also align renderables relative to a
-size context. This allows users to "center" objects, or "left-justify" them, etc.
+size context. This allows users to "center" objects, "left-justify" them, and so on.
 To understand how this is accomplished in Famo.us, we introduce the concepts of 
 `size`, `align` and `origin` in `Modifier`.
 
 <a name="size">Size</a>
 --------------------------------------------------------------------------------
-`Size` defines a bounding-box for content. Nodes in the Scene Graph below sized
+`Size` defines a bounding-box for content. Nodes that occur below sized
 `Modifiers` can use this bounding size to define their container's size. The
 simplest example being a `Surface` with `size = [undefined, undefined]` that
-takes the size of a parenting `Modifier`.
+takes the size of a parent `Modifier`.
 
 In the following example, the created surface will have a `size` of `[200, 100]`,
-even though its width was original set to `undefined`.
+even though its width was originally set to `undefined`.
 
 ```js
   var sizeModifier = new Modifier({size: [200, 200]});
@@ -152,15 +150,15 @@ even though its width was original set to `undefined`.
 
 This concept extends beyond `Surfaces` to any Famo.us renderable, such as a `View`.
 It is especially important in `Views` that handle layout, such as `GridLayout` or
-`SequentialLayout`. These layouts have no intrinsic notion of a boundind-box, and
-need to have their `size` defined for them in a parenting `Modifier`.
+`SequentialLayout`. These layouts have no intrinsic notion of a bounding-box, and, as such,
+must inherit their `size` from a parent `Modifier`.
 
 <a name="align">Align</a>
 --------------------------------------------------------------------------------
-Layout is often easily described in terms of "top left", "bottom right", etc.
-`Align` is a way of defining an alignment relative to a bounding-box given by a
-`size`. `Align` is given by an array `[x, y]` of proportions between 0 and 1. 
-The default value for the `align` is top left, or `[0, 0]`. The following table 
+Layout is commonly described in terms of "top left", "bottom right", etc.
+`Align` defines a starting position relative to a bounding-box given by a
+`size`. `Align` is specified by an array `[x, y]` of proportions, with each value being between 0 and 1. 
+The default value for `align` is top left, or `[0, 0]`. The following table 
 summarizes common alignment values.
 
 |Align Values| Meaning |
@@ -173,8 +171,8 @@ summarizes common alignment values.
 |`[0.5, 1]`  | Bottom Center |
 |`[1, 1]`    | Bottom Right |
 
-For example, below is a way of aligning a `Surface's` top/left corner to the
-left center of within a bounding-box of size `[100, 100]`.
+In the example below, align is used to set `Surface's` top/left corner to a point
+at left/center within a bounding-box of size `[100, 100]`.
 
 ```js
     ////////////////////////////////////
@@ -211,7 +209,7 @@ left center of within a bounding-box of size `[100, 100]`.
 --------------------------------------------------------------------------------
 
 In the above example, we aligned the `top left` corner of the Surface. What if
-we want to align a different location of the Surface, such as its center? This
+we want to align a different facet of the Surface, such as its center? This
 is done by setting the `origin` property of a `Modifier`.
 
 While alignment is relative to parenting size, origin is relative to the renderable.
