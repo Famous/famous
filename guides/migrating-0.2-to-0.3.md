@@ -33,6 +33,12 @@ You will also notice that the source code inside of the bower installed version 
 famous: ‘../lib/famous/src’
 ```
 
+Update the stylesheet reference in the generated app/index.html to read
+
+```
+<link rel="stylesheet" type="text/css" href="lib/famous/src/core/famous.css" />
+```
+
 ### Upgrading an installation via npm
 
 If you installed Famo.us via npm, change the `"famous"` package reference in your `package.json` file to:
