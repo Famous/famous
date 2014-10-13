@@ -1,7 +1,7 @@
 Famo.us
 =======
 
-[![Build Status](https://travis-ci.org/Famous/famous.svg?branch=master)](https://travis-ci.org/Famous/famous) [![devDependency Status](https://david-dm.org/Famous/famous/dev-status.svg)](https://david-dm.org/Famous/famous#info=devDependencies)
+[![Build Status](https://travis-ci.org/Famous/famous.svg?branch=master)](https://travis-ci.org/Famous/famous) [![Dependency Status](https://david-dm.org/Famous/famous.svg)](https://david-dm.org/Famous/famous) [![devDependency Status](https://david-dm.org/Famous/famous/dev-status.svg)](https://david-dm.org/Famous/famous#info=devDependencies)
 
 Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us, we are now in open beta.
 
