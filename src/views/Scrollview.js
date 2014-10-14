@@ -470,16 +470,16 @@ define(function(require, exports, module) {
      * @method goToPage
      */
     Scrollview.prototype.goToPage = function goToPage(index) {
-        var currentIndex = this.getCurrentIndex();
+        var currentPageIndex = this.getCurrentIndex() + 1;
         var i;
 
-        if (currentIndex > index) {
-            for (i = 0; i < currentIndex - index; i++)
+        if (currentPageIndex > index) {
+            for (i = 0; i < currentPageIndex - index; i++)
                 this.goToPreviousPage();
         }
 
-        if (currentIndex < index) {
-            for (i = 0; i < index - currentIndex; i++)
+        if (currentPageIndex < index) {
+            for (i = 0; i < index - currentPageIndex; i++)
                 this.goToNextPage();
         }
     };
