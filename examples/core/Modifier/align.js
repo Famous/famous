@@ -24,23 +24,28 @@
 
 
 /**
- * Modifier with origin
+ * Modifier with align
  * --------------------
- *
- * Modifiers have an origin property which affects the positioning
- * of children in the render tree.  By default, modifiers have an
- * origin of [0, 0], which means child nodes are positioned at the top left of
- * the last defined size (defaulting to the window's size). By modifying origin,
- * child nodes can be layed out relative to a different origin (such as the center)
- * of their parent's size context. This is similar in spirit to how the CSS float
- * property behaves.
- *
- * Famo.us will internally ensure consistency of size and origin even when
- * the window is resized, or a mobile device changes its orientation.
- *
- * In the example below, nine surfaces are placed inside of a Famo.us context,
- * sized of the entire window (by default).  By modifying origins, these surfaces
- * can be layed out at key positions of their sizing context.
+ * Modifiers have an `align` property. This property controls the
+ * position of the modifier's children in the render tree. Its
+ * default value, `[0, 0]`, places the modifier's render node at
+ * the top left of its parent.
+ * 
+ * Size and alignment work together to determine the position of
+ * render nodes. Consider a render node with an alignment of `[1, 1]`
+ * (bottom right). As its parent node's size changes, its position
+ * on the screen will change. This diagram explains the effect:
+ * 
+ *     +--+    +----+
+ *     |  | => |    |
+ *     | *|    |    |
+ *     +--+    |   *|
+ *             +----+
+ * 
+ * In the example below, nine surfaces are placed inside of a Famo.us
+ * context. By changing their alignment, we can lay them out at key
+ * positions within their sizing context. (Note that by default, the
+ * context's size is the size of the window.)
  * 
  */
 define(function(require, exports, module) {
