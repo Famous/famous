@@ -20,7 +20,7 @@
     "build-global": "famous-dist-generator --standalone --local --out dist/famous-global.js",
     "build-global-min": "famous-dist-generator --standalone --local --out dist/famous-global.min.js",
     "build-css": "famous-dist-generator --css --local --out dist/famous.css",
-    "build-docs": "famous-doc-generator --base src/ --out docs/ --pathPrefix ../",
+    "build-docs": "famous-doc-generator --base src/ --out docs/",
     "build-examples": "famous-examples-generator -i ./examples"
   },
   "authors": [
@@ -91,7 +91,7 @@
   "devDependencies": {
     "eslint": "^0.8.2",
     "famous-dist-generator": "^0.1.8",
-    "famous-doc-generator": "^0.3.5",
+    "famous-doc-generator": "^0.4.0",
     "famous-examples-generator": "^0.2.1",
     "jscs": "^1.5.9"
   },
