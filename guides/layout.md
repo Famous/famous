@@ -65,7 +65,8 @@ Complex `Transforms` can be built up from the above primitives in two ways
 - Nesting `Modifiers` with `Transforms` in the Scene Graph
 - Composing `Transforms`
 
-For this guide, we will focus on the latter. (See the Scene Graph guide for the former.)
+For this guide, we will focus on the latter. (See the guide named The Famo.us Render Tree for information about the former.)
+
 `Transform` composition is done through the `.multiply` method. Though `.multiply` 
 is useful for composing arbitrary transforms, it is heavyweight for simple compositions, 
 such as composing a translation on a rotation. Famo.us provides optimized methods for these 
