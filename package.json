@@ -18,7 +18,7 @@
     "build-requirejs": "famous-dist-generator --requirejs --local --out dist/famous.js",
     "build-requirejs-min": "famous-dist-generator --requirejs --local --minify --out dist/famous.min.js",
     "build-global": "famous-dist-generator --standalone --local --out dist/famous-global.js",
-    "build-global-min": "famous-dist-generator --standalone --local --out dist/famous-global.min.js",
+    "build-global-min": "famous-dist-generator --standalone --local --minify --out dist/famous-global.min.js",
     "build-css": "famous-dist-generator --css --local --out dist/famous.css",
     "build-docs": "famous-doc-generator --base src/ --out docs/",
     "build-examples": "famous-examples-generator -i ./examples"
@@ -90,7 +90,7 @@
   "homepage": "https://famo.us",
   "devDependencies": {
     "eslint": "^0.8.2",
-    "famous-dist-generator": "^0.1.8",
+    "famous-dist-generator": "^0.2.0",
     "famous-doc-generator": "^0.4.0",
     "famous-examples-generator": "^0.2.1",
     "jscs": "^1.5.9"
