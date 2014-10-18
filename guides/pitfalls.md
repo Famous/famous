@@ -56,7 +56,7 @@ CSS is from the age of web pages, not web applications.  As a result, the long p
 
 - Combining `border-radius` and `box-shadow` is notoriously slow for browsers to render.  Try to avoid this technique as it will lead to performance problems especially during animations.  See the [CSS Paint Times and Page Render Weight](http://www.html5rocks.com/en/tutorials/speed/css-paint-times/) by Colt McAnlis for a great explanation.
 
-- Breaking the bounding box will lead to performance issues.  It is common for a DOM element to be absolutley positioned `left: -5px`.  While this is very commonplace on the web, it actually becomes harder for the browsers to paint the element performantly.
+- Breaking the bounding box will lead to performance issues.  It is common for a DOM element to be absolutely positioned `left: -5px`.  While this is very commonplace on the web, it actually becomes harder for the browsers to paint the element performantly.
 
 - Transitioning color values causes large amounts of repainting and is very non-performant.  To achieve a similar effect, try stacking a handful of canvas elements or divs of different colors and then opacitate them in/out accordingly.  Be careful not to add too many layers as there is also a performance hit when too many surfaces exist on the screen.
 

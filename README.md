@@ -27,19 +27,19 @@ Famo.us is a free and open source JavaScript platform for building mobile apps a
 
 ### Seed Projects
 
-There are a number of seed projects to get you started with the various way of consuming Famo.us
+There are a number of seed projects to get you started with the various ways of consuming Famo.us.
 
 **[Global Seed][global-seed]**
 
-This project shows the easiest way to get started with Famo.us using a version that loads on the global object.  This project requires zero tooling, and is ready to work out of the box.  For speed and simplicity this seed project points at a version of Famo.us that lives on our cdn (content delivery network).  This project doesn't even require a git clone, you can get started right now simply by [downloading the zip][global-seed-download].
+This project is the easiest way to get started with Famo.us. Because in this project Famo.us loads on the global (window) object, the project requires zero tooling and is ready to work out of the box.  For speed and simplicity Famo.us is fetched from our CDN (content delivery network).  You don't even have to do a git clone, you can get started right away simply by [downloading the zip][global-seed-download].
 
 **[Requirejs Seed][requirejs-seed]**
 
-This project can be used to get you started using Famo.us with the AMD module loading pattern via [requirejs][requirejs].  This project is created using the latest version of our Yeoman Generator (see below), and includes an entire tooling stack neccessary to bring your product to development.
+Use this project to experience Famo.us with the AMD module loading pattern via [RequireJS][requirejs].  This project is created using the latest version of our Yeoman Generator (see below), and includes an entire tooling stack neccessary to bring your product to development.
 
 **[Browserify Seed][browserify-seed]**
 
-This project can be used to get you started using Famo.us with the CommonJS module loading pattern with [browserify][browserify] and [npm][npm].  This seed project should be treated as experimental, it is for those who want to try and develop client side code using npm.
+Use this project to experience Famo.us with the CommonJS module loading pattern via [Browserify][browserify] and [npm][npm].  This seed project is experimental and should be treated as such; it is primarily for those who want to try and develop client side code using npm.
 
 ### Yeoman Generator (*Grunt Toolbelt*)
 
@@ -59,7 +59,7 @@ Preparing your project for distribution is then as simple as:
 
 Cloning this repository directly is primarily for those wishing to contribute to our codebase. Check out our [contributing instructions][contributing] to get involved. 
     
-Note: cloning only provides the Famo.us folder with all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the `famous.css` file that is included in `famous/core`. Require.js is currently a hard dependency to work off of the Famo.us head.
+Note: cloning only provides the Famo.us folder with all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html, and include the `famous.css` file that is included in `famous/core`. RequireJS is currently a hard dependency to work off of the Famo.us HEAD.
   
 ## Documentation
 
