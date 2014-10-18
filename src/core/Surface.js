@@ -148,20 +148,14 @@ define(function(require, exports, module) {
      *   corresponding rendered <div>.
      *
      * @method toggleClass
-     * @chainable
      * @param {string} className name of class to toggle
-     * @param {boolean} condition condition for forcibly adding/removing class
      */
-    Surface.prototype.toggleClass = function toggleClass(className, condition) {
+    Surface.prototype.toggleClass = function toggleClass(className) {
         var i = this.classList.indexOf(className);
-        var localCondition = i < 0;
-        if (condition !== undefined) {
-            localCondition = condition;
-        }
-        if (localCondition) {
-            this.addClass(className);
-        } else {
+        if (i >= 0) {
             this.removeClass(className);
+        } else {
+            this.addClass(className);
         }
         return this;
     };
