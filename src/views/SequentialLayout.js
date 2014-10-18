@@ -128,6 +128,7 @@ define(function(require, exports, module) {
             if (itemSize) {
                 if (itemSize[this.options.direction]) length += itemSize[this.options.direction];
                 if (itemSize[secondaryDirection] > this._size[secondaryDirection]) this._size[secondaryDirection] = itemSize[secondaryDirection];
+                if (itemSize[secondaryDirection] === 0) this._size[secondaryDirection] = undefined;
             }
 
             currentNode = currentNode.getNext();
@@ -137,7 +138,10 @@ define(function(require, exports, module) {
 
         this._size[this.options.direction] = length;
 
-        return result;
+        return {
+            size: this.getSize(),
+            target: result
+        };
     };
 
     module.exports = SequentialLayout;
