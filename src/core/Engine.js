@@ -31,7 +31,11 @@ define(function(require, exports, module) {
     var Engine = {};
 
     var contexts = [];
+
     var nextTickQueue = [];
+    var currentFrame = 0;
+    var nextTickFrame = 0;
+
     var deferQueue = [];
 
     var lastTime = Date.now();
@@ -66,6 +70,9 @@ define(function(require, exports, module) {
      * @method step
      */
     Engine.step = function step() {
+        currentFrame++;
+        nextTickFrame = currentFrame;
+
         var currentTime = Date.now();
 
         // skip frame if we're over our framerate cap
@@ -79,8 +86,10 @@ define(function(require, exports, module) {
         eventHandler.emit('prerender');
 
         // empty the queue
-        for (i = 0; i < nextTickQueue.length; i++) nextTickQueue[i].call(this);
-        nextTickQueue.splice(0);
+        if (nextTickQueue.length) {
+            for (i = 0; i < nextTickQueue[0].length; i++) nextTickQueue[0][i].call(this, currentFrame);
+            nextTickQueue.splice(0, 1);
+        }
 
         // limit total execution time for deferrable functions
         while (deferQueue.length && (Date.now() - currentTime) < MAX_DEFER_FRAME_TIME) {
@@ -349,7 +358,17 @@ define(function(require, exports, module) {
      * @param {function(Object)} fn function accepting window object
      */
     Engine.nextTick = function nextTick(fn) {
-        nextTickQueue.push(fn);
+        var frameIndex = nextTickFrame - currentFrame;
+        if (!nextTickQueue[frameIndex]) nextTickQueue[frameIndex] = [];
+
+        function frameChecker(frame) {
+            var nextFrame = frame + 1;
+            if (nextTickFrame !== nextFrame) nextTickFrame = nextFrame;
+            fn();
+        }
+
+        nextTickQueue[frameIndex].push(frameChecker);
+
     };
 
     /**
