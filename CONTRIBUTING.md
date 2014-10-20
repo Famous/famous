@@ -1,8 +1,8 @@
 # Contributing to Famo.us
 
-Active involvement from the community is essential to help make famous the most
+Active involvement from the community is essential to help make Famo.us the most
 capable and performant front-end JavaScript framework out there. You can help by
-reporting bugs, fixing bugs, adding features, contributing new modules and by
+reporting bugs, fixing bugs, adding features, contributing new modules and
 providing feedback.
 
 
@@ -12,7 +12,7 @@ Famo.us is a framework that is always testing the limits of where browsers can g
 
 If you think you've encountered a bug, do the following:
 
-1. Make sure you are working with the latest version of the Famo.us `master` branch.
+1. Make sure you are working with the latest version of the Famo.us `develop` branch.
 2. Browse through the [issues](#issues) to check if
    anyone else has already reported. If someone has, feel free to add more
    information to that issue to help us solve it.
@@ -39,10 +39,10 @@ Our development process is very similar to the approach
 described in the well-known article [A Successful Git Branching Model by Vincent
 Driessen][git-branching-model]. Here's an overview:
 
-* Our `master` branch is the branch upon which 
-  Famo.us developers should be basing their work on. The `master` branch is not guaranteed to be stable.
-* All commits intended for `master` should take place on your own personal
-  fork, and be submitted via pull request when ready.
+* Our `develop` branch is the branch upon which
+  Famo.us developers should be basing their work on. The `develop` branch is not guaranteed to be stable.
+* All commits intended for `develop` should take place on your own personal
+  fork, and be submitted via pull request when ready to the `develop` branch.
 * Only maintainers can accept pull requests from forks into the core Famo.us
   repository.
 * Please squash your commits into a single commit before making a pull request.
@@ -51,9 +51,9 @@ Driessen][git-branching-model]. Here's an overview:
 
 1. Make sure you have a [GitHub account](https://github.com/signup/free)
 2. [Fork famous][fork-famous]
-3. Keep your fork up to date. Famo.us is a fast moving project, and things are
+3. Keep your fork up to date. Famo.us is a fast-moving project, and things are
    changing all the time. It's important that any changes you make are based on
-   the most recent version of famous, since it's possible that something may
+   the most recent version of Famo.us, since it's possible that something may
    have changed that breaks your pull request or invalidates its need.
 4. Make sure you have a [Contributor License Agreement][cla] on file.
 5. Read on ...
