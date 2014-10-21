@@ -17,8 +17,10 @@ define(function(require, exports, module) {
     (function() {
       if (!window.CustomEvent) return;
       var clickThreshold = 300;
+	  var movementThreshold = 20;
       var clickWindow = 500;
       var potentialClicks = {};
+	  var potentiallyMoves = {};
       var recentlyDispatched = {};
       var _now = Date.now;
 
@@ -27,13 +29,7 @@ define(function(require, exports, module) {
           for (var i = 0; i < event.changedTouches.length; i++) {
               var touch = event.changedTouches[i];
               potentialClicks[touch.identifier] = timestamp;
-          }
-      });
-
-      window.addEventListener('touchmove', function(event) {
-          for (var i = 0; i < event.changedTouches.length; i++) {
-              var touch = event.changedTouches[i];
-              delete potentialClicks[touch.identifier];
+			  potentiallyMoves[touch.identifier] = { x: touch.screenX, y: touch.screenY };
           }
       });
 
@@ -42,6 +38,16 @@ define(function(require, exports, module) {
           for (var i = 0; i < event.changedTouches.length; i++) {
               var touch = event.changedTouches[i];
               var startTime = potentialClicks[touch.identifier];
+			  var startPosition = potentiallyMoves[touch.identifier];
+
+			  if (startPosition) {
+			  	var movementX = Math.abs(startPosition.x - touch.screenX);
+			  	var movementY = Math.abs(startPosition.y - touch.screenY);
+				if (movementX > movementThreshold || movementY > movementThreshold) {
+				  delete potentialClicks[touch.identifier];
+				  return;
+				}
+			  }
               if (startTime && currTime - startTime < clickThreshold) {
                   var clickEvt = new window.CustomEvent('click', {
                       'bubbles': true,
