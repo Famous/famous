@@ -64,9 +64,13 @@ define(function(require, exports, module) {
 
     /**
      * Transition towards the 'on' state and dispatch an event to
-     *  listeners to announce it was selected
+     *  listeners to announce it was selected. Accepts an optional
+     *  argument, `suppressEvent`, which, if truthy, prevents the
+     *  event from being dispatched.
      *
      * @method select
+     * @param [suppressEvent] {Boolean} When truthy, prevents the
+     *   widget from emitting the 'select' event.
      */
     ToggleButton.prototype.select = function select(suppressEvent) {
         this.selected = true;
@@ -79,9 +83,13 @@ define(function(require, exports, module) {
 
     /**
      * Transition towards the 'off' state and dispatch an event to
-     *  listeners to announce it was deselected
+     *  listeners to announce it was deselected. Accepts an optional
+     *  argument, `suppressEvent`, which, if truthy, prevents the
+     *  event from being dispatched.
      *
      * @method deselect
+     * @param [suppressEvent] {Boolean} When truthy, prevents the
+     *   widget from emitting the 'deselect' event.
      */
     ToggleButton.prototype.deselect = function deselect(suppressEvent) {
         this.selected = false;
