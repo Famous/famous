@@ -115,7 +115,7 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Return a Transform atrix which represents the result of a transform matrix
+     * Return a Transform matrix which represents the result of a transform matrix
      *    applied after a move. This is faster than the equivalent multiply.
      *    This is equivalent to the result of:
      *
