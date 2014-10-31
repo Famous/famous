@@ -15,7 +15,7 @@ define(function(require, exports, module) {
     var View = require('../core/View');
 
     /**
-     * A dynamic view that can show or hide different renerables with transitions.
+     * A dynamic view that can show or hide different renderables with transitions.
      * @class RenderController
      * @constructor
      * @param {Options} [options] An object of configurable options.
