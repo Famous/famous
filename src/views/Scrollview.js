@@ -511,7 +511,11 @@ define(function(require, exports, module) {
      * in pixels translated.
      */
     Scrollview.prototype.getAbsolutePosition = function getAbsolutePosition() {
-        return this._scroller.getCumulativeSize(this.getCurrentIndex())[this.options.direction] + this.getPosition();
+        if (this._scroller.getCumulativeSize(this.getCurrentIndex())) {
+            this._lastCummulativeSize = this._scroller.getCumulativeSize(this.getCurrentIndex())[this.options.direction];
+        }
+
+        return this._lastCummulativeSize + this.getPosition();
     };
 
     /**
