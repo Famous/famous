@@ -235,5 +235,16 @@ define(function(require, exports, module) {
         });
     };
 
+    /**
+     * Resets the walls to their starting oritentation
+     */
+    Walls.prototype.reset = function reset() {
+        var sides = this.options.sides;
+        for (var i in sides) {
+            var component = this.components[i];
+            component.options.normal = _SIDE_NORMALS[i].clone();
+        }
+    };
+
     module.exports = Walls;
 });
