@@ -242,7 +242,7 @@ define(function(require, exports, module) {
         var sides = this.options.sides;
         for (var i in sides) {
             var component = this.components[i];
-            component.options.normal = _SIDE_NORMALS[i].clone();
+            component.options.normal.set(_SIDE_NORMALS[i]);
         }
     };
 
