@@ -340,38 +340,45 @@ define(function(require, exports, module) {
             this._trueSizeCheck = true;
         }
 
+        if (!this._size)
+            this._size = [0, 0];
+
         if (this.size) {
             var origSize = context.size;
             size = [this.size[0], this.size[1]];
             if (size[0] === undefined) size[0] = origSize[0];
             if (size[1] === undefined) size[1] = origSize[1];
             if (size[0] === true || size[1] === true) {
-                if (size[0] === true && (this._trueSizeCheck || this._size[0] === 0)) {
-                    var width = target.offsetWidth;
-                    if (this._size && this._size[0] !== width) {
-                        this._size[0] = width;
-                        this._sizeDirty = true;
+                var trueSizeUpdated = false;
+                if (size[0] === true) {
+                    if (this._trueSizeCheck || this._size[0] === 0) {
+                        size[0] = target.offsetWidth;
+                        trueSizeUpdated = true;
+                    } else {
+                        if (this._size) size[0] = this._size[0];
                     }
-                    size[0] = width;
-                } else {
-                    if (this._size) size[0] = this._size[0];
                 }
-                if (size[1] === true && (this._trueSizeCheck || this._size[1] === 0)) {
-                    var height = target.offsetHeight;
-                    if (this._size && this._size[1] !== height) {
-                        this._size[1] = height;
-                        this._sizeDirty = true;
+                if (size[1] === true) {
+                    if (this._trueSizeCheck || this._size[1] === 0) {
+                        size[1] = target.offsetHeight;
+                        trueSizeUpdated = true;
+                    } else {
+                        if (this._size) size[1] = this._size[1];
                     }
-                    size[1] = height;
-                } else {
-                    if (this._size) size[1] = this._size[1];
                 }
-                this._trueSizeCheck = false;
+                /*
+                 * This check is necessary because the commit needs to
+                 * make two passes to 1) update the div and 2) update
+                 * _size.  The alternative, to update the div earlier,
+                 * but still respect context size, etc on initial
+                 * creation, would require code duplication and would
+                 * have a slight impact on performance;
+                 */
+                this._trueSizeCheck = !trueSizeUpdated;
             }
         }
 
         if (_xyNotEquals(this._size, size)) {
-            if (!this._size) this._size = [0, 0];
             this._size[0] = size[0];
             this._size[1] = size[1];
 
@@ -379,11 +386,9 @@ define(function(require, exports, module) {
         }
 
         if (this._sizeDirty) {
-            if (this._size) {
-                target.style.width = (this.size && this.size[0] === true) ? '' : this._size[0] + 'px';
-                target.style.height = (this.size && this.size[1] === true) ?  '' : this._size[1] + 'px';
-            }
-
+            target.style.width = (this.size && this.size[0] === true) ? '' : this._size[0] + 'px';
+            target.style.height = (this.size && this.size[1] === true) ?  '' : this._size[1] + 'px';
+            this._sizeDirty = false;
             this._eventOutput.emit('resize');
         }
 
@@ -484,6 +489,7 @@ define(function(require, exports, module) {
     Surface.prototype.setSize = function setSize(size) {
         this.size = size ? [size[0], size[1]] : null;
         this._sizeDirty = true;
+        this._trueSizeCheck = true;
         return this;
     };
 
