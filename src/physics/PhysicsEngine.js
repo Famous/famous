@@ -136,7 +136,11 @@ define(function(require, exports, module) {
         var array = (body.isBody) ? this._bodies : this._particles;
         var index = array.indexOf(body);
         if (index > -1) {
-            for (var agent in this._agentData) this.detachFrom(agent.id, body);
+            for (var agentKey in this._agentData) {
+                if (this._agentData.hasOwnProperty(agentKey)) {
+                    this.detachFrom(this._agentData[agentKey].id, body);
+                }
+            }
             array.splice(index,1);
         }
         if (this.getBodies().length === 0) this._hasBodies = false;
