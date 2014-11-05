@@ -8,6 +8,10 @@
     },
     "rules": {
         "valid-jsdoc": 0,
+        "no-multi-spaces": 1,
+        "key-spacing": 1,
+        "comma-spacing": 1,
+        "no-shadow": 1,
         "curly": [1, "multi"],
         "brace-style": [1, "stroustrup"],
         "consistent-this": 2,
