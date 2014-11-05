@@ -93,7 +93,7 @@
     - Scrollview now uses enum for spring states
     - Added a getSize function to ScrollContainer
     - Scroller has a function getCumulativeSize that returns the size of the collection of renderables
-    - Scrollview emits "settled", "onEdge" and "offEdge" events
+    - Scrollview emits "settle", "onEdge" and "offEdge" events
     - Scrollview can now handle "true" sized elements
     - Scrollview has a getCurrentIndex that returns the index of the renderable of it's collection that it is on
     - Scrollview now has a goToPage method
