@@ -33,6 +33,7 @@ define(function(require, exports, module) {
      *   mouseSync.on('end', function (e) { // react to end });
      *
      * @param [options] {Object}                An object of the following configurable options.
+     * @param [options.clickThreshold] {Number} Absolute distance from click origin that will still trigger a click.
      * @param [options.direction] {Number}      Read from a particular axis. Valid options are: undefined, 0 or 1. 0 corresponds to x, and 1 to y. Default is undefined, which allows both x and y.
      * @param [options.rails] {Boolean}         Read from axis with the greatest differential.
      * @param [options.velocitySampleLength] {Number}  Number of previous frames to check velocity against.
@@ -57,6 +58,14 @@ define(function(require, exports, module) {
         if (this.options.propogate) this._eventInput.on('mouseleave', _handleLeave.bind(this));
         else this._eventInput.on('mouseleave', _handleEnd.bind(this));
 
+        if (this.options.clickThreshold) {
+            window.addEventListener('click', function(event) {
+                if (Math.sqrt(Math.pow(this._displacement[0], 2) + Math.pow(this._displacement[1], 2)) > this.options.clickThreshold) {
+                    event.stopPropagation();
+                }
+            }.bind(this), true);
+        }
+
         this._payload = {
             delta    : null,
             position : null,
@@ -73,10 +82,12 @@ define(function(require, exports, module) {
         this._prevTime = undefined;
         this._down = false;
         this._moved = false;
+        this._displacement = [0,0];
         this._documentActive = false;
     }
 
     MouseSync.DEFAULT_OPTIONS = {
+        clickThreshold: undefined,
         direction: undefined,
         rails: false,
         scale: 1,
@@ -118,6 +129,10 @@ define(function(require, exports, module) {
             this._position = [0, 0];
             delta = [0, 0];
             velocity = [0, 0];
+        }
+
+        if (this.options.clickThreshold) {
+            this._displacement = [0,0];
         }
 
         var payload = this._payload;
@@ -187,6 +202,11 @@ define(function(require, exports, module) {
             ];
             this._position[0] += nextDelta[0];
             this._position[1] += nextDelta[1];
+        }
+
+        if (this.options.clickThreshold !== false) {
+            this._displacement[0] += diffX;
+            this._displacement[1] += diffY;
         }
 
         var payload = this._payload;
