@@ -8,11 +8,11 @@
  */
 
 define(function(require, exports, module) {
-    var Modifier = require('famous/core/Modifier');
-    var RenderNode = require('famous/core/RenderNode');
-    var Transform = require('famous/core/Transform');
-    var Transitionable = require('famous/transitions/Transitionable');
-    var View = require('famous/core/View');
+    var Modifier = require('../core/Modifier');
+    var RenderNode = require('../core/RenderNode');
+    var Transform = require('../core/Transform');
+    var Transitionable = require('../transitions/Transitionable');
+    var View = require('../core/View');
 
     /**
      * A dynamic view that can show or hide different renerables with transitions.
