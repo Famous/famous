@@ -162,6 +162,16 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Returns the size of the grid layout.
+     *
+     * @method getSize
+     * @return {Array} Total size of the grid layout.
+     */
+    GridLayout.prototype.getSize = function getSize() {
+      return this._contextSizeCache;
+    };
+
+    /**
      * Apply changes from this component to the corresponding document element.
      * This includes changes to classes, styles, size, content, opacity, origin,
      * and matrix transforms.
