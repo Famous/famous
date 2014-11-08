@@ -10,6 +10,7 @@ define(function(require, exports, module) {
     var TouchTracker = require('./TouchTracker');
     var EventHandler = require('../core/EventHandler');
     var OptionsManager = require('../core/OptionsManager');
+    var SyncUtils = require('./SyncUtils');
 
     /**
      * Handles piped in touch events. Emits 'start', 'update', and 'events'
@@ -74,7 +75,8 @@ define(function(require, exports, module) {
         rails: false,
         touchLimit: 1,
         velocitySampleLength: 10,
-        scale: 1
+        scale: 1,
+        timeSampleDuration: 400
     };
 
     TouchSync.DIRECTION_X = 0;
@@ -119,20 +121,21 @@ define(function(require, exports, module) {
      *  @private
      */
     function _handleMove(data) {
+        calculatePayload.call(this, data);
+    }
+
+    function calculatePayload (data) {
         var history = data.history;
 
         var currHistory = history[history.length - 1];
-        var prevHistory = history[history.length - 2];
 
-        var distantHistory = history[history.length - this.options.velocitySampleLength] ?
-          history[history.length - this.options.velocitySampleLength] :
-          history[history.length - 2];
+        var distantHistory = SyncUtils.getTimeHistoryPosition(history, this.options.timeSampleDuration);
 
         var distantTime = distantHistory.timestamp;
         var currTime = currHistory.timestamp;
 
-        var diffX = currHistory.x - prevHistory.x;
-        var diffY = currHistory.y - prevHistory.y;
+        var diffX = currHistory.x - distantTime.x;
+        var diffY = currHistory.y - distantTime.y;
 
         var velDiffX = currHistory.x - distantHistory.x;
         var velDiffY = currHistory.y - distantHistory.y;
@@ -189,6 +192,7 @@ define(function(require, exports, module) {
      *  @private
      */
     function _handleEnd(data) {
+        calculatePayload.call(this, data);
         this._payload.count = data.count;
         this._eventOutput.emit('end', this._payload);
     }
