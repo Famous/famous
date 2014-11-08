@@ -87,7 +87,7 @@ define(function(require, exports, module) {
     }
 
     MouseSync.DEFAULT_OPTIONS = {
-        clickThreshold: false,
+        clickThreshold: undefined,
         direction: undefined,
         rails: false,
         scale: 1,
