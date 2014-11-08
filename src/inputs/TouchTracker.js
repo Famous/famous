@@ -57,6 +57,7 @@ define(function(require, exports, module) {
             var history = this.touchHistory[touch.identifier];
             if (history) {
                 var data = _timestampTouch(touch, event, history);
+                this.touchHistory[touch.identifier].push(data);
                 this.eventOutput.emit('trackend', data);
                 delete this.touchHistory[touch.identifier];
             }
