@@ -123,6 +123,7 @@ define(function(require, exports, module) {
      */
     VectorField.prototype.setOptions = function setOptions(options) {
         if (options.strength !== undefined) this.options.strength = options.strength;
+        if (options.direction !== undefined) this.options.direction = options.direction;
         if (options.field !== undefined) {
             this.options.field = options.field;
             _setFieldOptions.call(this, this.options.field);
