@@ -78,7 +78,7 @@ define(function(require, exports, module) {
       else {
         var listener = this.listeners[type];
         if (listener !== undefined) {
-            if (!handler) listener.length = 0;
+            if (!handler) listener = [];
             else {
                 var index = listener.indexOf(handler);
                 if (index >= 0) listener.splice(index, 1);
