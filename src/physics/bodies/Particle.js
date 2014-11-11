@@ -61,7 +61,6 @@ define(function(require, exports, module) {
             size : [true, true],
             target : {
                 transform : this.transform,
-                origin : [0.5, 0.5],
                 target : null
             }
         };
