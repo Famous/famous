@@ -360,9 +360,9 @@ var opacityState = new Transitionable(1);
 modifier.opacityFrom(opacityState);
 
 // animate the opacity from 1 to 0 over 500ms using a linear easing curve
-opacityState.set({
+opacityState.set(
     0,
     {curve : 'linear', duration : 500},
     function(){ console.log('animation finished!'); }
-});
+);
 ```
