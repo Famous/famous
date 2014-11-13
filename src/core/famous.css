@@ -12,6 +12,7 @@
     height: 100%;
     margin: 0px;
     padding: 0px;
+    opacity: .999999; /* ios8 hotfix */
     overflow: hidden;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
