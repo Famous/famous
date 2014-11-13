@@ -1,3 +1,27 @@
+## 0.3.1
+
+### General
+
+- Added fix for ios8 Safari compositing by setting the famous-root to have an opacity of .999999
+
+### Bug Fixes
+
+- Famous/core
+    - Fixed sizing checks that prevented things from being resized
+
+- Famous/physics
+    - Added direction to setOptions for VectorFields
+
+### Features
+
+- Famous/views
+    - Added getSize to GridLayout
+
+### Performance Increases
+
+- Famous/core
+    - Removed unneeded removeChild call from ElementAllocator's migrate
+
 ## 0.3.0
 
 ### General
