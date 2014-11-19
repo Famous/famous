@@ -9,6 +9,7 @@
 
 define(function(require, exports, module) {
     var OptionsManager = require('../core/OptionsManager');
+    var Entity = require('../core/Entity');
     var Transform = require('../core/Transform');
     var ViewSequence = require('../core/ViewSequence');
     var Utility = require('../utilities/Utility');
@@ -31,6 +32,9 @@ define(function(require, exports, module) {
         this.options = Utility.clone(this.constructor.DEFAULT_OPTIONS || SequentialLayout.DEFAULT_OPTIONS);
         this.optionsManager = new OptionsManager(this.options);
 
+        this.id = Entity.register(this);
+        this.cachedSize = [undefined, undefined];
+
         if (options) this.setOptions(options);
     }
 
@@ -42,6 +46,7 @@ define(function(require, exports, module) {
     SequentialLayout.DEFAULT_OUTPUT_FUNCTION = function DEFAULT_OUTPUT_FUNCTION(input, offset, index) {
         var transform = (this.options.direction === Utility.Direction.X) ? Transform.translate(offset, 0) : Transform.translate(0, offset);
         return {
+            size: this.cachedSize,
             transform: transform,
             target: input.render()
         };
@@ -98,13 +103,25 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Generate a render spec from the contents of this component.
+     * Return the id of the component
      *
      * @private
      * @method render
-     * @return {number} Render spec for this component
+     * @return {number} id of the SequentialLayout
      */
     SequentialLayout.prototype.render = function render() {
+        return this.id;
+    };
+
+    /**
+     * Generate a render spec from the contents of this component.
+     *
+     * @private
+     * @method commit
+     * @param {Object} parentSpec parent render spec
+     * @return {Object} Render spec for this component
+     */
+    SequentialLayout.prototype.commit = function commit(parentSpec) {
         var length             = 0;
         var secondaryDirection = this.options.direction ^ 1;
         var currentNode        = this._items;
@@ -115,6 +132,7 @@ define(function(require, exports, module) {
         var i                  = 0;
 
         this._size = [0, 0];
+        this.cachedSize = parentSpec.size;
 
         while (currentNode) {
             item = currentNode.get();
@@ -139,6 +157,8 @@ define(function(require, exports, module) {
         this._size[this.options.direction] = length;
 
         return {
+            transform: parentSpec.transform,
+            origin: parentSpec.origin,
             size: this.getSize(),
             target: result
         };
