@@ -152,6 +152,7 @@ define(function(require, exports, module) {
             if (this._callback) {
                 var cb = this._callback;
                 this._callback = undefined;
+                this.set(this.endState);
                 cb();
             }
             return;
