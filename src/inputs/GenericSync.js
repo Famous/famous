@@ -55,9 +55,9 @@ define(function(require, exports, module) {
      */
     GenericSync.register = function register(syncObject) {
         for (var key in syncObject){
-            if (registry[key]){
-                if (registry[key] === syncObject[key]) return; // redundant registration
-                else throw new Error('this key is registered to a different sync class');
+            if (registry[key]){ // skip redundant registration
+                if (registry[key] !== syncObject[key]) // only if same registered class
+                    throw new Error('Conflicting sync classes for key: ' + key);
             }
             else registry[key] = syncObject[key];
         }
