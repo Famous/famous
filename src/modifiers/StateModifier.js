@@ -55,6 +55,10 @@ define(function(require, exports, module) {
         this._hasProportions = false;
 
         if (options) {
+            if (options.translate) this.setTranslate(options.translate);
+            if (options.scale) this.setScale(options.scale);
+            if (options.rotate) this.setRotate(options.rotate);
+            if (options.skew) this.setSkew(options.skew);
             if (options.transform) this.setTransform(options.transform);
             if (options.opacity !== undefined) this.setOpacity(options.opacity);
             if (options.origin) this.setOrigin(options.origin);
@@ -79,6 +83,78 @@ define(function(require, exports, module) {
      */
     StateModifier.prototype.setTransform = function setTransform(transform, transition, callback) {
         this._transformState.set(transform, transition, callback);
+        return this;
+    };
+
+    /**
+    * Set the translation of this modifier, either statically or
+    *   through a provided Transitionable.
+    *
+    * @method setTranslate
+    *
+    * @param translate {Array} New translate state
+    * @param {Transitionable} transition object of type {duration: number, curve:
+    *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+    *    instantaneous.
+    * @param {Function} [callback] callback to call after transition completes
+    * @return {StateModifier} this
+    */
+    StateModifier.prototype.setTranslate = function setTranslate(translate, transition, callback) {
+        this._transformState.setTranslate(translate, transition, callback);
+        return this;
+    };
+
+    /**
+    * Set the scale of this modifier, either statically or
+    *   through a provided Transitionable.
+    *
+    * @method setScale
+    *
+    * @param scale {Array} New scale state
+    * @param {Transitionable} transition object of type {duration: number, curve:
+    *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+    *    instantaneous.
+    * @param {Function} [callback] callback to call after transition completes
+    * @return {StateModifier} this
+    */
+    StateModifier.prototype.setScale = function setScale(scale, transition, callback) {
+        this._transformState.setScale(scale, transition, callback);
+        return this;
+    };
+
+    /**
+    * Set the rotation of this modifier, either statically or
+    *   through a provided Transitionable.
+    *
+    * @method setRotate
+    *
+    * @param rotate {Array} New rotate state
+    * @param {Transitionable} transition object of type {duration: number, curve:
+    *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+    *    instantaneous.
+    * @param {Function} [callback] callback to call after transition completes
+    * @return {StateModifier} this
+    */
+    StateModifier.prototype.setRotate = function setRotate(rotate, transition, callback) {
+        this._transformState.setRotate(rotate, transition, callback);
+        return this;
+    };
+
+    /**
+    * Set the skew of this modifier, either statically or
+    *   through a provided Transitionable.
+    *
+    * @method setSkew
+    *
+    * @param skew {Array} New skew state
+    * @param {Transitionable} transition object of type {duration: number, curve:
+    *    f[0,1] -> [0,1] or name}. If transition is omitted, change will be
+    *    instantaneous.
+    * @param {Function} [callback] callback to call after transition completes
+    * @return {StateModifier} this
+    */
+    StateModifier.prototype.setSkew = function setSkew(skew, transition, callback) {
+        this._transformState.setSkew(skew, transition, callback);
         return this;
     };
 
