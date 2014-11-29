@@ -126,6 +126,7 @@ define(function(require, exports, module) {
      *    instantaneous.
      * @param {function()=} callback Zero-argument function to call on observed
      *    completion (t=1)
+     * @return {Transitionable} this
      */
     Transitionable.prototype.set = function set(endState, transition, callback) {
         if (!transition) {
@@ -168,6 +169,7 @@ define(function(require, exports, module) {
      * @param {number} duration delay time (ms)
      * @param {function} callback Zero-argument function to call on observed
      *    completion (t=1)
+     * @return {Transitionable} this
      */
     Transitionable.prototype.delay = function delay(duration, callback) {
         var endValue;
@@ -218,6 +220,8 @@ define(function(require, exports, module) {
      * Halt transition at current state and erase all pending actions.
      *
      * @method halt
+     *
+     * @return {Transitionable} this
      */
     Transitionable.prototype.halt = function halt() {
         return this.set(this.get());
