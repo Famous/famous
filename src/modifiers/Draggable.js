@@ -184,6 +184,7 @@ define(function(require, exports, module) {
         if (options.snapX  !== undefined) currentOptions.snapX  = options.snapX;
         if (options.snapY  !== undefined) currentOptions.snapY  = options.snapY;
         if (options.threshold  !== undefined) currentOptions.threshold  = options.threshold;
+        if (options.transition  !== undefined) currentOptions.transition  = options.transition;
     };
 
     /**
