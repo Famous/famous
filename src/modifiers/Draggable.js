@@ -24,12 +24,14 @@ define(function(require, exports, module) {
      * @class Draggable
      * @constructor
      * @param {Object} [options] options configuration object.
-     * @param {Number} [options.snapX] grid width for snapping during drag
-     * @param {Number} [options.snapY] grid height for snapping during drag
-     * @param {Array.Number} [options.xRange] maxmimum [negative, positive] x displacement from start of drag
-     * @param {Array.Number} [options.yRange] maxmimum [negative, positive] y displacement from start of drag
-     * @param {Array.Number} [options.threshold] minimum absolute [x, y] displacement to validate movement. 
-     * @param {Number} [options.scale] one pixel of input motion translates to this many pixels of output drag motion
+     * @param {Number} [options.snapX] grid width for snapping during drag.
+     * @param {Number} [options.snapY] grid height for snapping during drag.
+     * @param {Array.Number} [options.snap] shorthand for snapX and snapY.
+     * @param {Array.Number} [options.xRange] maxmimum [negative, positive] x displacement from start of drag.
+     * @param {Array.Number} [options.yRange] maxmimum [negative, positive] y displacement from start of drag.
+     * @param {Array.Number} [options.range] shorthand for xRange and yRange.
+     * @param {Array.Number} [options.threshold] minimum absolute [x, y] displacement to validate movement.
+     * @param {Number} [options.scale] one pixel of input motion translates to this many pixels of output drag motion.
      * @param {Number} [options.projection] User should set to Draggable._direction.x or
      *    Draggable._direction.y to constrain to one axis.
      *
@@ -41,6 +43,16 @@ define(function(require, exports, module) {
 
         EventHandler.setInputHandler(this,  this.sync);
         EventHandler.setOutputHandler(this, this.eventOutput);
+
+        if (options.snap) {
+            options.snapX = options.snap[0];
+            options.snapY = options.snap[1];
+        }
+
+        if (options.range) {
+        	options.xRange = options.range[0];
+        	options.yRange = options.range[1];
+        }
 
         if (options) this.setOptions(options);
         this._positionState = new Transitionable([0,0]);
@@ -111,8 +123,8 @@ define(function(require, exports, module) {
             && absPosition[1] < options.threshold[1];
 
         if (thresholdX || thresholdY) {
-        	this.eventOutput.emit('reject', {position : position});
-        	return;
+            this.eventOutput.emit('reject', {position : position});
+            return;
         }
 
         //buffer the differential if snapping is set
@@ -140,8 +152,8 @@ define(function(require, exports, module) {
 
         this.setPosition(pos, options.transition);
         this.eventOutput.emit('update', {
-        	position : position,
-        	endPosition : pos
+            position : position,
+            endPosition : pos
         });
     }
 
@@ -178,6 +190,17 @@ define(function(require, exports, module) {
                 scale: options.scale
             });
         }
+
+        if (options.snap) {
+            options.snapX = options.snap[0];
+            options.snapY = options.snap[1];
+        }
+
+        if (options.range) {
+        	options.xRange = options.range[0];
+        	options.yRange = options.range[1];
+        }
+
         if (options.xRange !== undefined) currentOptions.xRange = options.xRange;
         if (options.yRange !== undefined) currentOptions.yRange = options.yRange;
         if (options.snapX  !== undefined) currentOptions.snapX  = options.snapX;
