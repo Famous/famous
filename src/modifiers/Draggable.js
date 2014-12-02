@@ -20,7 +20,7 @@ define(function(require, exports, module) {
 
     /**
      * Makes added render nodes responsive to drag beahvior.
-     *   Emits events 'start', 'update', 'end'.
+     *   Emits events 'start', 'update', 'end' and 'reject'.
      * @class Draggable
      * @constructor
      * @param {Object} [options] options configuration object.
@@ -111,7 +111,6 @@ define(function(require, exports, module) {
             && absPosition[1] < options.threshold[1];
 
         if (thresholdX || thresholdY) {
-        	console.log('reject');
         	this.eventOutput.emit('reject', {position : position});
         	return;
         }
