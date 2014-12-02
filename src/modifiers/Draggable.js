@@ -24,6 +24,8 @@ define(function(require, exports, module) {
      * @class Draggable
      * @constructor
      * @param {Object} [options] options configuration object.
+     * @param {Array.Number} [options.autocomplete] Automatically take over and snap to the ranges when the displacement passes a ratio (between 0 and 1) in its direction.
+     * Default is off (no autocomplete): [1.0, 1.0].
      * @param {Number} [options.snapX] grid width for snapping during drag.
      * @param {Number} [options.snapY] grid height for snapping during drag.
      * @param {Array.Number} [options.snap] shorthand for snapX and snapY.
@@ -50,8 +52,8 @@ define(function(require, exports, module) {
         }
 
         if (options.range) {
-        	options.xRange = options.range[0];
-        	options.yRange = options.range[1];
+            options.xRange = options.range[0];
+            options.yRange = options.range[1];
         }
 
         if (options) this.setOptions(options);
@@ -74,14 +76,15 @@ define(function(require, exports, module) {
     var _clamp = Utilities.clamp;
 
     Draggable.DEFAULT_OPTIONS = {
-        projection  : _direction.x | _direction.y,
-        scale       : 1,
-        xRange      : null,
-        yRange      : null,
-        snapX       : 0,
-        snapY       : 0,
-        transition  : {duration : 0},
-        threshold   : [0, 0]
+        projection   : _direction.x | _direction.y,
+        scale        : 1,
+        xRange       : null,
+        yRange       : null,
+        snapX        : 0,
+        snapY        : 0,
+        transition   : {duration : 0},
+        threshold    : [0, 0],
+        autocomplete : [1.0, 1.0]
     };
 
     function _mapDifferential(differential) {
@@ -150,6 +153,18 @@ define(function(require, exports, module) {
             pos[1] = _clamp(pos[1], yRange);
         }
 
+        //handle auto completion
+        var autocomplete = options.autocomplete;
+        var ranges = [options.xRange, options.yRange];
+        for (var i = 0; i < 2; i++) {
+            var ratio = autocomplete[0];
+            var range = ranges[i][+(newDifferential[i] > 0)];
+
+            if (Math.abs(pos[i] / range) > ratio) {
+                pos[i] = range;
+            }
+        }
+
         this.setPosition(pos, options.transition);
         this.eventOutput.emit('update', {
             position : position,
@@ -197,8 +212,8 @@ define(function(require, exports, module) {
         }
 
         if (options.range) {
-        	options.xRange = options.range[0];
-        	options.yRange = options.range[1];
+            options.xRange = options.range[0];
+            options.yRange = options.range[1];
         }
 
         if (options.xRange !== undefined) currentOptions.xRange = options.xRange;
@@ -207,6 +222,7 @@ define(function(require, exports, module) {
         if (options.snapY  !== undefined) currentOptions.snapY  = options.snapY;
         if (options.threshold  !== undefined) currentOptions.threshold  = options.threshold;
         if (options.transition  !== undefined) currentOptions.transition  = options.transition;
+        if (options.autocomplete !== undefined) currentOptions.autocomplete = options.autocomplete;
     };
 
     /**
