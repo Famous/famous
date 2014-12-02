@@ -192,13 +192,7 @@ define(function(require, exports, module) {
      */
     Draggable.prototype.setOptions = function setOptions(options) {
         var currentOptions = this.options;
-        if (options.projection !== undefined) {
-            var proj = options.projection;
-            this.options.projection = 0;
-            ['x', 'y'].forEach(function(val) {
-                if (proj.indexOf(val) !== -1) currentOptions.projection |= _direction[val];
-            });
-        }
+
         if (options.scale  !== undefined) {
             currentOptions.scale  = options.scale;
             this.sync.setOptions({
@@ -216,6 +210,7 @@ define(function(require, exports, module) {
             options.yRange = options.range[1];
         }
 
+        if (options.projection !== undefined) currentOptions.projection = options.projection;
         if (options.xRange !== undefined) currentOptions.xRange = options.xRange;
         if (options.yRange !== undefined) currentOptions.yRange = options.yRange;
         if (options.snapX  !== undefined) currentOptions.snapX  = options.snapX;
