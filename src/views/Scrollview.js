@@ -81,7 +81,7 @@ define(function(require, exports, module) {
 
         // override default options with passed-in custom options
         if (options) this.setOptions(options);
-        
+
         // create sub-components
         this._scroller = new Scroller(this.options);
 
