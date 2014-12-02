@@ -28,6 +28,7 @@ define(function(require, exports, module) {
      * @param {Number} [options.snapY] grid height for snapping during drag
      * @param {Array.Number} [options.xRange] maxmimum [negative, positive] x displacement from start of drag
      * @param {Array.Number} [options.yRange] maxmimum [negative, positive] y displacement from start of drag
+     * @param {Array.Number} [options.threshold] minimum absolute [x, y] displacement to validate movement. 
      * @param {Number} [options.scale] one pixel of input motion translates to this many pixels of output drag motion
      * @param {Number} [options.projection] User should set to Draggable._direction.x or
      *    Draggable._direction.y to constrain to one axis.
@@ -67,7 +68,8 @@ define(function(require, exports, module) {
         yRange      : null,
         snapX       : 0,
         snapY       : 0,
-        transition  : {duration : 0}
+        transition  : {duration : 0},
+        threshold   : [0, 0]
     };
 
     function _mapDifferential(differential) {
@@ -100,28 +102,48 @@ define(function(require, exports, module) {
         this._differential = event.position;
         var newDifferential = _mapDifferential.call(this, this._differential);
 
+        var position = this.getPosition();
+        var absMovement = [Math.abs(newDifferential[0]), Math.abs(newDifferential[1])];
+        var absPosition = [Math.abs(position[0]), Math.abs(position[1])];
+        var thresholdX = absMovement[0] < options.threshold[0]
+            && absPosition[0] < options.threshold[0];
+        var thresholdY = absMovement[1] < options.threshold[1]
+            && absPosition[1] < options.threshold[1];
+
+        if (thresholdX || thresholdY) {
+        	console.log('reject');
+        	this.eventOutput.emit('reject', {position : position});
+        	return;
+        }
+
         //buffer the differential if snapping is set
         this._differential[0] -= newDifferential[0];
         this._differential[1] -= newDifferential[1];
 
-        var pos = this.getPosition();
+        //get the current end position
+        var end = this._endPosition || position;
+        var pos = [end[0], end[1]];
 
-        //modify position, retain reference
+        //modify the next end position
         pos[0] += newDifferential[0];
         pos[1] += newDifferential[1];
 
         //handle bounding box
-        if (options.xRange){
+        if (options.xRange) {
             var xRange = [options.xRange[0] + 0.5 * options.snapX, options.xRange[1] - 0.5 * options.snapX];
             pos[0] = _clamp(pos[0], xRange);
         }
 
-        if (options.yRange){
+        if (options.yRange) {
             var yRange = [options.yRange[0] + 0.5 * options.snapY, options.yRange[1] - 0.5 * options.snapY];
             pos[1] = _clamp(pos[1], yRange);
         }
 
-        this.eventOutput.emit('update', {position : pos});
+        this.setPosition(pos, options.transition);
+        this.eventOutput.emit('update', {
+        	position : position,
+        	endPosition : pos
+        });
     }
 
     function _handleEnd() {
@@ -161,6 +183,7 @@ define(function(require, exports, module) {
         if (options.yRange !== undefined) currentOptions.yRange = options.yRange;
         if (options.snapX  !== undefined) currentOptions.snapX  = options.snapX;
         if (options.snapY  !== undefined) currentOptions.snapY  = options.snapY;
+        if (options.threshold  !== undefined) currentOptions.threshold  = options.threshold;
     };
 
     /**
@@ -203,6 +226,7 @@ define(function(require, exports, module) {
      */
     Draggable.prototype.setPosition = function setPosition(position, transition, callback) {
         if (this._positionState.isActive()) this._positionState.halt();
+        this._endPosition = position;
         this._positionState.set(position, transition, callback);
     };
 
