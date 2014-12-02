@@ -35,16 +35,16 @@ define(function(require, exports, module) {
      */
     function Draggable(options) {
         this.options = Object.create(Draggable.DEFAULT_OPTIONS);
-        if (options) this.setOptions(options);
+        this.sync = new GenericSync(['mouse', 'touch'], {scale : this.options.scale});
+        this.eventOutput = new EventHandler();
 
+        EventHandler.setInputHandler(this,  this.sync);
+        EventHandler.setOutputHandler(this, this.eventOutput);
+
+        if (options) this.setOptions(options);
         this._positionState = new Transitionable([0,0]);
         this._differential  = [0,0];
         this._active = true;
-
-        this.sync = new GenericSync(['mouse', 'touch'], {scale : this.options.scale});
-        this.eventOutput = new EventHandler();
-        EventHandler.setInputHandler(this,  this.sync);
-        EventHandler.setOutputHandler(this, this.eventOutput);
 
         _bindEvents.call(this);
     }
