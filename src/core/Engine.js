@@ -85,18 +85,18 @@ define(function(require, exports, module) {
 
         eventHandler.emit('prerender');
 
+        for (i = 0; i < contexts.length; i++) contexts[i].update();
+
         // empty the queue
         if (nextTickQueue.length) {
             for (i = 0; i < nextTickQueue[0].length; i++) nextTickQueue[0][i].call(this, currentFrame);
-            nextTickQueue.splice(0, 1);
+            nextTickQueue.shift();
         }
 
         // limit total execution time for deferrable functions
         while (deferQueue.length && (Date.now() - currentTime) < MAX_DEFER_FRAME_TIME) {
             deferQueue.shift().call(this);
         }
-
-        for (i = 0; i < contexts.length; i++) contexts[i].update();
 
         eventHandler.emit('postrender');
     };
