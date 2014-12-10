@@ -46,17 +46,20 @@ define(function(require, exports, module) {
         EventHandler.setInputHandler(this,  this.sync);
         EventHandler.setOutputHandler(this, this.eventOutput);
 
-        if (options.snap) {
-            options.snapX = options.snap[0];
-            options.snapY = options.snap[1];
+        if (options) {
+            if (options.snap) {
+                options.snapX = options.snap[0];
+                options.snapY = options.snap[1];
+            }
+
+            if (options.range) {
+                options.xRange = options.range[0];
+                options.yRange = options.range[1];
+            }
+
+            this.setOptions(options);
         }
 
-        if (options.range) {
-            options.xRange = options.range[0];
-            options.yRange = options.range[1];
-        }
-
-        if (options) this.setOptions(options);
         this._positionState = new Transitionable([0,0]);
         this._differential  = [0,0];
         this._active = true;
