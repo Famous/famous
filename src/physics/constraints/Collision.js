@@ -103,7 +103,6 @@ define(function(require, exports, module) {
             var dist    = pDiff.norm();
             var overlap = dist - (r1 + r2);
             var effMass = 1/(w1 + w2);
-            var gamma   = 0;
 
             if (overlap < 0) {
 
@@ -121,9 +120,13 @@ define(function(require, exports, module) {
                     this._eventOutput.emit('collision', collisionData);
                 }
 
+                // if spheres are moving apart, don't apply impulse (incident velocity component)
+                if (n.dot(vDiff) > 0) {
+                    return;
+                }
                 var lambda = (overlap <= slop)
-                    ? ((1 + restitution) * n.dot(vDiff) + drift/dt * (overlap - slop)) / (gamma + dt/effMass)
-                    : ((1 + restitution) * n.dot(vDiff)) / (gamma + dt/effMass);
+                    ? ((1 + restitution) * n.dot(vDiff) + drift/dt * (overlap - slop)) / (dt/effMass)
+                    : ((1 + restitution) * n.dot(vDiff)) / (dt/effMass);
 
                 n.mult(dt*lambda).put(impulse1);
                 impulse1.mult(-1).put(impulse2);
