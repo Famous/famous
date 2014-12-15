@@ -145,6 +145,7 @@ define(function(require, exports, module) {
 
         this._positionHistory.push({
             position: payload.position.slice ? payload.position.slice(0) : payload.position,
+            clientPosition: [x, y],
             timestamp: currTime
         });
         this._eventOutput.emit('start', payload);
@@ -201,6 +202,11 @@ define(function(require, exports, module) {
         }
     }
 
+    /**
+     *  Calculates the data to send to listeners.
+     *  @method calculatePayload
+     *  @private
+     */
     function calculatePayload (event) {
         var payload = this._payload;
 
@@ -214,8 +220,8 @@ define(function(require, exports, module) {
         var currTime = Date.now();
 
         var lastPos = this._positionHistory[this._positionHistory.length - 1];
-        var diffX = (x * scale) - lastPos.position[0];
-        var diffY = (y * scale) - lastPos.position[1];
+        var diffX = (x * scale) - lastPos.clientPosition[0];
+        var diffY = (y * scale) - lastPos.clientPosition[1];
 
         if (this.options.rails) {
             if (Math.abs(diffX) > Math.abs(diffY)) diffY = 0;
@@ -231,8 +237,8 @@ define(function(require, exports, module) {
         }
         else {
             nextDelta = [diffX, diffY];
-            this._position[0] += nextDelta[0];
-            this._position[1] += nextDelta[1];
+            this._position[0] += diffX;
+            this._position[1] += diffY;
         }
 
         if (this.options.clickThreshold !== false) {
@@ -240,7 +246,6 @@ define(function(require, exports, module) {
             this._displacement[1] += diffY;
         }
 
-        var payload = this._payload;
         payload.delta    = nextDelta;
         payload.position = this._position;
         payload.clientX  = x;
@@ -249,12 +254,13 @@ define(function(require, exports, module) {
         payload.offsetY  = event.offsetY;
 
         if (this._positionHistory.length === this.options.velocitySampleLength) {
-          this._positionHistory.shift();
+            this._positionHistory.shift();
         }
 
         this._positionHistory.push({
-          position: payload.position.slice ? payload.position.slice(0) : payload.position,
-          timestamp: currTime
+            position: payload.position.slice ? payload.position.slice(0) : payload.position,
+            clientPosition: [x, y],
+            timestamp: currTime
         });
 
         // Calculate velocity
