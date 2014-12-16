@@ -1,3 +1,17 @@
+## 0.3.2
+
+### Bug Fixes
+
+- Famous/core
+    - Fixed issue where Famo.us would break when it took more than a single frame for the browser to load the body
+
+- Famous/inputs
+    - Made sync velocities average out to stop wild spikes
+    - Fixed logic for GenericSync to always run through the syncs to register even if it hits one that wa slaready registered
+
+- Famous/views
+    - Fixed bug where SequentialLayout would not work if you gave children undefined size
+
 ## 0.3.1
 
 ### General
