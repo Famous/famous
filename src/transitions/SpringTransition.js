@@ -213,7 +213,7 @@ define(function(require, exports, module) {
      * @return {Number|Array} velocity
      */
     SpringTransition.prototype.setVelocity = function setVelocity(v) {
-        this.call(this, _setParticleVelocity(v));
+        _setParticleVelocity.call(this, v);
     };
 
     /**
