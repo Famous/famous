@@ -127,7 +127,7 @@ define(function(require, exports, module) {
      * @return {Matrix} result of transpose, as a handle to the internal register
      */
     Matrix.prototype.transpose = function transpose() {
-        var result = [];
+        var result = [[], [], []];
         var M = this.get();
         for (var row = 0; row < 3; row++) {
             for (var col = 0; col < 3; col++) {
