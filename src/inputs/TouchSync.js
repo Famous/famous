@@ -73,7 +73,7 @@ define(function(require, exports, module) {
     TouchSync.DEFAULT_OPTIONS = {
         direction: undefined,
         rails: false,
-        touchLimit: 10,
+        touchLimit: 1,
         velocitySampleLength: 10,
         scale: 1,
         timeSampleDuration: 400
@@ -126,7 +126,6 @@ define(function(require, exports, module) {
 
     function calculatePayload (data) {
         var history = data.history;
-        // debugger;
 
         var currHistory = history[history.length - 1];
 
