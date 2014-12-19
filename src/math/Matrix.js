@@ -48,10 +48,13 @@ define(function(require, exports, module) {
      *
      * @method set
      *
+     * @chainable
      * @param {Array.array} values matrix values as array of rows.
+     * @return {Matrix} this
      */
     Matrix.prototype.set = function set(values) {
         this.values = values;
+        return this;
     };
 
     /**
