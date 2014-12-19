@@ -127,7 +127,6 @@ define(function(require, exports, module) {
             if (this._callback) {
                 var cb = this._callback;
                 this._callback = undefined;
-                this.set(this.endState);
                 cb();
             }
             return;
@@ -152,6 +151,7 @@ define(function(require, exports, module) {
             definition.period = 150;
             console.warn('The period of a SpringTransition is capped at 150 ms. Use a SnapTransition for faster transitions');
         }
+        if (definition.tolerance) this._restTolerance = definition.tolerance;
 
         //setup spring
         this.spring.setOptions({
