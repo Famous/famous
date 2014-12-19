@@ -1,3 +1,10 @@
+## 0.3.3
+
+### Bug Fixes
+
+- Famous/inputs
+    - bug in TouchSync where NaN's were produced
+
 ## 0.3.2
 
 ### Bug Fixes
