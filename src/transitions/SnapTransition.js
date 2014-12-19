@@ -136,7 +136,7 @@ define(function(require, exports, module) {
         if (definition.period === undefined)       definition.period       = defaults.period;
         if (definition.dampingRatio === undefined) definition.dampingRatio = defaults.dampingRatio;
         if (definition.velocity === undefined)     definition.velocity     = defaults.velocity;
-
+        if (definition.tolerance) this._restTolerance = definition.tolerance;
         //setup spring
         this.spring.setOptions({
             period       : definition.period,
@@ -152,7 +152,6 @@ define(function(require, exports, module) {
             if (this._callback) {
                 var cb = this._callback;
                 this._callback = undefined;
-                this.set(this.endState);
                 cb();
             }
             return;
