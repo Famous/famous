@@ -263,6 +263,16 @@ define(function(require, exports, module) {
     };
 
     /**
+     * Remove FPS cap set via Engine.setFPSCap
+     *
+     * @static
+     * @method removeFPSCap
+     */
+    Engine.removeFPSCap = function removeFPSCap() {
+        frameTimeLimit = undefined;
+    };
+
+    /**
      * Return engine options.
      *
      * @static
