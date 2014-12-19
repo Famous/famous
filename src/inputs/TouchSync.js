@@ -73,7 +73,7 @@ define(function(require, exports, module) {
     TouchSync.DEFAULT_OPTIONS = {
         direction: undefined,
         rails: false,
-        touchLimit: 1,
+        touchLimit: 10,
         velocitySampleLength: 10,
         scale: 1,
         timeSampleDuration: 400
@@ -126,6 +126,7 @@ define(function(require, exports, module) {
 
     function calculatePayload (data) {
         var history = data.history;
+        // debugger;
 
         var currHistory = history[history.length - 1];
 
@@ -134,11 +135,11 @@ define(function(require, exports, module) {
         var distantTime = distantHistory.timestamp;
         var currTime = currHistory.timestamp;
 
-        var diffX = currHistory.x - distantTime.x;
-        var diffY = currHistory.y - distantTime.y;
+        var diffX = currHistory.x - distantHistory.x;
+        var diffY = currHistory.y - distantHistory.y;
 
-        var velDiffX = currHistory.x - distantHistory.x;
-        var velDiffY = currHistory.y - distantHistory.y;
+        var velDiffX = currHistory.x - distantTime;
+        var velDiffY = currHistory.y - distantTime;
 
         if (this.options.rails) {
             if (Math.abs(diffX) > Math.abs(diffY)) diffY = 0;
