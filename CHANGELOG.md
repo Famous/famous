@@ -1,3 +1,10 @@
+## 0.3.4
+
+### Bug Fixes
+
+- Famous/inputs
+    - 0.3.3 did not fix changes to inputs.  All changes from 0.3.2 and 0.3.3 involving inputs have been reverted
+
 ## 0.3.3
 
 ### Bug Fixes
