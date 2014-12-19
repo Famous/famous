@@ -161,11 +161,11 @@ define(function(require, exports, module) {
             if (this._callback) {
                 var cb = this._callback;
                 this._callback = undefined;
-                this.set(this.endState);
                 cb();
             }
             return;
         }
+
         var energy = _getEnergy.call(this);
         if (energy < this._absRestTolerance) {
             _sleep.call(this);
@@ -182,6 +182,7 @@ define(function(require, exports, module) {
         if (def.restitution === undefined) def.restitution = defaults.restitution;
         if (def.drift === undefined) def.drift = Wall.DEFAULT_OPTIONS.drift;
         if (def.slop === undefined) def.slop = Wall.DEFAULT_OPTIONS.slop;
+        if (def.tolerance) this._restTolerance = def.tolerance;
 
         //setup spring
         this.spring.setOptions({
