@@ -1,17 +1,32 @@
 define(function(require, exports, module) {
-    var hasTouch = 'ontouchstart' in window;
-
-    function kill(type) {
-        window.addEventListener(type, function(event) {
-            event.stopPropagation();
-            return false;
-        }, true);
+    function listener(event) {
+        event.stopPropagation();
+        return false;
     }
 
-    if (hasTouch) {
-        kill('mousedown');
-        kill('mousemove');
-        kill('mouseup');
-        kill('mouseleave');
+    var eventNames = ['mousedown', 'mousemove', 'mouseup', 'mouseleave'];
+
+    function mute(eventName) {
+        window.addEventListener(eventName, listener, true);
     }
+
+    function unmute(eventName) {
+        window.removeEventListener(eventName, listener, true);
+    }
+
+    function enable() {
+        eventNames.forEach(mute);
+    }
+
+    function disable() {
+        eventNames.forEach(unmute);
+    }
+
+    module.exports = {
+        enable: enable,
+        disable: disable
+    };
+
+    /* TODO Remove initial enable call when deprecation is complete */
+    enable();
 });
