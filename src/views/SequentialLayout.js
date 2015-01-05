@@ -159,6 +159,7 @@ define(function(require, exports, module) {
         return {
             transform: parentSpec.transform,
             origin: parentSpec.origin,
+            opacity: parentSpec.opacity,
             size: this.getSize(),
             target: result
         };
