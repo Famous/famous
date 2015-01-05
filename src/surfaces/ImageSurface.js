@@ -49,7 +49,7 @@ define(function(require, exports, module) {
         return {
             urlCache: urlCache,
             countCache: countCache,
-            nodeCache: countCache
+            nodeCache: nodeCache
         };
     };
 
