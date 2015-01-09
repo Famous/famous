@@ -153,7 +153,7 @@ define(function(require, exports, module) {
         }
         if (options.scale  !== undefined) {
             currentOptions.scale  = options.scale;
-            if (this.sync !== undefined){
+            if (this.sync !== undefined) {
                 this.sync.setOptions({
                     scale: options.scale
                 });
