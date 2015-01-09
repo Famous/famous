@@ -153,9 +153,10 @@ define(function(require, exports, module) {
         }
         if (options.scale  !== undefined) {
             currentOptions.scale  = options.scale;
-            this.sync.setOptions({
-                scale: options.scale
-            });
+            if(this.sync !== undefined)
+                this.sync.setOptions({
+                    scale: options.scale
+                });
         }
         if (options.xRange !== undefined) currentOptions.xRange = options.xRange;
         if (options.yRange !== undefined) currentOptions.yRange = options.yRange;
