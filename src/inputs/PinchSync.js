@@ -46,7 +46,7 @@ define(function(require, exports, module) {
         this._eventOutput.emit('start', {
             count: event.touches.length,
             touches: [this.touchAId, this.touchBId],
-            distance: this._dist,
+            distance: 0,
             center: TwoFingerSync.calculateCenter(this.posA, this.posB)
         });
     };
