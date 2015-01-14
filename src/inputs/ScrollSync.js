@@ -23,13 +23,13 @@ define(function(require, exports, module) {
      *
      * @class ScrollSync
      * @constructor
-     * @param {Object} [options] overrides of default options
-     * @param {Number} [options.direction] Pay attention to x changes (ScrollSync.DIRECTION_X),
+     * @param {Object} options overrides of default options
+     * @param {Number} options.direction Pay attention to x changes (ScrollSync.DIRECTION_X),
      *   y changes (ScrollSync.DIRECTION_Y) or both (undefined)
-     * @param {Number} [options.minimumEndSpeed] End speed calculation floors at this number, in pixels per ms
-     * @param {boolean} [options.rails] whether to snap position calculations to nearest axis
-     * @param {Number | Array.Number} [options.scale] scale outputs in by scalar or pair of scalars
-     * @param {Number} [options.stallTime] reset time for velocity calculation in ms
+     * @param {Number} options.minimumEndSpeed End speed calculation floors at this number, in pixels per ms
+     * @param {boolean} options.rails whether to snap position calculations to nearest axis
+     * @param {Number | Array.Number} options.scale scale outputs in by scalar or pair of scalars
+     * @param {Number} options.stallTime reset time for velocity calculation in ms
      */
     function ScrollSync(options) {
         this.options = Object.create(ScrollSync.DEFAULT_OPTIONS);
@@ -181,13 +181,13 @@ define(function(require, exports, module) {
      *
      * @method setOptions
      *
-     * @param {Object} [options] overrides of default options
-     * @param {Number} [options.minimimEndSpeed] If final velocity smaller than this, round down to 0.
-     * @param {Number} [options.stallTime] ms of non-motion before 'end' emitted
-     * @param {Number} [options.rails] whether to constrain to nearest axis.
-     * @param {Number} [options.direction] ScrollSync.DIRECTION_X, DIRECTION_Y -
+     * @param {Object} options overrides of default options
+     * @param {Number} options.minimimEndSpeed If final velocity smaller than this, round down to 0.
+     * @param {Number} options.stallTime ms of non-motion before 'end' emitted
+     * @param {Number} options.rails whether to constrain to nearest axis.
+     * @param {Number} options.direction ScrollSync.DIRECTION_X, DIRECTION_Y -
      *    pay attention to one specific direction.
-     * @param {Number} [options.scale] constant factor to scale velocity output
+     * @param {Number} options.scale constant factor to scale velocity output
      */
     ScrollSync.prototype.setOptions = function setOptions(options) {
         return this._optionsManager.setOptions(options);

@@ -21,9 +21,9 @@ define(function(require, exports, module) {
      * surface.
      * @class ScrollContainer
      * @constructor
-     * @param {Options} [options] An object of configurable options.
-     * @param {Options} [options.container=undefined] Options for the ScrollContainer instance's surface.
-     * @param {Options} [options.scrollview={direction:Utility.Direction.X}]  Options for the ScrollContainer instance's scrollview.
+     * @param {Options} options An object of configurable options.
+     * @param {Options} options.container=undefined Options for the ScrollContainer instance's surface.
+     * @param {Options} options.scrollview={direction:Utility.Direction.X}  Options for the ScrollContainer instance's scrollview.
      */
     function ScrollContainer(options) {
         this.options = Object.create(ScrollContainer.DEFAULT_OPTIONS);

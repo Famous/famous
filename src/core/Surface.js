@@ -11,6 +11,7 @@ define(function(require, exports, module) {
     var ElementOutput = require('./ElementOutput');
 
     /**
+     *
      * A base class for viewable content and event
      *   targets inside a Famo.us application, containing a renderable document
      *   fragment. Like an HTML div, it can accept internal markup,
@@ -19,12 +20,12 @@ define(function(require, exports, module) {
      * @class Surface
      * @constructor
      *
-     * @param {Object} [options] default option overrides
-     * @param {Array.Number} [options.size] [width, height] in pixels
-     * @param {Array.string} [options.classes] CSS classes to set on target div
-     * @param {Array} [options.properties] string dictionary of CSS properties to set on target div
-     * @param {Array} [options.attributes] string dictionary of HTML attributes to set on target div
-     * @param {string} [options.content] inner (HTML) content of surface
+     * @param {Object} options default option overrides
+     * @param {Array.Number} options.size [width, height] in pixels
+     * @param {Array.string} options.classes CSS classes to set on target div
+     * @param {Array} options.properties string dictionary of CSS properties to set on target div
+     * @param {Array} options.attributes string dictionary of HTML attributes to set on target div
+     * @param {string} options.content inner (HTML) content of surface
      */
     function Surface(options) {
         ElementOutput.call(this);
@@ -221,7 +222,7 @@ define(function(require, exports, module) {
      *
      * @method setOptions
      * @chainable
-     * @param {Object} [options] overrides for default options.  See constructor.
+     * @param {Object} options overrides for default options.  See constructor.
      */
     Surface.prototype.setOptions = function setOptions(options) {
         if (options.size) this.setSize(options.size);

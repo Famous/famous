@@ -13,32 +13,32 @@ define(function(require, exports, module) {
      *
      * @class Lightbox
      * @constructor
-     * @param {Options} [options] An object of configurable options.
-     * @param {Transform} [options.inTransform] The transform at the start of transitioning in a shown renderable.
-     * @param {Transform} [options.outTransform] The transform at the end of transitioning out a renderable.
-     * @param {Transform} [options.showTransform] The transform applied to your shown renderable in its state of equilibrium.
-     * @param {Number} [options.inOpacity] A number between one and zero that defines the state of a shown renderables opacity upon initially
+     * @param {Options} options An object of configurable options.
+     * @param {Transform} options.inTransform The transform at the start of transitioning in a shown renderable.
+     * @param {Transform} options.outTransform The transform at the end of transitioning out a renderable.
+     * @param {Transform} options.showTransform The transform applied to your shown renderable in its state of equilibrium.
+     * @param {Number} options.inOpacity A number between one and zero that defines the state of a shown renderables opacity upon initially
      * being transitioned in.
-     * @param {Number} [options.outOpacity] A number between one and zero that defines the state of a shown renderables opacity upon being
+     * @param {Number} options.outOpacity A number between one and zero that defines the state of a shown renderables opacity upon being
      * fully transitioned out.
-     * @param {Number} [options.showOpacity] A number between one and zero that defines the state of a shown renderables opacity
+     * @param {Number} options.showOpacity A number between one and zero that defines the state of a shown renderables opacity
      * once succesfully transitioned in.
-     * @param {Array<Number>} [options.inOrigin] A two value array of numbers between one and zero that defines the state of a shown renderables
+     * @param {Array<Number>} options.inOrigin A two value array of numbers between one and zero that defines the state of a shown renderables
      * origin upon intially being transitioned in.
-     * @param {Array<Number>} [options.outOrigin] A two value array of numbers between one and zero that defines the state of a shown renderable
+     * @param {Array<Number>} options.outOrigin A two value array of numbers between one and zero that defines the state of a shown renderable
      * origin once fully hidden.
-     * @param {Array<Number>} [options.showOrigin] A two value array of numbers between one and zero that defines the state of a shown renderables
+     * @param {Array<Number>} options.showOrigin A two value array of numbers between one and zero that defines the state of a shown renderables
      * origin upon succesfully being shown.
-     * @param {Array<Number>} [options.inAlign] A two value array of numbers between one and zero that defines the state of a shown renderables
+     * @param {Array<Number>} options.inAlign A two value array of numbers between one and zero that defines the state of a shown renderables
      * align upon intially being transitioned in.
-     * @param {Array<Number>} [options.outAlign] A two value array of numbers between one and zero that defines the state of a shown renderable
+     * @param {Array<Number>} options.outAlign A two value array of numbers between one and zero that defines the state of a shown renderable
      * align once fully hidden.
-     * @param {Array<Number>} [options.showAlign] A two value array of numbers between one and zero that defines the state of a shown renderables
+     * @param {Array<Number>} options.showAlign A two value array of numbers between one and zero that defines the state of a shown renderables
      * align upon succesfully being shown.
-     * @param {Transition} [options.inTransition=true] The transition in charge of showing a renderable.
-     * @param {Transition} [options.outTransition=true]  The transition in charge of removing your previous renderable when
+     * @param {Transition} options.inTransition=true The transition in charge of showing a renderable.
+     * @param {Transition} options.outTransition=true  The transition in charge of removing your previous renderable when
      * you show a new one, or hiding your current renderable.
-     * @param {Boolean} [options.overlap=false] When showing a new renderable, overlap determines if the
+     * @param {Boolean} options.overlap=false When showing a new renderable, overlap determines if the
      *   out transition of the old one executes concurrently with the in transition of the new one,
       *  or synchronously beforehand.
      */

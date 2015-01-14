@@ -25,12 +25,12 @@ define(function(require, exports, module) {
      *   dimensions so that items of cellSize will fit.
      * @class GridLayout
      * @constructor
-     * @param {Options} [options] An object of configurable options.
-     * @param {Array.Number} [options.dimensions=[1, 1]] A two value array which specifies the amount of columns
+     * @param {Options} options An object of configurable options.
+     * @param {Array.Number} options.dimensions=[1, 1] A two value array which specifies the amount of columns
      * and rows in your Gridlayout instance.
-     * @param {Array.Number} [options.gutterSize=[0, 0]] A two-value array which specifies size of the
+     * @param {Array.Number} options.gutterSize=[0, 0] A two-value array which specifies size of the
      * horizontal and vertical gutters between items in the grid layout.
-     * @param {Transition} [options.transition=false] The transiton that controls the Gridlayout instance's reflow.
+     * @param {Transition} options.transition=false The transiton that controls the Gridlayout instance's reflow.
      */
     function GridLayout(options) {
         this.options = Object.create(GridLayout.DEFAULT_OPTIONS);

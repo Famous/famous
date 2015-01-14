@@ -19,7 +19,7 @@ define(function(require, exports, module) {
      * @extends TwoFingerSync
      * @constructor
      * @param {Object} options default options overrides
-     * @param {Number} [options.scale] scale velocity by this factor
+     * @param {Number} options.scale scale velocity by this factor
      */
     function RotateSync(options) {
         TwoFingerSync.call(this);
@@ -88,8 +88,8 @@ define(function(require, exports, module) {
      *
      * @method setOptions
      *
-     * @param {Object} [options] overrides of default options
-     * @param {Number} [options.scale] scale velocity by this factor
+     * @param {Object} options overrides of default options
+     * @param {Number} options.scale scale velocity by this factor
      */
     RotateSync.prototype.setOptions = function setOptions(options) {
         return this._optionsManager.setOptions(options);

@@ -17,8 +17,8 @@ define(function(require, exports, module) {
      * @class CanvasSurface
      * @extends Surface
      * @constructor
-     * @param {Object} [options] overrides of default options
-     * @param {Array.Number} [options.canvasSize] [width, height] for document element
+     * @param {Object} options overrides of default options
+     * @param {Array.Number} options.canvasSize [width, height] for document element
      */
     function CanvasSurface(options) {
         if (options && options.canvasSize) this._canvasSize = options.canvasSize;

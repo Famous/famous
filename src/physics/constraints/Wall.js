@@ -32,13 +32,13 @@ define(function(require, exports, module) {
      *  @class Wall
      *  @constructor
      *  @extends Constraint
-     *  @param {Options} [options] An object of configurable options.
-     *  @param {Number} [options.restitution] The energy ratio lost in a collision (0 = stick, 1 = elastic). Range : [0, 1]
-     *  @param {Number} [options.drift] Baumgarte stabilization parameter. Makes constraints "loosely" (0) or "tightly" (1) enforced. Range : [0, 1]
-     *  @param {Number} [options.slop] Amount of penetration in pixels to ignore before collision event triggers.
-     *  @param {Array} [options.normal] The normal direction to the wall.
-     *  @param {Number} [options.distance] The distance from the origin that the wall is placed.
-     *  @param {onContact} [options.onContact] How to handle collision against the wall.
+     *  @param {Options} options An object of configurable options.
+     *  @param {Number} options.restitution The energy ratio lost in a collision (0 = stick, 1 = elastic). Range : [0, 1]
+     *  @param {Number} options.drift Baumgarte stabilization parameter. Makes constraints "loosely" (0) or "tightly" (1) enforced. Range : [0, 1]
+     *  @param {Number} options.slop Amount of penetration in pixels to ignore before collision event triggers.
+     *  @param {Array} options.normal The normal direction to the wall.
+     *  @param {Number} options.distance The distance from the origin that the wall is placed.
+     *  @param {onContact} options.onContact How to handle collision against the wall.
      *
      */
     function Wall(options) {

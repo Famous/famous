@@ -25,11 +25,11 @@ define(function(require, exports, module) {
      *
      * @class Modifier
      * @constructor
-     * @param {Object} [options] overrides of default options
-     * @param {Transform} [options.transform] affine transformation matrix
-     * @param {Number} [options.opacity]
-     * @param {Array.Number} [options.origin] origin adjustment
-     * @param {Array.Number} [options.size] size to apply to descendants
+     * @param {Object} options overrides of default options
+     * @param {Transform} options.transform affine transformation matrix
+     * @param {Number} options.opacity
+     * @param {Array.Number} options.origin origin adjustment
+     * @param {Array.Number} options.size size to apply to descendants
      */
     function Modifier(options) {
         this._transformGetter = null;

@@ -6,12 +6,12 @@ define(function(require, exports, module) {
      * Modifier that allows you to fade the opacity of affected renderables in and out.
      * @class Fader
      * @constructor
-     * @param {Object} [options] options configuration object.
-     * @param {Boolean} [options.cull=false] Stops returning affected renderables up the tree when they're fully faded when true.
-     * @param {Transition} [options.transition=true] The main transition for showing and hiding.
-     * @param {Transition} [options.pulseInTransition=true] Controls the transition to a pulsed state when the Fader instance's pulse
+     * @param {Object} options options configuration object.
+     * @param {Boolean} options.cull=false Stops returning affected renderables up the tree when they're fully faded when true.
+     * @param {Transition} options.transition=true The main transition for showing and hiding.
+     * @param {Transition} options.pulseInTransition=true Controls the transition to a pulsed state when the Fader instance's pulse
      * method is called.
-     * @param {Transition} [options.pulseOutTransition=true]Controls the transition back from a pulsed state when the Fader instance's pulse
+     * @param {Transition} options.pulseOutTransition=trueControls the transition back from a pulsed state when the Fader instance's pulse
      * method is called.
      *
      */
@@ -37,7 +37,7 @@ define(function(require, exports, module) {
      *
      * @method setOptions
      *
-     * @param {Object} [options] overrides of default options.  See constructor.
+     * @param {Object} options overrides of default options.  See constructor.
      */
     Fader.prototype.setOptions = function setOptions(options) {
         return this._optionsManager.setOptions(options);

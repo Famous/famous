@@ -21,11 +21,11 @@ define(function(require, exports, module) {
      *  @class Snap
      *  @constructor
      *  @extends Constraint
-     *  @param {Options} [options] An object of configurable options.
-     *  @param {Number} [options.period] The amount of time in milliseconds taken for one complete oscillation when there is no damping. Range : [150, Infinity]
-     *  @param {Number} [options.dampingRatio] Additional damping of the spring. Range : [0, 1]. At 0 this spring will still be damped, at 1 the spring will be critically damped (the spring will never oscillate)
-     *  @param {Number} [options.length] The rest length of the spring. Range: [0, Infinity].
-     *  @param {Array} [options.anchor] The location of the spring's anchor, if not another physics body.
+     *  @param {Options} options An object of configurable options.
+     *  @param {Number} options.period The amount of time in milliseconds taken for one complete oscillation when there is no damping. Range : [150, Infinity]
+     *  @param {Number} options.dampingRatio Additional damping of the spring. Range : [0, 1]. At 0 this spring will still be damped, at 1 the spring will be critically damped (the spring will never oscillate)
+     *  @param {Number} options.length The rest length of the spring. Range: [0, Infinity].
+     *  @param {Array} options.anchor The location of the spring's anchor, if not another physics body.
      *
      */
     function Snap(options) {

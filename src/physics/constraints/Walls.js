@@ -21,14 +21,14 @@ define(function(require, exports, module) {
      *  @constructor
      *  @extends Constraint
      *  @uses Wall
-     *  @param {Options} [options] An object of configurable options.
-     *  @param {Array} [options.sides] An array of sides e.g., [Walls.LEFT, Walls.TOP]
-     *  @param {Array} [options.size] The size of the bounding box of the walls.
-     *  @param {Array} [options.origin] The center of the wall relative to the size.
-     *  @param {Array} [options.drift] Baumgarte stabilization parameter. Makes constraints "loosely" (0) or "tightly" (1) enforced. Range : [0, 1]
-     *  @param {Array} [options.slop] Amount of penetration in pixels to ignore before collision event triggers.
-     *  @param {Array} [options.restitution] The energy ratio lost in a collision (0 = stick, 1 = elastic) The energy ratio lost in a collision (0 = stick, 1 = elastic)
-     *  @param {Array} [options.onContact] How to handle collision against the wall.
+     *  @param {Options} options An object of configurable options.
+     *  @param {Array} options.sides An array of sides e.g., [Walls.LEFT, Walls.TOP]
+     *  @param {Array} options.size The size of the bounding box of the walls.
+     *  @param {Array} options.origin The center of the wall relative to the size.
+     *  @param {Array} options.drift Baumgarte stabilization parameter. Makes constraints "loosely" (0) or "tightly" (1) enforced. Range : [0, 1]
+     *  @param {Array} options.slop Amount of penetration in pixels to ignore before collision event triggers.
+     *  @param {Array} options.restitution The energy ratio lost in a collision (0 = stick, 1 = elastic) The energy ratio lost in a collision (0 = stick, 1 = elastic)
+     *  @param {Array} options.onContact How to handle collision against the wall.
      */
     function Walls(options) {
         this.options = Object.create(Walls.DEFAULT_OPTIONS);

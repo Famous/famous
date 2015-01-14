@@ -17,10 +17,10 @@ define(function(require, exports, module) {
      * @class InputSurface
      * @extends Surface
      * @constructor
-     * @param {Object} [options] overrides of default options
-     * @param {string} [options.placeholder] placeholder text hint that describes the expected value of an <input> element
-     * @param {string} [options.type] specifies the type of element to display (e.g. 'datetime', 'text', 'button', etc.)
-     * @param {string} [options.value] value of text
+     * @param {Object} options overrides of default options
+     * @param {string} options.placeholder placeholder text hint that describes the expected value of an <input> element
+     * @param {string} options.type specifies the type of element to display (e.g. 'datetime', 'text', 'button', etc.)
+     * @param {string} options.value value of text
      */
     function InputSurface(options) {
         this._placeholder = options.placeholder || '';

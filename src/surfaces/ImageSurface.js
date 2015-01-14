@@ -19,7 +19,7 @@ define(function(require, exports, module) {
      *
      * @extends Surface
      * @constructor
-     * @param {Object} [options] overrides of default options
+     * @param {Object} options overrides of default options
      */
     function ImageSurface(options) {
         this._imageUrl = undefined;
