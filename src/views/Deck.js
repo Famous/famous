@@ -25,13 +25,13 @@ define(function(require, exports, module) {
      * @constructor
      * @extends SequentialLayout
      *
-     * @param {Options} [options] An object of configurable options
-     * @param {Transition} [options.transition={duration: 500, curve: 'easeOutBounce'}
+     * @param {Options} options An object of configurable options
+     * @param {Transition} options.transition={duration: 500, curve: 'easeOutBounce'}
      *   The transition that executes upon opening or closing your deck instance.
-     * @param {Number} [stackRotation=0] The amount of rotation applied to the propogation
+     * @param {Number} [stackRotation=0 The amount of rotation applied to the propogation
      *   of the Deck instance's stack of renderables.
-     * @param {Object} [options.transition] A transition object for changing between states.
-     * @param {Number} [options.direction] axis of expansion (Utility.Direction.X or .Y)
+     * @param {Object} options.transition A transition object for changing between states.
+     * @param {Number} options.direction axis of expansion (Utility.Direction.X or .Y)
      */
     function Deck(options) {
         SequentialLayout.apply(this, arguments);

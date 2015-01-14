@@ -20,7 +20,7 @@ define(function(require, exports, module) {
      *   and an output EventHandler. Meant to be extended by the developer.
      * @class ContextualView
      * @constructor
-     * @param {Options} [options] An object of configurable options.
+     * @param {Options} options An object of configurable options.
      */
     function ContextualView(options) {
         this.options = Object.create(this.constructor.DEFAULT_OPTIONS || ContextualView.DEFAULT_OPTIONS);

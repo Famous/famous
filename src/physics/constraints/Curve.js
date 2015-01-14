@@ -21,11 +21,11 @@ define(function(require, exports, module) {
      *  @class Curve
      *  @constructor
      *  @extends Constraint
-     *  @param {Options} [options] An object of configurable options.
-     *  @param {Function} [options.equation] An implicitly defined surface f(x,y,z) = 0 that body is constrained to e.g. function(x,y,z) { x*x + y*y - r*r } corresponds to a circle of radius r pixels
-     *  @param {Function} [options.plane] An implicitly defined second surface that the body is constrained to
-     *  @param {Number} [options.period] The spring-like reaction when the constraint is violated
-     *  @param {Number} [options.number] The damping-like reaction when the constraint is violated
+     *  @param {Options} options An object of configurable options.
+     *  @param {Function} options.equation An implicitly defined surface f(x,y,z) = 0 that body is constrained to e.g. function(x,y,z) { x*x + y*y - r*r } corresponds to a circle of radius r pixels
+     *  @param {Function} options.plane An implicitly defined second surface that the body is constrained to
+     *  @param {Number} options.period The spring-like reaction when the constraint is violated
+     *  @param {Number} options.number The damping-like reaction when the constraint is violated
      */
     function Curve(options) {
         this.options = Object.create(Curve.DEFAULT_OPTIONS);

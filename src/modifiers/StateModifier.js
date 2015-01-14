@@ -24,13 +24,13 @@ define(function(require, exports, module) {
      *
      * @class StateModifier
      * @constructor
-     * @param {Object} [options] overrides of default options
-     * @param {Transform} [options.transform] affine transformation matrix
-     * @param {Number} [options.opacity]
-     * @param {Array.Number} [options.origin] origin adjustment
-     * @param {Array.Number} [options.align] align adjustment
-     * @param {Array.Number} [options.size] size to apply to descendants
-     * @param {Array.Number} [options.propportions] proportions to apply to descendants
+     * @param {Object} options overrides of default options
+     * @param {Transform} options.transform affine transformation matrix
+     * @param {Number} options.opacity
+     * @param {Array.Number} options.origin origin adjustment
+     * @param {Array.Number} options.align align adjustment
+     * @param {Array.Number} options.size size to apply to descendants
+     * @param {Array.Number} options.propportions proportions to apply to descendants
      */
     function StateModifier(options) {
         this._transformState = new TransitionableTransform(Transform.identity);

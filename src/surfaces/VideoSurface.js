@@ -20,12 +20,12 @@ define(function(require, exports, module) {
      * @class VideoSurface
      * @extends Surface
      * @constructor
-     * @param {Object} [options] default option overrides
-     * @param {Array.Number} [options.size] [width, height] in pixels
-     * @param {Array.string} [options.classes] CSS classes to set on inner content
-     * @param {Array} [options.properties] string dictionary of HTML attributes to set on target div
-     * @param {String} [options.src] videoUrl URL
-     * @param {boolean} [options.autoplay] autoplay
+     * @param {Object} options default option overrides
+     * @param {Array.Number} options.size [width, height] in pixels
+     * @param {Array.string} options.classes CSS classes to set on inner content
+     * @param {Array} options.properties string dictionary of HTML attributes to set on target div
+     * @param {String} options.src videoUrl URL
+     * @param {boolean} options.autoplay autoplay
      */
     function VideoSurface(options) {
         Surface.apply(this, arguments);
@@ -49,8 +49,8 @@ define(function(require, exports, module) {
      *
      * @method setOptions
      *
-     * @param {Object} [options] overrides of default options
-     * @param {Boolean} [options.autoplay] HTML autoplay
+     * @param {Object} options overrides of default options
+     * @param {Boolean} options.autoplay HTML autoplay
      */
     VideoSurface.prototype.setOptions = function setOptions(options) {
         if (options.size) this.setSize(options.size);

@@ -29,10 +29,10 @@ define(function(require, exports, module) {
      * @class ContainerSurface
      * @extends Surface
      * @constructor
-     * @param {Array.Number} [options.size] [width, height] in pixels
-     * @param {Array.string} [options.classes] CSS classes to set on all inner content
-     * @param {Array} [options.properties] string dictionary of HTML attributes to set on target div
-     * @param {string} [options.content] inner (HTML) content of surface (should not be used)
+     * @param {Array.Number} options.size [width, height] in pixels
+     * @param {Array.string} options.classes CSS classes to set on all inner content
+     * @param {Array} options.properties string dictionary of HTML attributes to set on target div
+     * @param {string} options.content inner (HTML) content of surface (should not be used)
      */
     function ContainerSurface(options) {
         Surface.call(this, options);

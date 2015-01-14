@@ -17,13 +17,13 @@ define(function(require, exports, module) {
      * @class TextareaSurface
      * @extends Surface
      * @constructor
-     * @param {Object} [options] overrides of default options
-     * @param {string} [options.placeholder] placeholder text hint that describes the expected value of an textarea element
-     * @param {string} [options.value] value of text
-     * @param {string} [options.name] specifies the name of textarea
-     * @param {string} [options.wrap] specify 'hard' or 'soft' wrap for textarea
-     * @param {number} [options.cols] number of columns in textarea
-     * @param {number} [options.rows] number of rows in textarea
+     * @param {Object} options overrides of default options
+     * @param {string} options.placeholder placeholder text hint that describes the expected value of an textarea element
+     * @param {string} options.value value of text
+     * @param {string} options.name specifies the name of textarea
+     * @param {string} options.wrap specify 'hard' or 'soft' wrap for textarea
+     * @param {number} options.cols number of columns in textarea
+     * @param {number} options.rows number of rows in textarea
      */
     function TextareaSurface(options) {
         this._placeholder = options.placeholder || '';

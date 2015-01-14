@@ -14,8 +14,8 @@ define(function(require, exports, module) {
      * @class Scroller
      * @constructor
       * @event error
-     * @param {Options} [options] An object of configurable options.
-     * @param {Number} [options.direction=Utility.Direction.Y] Using the direction helper found in the famous Utility
+     * @param {Options} options An object of configurable options.
+     * @param {Number} options.direction=Utility.Direction.Y Using the direction helper found in the famous Utility
      * module, this option will lay out the Scroller instance's renderables either horizontally
      * (x) or vertically (y). Utility's direction is essentially either zero (X) or one (Y), so feel free
      * to just use integers as well.

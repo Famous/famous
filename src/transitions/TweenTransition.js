@@ -200,9 +200,9 @@ define(function(require, exports, module) {
      *
      *
      * @param {Object} options options object
-     * @param {Object} [options.curve] function mapping [0,1] to [0,1] or identifier
-     * @param {Number} [options.duration] duration in ms
-     * @param {Number} [options.speed] speed in pixels per ms
+     * @param {Object} options.curve function mapping [0,1] to [0,1] or identifier
+     * @param {Number} options.duration duration in ms
+     * @param {Number} options.speed speed in pixels per ms
      */
     TweenTransition.prototype.setOptions = function setOptions(options) {
         if (options.curve !== undefined) this.options.curve = options.curve;

@@ -19,12 +19,12 @@ define(function(require, exports, module) {
      *  @class Distance
      *  @constructor
      *  @extends Constraint
-     *  @param {Options} [options] An object of configurable options.
-     *  @param {Array} [options.anchor] The location of the anchor
-     *  @param {Number} [options.length] The amount of distance from the anchor the constraint should enforce
-     *  @param {Number} [options.minLength] The minimum distance before the constraint is activated. Use this property for a "rope" effect.
-     *  @param {Number} [options.period] The spring-like reaction when the constraint is broken.
-     *  @param {Number} [options.dampingRatio] The damping-like reaction when the constraint is broken.
+     *  @param {Options} options An object of configurable options.
+     *  @param {Array} options.anchor The location of the anchor
+     *  @param {Number} options.length The amount of distance from the anchor the constraint should enforce
+     *  @param {Number} options.minLength The minimum distance before the constraint is activated. Use this property for a "rope" effect.
+     *  @param {Number} options.period The spring-like reaction when the constraint is broken.
+     *  @param {Number} options.dampingRatio The damping-like reaction when the constraint is broken.
      *
      */
     function Distance(options) {

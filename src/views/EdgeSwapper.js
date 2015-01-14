@@ -18,7 +18,7 @@ define(function(require, exports, module) {
      * Container which handles swapping renderables from the edge of its parent context.
      * @class EdgeSwapper
      * @constructor
-     * @param {Options} [options] An object of configurable options.
+     * @param {Options} options An object of configurable options.
      *   Takes the same options as RenderController.
      * @uses RenderController
      */

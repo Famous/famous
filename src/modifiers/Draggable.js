@@ -23,13 +23,13 @@ define(function(require, exports, module) {
      *   Emits events 'start', 'update', 'end'.
      * @class Draggable
      * @constructor
-     * @param {Object} [options] options configuration object.
-     * @param {Number} [options.snapX] grid width for snapping during drag
-     * @param {Number} [options.snapY] grid height for snapping during drag
-     * @param {Array.Number} [options.xRange] maxmimum [negative, positive] x displacement from start of drag
-     * @param {Array.Number} [options.yRange] maxmimum [negative, positive] y displacement from start of drag
-     * @param {Number} [options.scale] one pixel of input motion translates to this many pixels of output drag motion
-     * @param {Number} [options.projection] User should set to Draggable._direction.x or
+     * @param {Object} options options configuration object.
+     * @param {Number} options.snapX grid width for snapping during drag
+     * @param {Number} options.snapY grid height for snapping during drag
+     * @param {Array.Number} options.xRange maxmimum [negative, positive] x displacement from start of drag
+     * @param {Array.Number} options.yRange maxmimum [negative, positive] y displacement from start of drag
+     * @param {Number} options.scale one pixel of input motion translates to this many pixels of output drag motion
+     * @param {Number} options.projection User should set to Draggable._direction.x or
      *    Draggable._direction.y to constrain to one axis.
      *
      */
@@ -140,7 +140,7 @@ define(function(require, exports, module) {
      *
      * @method setOptions
      *
-     * @param {Object} [options] overrides of default options.  See constructor.
+     * @param {Object} options overrides of default options.  See constructor.
      */
     Draggable.prototype.setOptions = function setOptions(options) {
         var currentOptions = this.options;

@@ -46,12 +46,12 @@ define(function(require, exports, module) {
      * allow you to scroll through them with mousewheel or touch events.
      * @class Scrollview
      * @constructor
-     * @param {Options} [options] An object of configurable options.
-     * @param {Number} [options.direction=Utility.Direction.Y] Using the direction helper found in the famous Utility
+     * @param {Options} options An object of configurable options.
+     * @param {Number} options.direction=Utility.Direction.Y Using the direction helper found in the famous Utility
      * module, this option will lay out the Scrollview instance's renderables either horizontally
      * (x) or vertically (y). Utility's direction is essentially either zero (X) or one (Y), so feel free
      * to just use integers as well.
-     * @param {Boolean} [options.rails=true] When true, Scrollview's genericSync will only process input in it's primary access.
+     * @param {Boolean} options.rails=true When true, Scrollview's genericSync will only process input in it's primary access.
      * @param {Number} [clipSize=undefined] The size of the area (in pixels) that Scrollview will display content in.
      * @param {Number} [margin=undefined] The size of the area (in pixels) that Scrollview will process renderables' associated calculations in.
      * @param {Number} [friction=0.001] Input resistance proportional to the velocity of the input.

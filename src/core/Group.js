@@ -22,7 +22,7 @@ define(function(require, exports, module) {
      * @class Group
      * @extends Surface
      * @constructor
-     * @param {Object} [options] Surface options array (see Surface})
+     * @param {Object} options Surface options array (see Surface})
      */
     function Group(options) {
         Surface.call(this, options);

@@ -18,13 +18,13 @@ define(function(require, exports, module) {
       and a content area of flexible size.
      * @class HeaderFooterLayout
      * @constructor
-     * @param {Options} [options] An object of configurable options.
-     * @param {Number} [options.direction=HeaderFooterLayout.DIRECTION_Y] A direction of HeaderFooterLayout.DIRECTION_X
+     * @param {Options} options An object of configurable options.
+     * @param {Number} options.direction=HeaderFooterLayout.DIRECTION_Y A direction of HeaderFooterLayout.DIRECTION_X
      * lays your HeaderFooterLayout instance horizontally, and a direction of HeaderFooterLayout.DIRECTION_Y
      * lays it out vertically.
-     * @param {Number} [options.headerSize=undefined]  The amount of pixels allocated to the header node
+     * @param {Number} options.headerSize=undefined  The amount of pixels allocated to the header node
      * in the HeaderFooterLayout instance's direction.
-     * @param {Number} [options.footerSize=undefined] The amount of pixels allocated to the footer node
+     * @param {Number} options.footerSize=undefined The amount of pixels allocated to the footer node
      * in the HeaderFooterLayout instance's direction.
      */
     function HeaderFooterLayout(options) {

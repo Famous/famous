@@ -18,7 +18,7 @@ define(function(require, exports, module) {
      * A dynamic view that can show or hide different renderables with transitions.
      * @class RenderController
      * @constructor
-     * @param {Options} [options] An object of configurable options.
+     * @param {Options} options An object of configurable options.
      * @param {Transition} [inTransition=true] The transition in charge of showing a renderable.
      * @param {Transition} [outTransition=true]  The transition in charge of removing your previous renderable when
      * you show a new one, or hiding your current renderable.

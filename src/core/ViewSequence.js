@@ -18,10 +18,10 @@ define(function(require, exports, module) {
      *
      * @constructor
      * @param {Object|Array} options Options object, or content array.
-     * @param {Number} [options.index] starting index.
-     * @param {Number} [options.array] Array of elements to populate the ViewSequence
-     * @param {Object} [options._] Optional backing store (internal
-     * @param {Boolean} [options.loop] Whether to wrap when accessing elements just past the end
+     * @param {Number} options.index starting index.
+     * @param {Number} options.array Array of elements to populate the ViewSequence
+     * @param {Object} options._ Optional backing store (internal
+     * @param {Boolean} options.loop Whether to wrap when accessing elements just past the end
      *   (or beginning) of the sequence.
      */
     function ViewSequence(options) {

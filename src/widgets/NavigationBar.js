@@ -22,14 +22,14 @@ define(function(require, exports, module) {
      * @extends View
      * @constructor
      *
-     * @param {object} [options] overrides of default options
-     * @param {Array.number} [options.size=(undefined,0.5)] Size of the navigation bar and it's componenets.
-     * @param {Array.string} [options.backClasses=(back)] CSS Classes attached to back of Navigation.
-     * @param {String} [options.backContent=(&#x25c0;)] Content of the back button.
-     * @param {Array.string} [options.classes=(navigation)] CSS Classes attached to the surfaces.
-     * @param {String} [options.content] Content to pass into title bar.
-     * @param {Array.string} [options.classes=(more)] CSS Classes attached to the More surface.
-     * @param {String} [options.moreContent=(&#x271a;)] Content of the more button.
+     * @param {object} options overrides of default options
+     * @param {Array.number} options.size=(undefined,0.5) Size of the navigation bar and it's componenets.
+     * @param {Array.string} options.backClasses=(back) CSS Classes attached to back of Navigation.
+     * @param {String} options.backContent=(&#x25c0;) Content of the back button.
+     * @param {Array.string} options.classes=(navigation) CSS Classes attached to the surfaces.
+     * @param {String} options.content Content to pass into title bar.
+     * @param {Array.string} options.classes=(more) CSS Classes attached to the More surface.
+     * @param {String} options.moreContent=(&#x271a;) Content of the more button.
      */
     function NavigationBar(options) {
         View.apply(this, arguments);

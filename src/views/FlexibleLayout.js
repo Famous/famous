@@ -20,10 +20,10 @@ define(function(require, exports, module) {
      *   out vertically or horizontally.
      * @class FlexibleLayout
      * @constructor
-     * @param {Options} [options] An object of configurable options.
-     * @param {Number} [options.direction=0] Direction the FlexibleLayout instance should lay out renderables.
-     * @param {Transition} [options.transition=false] The transiton that controls the FlexibleLayout instance's reflow.
-     * @param {Ratios} [options.ratios=[]] The proportions for the renderables to maintain
+     * @param {Options} options An object of configurable options.
+     * @param {Number} options.direction=0 Direction the FlexibleLayout instance should lay out renderables.
+     * @param {Transition} options.transition=false The transiton that controls the FlexibleLayout instance's reflow.
+     * @param {Ratios} options.ratios=[] The proportions for the renderables to maintain
      */
     function FlexibleLayout(options) {
         this.options = Object.create(FlexibleLayout.DEFAULT_OPTIONS);
