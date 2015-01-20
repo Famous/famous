@@ -99,7 +99,7 @@
   },
   "homepage": "https://famo.us",
   "devDependencies": {
-    "eslint": "^0.10.0",
+    "eslint": "^0.12.0",
     "famous-dist-generator": "^0.3.0",
     "famous-doc-generator": "^0.7.0",
     "famous-examples-generator": "^0.2.1",
