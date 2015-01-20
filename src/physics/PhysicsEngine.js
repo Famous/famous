@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 define(function(require, exports, module) {
     var EventHandler = require('../core/EventHandler');

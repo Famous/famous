@@ -4,7 +4,7 @@
  *
  * Owner: david@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 
 //TODO: test inheritance

@@ -4,7 +4,7 @@
  *
  * Owner: mark@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 define(function(require, exports, module) {
     var TouchTracker = require('./TouchTracker');

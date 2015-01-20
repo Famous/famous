@@ -4,7 +4,7 @@
  *
  * Owner: mark@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 // TODO fix func-style
 /*eslint func-style: [0, "declaration"] */
