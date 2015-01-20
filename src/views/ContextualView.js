@@ -21,6 +21,10 @@ define(function(require, exports, module) {
      * @class ContextualView
      * @constructor
      * @param {Options} [options] An object of configurable options.
+     *
+     * Deprecated: Use SizeAwareView when creating views that need to be
+     * aware of their parent's size.
+     * @deprecated
      */
     function ContextualView(options) {
         this.options = Object.create(this.constructor.DEFAULT_OPTIONS || ContextualView.DEFAULT_OPTIONS);
