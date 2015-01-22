@@ -424,7 +424,7 @@ define(function(require, exports, module) {
             scaleFrom   = 1.0 - t;
             scaleTo     = t;
         }
-        return register.set(this.scalarMultiply(scaleFrom/scaleTo).add(q).multiply(scaleTo));
+        return register.set(this.scalarMultiply(scaleFrom/scaleTo).add(q).scalarMultiply(scaleTo));
     };
 
     module.exports = Quaternion;
