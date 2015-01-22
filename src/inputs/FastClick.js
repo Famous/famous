@@ -48,7 +48,7 @@ define(function(require, exports, module) {
                       'detail': touch
                   });
                   recentlyDispatched[currTime] = event;
-                  event.target.dispatchEvent(clickEvt);
+                  event.currentTarget.dispatchEvent(clickEvt);
               }
               delete potentialClicks[touch.identifier];
           }
@@ -59,7 +59,7 @@ define(function(require, exports, module) {
           for (var i in recentlyDispatched) {
               var previousEvent = recentlyDispatched[i];
               if (currTime - i < clickWindow) {
-                  if (event instanceof window.MouseEvent && event.target === previousEvent.target) event.stopPropagation();
+                  if (event instanceof window.MouseEvent && event.currentTarget === previousEvent.currentTarget) event.stopPropagation();
               }
               else delete recentlyDispatched[i];
           }
