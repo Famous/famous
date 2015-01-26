@@ -10,7 +10,9 @@
     "famous"
   ],
   "scripts": {
-    "test": "npm run lint -s",
+    "test": "npm run lint -s && npm run tap-tests",
+    "tap-tests": "testling '' | tap-spec",
+    "watch-tests": "nodemon --ignore node_modules/ -e js,json --exec 'npm run tap-test'",
     "lint-eslint": "eslint src/",
     "lint-jscs": "jscs src/",
     "lint": "npm run lint-eslint && npm run lint-jscs",
@@ -108,11 +110,16 @@
   },
   "homepage": "https://famo.us",
   "devDependencies": {
+    "browserify": "^8.1.1",
     "eslint": "^0.16.2",
     "famous-dist-generator": "^1.0.2",
     "famous-doc-generator": "^0.8.0",
     "famous-examples-generator": "^0.3.0",
-    "jscs": "^1.5.9"
+    "jscs": "^1.5.9",
+    "nodemon": "^1.3.2",
+    "tap-spec": "^2.2.0",
+    "tape": "^3.4.0",
+    "testling": "^1.7.1"
   },
   "dependencies": {
     "cssify": "^0.7.0",
@@ -122,6 +129,16 @@
     "transform": [
       "cssify",
       "deamdify"
+    ]
+  },
+  "testling": {
+    "files": [
+      "tests/src/**/**.spec.js"
+    ],
+    "scripts": [
+      "tests/helpers/bind-polyfill.js",
+      "tests/helpers/rAf-polyfill.js",
+      "tests/helpers/MouseEvent-polyfill.js"
     ]
   }
 }

@@ -1,7 +1,11 @@
 language: node_js
 node_js:
   - '0.10'
+addons:
+  firefox: "35.0"
 before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
   - currentfolder=${PWD##*/}
   - if [ "$currentfolder" != 'famous' ]; then cd .. && eval "mv $currentfolder famous" && cd core; fi
 
