@@ -4,7 +4,7 @@
  *
  * Owner: david@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 
 /*global console*/
@@ -151,6 +151,7 @@ define(function(require, exports, module) {
             definition.period = 150;
             console.warn('The period of a SpringTransition is capped at 150 ms. Use a SnapTransition for faster transitions');
         }
+        if (definition.tolerance) this._restTolerance = definition.tolerance;
 
         //setup spring
         this.spring.setOptions({
@@ -213,7 +214,7 @@ define(function(require, exports, module) {
      * @return {Number|Array} velocity
      */
     SpringTransition.prototype.setVelocity = function setVelocity(v) {
-        this.call(this, _setParticleVelocity(v));
+        _setParticleVelocity.call(this, v);
     };
 
     /**

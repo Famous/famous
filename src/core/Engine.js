@@ -4,7 +4,7 @@
  *
  * Owner: mark@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 
 define(function(require, exports, module) {
@@ -260,6 +260,16 @@ define(function(require, exports, module) {
      */
     Engine.setFPSCap = function setFPSCap(fps) {
         frameTimeLimit = Math.floor(1000 / fps);
+    };
+
+    /**
+     * Remove FPS cap set via Engine.setFPSCap
+     *
+     * @static
+     * @method removeFPSCap
+     */
+    Engine.removeFPSCap = function removeFPSCap() {
+        frameTimeLimit = undefined;
     };
 
     /**

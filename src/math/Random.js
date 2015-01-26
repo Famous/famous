@@ -4,19 +4,29 @@
  *
  * Owner: david@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 
 define(function(require, exports, module) {
-
     var RAND = Math.random;
 
-    function _randomFloat(min,max) {
+    function _randomFloat(min, max) {
         return min + RAND() * (max - min);
     }
 
-    function _randomInteger(min,max) {
-        return (min + RAND() * (max - min + 1)) >> 0;
+    function _randomInteger(min, max) {
+        return min + ((RAND() * (max - min + 1)) >> 0);
+    }
+
+    function _range(randomFunction, min, max, dim) {
+        min = (min !== undefined) ? min : 0;
+        max = (max !== undefined) ? max : 1;
+        if (dim !== undefined) {
+            var result = [];
+            for (var i = 0; i < dim; i++) result.push(randomFunction(min, max));
+            return result;
+        }
+        else return randomFunction(min, max);
     }
 
     /**
@@ -38,15 +48,8 @@ define(function(require, exports, module) {
      * @param {Number} dim (optional) dimension of output array, if specified
      * @return {number | array<number>} random integer, or optionally, an array of random integers
      */
-    Random.integer = function integer(min,max,dim) {
-        min = (min !== undefined) ? min : 0;
-        max = (max !== undefined) ? max : 1;
-        if (dim !== undefined) {
-            var result = [];
-            for (var i = 0; i < dim; i++) result.push(_randomInteger(min,max));
-            return result;
-        }
-        else return _randomInteger(min,max);
+    Random.integer = function integer(min, max, dim) {
+        return _range(_randomInteger, min, max, dim);
     };
 
     /**
@@ -60,15 +63,8 @@ define(function(require, exports, module) {
      * @param {Number} [dim] dimension of output array, if specified
      * @return {Number} random float, or optionally an array
      */
-    Random.range = function range(min,max,dim) {
-        min = (min !== undefined) ? min : 0;
-        max = (max !== undefined) ? max : 1;
-        if (dim !== undefined) {
-            var result = [];
-            for (var i = 0; i < dim; i++) result.push(_randomFloat(min,max));
-            return result;
-        }
-        else return _randomFloat(min,max);
+    Random.range = function range(min, max, dim) {
+        return _range(_randomFloat, min, max, dim);
     };
 
     /**
@@ -80,8 +76,7 @@ define(function(require, exports, module) {
      * @return {Number} random sign (-1 or 1)
      */
     Random.sign = function sign(prob) {
-        prob = (prob !== undefined) ? prob : 0.5;
-        return (RAND() < prob) ? 1 : -1;
+        return Random.bool(prob) ? 1 : -1;
     };
 
     /**

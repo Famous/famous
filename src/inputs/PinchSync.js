@@ -4,7 +4,7 @@
  *
  * Owner: mark@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 define(function(require, exports, module) {
     var TwoFingerSync = require('./TwoFingerSync');
@@ -46,7 +46,7 @@ define(function(require, exports, module) {
         this._eventOutput.emit('start', {
             count: event.touches.length,
             touches: [this.touchAId, this.touchBId],
-            distance: this._dist,
+            distance: 0,
             center: TwoFingerSync.calculateCenter(this.posA, this.posB)
         });
     };

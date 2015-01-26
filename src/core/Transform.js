@@ -4,7 +4,7 @@
  *
  * Owner: mark@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 
 define(function(require, exports, module) {
@@ -67,7 +67,7 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Fast-multiply two or more Transform matrix types to return a
+     * Fast-multiply two Transform matrix types to return a
      *    Matrix, assuming bottom row on each is [0 0 0 1].
      *
      * @method multiply

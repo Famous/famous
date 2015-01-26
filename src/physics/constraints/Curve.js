@@ -4,7 +4,7 @@
  *
  * Owner: david@famo.us
  * @license MPL 2.0
- * @copyright Famous Industries, Inc. 2014
+ * @copyright Famous Industries, Inc. 2015
  */
 
 define(function(require, exports, module) {
@@ -110,9 +110,9 @@ define(function(require, exports, module) {
             var z = p.z;
 
             var f0  = f(x, y, z);
-            var dfx = (f(x + epsilon, p, p) - f0) / epsilon;
-            var dfy = (f(x, y + epsilon, p) - f0) / epsilon;
-            var dfz = (f(x, y, p + epsilon) - f0) / epsilon;
+            var dfx = (f(x + epsilon, y, z) - f0) / epsilon;
+            var dfy = (f(x, y + epsilon, z) - f0) / epsilon;
+            var dfz = (f(x, y, z + epsilon) - f0) / epsilon;
 
             var g0  = g(x, y, z);
             var dgx = (g(x + epsilon, y, z) - g0) / epsilon;
