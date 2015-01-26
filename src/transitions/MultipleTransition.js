@@ -33,7 +33,7 @@ define(function(require, exports, module) {
      *
      * @method get
      *
-     * @return state {Number|Array} state array
+     * @return {Array} state array
      */
     MultipleTransition.prototype.get = function get() {
         for (var i = 0; i < this._instances.length; i++) {
@@ -46,31 +46,56 @@ define(function(require, exports, module) {
      * Set the end states with a shared transition, with optional callback.
      *
      * @method set
+     * @chainable
      *
      * @param {Number|Array} endState Final State.  Use a multi-element argument for multiple transitions.
      * @param {Object} transition Transition definition, shared among all instances
      * @param {Function} callback called when all endStates have been reached.
+     *
+     * @return {MultipleTransition} this
      */
     MultipleTransition.prototype.set = function set(endState, transition, callback) {
-        var _allCallback = Utility.after(endState.length, callback);
-        for (var i = 0; i < endState.length; i++) {
-            if (!this._instances[i]) this._instances[i] = new (this.method)();
-            this._instances[i].set(endState[i], transition, _allCallback);
+        var i;
+        var allCallback;
+        if (Array.isArray(endState)) {
+            if (callback) allCallback = Utility.after(endState.length, callback);
+            for (i = 0; i < endState.length; i++) {
+                if (!this._instances[i]) this._instances[i] = new (this.method)();
+                this._instances[i].set(endState[i], transition, allCallback);
+            }
+        } else {
+            if (this._instances.length === 0) this._instances[0] = new (this.method)();
+            if (callback) allCallback = Utility.after(this._instances.length, callback);
+            for (i = 0; i < this._instances.length; i++) {
+                this._instances[i].set(endState, transition, allCallback);
+            }
         }
+        return this;
     };
 
     /**
      * Reset all transitions to start state.
      *
      * @method reset
+     * @chainable
      *
-     * @param  {Number|Array} startState Start state
+     * @param {Number|Array} startState Start state
+     *
+     * @return {MultipleTransition} this
      */
     MultipleTransition.prototype.reset = function reset(startState) {
-        for (var i = 0; i < startState.length; i++) {
-            if (!this._instances[i]) this._instances[i] = new (this.method)();
-            this._instances[i].reset(startState[i]);
+        var i;
+        if (Array.isArray(startState)) {
+            for (i = 0; i < startState.length; i++) {
+                if (!this._instances[i]) this._instances[i] = new (this.method)();
+                this._instances[i].reset(startState[i]);
+            }
+        } else {
+            for (i = 0; i < this.instances.length; i++) {
+                this._instances[i].reset(startState);
+            }
         }
+        return this;
     };
 
     module.exports = MultipleTransition;
