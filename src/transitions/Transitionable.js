@@ -170,7 +170,12 @@ define(function(require, exports, module) {
      *    completion (t=1)
      */
     Transitionable.prototype.delay = function delay(duration, callback) {
-        this.set(this.get(), {duration: duration,
+        var endValue;
+        if (this.actionQueue.length) endValue = this.actionQueue[this.actionQueue.length - 1][0];
+        else if (this.currentAction) endValue = this.currentAction[0];
+        else endValue = this.get();
+
+        this.set(endValue, { duration: duration,
             curve: function() {
                 return 0;
             }},
