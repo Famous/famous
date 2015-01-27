@@ -79,7 +79,6 @@ define(function(require, exports, module) {
             this._callback = undefined;
             callback();
         }
-
         if (this.actionQueue.length <= 0) {
             this.set(this.get()); // no update required
             return;
