@@ -171,7 +171,6 @@ define(function(require, exports, module) {
      */
     Transitionable.prototype.delay = function delay(duration, callback) {
         var endValue;
-        
         if (this.actionQueue.length) endValue = this.actionQueue[this.actionQueue.length - 1][0];
         else if (this.currentAction) endValue = this.currentAction[0];
         else endValue = this.get();
