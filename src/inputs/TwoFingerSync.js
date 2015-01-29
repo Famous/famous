@@ -96,7 +96,7 @@ define(function(require, exports, module) {
                 diffTime = this.timestampB - prevTimeB;
             }
         }
-        if (diffTime) this._moveUpdate(diffTime);
+        if (diffTime) this._moveUpdate(diffTime, event);
     };
 
     // private
@@ -107,7 +107,8 @@ define(function(require, exports, module) {
                 if (this.touchAEnabled && this.touchBEnabled) {
                     this._eventOutput.emit('end', {
                         touches : [this.touchAId, this.touchBId],
-                        angle   : this._angle
+                        angle   : this._angle,
+                        target  : event.famousTarget
                     });
                 }
                 this.touchAEnabled = false;
