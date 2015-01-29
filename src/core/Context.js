@@ -17,7 +17,8 @@ define(function(require, exports, module) {
     var _zeroZero = [0, 0];
     var usePrefix = !('perspective' in document.documentElement.style);
 
-    function _getElementSize(element) {
+    function _getElementSize() {
+        var element = this.container;
         return [element.clientWidth, element.clientHeight];
     }
 
@@ -43,7 +44,7 @@ define(function(require, exports, module) {
 
         this._node = new RenderNode();
         this._eventOutput = new EventHandler();
-        this._size = _getElementSize(this.container);
+        this._size = _getElementSize.call(this);
 
         this._perspectiveState = new Transitionable(0);
         this._perspective = undefined;
@@ -58,7 +59,7 @@ define(function(require, exports, module) {
         };
 
         this._eventOutput.on('resize', function() {
-            this.setSize(_getElementSize(this.container));
+            this.setSize(_getElementSize.call(this));
         }.bind(this));
 
     }
@@ -112,7 +113,7 @@ define(function(require, exports, module) {
      * @param {Array.Number} size [width, height].  If unspecified, use size of root document element.
      */
     Context.prototype.setSize = function setSize(size) {
-        if (!size) size = _getElementSize(this.container);
+        if (!size) size = _getElementSize.call(this);
         this._size[0] = size[0];
         this._size[1] = size[1];
     };
