@@ -19,7 +19,7 @@ define(function(require, exports, module) {
             origin: event.origin,
             timestamp: _now(),
             count: event.touches.length,
-            target: event.famousTarget;
+            target: event.famousTarget,
             history: history
         };
     }
