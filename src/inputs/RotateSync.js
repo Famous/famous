@@ -44,6 +44,7 @@ define(function(require, exports, module) {
         this._previousAngle = TwoFingerSync.calculateAngle(this.posA, this.posB);
         var center = TwoFingerSync.calculateCenter(this.posA, this.posB);
         this._eventOutput.emit('start', {
+            target: event.famousTarget,
             count: event.touches.length,
             angle: this._angle,
             center: center,
@@ -51,7 +52,7 @@ define(function(require, exports, module) {
         });
     };
 
-    RotateSync.prototype._moveUpdate = function _moveUpdate(diffTime) {
+    RotateSync.prototype._moveUpdate = function _moveUpdate(diffTime, event) {
         var scale = this.options.scale;
 
         var currAngle = TwoFingerSync.calculateAngle(this.posA, this.posB);
@@ -65,6 +66,7 @@ define(function(require, exports, module) {
         this._eventOutput.emit('update', {
             delta : diffTheta,
             velocity: velTheta,
+            target: event.famousTarget,
             angle: this._angle,
             center: center,
             touches: [this.touchAId, this.touchBId]

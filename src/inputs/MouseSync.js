@@ -70,6 +70,7 @@ define(function(require, exports, module) {
             delta    : null,
             position : null,
             velocity : null,
+            target   : null,
             clientX  : 0,
             clientY  : 0,
             offsetX  : 0,
@@ -139,6 +140,7 @@ define(function(require, exports, module) {
         payload.delta = delta;
         payload.position = this._position;
         payload.velocity = velocity;
+        payload.target = event.famousTarget;
         payload.clientX = x;
         payload.clientY = y;
         payload.offsetX = event.offsetX;
@@ -213,6 +215,7 @@ define(function(require, exports, module) {
         payload.delta    = nextDelta;
         payload.position = this._position;
         payload.velocity = nextVel;
+        payload.target   = event.famousTarget;
         payload.clientX  = x;
         payload.clientY  = y;
         payload.offsetX  = event.offsetX;

@@ -50,6 +50,7 @@ define(function(require, exports, module) {
         this._scaleFactor = 1;
         this._startDist = TwoFingerSync.calculateDistance(this.posA, this.posB);
         this._eventOutput.emit('start', {
+            target: event.famousTarget,
             count: event.touches.length,
             touches: [this.touchAId, this.touchBId],
             distance: this._startDist,
@@ -58,7 +59,7 @@ define(function(require, exports, module) {
     };
 
     // handles movement of two fingers
-    ScaleSync.prototype._moveUpdate = function _moveUpdate(diffTime) {
+    ScaleSync.prototype._moveUpdate = function _moveUpdate(diffTime, event) {
         var scale = this.options.scale;
 
         var currDist = TwoFingerSync.calculateDistance(this.posA, this.posB);
@@ -72,6 +73,7 @@ define(function(require, exports, module) {
             delta : delta,
             scale: newScaleFactor,
             velocity: veloScale,
+            target: event.famousTarget,
             distance: currDist,
             center : center,
             touches: [this.touchAId, this.touchBId]
