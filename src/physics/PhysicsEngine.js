@@ -7,6 +7,7 @@
  */
 define(function(require, exports, module) {
     var EventHandler = require('../core/EventHandler');
+    var OptionsManager = require('../core/OptionsManager');
 
     /**
      * The Physics Engine is responsible for mediating bodies with their
@@ -23,8 +24,10 @@ define(function(require, exports, module) {
      * @param options {Object} options
      */
     function PhysicsEngine(options) {
+        // patch options with defaults
         this.options = Object.create(PhysicsEngine.DEFAULT_OPTIONS);
-        if (options) this.setOptions(options);
+        this._optionsManager = new OptionsManager(this.options);
+        this.setOptions(options);
 
         this._particles      = [];   //list of managed particles
         this._bodies         = [];   //list of managed bodies
@@ -100,8 +103,8 @@ define(function(require, exports, module) {
      * @method setOptions
      * @param opts {Object}
      */
-    PhysicsEngine.prototype.setOptions = function setOptions(opts) {
-        for (var key in opts) if (this.options[key]) this.options[key] = opts[key];
+    PhysicsEngine.prototype.setOptions = function setOptions(options) {
+        this._optionsManager.setOptions(options);
     };
 
     /**
@@ -452,15 +455,18 @@ define(function(require, exports, module) {
         if (dtFrame > MAX_TIME_STEP) dtFrame = MAX_TIME_STEP;
 
         //robust integration
-//        this._buffer += dtFrame;
-//        while (this._buffer > this._timestep){
-//            _integrate.call(this, this._timestep);
-//            this._buffer -= this._timestep;
-//        };
-//        _integrate.call(this, this._buffer);
-//        this._buffer = 0.0;
-
-        _integrate.call(this, TIMESTEP);
+        if (this.options.robust) {
+            this._buffer += dtFrame;
+            while (this._buffer > TIMESTEP){
+                _integrate.call(this, TIMESTEP);
+                this._buffer -= TIMESTEP;
+            };
+            _integrate.call(this, this._buffer);
+            this._buffer = 0.0;
+        }
+        else {
+            _integrate.call(this, TIMESTEP);
+        }
 
         this.emit(_events.update, this);
 
