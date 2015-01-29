@@ -101,7 +101,7 @@ define(function(require, exports, module) {
      * Options setter
      *
      * @method setOptions
-     * @param opts {Object}
+     * @param options {Object}
      */
     PhysicsEngine.prototype.setOptions = function setOptions(options) {
         this._optionsManager.setOptions(options);
