@@ -60,6 +60,7 @@ define(function(require, exports, module) {
             delta    : null,
             position : null,
             velocity : null,
+            target   : null,
             clientX  : undefined,
             clientY  : undefined,
             count    : 0,
@@ -105,6 +106,7 @@ define(function(require, exports, module) {
         payload.delta = delta;
         payload.position = this._position;
         payload.velocity = velocity;
+        payload.target = data.target;
         payload.clientX = data.x;
         payload.clientY = data.y;
         payload.count = data.count;
@@ -175,6 +177,7 @@ define(function(require, exports, module) {
         payload.delta    = nextDelta;
         payload.velocity = nextVel;
         payload.position = this._position;
+        payload.target   = data.target;
         payload.clientX  = data.x;
         payload.clientY  = data.y;
         payload.count    = data.count;

@@ -40,6 +40,7 @@ define(function(require, exports, module) {
             delta    : null,
             position : null,
             velocity : null,
+            target   : null,
             slip     : true
         };
 
@@ -95,10 +96,13 @@ define(function(require, exports, module) {
     function _handleMove(event) {
         if (this.options.preventDefault) event.preventDefault();
 
+        var payload = this._payload;
+
         if (!this._inProgress) {
             this._inProgress = true;
             this._position = (this.options.direction === undefined) ? [0,0] : 0;
             payload = this._payload;
+            payload.target = event.famousTarget;
             payload.slip = true;
             payload.position = this._position;
             payload.clientX = event.clientX;
@@ -154,10 +158,10 @@ define(function(require, exports, module) {
             this._position[1] += nextDelta[1];
         }
 
-        var payload = this._payload;
         payload.delta    = nextDelta;
         payload.velocity = nextVel;
         payload.position = this._position;
+        payload.target   = event.famousTarget;
         payload.slip     = true;
 
         this._eventOutput.emit('update', payload);
