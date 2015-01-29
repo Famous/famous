@@ -460,7 +460,7 @@ define(function(require, exports, module) {
             while (this._buffer > TIMESTEP){
                 _integrate.call(this, TIMESTEP);
                 this._buffer -= TIMESTEP;
-            };
+            }
             _integrate.call(this, this._buffer);
             this._buffer = 0.0;
         }
