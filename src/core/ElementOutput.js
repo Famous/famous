@@ -37,6 +37,7 @@ define(function(require, exports, module) {
 
         /** @ignore */
         this.eventForwarder = function eventForwarder(event) {
+            event.famousTarget = this;
             this._eventOutput.emit(event.type, event);
         }.bind(this);
 

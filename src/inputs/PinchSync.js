@@ -44,6 +44,7 @@ define(function(require, exports, module) {
         this._displacement = 0;
 
         this._eventOutput.emit('start', {
+            target: event.famousTarget,
             count: event.touches.length,
             touches: [this.touchAId, this.touchBId],
             distance: 0,
@@ -51,7 +52,7 @@ define(function(require, exports, module) {
         });
     };
 
-    PinchSync.prototype._moveUpdate = function _moveUpdate(diffTime) {
+    PinchSync.prototype._moveUpdate = function _moveUpdate(diffTime, event) {
         var currDist = TwoFingerSync.calculateDistance(this.posA, this.posB);
         var center = TwoFingerSync.calculateCenter(this.posA, this.posB);
 
@@ -65,6 +66,7 @@ define(function(require, exports, module) {
         this._eventOutput.emit('update', {
             delta : delta,
             velocity: velocity,
+            target: event.famousTarget,
             distance: currDist,
             displacement: this._displacement,
             center: center,
