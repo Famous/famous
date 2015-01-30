@@ -27,7 +27,6 @@ The low level componentry of Famo.us, including the required CSS stylesheet.
 ## Documentation
 
 - [Reference Docs][reference-documentation]
-- [Surfaces][surfaces]
 - [The Render Tree][render-tree]
 - [Animating][animating]
 - [Layout][layout]
@@ -44,10 +43,9 @@ one at http://mozilla.org/MPL/2.0/.
 
 
 [reference-documentation]: http://famo.us/docs
-[surfaces]: http://famo.us/guides/dev/surfaces.html
-[animating]: http://famo.us/guides/dev/animating.html
-[render-tree]: http://famo.us/guides/dev/render-tree.html
-[layout]: http://famo.us/guides/dev/layout.html
-[events]: http://famo.us/guides/dev/events.html
-[pitfalls]: http://famo.us/guides/dev/pitfalls.html
+[animating]: http://famo.us/guides/animations
+[render-tree]: http://famo.us/guides/render-tree
+[layout]: http://famo.us/guides/layout
+[events]: http://famo.us/guides/events
+[pitfalls]: http://famo.us/guides/pitfalls
 
