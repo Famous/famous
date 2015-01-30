@@ -88,19 +88,16 @@ define(function(require, exports, module) {
         }
 
         if (deferQueue) {
-            var queued = 0,
-                l = deferQueue.length;
+            var queued = 0;
+            l = deferQueue.length;
 
             // limit total execution time for deferrable functions
             while (queued < l && Date.now() - currentTime < MAX_DEFER_FRAME_TIME) {
                 deferQueue[queued++]();
             }
-            if (queued === l) {
-                deferQueue = undefined;
-            }
-            else {
-                deferQueue.splice(0, queued);
-            }
+
+            if (queued === l) deferQueue = undefined;
+            else deferQueue.splice(0, queued);
         }
 
         for (i = 0, l = contexts.length; i < l; i++) {
