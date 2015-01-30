@@ -78,21 +78,24 @@ define(function(require, exports, module) {
         var currentTickQueue = nextTickQueue;
         nextTickQueue = undefined;
 
+        var i = 0, l = 0;
+
         // empty the queue
         if (currentTickQueue) {
-            for (var t = 0, l = currentTickQueue.length; t < l; t++) {
+            for (l = currentTickQueue.length; i < l; i++) {
                 currentTickQueue[i]();
             }
         }
 
         if (deferQueue) {
-            var queued = 0;
+            var queued = 0,
+                l = deferQueue.length;
 
             // limit total execution time for deferrable functions
-            for (; Date.now() - currentTime < MAX_DEFER_FRAME_TIME; queued++) {
-                deferQueue[queued]();
+            while (queued < l && Date.now() - currentTime < MAX_DEFER_FRAME_TIME) {
+                deferQueue[queued++]();
             }
-            if (queued === deferQueue.length) {
+            if (queued === l) {
                 deferQueue = undefined;
             }
             else {
@@ -100,7 +103,7 @@ define(function(require, exports, module) {
             }
         }
 
-        for (var i = 0; i < contexts.length; i++) {
+        for (i = 0, l = contexts.length; i < l; i++) {
             contexts[i].update();
         }
 
