@@ -85,7 +85,7 @@ Copyright (c) 2014 Famous Industries, Inc.
 [famous-university]: https://famo.us/university
 [famous-help]: https://famo.us/help
 [famous-docs]: http://famo.us/docs
-[famous-demos]: http://famo.us/demos
+[famous-demos]: http://codepen.io/befamous/
 [famous-angular]: http://famo.us/integrations/angular/
 [famous-angular-starter-kit]: http://code.famo.us/famous-angular/latest/famous-angular-starter-kit.zip?source=repo
 [IRC]: http://webchat.freenode.net/?channels=famous
