@@ -78,7 +78,8 @@ define(function(require, exports, module) {
         var currentTickQueue = nextTickQueue;
         nextTickQueue = undefined;
 
-        var i = 0, l = 0;
+        var i = 0,
+            l = 0;
 
         // empty the queue
         if (currentTickQueue) {
