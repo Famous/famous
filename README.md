@@ -11,7 +11,6 @@ Welcome to the Famo.us GitHub repo. If you are interested in evaluating Famo.us,
 | **LEARN** | [Famo.us University][famous-university] |
 | **DOCS** | [Documentation][famous-docs] |
 | **HELP** | [IRC Channel][IRC] |
-| **DEMOS** | [Mobile Interactive Demos][famous-demos] (*built by the community*)|
 | **ANGULAR INTEGRATION** | [Famo.us/Angular][famous-angular] |
 | **ANGULAR DOWNLOAD** | [Angular Starter Kit][famous-angular-starter-kit] |
 
@@ -85,7 +84,6 @@ Copyright (c) 2014 Famous Industries, Inc.
 [famous-university]: https://famo.us/university
 [famous-help]: https://famo.us/help
 [famous-docs]: http://famo.us/docs
-[famous-demos]: http://famo.us/demos
 [famous-angular]: http://famo.us/integrations/angular/
 [famous-angular-starter-kit]: http://code.famo.us/famous-angular/latest/famous-angular-starter-kit.zip?source=repo
 [IRC]: http://webchat.freenode.net/?channels=famous
