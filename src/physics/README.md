@@ -13,14 +13,14 @@ Core engine controlling animations via physical simulation.
 - bodies/Rectangle.js: An elemental rectangle-shaped Body in the physics engine.
 - constraints/Collision.js: Allows for two circular bodies to collide and bounce off each other.
 - constraints/Constraint.js: Allows for two circular bodies to collide and bounce off each other.
-- constraints/Curve.js: A constraint that keeps a physics body on a given implicit curve 
+- constraints/Curve.js: A constraint that keeps a physics body on a given implicit curve
   regardless of other physical forces are applied to it.
 - constraints/Distance.js:  A constraint that keeps a physics body a given distance away from a given anchor, or another attached body.
 - constraints/Snap.js: A spring constraint is like a spring force, except that it is always numerically stable (even for low periods).
-- constraints/Surface.js: A constraint that keeps a physics body on a given implicit surface 
+- constraints/Surface.js: A constraint that keeps a physics body on a given implicit surface
   regardless of other physical forces are applied to it.
 - constraints/Wall.js:  A wall describes an infinite two-dimensional plane that physics bodies can collide with.
-- constraints/Walls.js: Walls combines one or more Wall primitives and exposes a simple 
+- constraints/Walls.js: Walls combines one or more Wall primitives and exposes a simple
   API to interact with several walls at once
 - forces/Drag.js: Drag is a force that opposes velocity. Attach it to the
   physics engine to slow down a physics body in motion.
@@ -36,7 +36,7 @@ Core engine controlling animations via physical simulation.
 - forces/VectorField.js:  A force that moves a physics body to a location with a spring motion.
 - integrators/SymplecticEuler.js:  Ordinary Differential Equation (ODE)
   Integrator. Manages updating a physics body's state over time.
-- PhysicsEngine.js: The Physics Engine is responsible for mediating Bodies and 
+- PhysicsEngine.js: The Physics Engine is responsible for mediating Bodies and
   their interaction with forces and constraints.
 
 

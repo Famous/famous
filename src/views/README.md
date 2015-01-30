@@ -49,5 +49,5 @@ one at http://mozilla.org/MPL/2.0/.
 
 
 [reference-documentation]: http://famo.us/docs
-[render-tree]: http://famo.us/guides/dev/render-tree.html
-[layout]: http://famo.us/guides/dev/layout.html
+[render-tree]: http://famo.us/guides/render-tree
+[layout]: http://famo.us/guides/layout

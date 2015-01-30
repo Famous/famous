@@ -32,6 +32,6 @@ one at http://mozilla.org/MPL/2.0/.
 
 
 [reference-documentation]: http://famo.us/docs
-[events]: http://famo.us/guides/dev/events.html
-[pitfalls]: http://famo.us/guides/dev/pitfalls.html
+[events]: http://famo.us/guides/events
+[pitfalls]: http://famo.us/guides/pitfalls
 
