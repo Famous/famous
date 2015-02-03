@@ -134,9 +134,13 @@ define(function(require, exports, module) {
     Context.prototype.migrate = function migrate(container) {
         if (container === this.container) return;
         _removeEventListeners.call(this, this.container);
+        this.container.classList.remove('famous-root');
+
         this.container = container;
+
         this._allocator.migrate(container);
         _addEventListeners.call(this, this.container);
+        this.container.classList.add('famous-root');
     };
 
     /**
