@@ -175,7 +175,7 @@ define(function(require, exports, module) {
         else if (this.currentAction) endValue = this.currentAction[0];
         else endValue = this.get();
 
-        this.set(endValue, { duration: duration,
+        return this.set(endValue, { duration: duration,
             curve: function() {
                 return 0;
             }},
