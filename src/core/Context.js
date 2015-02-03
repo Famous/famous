@@ -232,6 +232,7 @@ define(function(require, exports, module) {
      *
      * @param {string} type event type key (for example, 'click')
      * @param {function(string, Object)} handler callback
+     * @param {boolean} capture use capture
      */
     Context.prototype.on = function on(type, handler, capture) {
         if (this.container) this.container.addEventListener(type, this.eventForwarder, capture);
