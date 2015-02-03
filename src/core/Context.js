@@ -11,6 +11,8 @@ define(function(require, exports, module) {
     var RenderNode = require('./RenderNode');
     var EventHandler = require('./EventHandler');
     var ElementAllocator = require('./ElementAllocator');
+    var Modifier = require('./Modifier'); // CHROME HACK
+    var Surface = require('./Surface'); // CHROME HACK
     var Transform = require('./Transform');
     var Transitionable = require('../transitions/Transitionable');
 
@@ -62,6 +64,27 @@ define(function(require, exports, module) {
             this.setSize(_getElementSize.call(this));
         }.bind(this));
 
+        _chromeHack.call(this);
+    }
+
+    // WARNING: This is a hack for Chrome.
+    // The issue is that when every Surface on the page starts
+    // with a z translation of 0, Chrome fails to render correctly
+    // on transform changes.  We solve this with by placing an
+    // invisible Surface on the page with a z translation to
+    // stop this behavior.
+    var _chromeTransform = Transform.translate(0, 0, 10000000);
+    function _chromeHack() {
+        this.add(new Modifier({
+                transform: _chromeTransform,
+                opacity: 0
+            }))
+            .add(new Surface({
+                size: [1, 1],
+                properties: {
+                    backgroundColor: 'chromeHack'
+                }
+            }));
     }
 
     // Note: Unused
