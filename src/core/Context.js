@@ -225,14 +225,16 @@ define(function(require, exports, module) {
 
     /**
      * Unbind an event by type and handler.
-     *   This undoes the work of "on"
+     *   This undoes the work of "on".
+     *
      *
      * @method removeListener
      * @param {string} type event type key (for example, 'click')
-     * @param {function(string, Object)} fn handler
+     * @param {function} handler function object to remove
+     * @return {EventHandler} internal event handler object (for chaining)
      */
-    Context.prototype.removeListener = function removeListener(type, fn) {
-        this._eventOutput.removeListener(type, fn);
+    Context.prototype.removeListener = function removeListener(type, handler) {
+        return this._eventOutput.removeListener(type, handler);
     };
 
     /**
