@@ -18,9 +18,6 @@ define(function(require, exports, module) {
      *   On static initialization, window.requestAnimationFrame is called with
      *     the event loop function.
      *
-     *   Note: Any window in which Engine runs will prevent default
-     *     scrolling behavior on the 'touchmove' event.
-     *
      * @static
      * @class Engine
      */
@@ -124,33 +121,6 @@ define(function(require, exports, module) {
     }
     window.addEventListener('resize', handleResize, false);
     handleResize();
-
-    /**
-     * Initialize famous for app mode
-     *
-     * @static
-     * @private
-     * @method initialize
-     */
-    function initialize() {
-        // prevent scrolling via browser
-        window.addEventListener('touchmove', function(event) {
-            event.preventDefault();
-        }, true);
-
-        addRootClasses();
-    }
-    var initialized = false;
-
-    function addRootClasses() {
-        if (!document.body) {
-            Engine.nextTick(addRootClasses);
-            return;
-        }
-
-        document.body.classList.add('famous-root');
-        document.documentElement.classList.add('famous-root');
-    }
 
     /**
      * Add event handler object to set of downstream handlers.
@@ -302,8 +272,6 @@ define(function(require, exports, module) {
      * @return {Context} new Context within el
      */
     Engine.createContext = function createContext(el) {
-        if (!initialized && options.appMode) Engine.nextTick(initialize);
-
         var needMountContainer = false;
         if (!el) {
             el = document.createElement(options.containerType);
@@ -311,7 +279,7 @@ define(function(require, exports, module) {
             needMountContainer = true;
         }
 
-        var context = new Context(el);
+        var context = new Context(el, options.appMode);
         Engine.registerContext(context);
 
         if (needMountContainer) mount(context, el);
