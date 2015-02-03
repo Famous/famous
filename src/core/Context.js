@@ -43,6 +43,7 @@ define(function(require, exports, module) {
 
         this._node = new RenderNode();
         this._eventOutput = new EventHandler();
+        this._eventOutput.bindThis(this);
         this._size = _getElementSize(this.container);
 
         this._perspectiveState = new Transitionable(0);
@@ -61,6 +62,33 @@ define(function(require, exports, module) {
             this.setSize(_getElementSize(this.container));
         }.bind(this));
 
+        this._eventOutput.on('touchmove', function(event) {
+            event.preventDefault();
+        });
+
+        /** @ignore */
+        this.eventForwarder = function eventForwarder(event) {
+            this._eventOutput.emit(event.type, event);
+        }.bind(this);
+
+        _addEventListeners.call(this, container);
+    }
+
+    //  Attach Famous event handling to document events emanating from container
+    //    document element.  This occurs just after attachment to the document.
+    //    Calling this enables methods like #on and #pipe.
+    function _addEventListeners(container) {
+        for (var i in this._eventOutput.listeners) {
+            container.addEventListener(i, this.eventForwarder);
+        }
+    }
+
+    //  Detach Famous event handling from document events emanating from container
+    //  document element.  This occurs just before detach from the document.
+    function _removeEventListeners(container) {
+        for (var i in this._eventOutput.listeners) {
+            container.removeEventListener(i, this.eventForwarder);
+        }
     }
 
     // Note: Unused
@@ -89,8 +117,10 @@ define(function(require, exports, module) {
      */
     Context.prototype.migrate = function migrate(container) {
         if (container === this.container) return;
+        _removeEventListeners.call(this, this.container);
         this.container = container;
         this._allocator.migrate(container);
+        _addEventListeners.call(this, this.container);
     };
 
     /**
@@ -174,7 +204,9 @@ define(function(require, exports, module) {
      * @return {EventHandler} this
      */
     Context.prototype.emit = function emit(type, event) {
-        return this._eventOutput.emit(type, event);
+        var handled = this._eventOutput.emit(type, event);
+        if (handled && event && event.stopPropagation) event.stopPropagation();
+        return handled;
     };
 
     /**
@@ -187,21 +219,20 @@ define(function(require, exports, module) {
      * @return {EventHandler} this
      */
     Context.prototype.on = function on(type, handler) {
-        return this._eventOutput.on(type, handler);
+        if (this.container) this.container.addEventListener(type, this.eventForwarder);
+        this._eventOutput.on(type, handler);
     };
 
     /**
      * Unbind an event by type and handler.
-     *   This undoes the work of "on".
+     *   This undoes the work of "on"
      *
      * @method removeListener
-     *
      * @param {string} type event type key (for example, 'click')
-     * @param {function} handler function object to remove
-     * @return {EventHandler} internal event handler object (for chaining)
+     * @param {function(string, Object)} fn handler
      */
-    Context.prototype.removeListener = function removeListener(type, handler) {
-        return this._eventOutput.removeListener(type, handler);
+    Context.prototype.removeListener = function removeListener(type, fn) {
+        this._eventOutput.removeListener(type, fn);
     };
 
     /**
