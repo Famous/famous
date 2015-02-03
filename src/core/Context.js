@@ -216,7 +216,6 @@ define(function(require, exports, module) {
      *
      * @param {string} type event type key (for example, 'click')
      * @param {function(string, Object)} handler callback
-     * @return {EventHandler} this
      */
     Context.prototype.on = function on(type, handler) {
         if (this.container) this.container.addEventListener(type, this.eventForwarder);
