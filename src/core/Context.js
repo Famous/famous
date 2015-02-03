@@ -37,7 +37,7 @@ define(function(require, exports, module) {
      * @private
      * @param {Node} container Element in which content will be inserted
      */
-    function Context(container) {
+    function Context(container, appMode) {
         this.container = container;
         this._allocator = new ElementAllocator(container);
 
@@ -62,16 +62,32 @@ define(function(require, exports, module) {
             this.setSize(_getElementSize(this.container));
         }.bind(this));
 
-        this._eventOutput.on('touchmove', function(event) {
-            event.preventDefault();
-        });
-
         /** @ignore */
         this.eventForwarder = function eventForwarder(event) {
             this._eventOutput.emit(event.type, event);
         }.bind(this);
 
         _addEventListeners.call(this, container);
+
+        if (appMode) {
+            initialize.call(this);
+        }
+    }
+
+    /**
+     * Initialize famous for app mode
+     *
+     * @static
+     * @private
+     * @method initialize
+     */
+    function initialize() {
+        // prevent scrolling via browser
+        this.on('touchmove', function(event) {
+            event.preventDefault();
+        }, true);
+
+        this.container.classList.add('famous-root');
     }
 
     //  Attach Famous event handling to document events emanating from container
@@ -217,8 +233,8 @@ define(function(require, exports, module) {
      * @param {string} type event type key (for example, 'click')
      * @param {function(string, Object)} handler callback
      */
-    Context.prototype.on = function on(type, handler) {
-        if (this.container) this.container.addEventListener(type, this.eventForwarder);
+    Context.prototype.on = function on(type, handler, capture) {
+        if (this.container) this.container.addEventListener(type, this.eventForwarder, capture);
         this._eventOutput.on(type, handler);
     };
 

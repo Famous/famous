@@ -122,16 +122,6 @@ define(function(require, exports, module) {
     window.addEventListener('resize', handleResize, false);
     handleResize();
 
-    function addRootClasses() {
-        if (!document.body) {
-            Engine.nextTick(addRootClasses);
-            return;
-        }
-
-        document.body.classList.add('famous-root');
-        document.documentElement.classList.add('famous-root');
-    }
-
     /**
      * Add event handler object to set of downstream handlers.
      *
@@ -282,8 +272,6 @@ define(function(require, exports, module) {
      * @return {Context} new Context within el
      */
     Engine.createContext = function createContext(el) {
-        if (options.appMode) Engine.nextTick(addRootClasses);
-
         var needMountContainer = false;
         if (!el) {
             el = document.createElement(options.containerType);
@@ -291,7 +279,7 @@ define(function(require, exports, module) {
             needMountContainer = true;
         }
 
-        var context = new Context(el);
+        var context = new Context(el, options.appMode);
         Engine.registerContext(context);
 
         if (needMountContainer) mount(context, el);
