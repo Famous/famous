@@ -5,6 +5,7 @@
 - Update .gitignore
 - Update copyright year
 - Update linter
+- update distribution generator
 - Fix broken links to http://famo.us
 
 ### Bug Fixes
