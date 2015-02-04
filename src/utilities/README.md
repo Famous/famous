@@ -17,7 +17,7 @@ Utilities hosts various helper classes and static methods
 
 ## License
 
-Copyright (c) 2014 Famous Industries, Inc.
+Copyright (c) 2015 Famous Industries, Inc.
 
 This Source Code Form is subject to the terms of the Mozilla Public License,
 v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain

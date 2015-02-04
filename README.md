@@ -76,7 +76,7 @@ Note: cloning only provides the Famo.us folder with all Famo.us code, but it doe
 - Mozilla also maintains an [MPL-2.0 FAQ][mpl-faq] that should answer most questions you may have about the license.
 - Contact license@famo.us for further inquiries.
 
-Copyright (c) 2014 Famous Industries, Inc.
+Copyright (c) 2015 Famous Industries, Inc.
 
 
 [famous-site]: http://famo.us
