@@ -8,9 +8,9 @@
  */
 
 define(function(require, exports, module) {
-    var View      = require('famous/core/View');
-    var Entity    = require('famous/core/Entity');
-    var Transform = require('famous/core/Transform');
+    var View      = require('../core/View');
+    var Entity    = require('../core/Entity');
+    var Transform = require('../core/Transform');
 
     /*
      *  A View that keeps track of the parent's resize, passed down from the
