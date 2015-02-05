@@ -32,12 +32,8 @@ define(function(require, exports, module) {
 
     var contexts = [];
 
-    var nextTickQueue = [];
-
-    var currentFrame = 0;
-    var nextTickFrame = 0;
-
-    var deferQueue = [];
+    var nextTickQueue;
+    var deferQueue;
 
     var lastTime = Date.now();
     var frameTime;
@@ -71,33 +67,47 @@ define(function(require, exports, module) {
      * @method step
      */
     Engine.step = function step() {
-        currentFrame++;
-        nextTickFrame = currentFrame;
-
         var currentTime = Date.now();
+        frameTime = currentTime - lastTime;
 
         // skip frame if we're over our framerate cap
-        if (frameTimeLimit && currentTime - lastTime < frameTimeLimit) return;
-
-        var i = 0;
-
-        frameTime = currentTime - lastTime;
-        lastTime = currentTime;
+        if (frameTimeLimit && frameTime < frameTimeLimit) return;
 
         eventHandler.emit('prerender');
 
-        // empty the queue
-        var numFunctions = nextTickQueue.length;
-        while (numFunctions--) (nextTickQueue.shift())(currentFrame);
+        var currentTickQueue = nextTickQueue;
+        nextTickQueue = undefined;
 
-        // limit total execution time for deferrable functions
-        while (deferQueue.length && (Date.now() - currentTime) < MAX_DEFER_FRAME_TIME) {
-            deferQueue.shift().call(this);
+        var i = 0;
+        var l = 0;
+
+        // empty the queue
+        if (currentTickQueue) {
+            for (l = currentTickQueue.length; i < l; i++) {
+                currentTickQueue[i]();
+            }
         }
 
-        for (i = 0; i < contexts.length; i++) contexts[i].update();
+        if (deferQueue) {
+            var queued = 0;
+            l = deferQueue.length;
+
+            // limit total execution time for deferrable functions
+            while (queued < l && Date.now() - currentTime < MAX_DEFER_FRAME_TIME) {
+                deferQueue[queued++]();
+            }
+
+            if (queued === l) deferQueue = undefined;
+            else deferQueue.splice(0, queued);
+        }
+
+        for (i = 0, l = contexts.length; i < l; i++) {
+            contexts[i].update();
+        }
 
         eventHandler.emit('postrender');
+
+        lastTime = currentTime;
     };
 
     // engage requestAnimationFrame
@@ -378,6 +388,7 @@ define(function(require, exports, module) {
      * @param {function(Object)} fn function accepting window object
      */
     Engine.nextTick = function nextTick(fn) {
+        if (!nextTickQueue) nextTickQueue = [];
         nextTickQueue.push(fn);
     };
 
@@ -391,6 +402,7 @@ define(function(require, exports, module) {
      * @param {Function} fn
      */
     Engine.defer = function defer(fn) {
+        if (!deferQueue) deferQueue = [];
         deferQueue.push(fn);
     };
 
