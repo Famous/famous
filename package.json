@@ -110,8 +110,8 @@
   "devDependencies": {
     "eslint": "^0.13.0",
     "famous-dist-generator": "^1.0.2",
-    "famous-doc-generator": "^0.7.0",
-    "famous-examples-generator": "^0.2.1",
+    "famous-doc-generator": "^0.8.0",
+    "famous-examples-generator": "^0.3.0",
     "jscs": "^1.5.9"
   },
   "dependencies": {
