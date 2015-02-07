@@ -25,13 +25,21 @@ define(function(require, exports, module) {
         this._eventInput.on(eventName, _handleUpdate.bind(this));
     }
 
+    function _sumArray(addend1, addend2) {
+        var result = [];
+        for (var i = 0; i < Math.max(addend1.length, addend2.length); i++) {
+            result[i] = (addend1[i] || 0) + (addend2[i] || 0);
+        }
+        return result;
+    }
+
     function _handleUpdate(data) {
         var delta = data.delta;
         var state = this.get();
 
         if (delta.constructor === state.constructor){
             var newState = (delta instanceof Array)
-                ? [state[0] + delta[0], state[1] + delta[1]]
+                ? _sumArray(state, delta)
                 : state + delta;
             this.set(newState);
         }
