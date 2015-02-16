@@ -34,7 +34,7 @@ This project shows the easiest way to get started with Famo.us, using a version 
 
 **[Requirejs Seed][requirejs-seed]**
 
-This project can be used to get you started using Famo.us with the AMD module loading pattern via [RequireJS][requirejs].  This project is created using the latest version of our Yeoman Generator (see below), and includes an entire tooling stack neccessary to bring your product to development.
+This project can be used to get you started using Famo.us with the AMD module loading pattern via [RequireJS][requirejs].  This project is created using the latest version of our Yeoman Generator (see below), and includes an entire tooling stack necessary to bring your product to development.
 
 **[Browserify Seed][browserify-seed]**
 
