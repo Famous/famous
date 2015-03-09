@@ -176,7 +176,7 @@ state.set(100, {method : 'snap',   dampingRatio : 0.5, period : 500}); // snap
 ```
 
 You only need to register a physics transition once per app. After you register it
-with as a method, you can call any transition with that `method` key anywhere
+as a method, you can call any transition with that `method` key anywhere
 else in your app.
 
 ## <a name="tween_vs_physics">Tweens vs Physics </a>
