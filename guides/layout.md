@@ -286,7 +286,7 @@ a _parent_ size. These modifiers can not be combined into one.
 
 Thus far, we have only considered setting the `transform`, `size`, `origin` and
 `align` parameters as a static property of a `Modifier`. However, each of these
-properties can animate over time. This can be done in one of two methods
+properties can animate over time. This can be done in one of two methods:
 
 - [push-based](#push)
 - [pull-based](#pull)
