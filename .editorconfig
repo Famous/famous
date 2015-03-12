@@ -17,14 +17,6 @@ trim_trailing_whitespace = false
 indent_style = space
 indent_size = 2
 
-[Gruntfile.js]
-indent_style = space
-indent_size = 2
-
-[grunt/*.js]
-indent_style = space
-indent_size = 2
-
 [*.json]
 indent_style = space
 indent_size = 2
