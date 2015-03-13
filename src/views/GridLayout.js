@@ -82,7 +82,7 @@ define(function(require, exports, module) {
 
         this._activeCount = rows * cols;
 
-        for (i = this._activeCount ; i < this._modifiers.length; i++) _animateModifier.call(this, i, [Math.round(colSize), Math.round(rowSize)], [0, 0], 0);
+        for (i = this._activeCount; i < this._modifiers.length; i++) _animateModifier.call(this, i, [Math.round(colSize), Math.round(rowSize)], [0, 0], 0);
 
         this._eventOutput.emit('reflow');
     }

@@ -108,14 +108,14 @@
   },
   "homepage": "https://famo.us",
   "devDependencies": {
-    "eslint": "^0.13.0",
+    "eslint": "^0.16.2",
     "famous-dist-generator": "^1.0.2",
     "famous-doc-generator": "^0.8.0",
     "famous-examples-generator": "^0.3.0",
     "jscs": "^1.5.9"
   },
   "dependencies": {
-    "cssify": "^0.6.0",
+    "cssify": "^0.7.0",
     "deamdify": "^0.1.1"
   },
   "browserify": {

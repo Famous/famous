@@ -197,7 +197,7 @@ define(function(require, exports, module) {
          * @static
          */
         inElastic: function(t) {
-            var s=1.70158;var p=0;var a=1.0;
+            var s=1.70158; var p=0; var a=1.0;
             if (t===0) return 0.0;  if (t===1) return 1.0;  if (!p) p=.3;
             s = p/(2*Math.PI) * Math.asin(1.0/a);
             return -(a*Math.pow(2,10*(t-=1)) * Math.sin((t-s)*(2*Math.PI)/ p));
@@ -208,7 +208,7 @@ define(function(require, exports, module) {
          * @static
          */
         outElastic: function(t) {
-            var s=1.70158;var p=0;var a=1.0;
+            var s=1.70158; var p=0; var a=1.0;
             if (t===0) return 0.0;  if (t===1) return 1.0;  if (!p) p=.3;
             s = p/(2*Math.PI) * Math.asin(1.0/a);
             return a*Math.pow(2,-10*t) * Math.sin((t-s)*(2*Math.PI)/p) + 1.0;
@@ -219,7 +219,7 @@ define(function(require, exports, module) {
          * @static
          */
         inOutElastic: function(t) {
-            var s=1.70158;var p=0;var a=1.0;
+            var s=1.70158; var p=0;   var a=1.0;
             if (t===0) return 0.0;  if ((t/=.5)===2) return 1.0;  if (!p) p=(.3*1.5);
             s = p/(2*Math.PI) * Math.asin(1.0/a);
             if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin((t-s)*(2*Math.PI)/p));

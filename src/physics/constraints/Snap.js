@@ -113,7 +113,7 @@ define(function(require, exports, module) {
         var period       = options.period;
         var dampingRatio = options.dampingRatio;
 
-        for (var i = 0; i < targets.length ; i++) {
+        for (var i = 0; i < targets.length; i++) {
             var target = targets[i];
 
             var p1 = target.position;
