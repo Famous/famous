@@ -61,7 +61,6 @@ define(function(require, exports, module) {
         Timer.setTimeout(function(){
           this.isReady = true;
         }.bind(this), time);
-        
         var angle = this.flipped ? 0 : Math.PI;
         this.setAngle(angle, transition, callback);
         this.flipped = !this.flipped;
