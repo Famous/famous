@@ -56,9 +56,9 @@ define(function(require, exports, module) {
      * @param {integer} [time] Time to set inside timeout which resets isReady attribute
      */
     Flipper.prototype.flip = function flip(transition, callback, time) {
-       if(!this.isReady) return;
+       if (!this.isReady) return;
         this.isReady = false;
-        Timer.setTimeout(function(){
+        Timer.setTimeout(function() {
           this.isReady = true;
         }.bind(this), time);
         var angle = this.flipped ? 0 : Math.PI;
