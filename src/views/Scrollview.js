@@ -125,6 +125,7 @@ define(function(require, exports, module) {
         this._displacement = 0;
         this._totalShift = 0;
         this._cachedIndex = 0;
+        this._lastSizeForDirection = 0;
 
         // subcomponent logic
         this._scroller.positionFrom(this.getPosition.bind(this));
@@ -236,6 +237,18 @@ define(function(require, exports, module) {
 
         this._eventInput.on('resize', function() {
             this._node._.calculateSize();
+            var position = this.getPosition();
+            var sizeForDirection = _nodeSizeForDirection.call(this, this._node);
+            if (position) {
+                var clipSize = this._scroller.getSize()[this.options.direction];
+                var posRatio = position / (this._lastSizeForDirection - clipSize);
+                var newPosition = (sizeForDirection - clipSize) * posRatio;
+                if (position !== newPosition) {
+                    this.setPosition(newPosition);
+                    this._displacement = newPosition;
+                }
+            }
+            this._lastSizeForDirection = sizeForDirection;
         }.bind(this));
 
         this._scroller.on('onEdge', function(data) {

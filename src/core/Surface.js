@@ -377,6 +377,12 @@ define(function(require, exports, module) {
 
         if (_xyNotEquals(this._size, size)) {
             if (!this._size) this._size = [0, 0];
+            if (this.size) {
+                if ((this.size[0] === true && this._size[1] !== size[1]) ||
+                    (this.size[1] === true && this._size[0] !== size[0])) {
+                    this._trueSizeCheck = true;
+                }
+            }
             this._size[0] = size[0];
             this._size[1] = size[1];
 
