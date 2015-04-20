@@ -241,7 +241,8 @@ define(function(require, exports, module) {
             var sizeForDirection = _nodeSizeForDirection.call(this, this._node);
             if (position) {
                 var clipSize = this._scroller.getSize()[this.options.direction];
-                var posRatio = position / (this._lastSizeForDirection - clipSize);
+                var prevMaxRange = this._lastSizeForDirection - clipSize;
+                var posRatio = (prevMaxRange > 0) ? position / prevMaxRange : 1;
                 var newPosition = (sizeForDirection - clipSize) * posRatio;
                 if (position !== newPosition) {
                     this.setPosition(newPosition);
