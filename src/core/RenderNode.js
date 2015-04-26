@@ -62,7 +62,7 @@ define(function(require, exports, module) {
      *
      * @method get
      *
-     * @return {Ojbect} contained renderable object
+     * @return {Object} contained renderable object
      */
     RenderNode.prototype.get = function get() {
         return this._object || (this._hasMultipleChildren ? null : (this._child ? this._child.get() : null));
