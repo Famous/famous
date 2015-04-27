@@ -122,7 +122,6 @@ define(function(require, exports, module) {
         this._touchVelocity = 0;
         this._earlyEnd = false;
         this._needsPaginationCheck = false;
-        this._displacement = 0;
         this._totalShift = 0;
         this._cachedIndex = 0;
         this._lastSizeForDirection = 0;
@@ -208,7 +207,6 @@ define(function(require, exports, module) {
         }
 
         this.setPosition(this.getPosition() + delta);
-        this._displacement += delta;
 
         if (this._springState === SpringStates.NONE) _normalizeState.call(this);
     }
@@ -265,7 +263,6 @@ define(function(require, exports, module) {
 
         this._particle.on('update', function(particle) {
             if (this._springState === SpringStates.NONE) _normalizeState.call(this);
-            this._displacement = particle.position.x - this._totalShift;
         }.bind(this));
 
         this._particle.on('end', function() {
