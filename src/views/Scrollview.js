@@ -126,6 +126,7 @@ define(function(require, exports, module) {
         this._totalShift = 0;
         this._cachedIndex = 0;
         this._lastSizeForDirection = 0;
+        this._lastClipSize = 0;
 
         // subcomponent logic
         this._scroller.positionFrom(this.getPosition.bind(this));
@@ -237,19 +238,17 @@ define(function(require, exports, module) {
 
         this._eventInput.on('resize', function() {
             this._node._.calculateSize();
-            var position = this.getPosition();
+            var offset = this.getOffset();
             var sizeForDirection = _nodeSizeForDirection.call(this, this._node);
-            if (position) {
-                var clipSize = this._scroller.getSize()[this.options.direction];
-                var prevMaxRange = this._lastSizeForDirection - clipSize;
-                var posRatio = (prevMaxRange > 0) ? position / prevMaxRange : 1;
-                var newPosition = (sizeForDirection - clipSize) * posRatio;
-                if (position !== newPosition) {
-                    this.setPosition(newPosition);
-                    this._displacement = newPosition;
-                }
+            var clipSize = this._scroller.getSize()[this.options.direction];
+            if (offset) {
+                var lastMaxRange = this._lastSizeForDirection - this._lastClipSize;
+                var offsetRatio = (lastMaxRange > 0) ? offset / lastMaxRange : 1;
+                var newOffset = (sizeForDirection - clipSize) * offsetRatio;
+                if (offset !== newOffset) this.setOffset(newOffset);
             }
             this._lastSizeForDirection = sizeForDirection;
+            this._lastClipSize = clipSize;
         }.bind(this));
 
         this._scroller.on('onEdge', function(data) {
