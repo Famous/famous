@@ -640,6 +640,9 @@ define(function(require, exports, module) {
      */
     Scrollview.prototype.sequenceFrom = function sequenceFrom(node) {
         if (node instanceof Array) node = new ViewSequence({array: node, trackSize: true});
+        this._lastSizeForDirection = 0;
+        this._lastClipSize = 0;
+        this.setOffset(0);
         this._node = node;
         return this._scroller.sequenceFrom(node);
     };
