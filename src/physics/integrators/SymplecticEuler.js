@@ -30,8 +30,8 @@ define(function(require, exports, module) {
     var SymplecticEuler = {};
 
     /*
-     * Updates the velocity of a physics body from its accumulated force.
-     *      v <- v + dt * f / m
+     * Calculates the change in velocity of a physics body from its accumulated force.
+     *      dt * f / m
      *
      * @method integrateVelocity
      * @param {Vector} f external force
@@ -45,53 +45,44 @@ define(function(require, exports, module) {
     };
 
     /*
-     * Updates the position of a physics body from its velocity.
-     *      p <- p + dt * v
+     * Calculates the change in position of a physics body from its velocity.
+     *      dt * v
      *
      * @method integratePosition
-     * @param {Body} physics body
+     * @param {Vector} v body velocity
      * @param {Number} dt delta time
      */
-    SymplecticEuler.integratePosition = function integratePosition(body, dt) {
-        var p = body.position;
-        var v = body.velocity;
-
-        p.add(v.mult(dt)).put(p);
+    SymplecticEuler.integratePosition = function integratePosition(v, dt) {
+        return v.mult(dt);
     };
 
     /*
-     * Updates the angular momentum of a physics body from its accumuled torque.
-     *      L <- L + dt * t
+     * Calculates the change in angular momentum of a physics body from its accumuled torque.
+     *      dt * t
      *
      * @method integrateAngularMomentum
-     * @param {Body} physics body (except a particle)
+     * @param {Vector} t body torque
      * @param {Number} dt delta time
      */
-    SymplecticEuler.integrateAngularMomentum = function integrateAngularMomentum(body, dt) {
-        var L = body.angularMomentum;
-        var t = body.torque;
-
+    SymplecticEuler.integrateAngularMomentum = function integrateAngularMomentum(t, dt) {
         if (t.isZero()) return;
 
-        L.add(t.mult(dt)).put(L);
-        t.clear();
+        return t.mult(dt);
     };
 
     /*
-     * Updates the orientation of a physics body from its angular velocity.
-     *      q <- q + dt/2 * q * w
+     * Calculates the change in orientation of a physics body from its angular velocity.
+     *      dt/2 * q * w
      *
      * @method integrateOrientation
-     * @param {Body} physics body (except a particle)
+     * @param {Matrix} q body orientation
+     * @param {Matrix} w body angular velocity
      * @param {Number} dt delta time
      */
-    SymplecticEuler.integrateOrientation = function integrateOrientation(body, dt) {
-        var q = body.orientation;
-        var w = body.angularVelocity;
-
+    SymplecticEuler.integrateOrientation = function integrateOrientation(q, w, dt) {
         if (w.isZero()) return;
-        q.add(q.multiply(w).scalarMultiply(0.5 * dt)).put(q);
-//        q.normalize.put(q);
+
+        return q.multiply(w).scalarMultiply(0.5 * dt);
     };
 
     module.exports = SymplecticEuler;
