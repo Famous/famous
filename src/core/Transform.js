@@ -431,6 +431,18 @@ define(function(require, exports, module) {
         return [m[0], m[4], m[8], m[12], m[1], m[5], m[9], m[13], m[2], m[6], m[10], m[14], m[3], m[7], m[11], m[15]];
     };
 
+    /**
+     * Returns an identical copy of a 4x4 matrix
+     *
+     * @method copy
+     * @static
+     * @param {Transform} m matrix
+     * @return {Transform} the resulting copied matrix
+     */
+    Transform.copy = function copy(m) {
+        return [m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10], m[11], m[12], m[13], m[14], m[15]];
+    };
+
     function _normSquared(v) {
         return (v.length === 2) ? v[0] * v[0] + v[1] * v[1] : v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
     }
