@@ -55,6 +55,18 @@ define(function(require, exports, module) {
 
     Body.prototype.isBody = true;
 
+    /**
+     * Stops the particle from updating
+     *
+     * @method sleep
+     */
+    Body.prototype.sleep = function sleep() {
+        Particle.prototype.sleep.call(this);
+
+        this.angularMomentumDelta = undefined;
+        this.positionDelta = undefined;
+    };
+
     Body.prototype.setMass = function setMass() {
         Particle.prototype.setMass.apply(this, arguments);
         this.setMomentsOfInertia();
@@ -207,22 +219,38 @@ define(function(require, exports, module) {
 
     /**
      * Updates the angular momentum via the its integrator.
+     *      L <- L + dt * t
      *
      * @method integrateAngularMomentum
      * @param dt {Number} delta time
      */
     Body.prototype.integrateAngularMomentum = function integrateAngularMomentum(dt) {
-        Integrator.integrateAngularMomentum(this, dt);
+        var L = this.angularMomentum;
+        var t = this.torque;
+
+        var delta = this.angularMomentumDelta = Integrator.integrateAngularMomentum(t, dt);
+        if (delta) {
+            L.add(delta).put(L);
+            t.clear();
+        }
     };
 
     /**
      * Updates the orientation via the its integrator.
+     *      q <- q + dt/2 * q * w
      *
      * @method integrateOrientation
      * @param dt {Number} delta time
      */
     Body.prototype.integrateOrientation = function integrateOrientation(dt) {
-        Integrator.integrateOrientation(this, dt);
+        var q = this.orientation;
+        var w = this.angularVelocity;
+
+        var delta = this.orientationDelta = Integrator.integrateOrientation();
+        if (delta) {
+            q.add(delta).put(q);
+            // q.normalize.put(q);
+        }
     };
 
     module.exports = Body;

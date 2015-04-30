@@ -109,6 +109,9 @@ define(function(require, exports, module) {
         if (this._isSleeping) return;
         this.emit(_events.end, this);
         this._isSleeping = true;
+
+        this.velocityDelta = undefined;
+        this.positionDelta = undefined;
     };
 
     /**
@@ -279,22 +282,56 @@ define(function(require, exports, module) {
 
     /**
      * Update a particle's velocity from its force accumulator
+     *      v <- v + dt * f / m
      *
      * @method integrateVelocity
      * @param dt {Number} Time differential
      */
     Particle.prototype.integrateVelocity = function integrateVelocity(dt) {
-        Integrator.integrateVelocity(this, dt);
+        var v = this.velocity;
+        var w = this.inverseMass;
+        var f = this.force;
+
+        var delta = this.velocityDelta = Integrator.integrateVelocity(f, w, dt);
+        if (delta) {
+            f.clear();
+            v.add(delta).put(v);
+        }
+    };
+
+    /*
+     * Returns the last integrated velocity delta
+     * 
+     * @method getVelocityDelta
+     * @function
+     */
+    Particle.prototype.getVelocityDelta = function getVelocityDelta() {
+        return this.velocityDelta;
     };
 
     /**
      * Update a particle's position from its velocity
+     *      p <- p + dt * v
      *
      * @method integratePosition
      * @param dt {Number} Time differential
      */
     Particle.prototype.integratePosition = function integratePosition(dt) {
-        Integrator.integratePosition(this, dt);
+        var p = body.position;
+        var v = body.velocity;
+
+        var delta = this.positionDelta = Integrator.integratePosition(this, dt);
+        if (delta) p.add(delta).put(p);
+    };
+
+    /*
+     * Returns the last integrated velocity delta
+     * 
+     * @method getVelocityDelta
+     * @function
+     */
+    Particle.prototype.getPositionDelta = function getPositionDelta() {
+        return this.positionDelta;
     };
 
     /**

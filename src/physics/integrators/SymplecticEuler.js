@@ -34,18 +34,14 @@ define(function(require, exports, module) {
      *      v <- v + dt * f / m
      *
      * @method integrateVelocity
-     * @param {Body} physics body
+     * @param {Vector} f external force
+     * @param {Number} w inverse mass
      * @param {Number} dt delta time
      */
-    SymplecticEuler.integrateVelocity = function integrateVelocity(body, dt) {
-        var v = body.velocity;
-        var w = body.inverseMass;
-        var f = body.force;
-
+    SymplecticEuler.integrateVelocity = function integrateVelocity(f, w, dt) {
         if (f.isZero()) return;
-
-        v.add(f.mult(dt * w)).put(v);
-        f.clear();
+        
+        return f.mult(dt * w);
     };
 
     /*
