@@ -320,7 +320,7 @@ define(function(require, exports, module) {
         var p = this.position;
         var v = this.velocity;
 
-        var delta = this.positionDelta = Integrator.integratePosition(this, dt);
+        var delta = this.positionDelta = Integrator.integratePosition(v, dt);
         if (delta) p.add(delta).put(p);
     };
 
