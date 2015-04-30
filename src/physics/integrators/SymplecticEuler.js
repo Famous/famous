@@ -37,10 +37,11 @@ define(function(require, exports, module) {
      * @param {Vector} f external force
      * @param {Number} w inverse mass
      * @param {Number} dt delta time
+     * @return {Vector} delta or null if no force
      */
     SymplecticEuler.integrateVelocity = function integrateVelocity(f, w, dt) {
         if (f.isZero()) return;
-        
+
         return f.mult(dt * w);
     };
 
@@ -51,6 +52,7 @@ define(function(require, exports, module) {
      * @method integratePosition
      * @param {Vector} v body velocity
      * @param {Number} dt delta time
+     * @return {Vector} delta
      */
     SymplecticEuler.integratePosition = function integratePosition(v, dt) {
         return v.mult(dt);
@@ -63,9 +65,10 @@ define(function(require, exports, module) {
      * @method integrateAngularMomentum
      * @param {Vector} t body torque
      * @param {Number} dt delta time
+     * @return {Vector} delta or null if no torque
      */
     SymplecticEuler.integrateAngularMomentum = function integrateAngularMomentum(t, dt) {
-        if (t.isZero()) return;
+        if (t.isZero()) return null;
 
         return t.mult(dt);
     };
@@ -78,9 +81,10 @@ define(function(require, exports, module) {
      * @param {Matrix} q body orientation
      * @param {Matrix} w body angular velocity
      * @param {Number} dt delta time
+     * @return {Vector} delta or null if no angular velocity
      */
     SymplecticEuler.integrateOrientation = function integrateOrientation(q, w, dt) {
-        if (w.isZero()) return;
+        if (w.isZero()) return null;
 
         return q.multiply(w).scalarMultiply(0.5 * dt);
     };

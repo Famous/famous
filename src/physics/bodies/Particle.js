@@ -301,7 +301,7 @@ define(function(require, exports, module) {
 
     /*
      * Returns the last integrated velocity delta
-     * 
+     *
      * @method getVelocityDelta
      * @function
      */
@@ -317,8 +317,8 @@ define(function(require, exports, module) {
      * @param dt {Number} Time differential
      */
     Particle.prototype.integratePosition = function integratePosition(dt) {
-        var p = body.position;
-        var v = body.velocity;
+        var p = this.position;
+        var v = this.velocity;
 
         var delta = this.positionDelta = Integrator.integratePosition(this, dt);
         if (delta) p.add(delta).put(p);
@@ -326,7 +326,7 @@ define(function(require, exports, module) {
 
     /*
      * Returns the last integrated velocity delta
-     * 
+     *
      * @method getVelocityDelta
      * @function
      */
