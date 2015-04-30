@@ -246,7 +246,7 @@ define(function(require, exports, module) {
         var q = this.orientation;
         var w = this.angularVelocity;
 
-        var delta = this.orientationDelta = Integrator.integrateOrientation();
+        var delta = this.orientationDelta = Integrator.integrateOrientation(q, w, dt);
         if (delta) {
             q.add(delta).put(q);
             // q.normalize.put(q);
