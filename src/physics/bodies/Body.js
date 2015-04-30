@@ -230,7 +230,7 @@ define(function(require, exports, module) {
 
         var delta = this.angularMomentumDelta = Integrator.integrateAngularMomentum(t, dt);
         if (delta) {
-            L.add(delta).put(L);
+            delta.add(L);
             t.clear();
         }
     };
@@ -248,7 +248,7 @@ define(function(require, exports, module) {
 
         var delta = this.orientationDelta = Integrator.integrateOrientation(q, w, dt);
         if (delta) {
-            q.add(delta).put(q);
+            delta.add(q);
             // q.normalize.put(q);
         }
     };

@@ -295,7 +295,7 @@ define(function(require, exports, module) {
         var delta = this.velocityDelta = Integrator.integrateVelocity(f, w, dt);
         if (delta) {
             f.clear();
-            v.add(delta).put(v);
+            delta.add(v);
         }
     };
 
@@ -321,7 +321,7 @@ define(function(require, exports, module) {
         var v = this.velocity;
 
         var delta = this.positionDelta = Integrator.integratePosition(v, dt);
-        if (delta) p.add(delta).put(p);
+        if (delta) delta.add(p);
     };
 
     /*
