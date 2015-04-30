@@ -40,7 +40,7 @@ define(function(require, exports, module) {
      * @return {Vector} delta or null if no force
      */
     SymplecticEuler.integrateVelocity = function integrateVelocity(f, w, dt) {
-        if (f.isZero()) return;
+        if (f.isZero()) return null;
 
         return f.mult(dt * w);
     };
