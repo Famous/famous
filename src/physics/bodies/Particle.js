@@ -109,9 +109,6 @@ define(function(require, exports, module) {
         if (this._isSleeping) return;
         this.emit(_events.end, this);
         this._isSleeping = true;
-
-        this.velocityDelta = undefined;
-        this.positionDelta = undefined;
     };
 
     /**
@@ -295,7 +292,7 @@ define(function(require, exports, module) {
         var delta = this.velocityDelta = Integrator.integrateVelocity(f, w, dt);
         if (delta) {
             f.clear();
-            delta.add(v);
+            v.add(delta).put(v);
         }
     };
 
@@ -306,7 +303,8 @@ define(function(require, exports, module) {
      * @function
      */
     Particle.prototype.getVelocityDelta = function getVelocityDelta() {
-        return this.velocityDelta;
+        if (this.velocityDelta) return this.velocityDelta.get();
+        return undefined;
     };
 
     /**
@@ -321,7 +319,7 @@ define(function(require, exports, module) {
         var v = this.velocity;
 
         var delta = this.positionDelta = Integrator.integratePosition(v, dt);
-        if (delta) delta.add(p);
+        if (delta) p.add(delta).put(p);
     };
 
     /*
@@ -331,7 +329,9 @@ define(function(require, exports, module) {
      * @function
      */
     Particle.prototype.getPositionDelta = function getPositionDelta() {
-        return this.positionDelta;
+        this._engine.step();
+        if (this.positionDelta) return this.positionDelta.get();
+        return undefined;
     };
 
     /**

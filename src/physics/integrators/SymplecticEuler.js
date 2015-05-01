@@ -8,6 +8,7 @@
  */
 
 define(function(require, exports, module) {
+    var Vector = require('../../math/Vector');
 
     /**
      * Ordinary Differential Equation (ODE) Integrator.
@@ -42,7 +43,9 @@ define(function(require, exports, module) {
     SymplecticEuler.integrateVelocity = function integrateVelocity(f, w, dt) {
         if (f.isZero()) return null;
 
-        return f.mult(dt * w);
+        var delta = new Vector();
+        f.mult(dt * w).put(delta);
+        return delta;
     };
 
     /*
@@ -55,7 +58,9 @@ define(function(require, exports, module) {
      * @return {Vector} delta
      */
     SymplecticEuler.integratePosition = function integratePosition(v, dt) {
-        return v.mult(dt);
+        var delta = new Vector();
+        v.mult(dt).put(delta);
+        return delta;
     };
 
     /*
@@ -70,7 +75,9 @@ define(function(require, exports, module) {
     SymplecticEuler.integrateAngularMomentum = function integrateAngularMomentum(t, dt) {
         if (t.isZero()) return null;
 
-        return t.mult(dt);
+        var delta = new Vector();
+        t.mult(dt).put(delta);
+        return delta;
     };
 
     /*
@@ -86,7 +93,9 @@ define(function(require, exports, module) {
     SymplecticEuler.integrateOrientation = function integrateOrientation(q, w, dt) {
         if (w.isZero()) return null;
 
-        return q.multiply(w).scalarMultiply(0.5 * dt);
+        var delta = new Vector();
+        q.multiply(w).scalarMultiply(0.5 * dt).put(delta);
+        return delta;
     };
 
     module.exports = SymplecticEuler;

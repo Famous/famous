@@ -55,18 +55,6 @@ define(function(require, exports, module) {
 
     Body.prototype.isBody = true;
 
-    /**
-     * Stops the particle from updating
-     *
-     * @method sleep
-     */
-    Body.prototype.sleep = function sleep() {
-        Particle.prototype.sleep.call(this);
-
-        this.angularMomentumDelta = undefined;
-        this.positionDelta = undefined;
-    };
-
     Body.prototype.setMass = function setMass() {
         Particle.prototype.setMass.apply(this, arguments);
         this.setMomentsOfInertia();
@@ -230,7 +218,7 @@ define(function(require, exports, module) {
 
         var delta = this.angularMomentumDelta = Integrator.integrateAngularMomentum(t, dt);
         if (delta) {
-            delta.add(L);
+            L.add(delta).put(L);
             t.clear();
         }
     };
@@ -248,7 +236,7 @@ define(function(require, exports, module) {
 
         var delta = this.orientationDelta = Integrator.integrateOrientation(q, w, dt);
         if (delta) {
-            delta.add(q);
+            q.add(delta).put(q);
             // q.normalize.put(q);
         }
     };
