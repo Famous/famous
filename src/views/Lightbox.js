@@ -43,7 +43,7 @@ define(function(require, exports, module) {
       *  or synchronously beforehand.
      */
     function Lightbox(options) {
-        this.options = Object.create(Lightbox.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || Lightbox.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
 
         if (options) this.setOptions(options);

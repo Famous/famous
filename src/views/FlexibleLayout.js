@@ -26,7 +26,7 @@ define(function(require, exports, module) {
      * @param {Ratios} [options.ratios=[]] The proportions for the renderables to maintain
      */
     function FlexibleLayout(options) {
-        this.options = Object.create(FlexibleLayout.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || FlexibleLayout.DEFAULT_OPTIONS);
         this.optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 

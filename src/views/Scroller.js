@@ -23,7 +23,7 @@ define(function(require, exports, module) {
      * @param {Number} [margin=undefined] The size of the area (in pixels) that Scroller will process renderables' associated calculations in.
      */
     function Scroller(options) {
-        this.options = Object.create(this.constructor.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || Scroller.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
         if (options) this._optionsManager.setOptions(options);
 
