@@ -158,8 +158,16 @@ define(function(require, exports, module) {
      * @return {string} matrix3d CSS style representation of the transform
      */
     function _formatCSSTransform(m) {
-        m[12] = Math.round(m[12] * devicePixelRatio) / devicePixelRatio;
-        m[13] = Math.round(m[13] * devicePixelRatio) / devicePixelRatio;
+        var deviceWidth = window.orientation === 0 ? window.screen.width : window.screen.height;
+        var deviceHeight = window.orientation === 0 ? window.screen.height : window.screen.width;
+        // iOS returns logical pixels, Android returns physical pixels
+        // http://www.quirksmode.org/blog/archives/2012/07/more_about_devi.html
+        if (navigator.userAgent.indexOf('iPhone') >= 0 && window.devicePixelRatio) {
+          deviceWidth = deviceWidth * window.devicePixelRatio;
+          deviceHeight = deviceHeight * window.devicePixelRatio;
+        }
+        m[12] = Math.round(m[12] * deviceWidth) / deviceWidth;
+        m[13] = Math.round(m[13] * deviceHeight) / deviceHeight;
 
         var result = 'matrix3d(';
         for (var i = 0; i < 15; i++) {
