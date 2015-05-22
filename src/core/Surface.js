@@ -464,9 +464,11 @@ define(function(require, exports, module) {
      * @method recall
      */
     Surface.prototype.recall = function recall(target) {
-        var df = document.createDocumentFragment();
-        while (target.hasChildNodes()) df.appendChild(target.firstChild);
-        this.setContent(df);
+        if (!this._contentDirty) {
+            var df = document.createDocumentFragment();
+            while (target.hasChildNodes()) df.appendChild(target.firstChild);
+            this.setContent(df);
+        }
     };
 
     /**
