@@ -97,6 +97,7 @@ define(function(require, exports, module) {
         var target = this.get();
         if (target && target.getSize) result = target.getSize();
         if (!result && this._child && this._child.getSize) result = this._child.getSize();
+        if (!result && target.size) result = target.size;
         return result;
     };
 
