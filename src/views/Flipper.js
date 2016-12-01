@@ -12,7 +12,7 @@ define(function(require, exports, module) {
     var Transitionable = require('../transitions/Transitionable');
     var RenderNode = require('../core/RenderNode');
     var OptionsManager = require('../core/OptionsManager');
-
+    var Timer = require('../utilities/Timer');
     /**
      * Allows you to link two renderables as front and back sides that can be
      *  'flipped' back and forth along a chosen axis. Rendering optimizations are
@@ -33,7 +33,7 @@ define(function(require, exports, module) {
 
         this.frontNode = undefined;
         this.backNode = undefined;
-
+        this.isReady = true;
         this.flipped = false;
     }
 
@@ -53,8 +53,14 @@ define(function(require, exports, module) {
      * @method flip
      * @param {Object} [transition] Transition definition
      * @param {Function} [callback] Callback
+     * @param {integer} [time] Time to set inside timeout which resets isReady attribute
      */
-    Flipper.prototype.flip = function flip(transition, callback) {
+    Flipper.prototype.flip = function flip(transition, callback, time) {
+       if (!this.isReady) return;
+        this.isReady = false;
+        Timer.setTimeout(function() {
+          this.isReady = true;
+        }.bind(this), time);
         var angle = this.flipped ? 0 : Math.PI;
         this.setAngle(angle, transition, callback);
         this.flipped = !this.flipped;
