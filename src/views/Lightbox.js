@@ -1,4 +1,5 @@
 define(function(require, exports, module) {
+    var Engine = require('../core/Engine');
     var Transform = require('../core/Transform');
     var Modifier = require('../core/Modifier');
     var RenderNode = require('../core/RenderNode');
@@ -157,10 +158,12 @@ define(function(require, exports, module) {
         var transform = this.transforms[this.transforms.length - 1];
         var stateItem = this.states[this.states.length - 1];
         var _cb = Utility.after(3, function() {
-            this.nodes.splice(this.nodes.indexOf(node), 1);
-            this.states.splice(this.states.indexOf(stateItem), 1);
-            this.transforms.splice(this.transforms.indexOf(transform), 1);
-            if (callback) callback.call(this);
+            Engine.nextTick(function(){
+                this.nodes.splice(this.nodes.indexOf(node), 1);
+                this.states.splice(this.states.indexOf(stateItem), 1);
+                this.transforms.splice(this.transforms.indexOf(transform), 1);
+                if (callback) callback.call(this);
+            }.bind(this));
         }.bind(this));
 
         if (!transition) transition = this.options.outTransition;
