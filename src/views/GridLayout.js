@@ -33,7 +33,7 @@ define(function(require, exports, module) {
      * @param {Transition} [options.transition=false] The transiton that controls the Gridlayout instance's reflow.
      */
     function GridLayout(options) {
-        this.options = Object.create(GridLayout.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || GridLayout.DEFAULT_OPTIONS);
         this.optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 

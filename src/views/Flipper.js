@@ -25,7 +25,7 @@ define(function(require, exports, module) {
      * @param {Direction} [options.direction=Flipper.DIRECTION_X] Direction specifies the axis of rotation.
      */
     function Flipper(options) {
-        this.options = Object.create(Flipper.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || Flipper.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 

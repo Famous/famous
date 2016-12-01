@@ -26,7 +26,7 @@ define(function(require, exports, module) {
      * @param {Options} [options.scrollview={direction:Utility.Direction.X}]  Options for the ScrollContainer instance's scrollview.
      */
     function ScrollContainer(options) {
-        this.options = Object.create(ScrollContainer.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || ScrollContainer.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
 
         if (options) this.setOptions(options);

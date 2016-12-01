@@ -76,7 +76,7 @@ define(function(require, exports, module) {
      */
     function Scrollview(options) {
         // patch options with defaults
-        this.options = Object.create(Scrollview.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || Scrollview.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
 
         // create sub-components

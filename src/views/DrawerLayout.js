@@ -38,7 +38,7 @@ define(function(require, exports, module) {
      * @param [options.transition=true] {Boolean|Object}        The toggle transition
      */
     function DrawerLayout(options) {
-        this.options = Object.create(DrawerLayout.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || DrawerLayout.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 

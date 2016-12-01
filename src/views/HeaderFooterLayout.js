@@ -28,7 +28,7 @@ define(function(require, exports, module) {
      * in the HeaderFooterLayout instance's direction.
      */
     function HeaderFooterLayout(options) {
-        this.options = Object.create(HeaderFooterLayout.DEFAULT_OPTIONS);
+        this.options = Object.create(this.constructor.DEFAULT_OPTIONS || HeaderFooterLayout.DEFAULT_OPTIONS);
         this._optionsManager = new OptionsManager(this.options);
         if (options) this.setOptions(options);
 
