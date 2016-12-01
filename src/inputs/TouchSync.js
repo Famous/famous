@@ -38,6 +38,7 @@ define(function(require, exports, module) {
      * @param [options.velocitySampleLength] {Number}  Number of previous frames to check velocity against.
      * @param [options.scale] {Number}       constant factor to scale velocity output
      * @param [options.touchLimit] {Number}  touchLimit upper bound for emitting events based on number of touches
+     * @param [options.rotateAngle] {Number}  rotateAngle Angle on z axis rotate to translate touches to
      */
     function TouchSync(options) {
         this.options =  Object.create(TouchSync.DEFAULT_OPTIONS);
@@ -74,7 +75,8 @@ define(function(require, exports, module) {
         rails: false,
         touchLimit: 1,
         velocitySampleLength: 10,
-        scale: 1
+        scale: 1,
+        rotateAngle: false
     };
 
     TouchSync.DIRECTION_X = 0;
@@ -137,6 +139,22 @@ define(function(require, exports, module) {
         var velDiffX = currHistory.x - distantHistory.x;
         var velDiffY = currHistory.y - distantHistory.y;
 
+        if (this.options.rotateAngle && typeof this.options.rotateAngle === 'number') {
+            // Translate coordinates based on an absolute center of the screen
+            var absoluteCenter = [window.innerWidth/2, window.innerHeight/2];
+
+            var currPrime = _calcCoordsByAngle([currHistory.x, currHistory.y], this.options.rotateAngle, absoluteCenter);
+            var prevPrime = _calcCoordsByAngle([prevHistory.x, prevHistory.y], this.options.rotateAngle, absoluteCenter);
+            var distPrime = _calcCoordsByAngle([distantHistory.x, distantHistory.y], this.options.rotateAngle, absoluteCenter);
+
+            diffX = currPrime.x - prevPrime.x;
+            diffY = currPrime.y - prevPrime.y;
+
+            velDiffX = currPrime.x - distPrime.x;
+            velDiffY = currPrime.y - distPrime.y;
+
+        }
+
         if (this.options.rails) {
             if (Math.abs(diffX) > Math.abs(diffY)) diffY = 0;
             else diffX = 0;
@@ -191,6 +209,32 @@ define(function(require, exports, module) {
     function _handleEnd(data) {
         this._payload.count = data.count;
         this._eventOutput.emit('end', this._payload);
+    }
+
+    /**
+     *  Takes a set of absolute coordinates
+     *  as an array and an angle which
+     *  determines a new set of absolute
+     *  coordinates at the applied rotation.
+     *  See: http://math.stackexchange.com/questions/384186/calculate-new-positon-of-rectangle-corners-based-on-angle
+     *  @method _calcCoordsByAngle
+     *  @param {Array} oldCoords An [x,y] set of coordinates
+     *  @param {number} phi The angle to move by
+     *  @param {Array} absoluteCenter The absolute center of the screen
+     *  @return {Array} The newly converted coordinates
+     */
+    function _calcCoordsByAngle(oldCoords, phi, absoluteCenter) {
+        oldCoords[0] = oldCoords[0] - absoluteCenter[0];
+        oldCoords[1] = oldCoords[1] - absoluteCenter[1];
+
+        var newCoords = {};
+        var xPrime = (oldCoords[0] * Math.cos(-phi)) - (oldCoords[1] * Math.sin(-phi));
+        var yPrime = (oldCoords[1] * Math.cos(-phi)) + (oldCoords[0] * Math.sin(-phi));
+
+        newCoords.x = xPrime + absoluteCenter[0];
+        newCoords.y = yPrime + absoluteCenter[1];
+
+        return newCoords;
     }
 
     /**
