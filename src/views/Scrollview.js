@@ -122,9 +122,10 @@ define(function(require, exports, module) {
         this._touchVelocity = 0;
         this._earlyEnd = false;
         this._needsPaginationCheck = false;
-        this._displacement = 0;
         this._totalShift = 0;
         this._cachedIndex = 0;
+        this._lastSizeForDirection = 0;
+        this._lastClipSize = 0;
 
         // subcomponent logic
         this._scroller.positionFrom(this.getPosition.bind(this));
@@ -206,7 +207,6 @@ define(function(require, exports, module) {
         }
 
         this.setPosition(this.getPosition() + delta);
-        this._displacement += delta;
 
         if (this._springState === SpringStates.NONE) _normalizeState.call(this);
     }
@@ -236,6 +236,17 @@ define(function(require, exports, module) {
 
         this._eventInput.on('resize', function() {
             this._node._.calculateSize();
+            var offset = this.getOffset();
+            var sizeForDirection = _nodeSizeForDirection.call(this, this._node);
+            var clipSize = this._scroller.getSize()[this.options.direction];
+            if (offset) {
+                var lastMaxRange = this._lastSizeForDirection - this._lastClipSize;
+                var offsetRatio = (lastMaxRange > 0) ? offset / lastMaxRange : 1;
+                var newOffset = (sizeForDirection - clipSize) * offsetRatio;
+                if (offset !== newOffset) this.setOffset(newOffset);
+            }
+            this._lastSizeForDirection = sizeForDirection;
+            this._lastClipSize = clipSize;
         }.bind(this));
 
         this._scroller.on('onEdge', function(data) {
@@ -252,7 +263,6 @@ define(function(require, exports, module) {
 
         this._particle.on('update', function(particle) {
             if (this._springState === SpringStates.NONE) _normalizeState.call(this);
-            this._displacement = particle.position.x - this._totalShift;
         }.bind(this));
 
         this._particle.on('end', function() {
@@ -627,6 +637,9 @@ define(function(require, exports, module) {
      */
     Scrollview.prototype.sequenceFrom = function sequenceFrom(node) {
         if (node instanceof Array) node = new ViewSequence({array: node, trackSize: true});
+        this._lastSizeForDirection = 0;
+        this._lastClipSize = 0;
+        this.setOffset(0);
         this._node = node;
         return this._scroller.sequenceFrom(node);
     };
