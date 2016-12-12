@@ -273,8 +273,11 @@ define(function(require, exports, module) {
 
     function _nodeSizeForDirection(node) {
         var direction = this.options.direction;
-        var nodeSize = node.getSize();
-        return (!nodeSize) ? this._scroller.getSize()[direction] : nodeSize[direction];
+        var size = node.getSize();
+
+        return size && size[direction]
+            ? size[direction] : this._scroller.getSize(true)[direction]
+                || this.getSize(true)[direction];
     }
 
     function _handleEdge(edge) {

@@ -31,8 +31,8 @@ define(function(require, exports, module) {
         this._ = null;
         this.index = options.index || 0;
 
-        if (options.array) this._ = new (this.constructor.Backing)(options.array);
-        else if (options._) this._ = options._;
+        if (options._) this._ = options._;
+        else this._ = new (this.constructor.Backing)(options.array || []);
 
         if (this.index === this._.firstIndex) this._.firstNode = this;
         if (this.index === this._.firstIndex + this._.array.length - 1) this._.lastNode = this;
