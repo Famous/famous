@@ -71,7 +71,7 @@ define(function(require, exports, module) {
 
     function _output(node, offset, target) {
         var size = node.getSize ? node.getSize() : this._contextSize;
-        var transform = this._outputFunction(offset);
+        var transform = this._outputFunction(offset, node.index);
         target.push({transform: transform, target: node.render()});
         return _sizeForDir.call(this, size);
     }
@@ -130,14 +130,14 @@ define(function(require, exports, module) {
      */
     Scroller.prototype.outputFrom = function outputFrom(fn, masterFn) {
         if (!fn) {
-            fn = function(offset) {
+            fn = function(offset, index) {
                 return (this.options.direction === Utility.Direction.X) ? Transform.translate(offset, 0) : Transform.translate(0, offset);
             }.bind(this);
             if (!masterFn) masterFn = fn;
         }
         this._outputFunction = fn;
-        this._masterOutputFunction = masterFn ? masterFn : function(offset) {
-            return Transform.inverse(fn(-offset));
+        this._masterOutputFunction = masterFn ? masterFn : function(offset, index) {
+            return Transform.inverse(fn(-offset, index));
         };
     };
 
