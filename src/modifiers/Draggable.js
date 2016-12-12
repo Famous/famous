@@ -20,31 +20,49 @@ define(function(require, exports, module) {
 
     /**
      * Makes added render nodes responsive to drag beahvior.
-     *   Emits events 'start', 'update', 'end'.
+     *   Emits events 'start', 'update', 'end' and 'reject'.
      * @class Draggable
      * @constructor
      * @param {Object} [options] options configuration object.
-     * @param {Number} [options.snapX] grid width for snapping during drag
-     * @param {Number} [options.snapY] grid height for snapping during drag
-     * @param {Array.Number} [options.xRange] maxmimum [negative, positive] x displacement from start of drag
-     * @param {Array.Number} [options.yRange] maxmimum [negative, positive] y displacement from start of drag
-     * @param {Number} [options.scale] one pixel of input motion translates to this many pixels of output drag motion
+     * @param {Array.Number} [options.autocomplete] Automatically take over and snap to the ranges when the displacement passes a ratio (between 0 and 1) in its direction.
+     * Default is off (no autocomplete): [1.0, 1.0].
+     * @param {Number} [options.snapX] grid width for snapping during drag.
+     * @param {Number} [options.snapY] grid height for snapping during drag.
+     * @param {Array.Number} [options.snap] shorthand for snapX and snapY.
+     * @param {Array.Number} [options.xRange] maxmimum [negative, positive] x displacement from start of drag.
+     * @param {Array.Number} [options.yRange] maxmimum [negative, positive] y displacement from start of drag.
+     * @param {Array.Number} [options.range] shorthand for xRange and yRange.
+     * @param {Array.Number} [options.threshold] minimum absolute [x, y] displacement to validate movement.
+     * @param {Number} [options.scale] one pixel of input motion translates to this many pixels of output drag motion.
      * @param {Number} [options.projection] User should set to Draggable._direction.x or
      *    Draggable._direction.y to constrain to one axis.
      *
      */
     function Draggable(options) {
         this.options = Object.create(Draggable.DEFAULT_OPTIONS);
-        if (options) this.setOptions(options);
+        this.sync = new GenericSync(['mouse', 'touch'], {scale : this.options.scale});
+        this.eventOutput = new EventHandler();
+
+        EventHandler.setInputHandler(this,  this.sync);
+        EventHandler.setOutputHandler(this, this.eventOutput);
+
+        if (options) {
+            if (options.snap) {
+                options.snapX = options.snap[0];
+                options.snapY = options.snap[1];
+            }
+
+            if (options.range) {
+                options.xRange = options.range[0];
+                options.yRange = options.range[1];
+            }
+
+            this.setOptions(options);
+        }
 
         this._positionState = new Transitionable([0,0]);
         this._differential  = [0,0];
         this._active = true;
-
-        this.sync = new GenericSync(['mouse', 'touch'], {scale : this.options.scale});
-        this.eventOutput = new EventHandler();
-        EventHandler.setInputHandler(this,  this.sync);
-        EventHandler.setOutputHandler(this, this.eventOutput);
 
         _bindEvents.call(this);
     }
@@ -61,13 +79,15 @@ define(function(require, exports, module) {
     var _clamp = Utilities.clamp;
 
     Draggable.DEFAULT_OPTIONS = {
-        projection  : _direction.x | _direction.y,
-        scale       : 1,
-        xRange      : null,
-        yRange      : null,
-        snapX       : 0,
-        snapY       : 0,
-        transition  : {duration : 0}
+        projection   : _direction.x | _direction.y,
+        scale        : 1,
+        xRange       : null,
+        yRange       : null,
+        snapX        : 0,
+        snapY        : 0,
+        transition   : {duration : 0},
+        threshold    : [0, 0],
+        autocomplete : [1.0, 1.0]
     };
 
     function _mapDifferential(differential) {
@@ -100,28 +120,59 @@ define(function(require, exports, module) {
         this._differential = event.position;
         var newDifferential = _mapDifferential.call(this, this._differential);
 
+        var position = this.getPosition();
+        var absMovement = [Math.abs(newDifferential[0]), Math.abs(newDifferential[1])];
+        var absPosition = [Math.abs(position[0]), Math.abs(position[1])];
+        var thresholdX = absMovement[0] < options.threshold[0]
+            && absPosition[0] < options.threshold[0];
+        var thresholdY = absMovement[1] < options.threshold[1]
+            && absPosition[1] < options.threshold[1];
+
+        if (thresholdX || thresholdY) {
+            this.eventOutput.emit('reject', {position : position});
+            return;
+        }
+
         //buffer the differential if snapping is set
         this._differential[0] -= newDifferential[0];
         this._differential[1] -= newDifferential[1];
 
-        var pos = this.getPosition();
+        //get the current end position
+        var end = this._endPosition || position;
+        var pos = [end[0], end[1]];
 
-        //modify position, retain reference
+        //modify the next end position
         pos[0] += newDifferential[0];
         pos[1] += newDifferential[1];
 
         //handle bounding box
-        if (options.xRange){
+        if (options.xRange) {
             var xRange = [options.xRange[0] + 0.5 * options.snapX, options.xRange[1] - 0.5 * options.snapX];
             pos[0] = _clamp(pos[0], xRange);
         }
 
-        if (options.yRange){
+        if (options.yRange) {
             var yRange = [options.yRange[0] + 0.5 * options.snapY, options.yRange[1] - 0.5 * options.snapY];
             pos[1] = _clamp(pos[1], yRange);
         }
 
-        this.eventOutput.emit('update', {position : pos});
+        //handle auto completion
+        var autocomplete = options.autocomplete;
+        var ranges = [options.xRange, options.yRange];
+        for (var i = 0; i < 2; i++) {
+            var ratio = autocomplete[0];
+            var range = ranges[i][+(newDifferential[i] > 0)];
+
+            if (Math.abs(pos[i] / range) > ratio) {
+                pos[i] = range;
+            }
+        }
+
+        this.setPosition(pos, options.transition);
+        this.eventOutput.emit('update', {
+            position : position,
+            endPosition : pos
+        });
     }
 
     function _handleEnd() {
@@ -144,23 +195,32 @@ define(function(require, exports, module) {
      */
     Draggable.prototype.setOptions = function setOptions(options) {
         var currentOptions = this.options;
-        if (options.projection !== undefined) {
-            var proj = options.projection;
-            this.options.projection = 0;
-            ['x', 'y'].forEach(function(val) {
-                if (proj.indexOf(val) !== -1) currentOptions.projection |= _direction[val];
-            });
-        }
+
         if (options.scale  !== undefined) {
             currentOptions.scale  = options.scale;
             this.sync.setOptions({
                 scale: options.scale
             });
         }
+
+        if (options.snap) {
+            options.snapX = options.snap[0];
+            options.snapY = options.snap[1];
+        }
+
+        if (options.range) {
+            options.xRange = options.range[0];
+            options.yRange = options.range[1];
+        }
+
+        if (options.projection !== undefined) currentOptions.projection = options.projection;
         if (options.xRange !== undefined) currentOptions.xRange = options.xRange;
         if (options.yRange !== undefined) currentOptions.yRange = options.yRange;
         if (options.snapX  !== undefined) currentOptions.snapX  = options.snapX;
         if (options.snapY  !== undefined) currentOptions.snapY  = options.snapY;
+        if (options.threshold  !== undefined) currentOptions.threshold  = options.threshold;
+        if (options.transition  !== undefined) currentOptions.transition  = options.transition;
+        if (options.autocomplete !== undefined) currentOptions.autocomplete = options.autocomplete;
     };
 
     /**
@@ -203,6 +263,7 @@ define(function(require, exports, module) {
      */
     Draggable.prototype.setPosition = function setPosition(position, transition, callback) {
         if (this._positionState.isActive()) this._positionState.halt();
+        this._endPosition = position;
         this._positionState.set(position, transition, callback);
     };
 
