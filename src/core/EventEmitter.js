@@ -61,24 +61,38 @@ define(function(require, exports, module) {
      */
     EventEmitter.prototype.addListener = EventEmitter.prototype.on;
 
-   /**
+    /**
      * Unbind an event by type and handler.
-     *   This undoes the work of "on".
+     *   This undoes the work of "on". If handler is omitted, removes all
+     *   handlers for type. If type is omitted, removes all handlers for
+     *   all types.
      *
-     * @method removeListener
+     * @method off
      *
-     * @param {string} type event type key (for example, 'click')
-     * @param {function} handler function object to remove
+     * @param {string} [type] event type key (for example, 'click')
+     * @param {function} [handler] function object to remove
      * @return {EventEmitter} this
      */
-    EventEmitter.prototype.removeListener = function removeListener(type, handler) {
+    EventEmitter.prototype.off = function off(type, handler) {
+      if (!type) this.listeners = {};
+      else {
         var listener = this.listeners[type];
         if (listener !== undefined) {
-            var index = listener.indexOf(handler);
-            if (index >= 0) listener.splice(index, 1);
+            if (!handler) listener.length = 0;
+            else {
+                var index = listener.indexOf(handler);
+                if (index >= 0) listener.splice(index, 1);
+            }
         }
-        return this;
+      }
+      return this;
     };
+
+   /**
+     * Alias for "off".
+     * @method removeListener
+     */
+    EventEmitter.prototype.removeListener = EventEmitter.prototype.off;
 
     /**
      * Call event handlers with this set to owner.
