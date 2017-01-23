@@ -33,10 +33,10 @@ define(function(require, exports, module) {
         this.posB = null;
         this.timestampB = 0;
 
-        this._eventInput.on('touchstart', this.handleStart.bind(this));
-        this._eventInput.on('touchmove', this.handleMove.bind(this));
-        this._eventInput.on('touchend', this.handleEnd.bind(this));
-        this._eventInput.on('touchcancel', this.handleEnd.bind(this));
+        this._eventInput.on('touchstart', _handleStart.bind(this));
+        this._eventInput.on('touchmove', _handleMove.bind(this));
+        this._eventInput.on('touchend', _handleEnd.bind(this));
+        this._eventInput.on('touchcancel', _handleEnd.bind(this));
     }
 
     TwoFingerSync.calculateAngle = function(posA, posB) {
@@ -57,8 +57,12 @@ define(function(require, exports, module) {
 
     var _now = Date.now;
 
-    // private
-    TwoFingerSync.prototype.handleStart = function handleStart(event) {
+    /**
+     *  Triggered by touchstart.
+     *  @method _handleStart
+     *  @private
+     */
+    function _handleStart(event) {
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             if (!this.touchAEnabled) {
@@ -75,10 +79,14 @@ define(function(require, exports, module) {
                 this._startUpdate(event);
             }
         }
-    };
+    }
 
-    // private
-    TwoFingerSync.prototype.handleMove = function handleMove(event) {
+    /**
+     *  Triggered by touchmove.
+     *  @method _handleMove
+     *  @private
+     */
+    function _handleMove(event) {
         if (!(this.touchAEnabled && this.touchBEnabled)) return;
         var prevTimeA = this.timestampA;
         var prevTimeB = this.timestampB;
@@ -97,10 +105,14 @@ define(function(require, exports, module) {
             }
         }
         if (diffTime) this._moveUpdate(diffTime);
-    };
+    }
 
-    // private
-    TwoFingerSync.prototype.handleEnd = function handleEnd(event) {
+    /**
+     *  Triggered by touchend and touchcancel.
+     *  @method _handleEnd
+     *  @private
+     */
+    function _handleEnd(event) {
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             if (touch.identifier === this.touchAId || touch.identifier === this.touchBId) {
@@ -116,7 +128,12 @@ define(function(require, exports, module) {
                 this.touchBId = 0;
             }
         }
-    };
+    }
+
+    /* TODO Remove when deprecation is complete */
+    TwoFingerSync.prototype.handleStart = _handleStart;
+    TwoFingerSync.prototype.handleMove = _handleMove;
+    TwoFingerSync.prototype.handleEnd = _handleEnd;
 
     module.exports = TwoFingerSync;
 });
