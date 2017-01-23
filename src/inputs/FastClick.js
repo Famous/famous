@@ -38,6 +38,8 @@ define(function(require, exports, module) {
       });
 
       window.addEventListener('touchend', function(event) {
+          event.preventDefault();
+
           var currTime = _now();
           for (var i = 0; i < event.changedTouches.length; i++) {
               var touch = event.changedTouches[i];
