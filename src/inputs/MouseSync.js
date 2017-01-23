@@ -9,6 +9,7 @@
 define(function(require, exports, module) {
     var EventHandler = require('../core/EventHandler');
     var OptionsManager = require('../core/OptionsManager');
+    var SyncUtils = require('./SyncUtils');
 
     /**
      * Handles piped in mouse drag events. Outputs an object with the position delta from last frame, position from start,
@@ -78,8 +79,6 @@ define(function(require, exports, module) {
 
         this._positionHistory = [];
         this._position = null;      // to be deprecated
-        this._prevCoord = undefined;
-        this._prevTime = undefined;
         this._down = false;
         this._moved = false;
         this._displacement = [0,0];
@@ -93,6 +92,7 @@ define(function(require, exports, module) {
         scale: 1,
         propogate: true,  // events piped to document on mouseleave
         velocitySampleLength: 10,
+        timeSampleDuration: 400,
         preventDefault: true
     };
 
@@ -114,9 +114,8 @@ define(function(require, exports, module) {
 
         var x = event.clientX;
         var y = event.clientY;
+        var currTime = Date.now();
 
-        this._prevCoord = [x, y];
-        this._prevTime = Date.now();
         this._down = true;
         this._move = false;
 
@@ -146,9 +145,9 @@ define(function(require, exports, module) {
 
         this._positionHistory.push({
             position: payload.position.slice ? payload.position.slice(0) : payload.position,
-            time: this._prevTime
+            clientPosition: [x, y],
+            timestamp: currTime
         });
-
         this._eventOutput.emit('start', payload);
         this._documentActive = false;
     }
@@ -160,77 +159,9 @@ define(function(require, exports, module) {
      *  @private
      */
     function _handleMove(event) {
-        if (!this._prevCoord) return;
-
-        var prevCoord = this._prevCoord;
-        var prevTime = this._prevTime;
-
-        var x = event.clientX;
-        var y = event.clientY;
-
-        var currTime = Date.now();
-
-        var diffX = x - prevCoord[0];
-        var diffY = y - prevCoord[1];
-
-        if (this.options.rails) {
-            if (Math.abs(diffX) > Math.abs(diffY)) diffY = 0;
-            else diffX = 0;
-        }
-
-        var diffTime = Math.max(currTime - this._positionHistory[0].time, MINIMUM_TICK_TIME); // minimum tick time
-
-        var scale = this.options.scale;
-        var nextVel;
-        var nextDelta;
-
-        if (this.options.direction === MouseSync.DIRECTION_X) {
-            nextDelta = scale * diffX;
-            this._position += nextDelta;
-            nextVel = scale * (this._position - this._positionHistory[0].position) / diffTime;
-        }
-        else if (this.options.direction === MouseSync.DIRECTION_Y) {
-            nextDelta = scale * diffY;
-            this._position += nextDelta;
-            nextVel = scale * (this._position - this._positionHistory[0].position) / diffTime;
-        }
-        else {
-            nextDelta = [scale * diffX, scale * diffY];
-            nextVel = [
-                scale * (this._position[0] - this._positionHistory[0].position[0]) / diffTime,
-                scale * (this._position[1] - this._positionHistory[0].position[1]) / diffTime
-            ];
-            this._position[0] += nextDelta[0];
-            this._position[1] += nextDelta[1];
-        }
-
-        if (this.options.clickThreshold !== false) {
-            this._displacement[0] += diffX;
-            this._displacement[1] += diffY;
-        }
-
-        var payload = this._payload;
-        payload.delta    = nextDelta;
-        payload.position = this._position;
-        payload.velocity = nextVel;
-        payload.clientX  = x;
-        payload.clientY  = y;
-        payload.offsetX  = event.offsetX;
-        payload.offsetY  = event.offsetY;
-
-        if (this._positionHistory.length === this.options.velocitySampleLength) {
-          this._positionHistory.shift();
-        }
-
-        this._positionHistory.push({
-          position: payload.position.slice ? payload.position.slice(0) : payload.position,
-          time: currTime
-        });
-
+        if (this._positionHistory.length === 0) return;
+        var payload = calculatePayload.call(this, event);
         this._eventOutput.emit('update', payload);
-
-        this._prevCoord = [x, y];
-        this._prevTime = currTime;
         this._move = true;
     }
 
@@ -243,10 +174,8 @@ define(function(require, exports, module) {
      */
     function _handleEnd(event) {
         if (!this._down) return;
-
-        this._eventOutput.emit('end', this._payload);
-        this._prevCoord = undefined;
-        this._prevTime = undefined;
+        var payload = calculatePayload.call(this, event);
+        this._eventOutput.emit('end', payload);
         this._down = false;
         this._move = false;
         this._positionHistory = [];
@@ -266,11 +195,91 @@ define(function(require, exports, module) {
               _handleEnd.call(this, event);
               document.removeEventListener('mousemove', boundMove);
               document.removeEventListener('mouseup', boundEnd);
-          }.bind(this, event);
+          }.bind(this);
           document.addEventListener('mousemove', boundMove);
           document.addEventListener('mouseup', boundEnd);
           this._documentActive = true;
         }
+    }
+
+    /**
+     *  Calculates the data to send to listeners.
+     *  @method calculatePayload
+     *  @private
+     */
+    function calculatePayload (event) {
+        var payload = this._payload;
+
+        var scale = this.options.scale;
+        var nextVel;
+        var nextDelta;
+
+        var x = event.clientX;
+        var y = event.clientY;
+
+        var currTime = Date.now();
+
+        var lastPos = this._positionHistory[this._positionHistory.length - 1];
+        var diffX = (x * scale) - lastPos.clientPosition[0];
+        var diffY = (y * scale) - lastPos.clientPosition[1];
+
+        if (this.options.rails) {
+            if (Math.abs(diffX) > Math.abs(diffY)) diffY = 0;
+            else diffX = 0;
+        }
+        if (this.options.direction === MouseSync.DIRECTION_X) {
+            nextDelta = diffX;
+            this._position += nextDelta;
+        }
+        else if (this.options.direction === MouseSync.DIRECTION_Y) {
+            nextDelta = diffY;
+            this._position += nextDelta;
+        }
+        else {
+            nextDelta = [diffX, diffY];
+            this._position[0] += diffX;
+            this._position[1] += diffY;
+        }
+
+        if (this.options.clickThreshold !== false) {
+            this._displacement[0] += diffX;
+            this._displacement[1] += diffY;
+        }
+
+        payload.delta    = nextDelta;
+        payload.position = this._position;
+        payload.clientX  = x;
+        payload.clientY  = y;
+        payload.offsetX  = event.offsetX;
+        payload.offsetY  = event.offsetY;
+
+        if (this._positionHistory.length === this.options.velocitySampleLength) {
+            this._positionHistory.shift();
+        }
+
+        this._positionHistory.push({
+            position: payload.position.slice ? payload.position.slice(0) : payload.position,
+            clientPosition: [x, y],
+            timestamp: currTime
+        });
+
+        // Calculate velocity
+        var lastPositionHistory = SyncUtils.getTimeHistoryPosition(this._positionHistory, this.options.timeSampleDuration);
+        var diffTime = Math.max(currTime - lastPositionHistory.timestamp, MINIMUM_TICK_TIME); // minimum tick time
+
+        if (this.options.direction !== undefined) {
+            nextVel = scale * (this._position - lastPositionHistory.position) / diffTime;
+        }
+        else {
+            nextVel = [
+                scale * (this._position[0] - lastPositionHistory.position[0]) / diffTime,
+                scale * (this._position[1] - lastPositionHistory.position[1]) / diffTime
+            ];
+        }
+
+        payload.velocity = nextVel;
+
+        return payload;
     }
 
     /**
