@@ -327,37 +327,116 @@ define(function(require, exports, module) {
      *
      * @method skew
      * @static
-     * @param {Number} phi scale factor skew in the x axis
-     * @param {Number} theta scale factor skew in the y axis
-     * @param {Number} psi scale factor skew in the z axis
+     * @param {Number} xz skew happens along x, the value is the positive angle about z
+     * @param {Number} yz skew happens along y, the value is the positive angle about z
+     * @param {Number} xy skew happens along x, the value is the positive angle about y
+     * @param {Number} zy skew happens along z, the value is the positive angle about y
+     * @param {Number} zx skew happens along z, the value is the positive angle about x
+     * @param {Number} yx skew happens along y, the value is the positive angle about x
      * @return {Transform}
      */
-    Transform.skew = function skew(phi, theta, psi) {
-        return [1, Math.tan(theta), 0, 0, Math.tan(psi), 1, 0, 0, 0, Math.tan(phi), 1, 0, 0, 0, 0, 1];
+    Transform.skew = function skew(xz, yz, xy, zy, zx, yx) {
+        return [1, Math.tan(yz), -Math.tan(zy), 0, -Math.tan(xz), 1, Math.tan(zx), 0, Math.tan(xy), -Math.tan(yx), 1, 0, 0, 0, 0, 1];
     };
 
     /**
      * Return a Transform representation of a skew in the x-direction
+     * behaves similar to CSS skewX
+     * equivalent to Transform.skewXZ
      *
      * @method skewX
      * @static
-     * @param {Number} angle the angle between the top and left sides
+     * @param {Number} angle skew happens along x, the value is the positive angle about z
      * @return {Transform}
      */
     Transform.skewX = function skewX(angle) {
-        return [1, 0, 0, 0, Math.tan(angle), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        return [1, 0, 0, 0, -Math.tan(angle), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
     /**
      * Return a Transform representation of a skew in the y-direction
+     * behaves similar to CSS skewY
+     * equivalent to Transform.skewYZ
      *
      * @method skewY
      * @static
-     * @param {Number} angle the angle between the top and right sides
+     * @param {Number} angle skew happens along y, the value is the positive angle about z
      * @return {Transform}
      */
     Transform.skewY = function skewY(angle) {
         return [1, Math.tan(angle), 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    };
+
+    /**
+     * Return a Transform representation of a skew in the x-direction, about the z-axis
+     *
+     * @method skewXZ
+     * @static
+     * @param {Number} xz skew happens along x, the value is the positive angle about z
+     * @return {Transform}
+     */
+    Transform.skewXZ = function skewXZ(xz) {
+        return [1, 0, 0, 0, -Math.tan(xz), 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    };
+
+    /**
+     * Return a Transform representation of a skew in the y-direction, about the z-axis
+     *
+     * @method skewYZ
+     * @static
+     * @param {Number} yz skew happens along y, the value is the positive angle about z
+     * @return {Transform}
+     */
+    Transform.skewYZ = function skewYZ(yz) {
+        return [1, Math.tan(yz), 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    };
+
+    /**
+     * Return a Transform representation of a skew in the x-direction, about the y-axis
+     *
+     * @method skewXY
+     * @static
+     * @param {Number} xy skew happens along x, the value is the positive angle about y
+     * @return {Transform}
+     */
+    Transform.skewXY = function skewXY(xy) {
+        return [1, 0, 0, 0, 0, 1, 0, 0, Math.tan(xy), 0, 1, 0, 0, 0, 0, 1];
+    };
+
+    /**
+     * Return a Transform representation of a skew in the z-direction, about the y-axis
+     *
+     * @method skewZY
+     * @static
+     * @param {Number} zy skew happens along z, the value is the positive angle about y
+     * @return {Transform}
+     */
+    Transform.skewZY = function skewZY(zy) {
+        return [1, 0, -Math.tan(zy), 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    };
+
+    /**
+     * Return a Transform representation of a skew in the z-direction, about the x-axis
+     *
+     * @method skewZX
+     * @static
+     * @param {Number} zx skew happens along z, the value is the positive angle about x
+     * @return {Transform}
+     */
+    Transform.skewZX = function skewZX(zx) {
+        return [1, 0, 0, 0, 0, 1, Math.tan(zx), 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    };
+
+    /**
+     * Return a Transform representation of a skew in the y-direction, about the x-axis
+     *
+     * @method skewYX
+     * @static
+     * @param {Number} yx skew happens along y, the value is the positive angle about x
+     * @return {Transform}
+     */
+    Transform.skewYX = function skewYX(yx) {
+        return [1, 0, 0, 0, 0, 1, 0, 0, 0, -Math.tan(yx), 1, 0, 0, 0, 0, 1];
     };
 
     /**
