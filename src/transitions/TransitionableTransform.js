@@ -13,8 +13,9 @@ define(function(require, exports, module) {
     var Utility = require('../utilities/Utility');
 
     /**
-     * A class for transitioning the state of a Transform by transitioning
-     * its translate, scale, skew and rotate components independently.
+     * A class for transitioning the state of a Transform by transitioning the
+     * X, Y, and Z axes of it's translate, scale, skew and rotate components
+     * independently.
      *
      * @class TransitionableTransform
      * @constructor
@@ -29,20 +30,27 @@ define(function(require, exports, module) {
         this._finalSkew = [0, 0, 0];
         this._finalScale = [1, 1, 1];
 
-        this.translate = new Transitionable(this._finalTranslate);
-        this.rotate = new Transitionable(this._finalRotate);
-        this.skew = new Transitionable(this._finalSkew);
-        this.scale = new Transitionable(this._finalScale);
+        this.translate = [];
+        this.rotate    = [];
+        this.skew      = [];
+        this.scale     = [];
+
+        for (var i=0; i<3; i+=1) {
+            this.translate[i] = new Transitionable(this._finalTranslate[i]);
+            this.rotate[i]    = new Transitionable(this._finalRotate[i]);
+            this.skew[i]      = new Transitionable(this._finalSkew[i]);
+            this.scale[i]     = new Transitionable(this._finalScale[i]);
+        }
 
         if (transform) this.set(transform);
     }
 
     function _build() {
         return Transform.build({
-            translate: this.translate.get(),
-            rotate: this.rotate.get(),
-            skew: this.skew.get(),
-            scale: this.scale.get()
+            translate: [this.translate[0].get(), this.translate[1].get(), this.translate[2].get()],
+            rotate:    [this.rotate[0].get(),    this.rotate[1].get(),    this.rotate[2].get()],
+            skew:      [this.skew[0].get(),      this.skew[1].get(),      this.skew[2].get()],
+            scale:     [this.scale[0].get(),     this.scale[1].get(),     this.scale[2].get()]
         });
     }
 
@@ -55,8 +63,18 @@ define(function(require, exports, module) {
         });
     }
 
+    function _countOfType(array, type) {
+        var count = 0;
+        for (var i=0; i<array.length; i+=1) {
+            if (typeof array[i] === type+'') {
+                count+=1;
+            }
+        }
+        return count;
+    }
+
     /**
-     * An optimized way of setting only the translation component of a Transform
+     * An optimized way of setting only the translation component of a Transform. Axes who's values are null will not be affected.
      *
      * @method setTranslate
      * @chainable
@@ -67,14 +85,74 @@ define(function(require, exports, module) {
      * @return {TransitionableTransform}
      */
     TransitionableTransform.prototype.setTranslate = function setTranslate(translate, transition, callback) {
-        this._finalTranslate = translate;
+        var numberOfAxes = _countOfType(translate, 'number');
+        var _callback = callback ? Utility.after(numberOfAxes, callback) : null;
+        for (var i=0; i<translate.length; i+=1) {
+            if (typeof translate[i] === 'number') {
+                this.translate[i].set(translate[i], transition, _callback);
+                this._finalTranslate[i] = translate[i];
+            }
+        }
         this._final = _buildFinal.call(this);
-        this.translate.set(translate, transition, callback);
         return this;
     };
 
     /**
-     * An optimized way of setting only the scale component of a Transform
+     * Translate only along the X axis of the translation component of a Transform.
+     *
+     * @method setTranslateX
+     * @chainable
+     *
+     * @param translate {Number}     New translation state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setTranslateX = function setTranslateX(translate, transition, callback) {
+        this.translate[0].set(translate, transition, callback);
+        this._finalTranslate[0] = translate;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * Translate only along the Y axis of the translation component of a Transform.
+     *
+     * @method setTranslateY
+     * @chainable
+     *
+     * @param translate {Number}     New translation state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setTranslateY = function setTranslateY(translate, transition, callback) {
+        this.translate[1].set(translate, transition, callback);
+        this._finalTranslate[1] = translate;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * Translate only along the Z axis of the translation component of a Transform.
+     *
+     * @method setTranslateZ
+     * @chainable
+     *
+     * @param translate {Number}     New translation state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setTranslateZ = function setTranslateZ(translate, transition, callback) {
+        this.translate[2].set(translate, transition, callback);
+        this._finalTranslate[2] = translate;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * An optimized way of setting only the scale component of a Transform. Axes who's values are null will not be affected.
      *
      * @method setScale
      * @chainable
@@ -85,14 +163,74 @@ define(function(require, exports, module) {
      * @return {TransitionableTransform}
      */
     TransitionableTransform.prototype.setScale = function setScale(scale, transition, callback) {
-        this._finalScale = scale;
+        var numberOfAxes = _countOfType(scale, 'number');
+        var _callback = callback ? Utility.after(numberOfAxes, callback) : null;
+        for (var i=0; i<scale.length; i+=1) {
+            if (typeof scale[i] === 'number') {
+                this.scale[i].set(scale[i], transition, _callback);
+                this._finalScale[i] = scale[i];
+            }
+        }
         this._final = _buildFinal.call(this);
-        this.scale.set(scale, transition, callback);
         return this;
     };
 
     /**
-     * An optimized way of setting only the rotational component of a Transform
+     * Scale only along the X axis of the scale component of a Transform.
+     *
+     * @method setScaleX
+     * @chainable
+     *
+     * @param scale {Number}     New scale state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setScaleX = function setScaleX(scale, transition, callback) {
+        this.scale[0].set(scale, transition, callback);
+        this._finalScale[0] = scale;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * Scale only along the Y axis of the scale component of a Transform.
+     *
+     * @method setScaleY
+     * @chainable
+     *
+     * @param scale {Number}     New scale state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setScaleY = function setScaleY(scale, transition, callback) {
+        this.scale[1].set(scale, transition, callback);
+        this._finalScale[1] = scale;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * Scale only along the Z axis of the scale component of a Transform.
+     *
+     * @method setScaleZ
+     * @chainable
+     *
+     * @param scale {Number}     New scale state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setScaleZ = function setScaleZ(scale, transition, callback) {
+        this.scale[2].set(scale, transition, callback);
+        this._finalScale[2] = scale;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * An optimized way of setting only the rotational component of a Transform. Axes who's values are null will not be affected.
      *
      * @method setRotate
      * @chainable
@@ -103,33 +241,153 @@ define(function(require, exports, module) {
      * @return {TransitionableTransform}
      */
     TransitionableTransform.prototype.setRotate = function setRotate(eulerAngles, transition, callback) {
-        this._finalRotate = eulerAngles;
+        var numberOfAxes = _countOfType(eulerAngles, 'number');
+        var _callback = callback ? Utility.after(numberOfAxes, callback) : null;
+        for (var i=0; i<eulerAngles.length; i+=1) {
+            if (typeof eulerAngles[i] === 'number') {
+                this.rotate[i].set(eulerAngles[i], transition, _callback);
+                this._finalRotate[i] = eulerAngles[i];
+            }
+        }
         this._final = _buildFinal.call(this);
-        this.rotate.set(eulerAngles, transition, callback);
         return this;
     };
 
     /**
-     * An optimized way of setting only the skew component of a Transform
+     * Rotate only about the X axis of the rotational component of a Transform.
+     *
+     * @method setScaleX
+     * @chainable
+     *
+     * @param eulerAngle {Number}     New rotational state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setRotateX = function setRotateX(eulerAngle, transition, callback) {
+        this.rotate[0].set(eulerAngle, transition, callback);
+        this._finalRotate[0] = eulerAngle;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * Rotate only about the Y axis of the rotational component of a Transform.
+     *
+     * @method setScaleY
+     * @chainable
+     *
+     * @param eulerAngle {Number}     New rotational state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setRotateY = function setRotateY(eulerAngle, transition, callback) {
+        this.rotate[1].set(eulerAngle, transition, callback);
+        this._finalRotate[1] = eulerAngle;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * Rotate only about the Z axis of the rotational component of a Transform.
+     *
+     * @method setScaleZ
+     * @chainable
+     *
+     * @param eulerAngle {Number}     New rotational state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setRotateZ = function setRotateZ(eulerAngle, transition, callback) {
+        this.rotate[2].set(eulerAngle, transition, callback);
+        this._finalRotate[2] = eulerAngle;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * An optimized way of setting only the skew component of a Transform. Axes who's values are null will not be affected.
      *
      * @method setSkew
      * @chainable
      *
-     * @param skewAngles {Array}    New skew state
+     * @param skewAngles {Array}    New skew state. Axes who's values are null will not be affected.
      * @param [transition] {Object} Transition definition
      * @param [callback] {Function} Callback
      * @return {TransitionableTransform}
      */
     TransitionableTransform.prototype.setSkew = function setSkew(skewAngles, transition, callback) {
-        this._finalSkew = skewAngles;
+        var numberOfAxes = _countOfType(skewAngles, 'number');
+        var _callback = callback ? Utility.after(numberOfAxes, callback) : null;
+        for (var i=0; i<skewAngles.length; i+=1) {
+            if (typeof skewAngles[i] === 'number') {
+                this.skew[i].set(skewAngles[i], transition, _callback);
+                this._finalSkew[i] = skewAngles[i];
+            }
+        }
         this._final = _buildFinal.call(this);
-        this.skew.set(skewAngles, transition, callback);
+        return this;
+    };
+
+    /**
+     * Skew only about the X axis of the skew component of a Transform.
+     *
+     * @method setSkewX
+     * @chainable
+     *
+     * @param skewAngle {Number}     New skew state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setSkewX = function setSkewX(skewAngle, transition, callback) {
+        this.skew[0].set(skewAngle, transition, callback);
+        this._finalSkew[0] = skewAngle;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * Skew only about the Y axis of the skew component of a Transform.
+     *
+     * @method setSkewY
+     * @chainable
+     *
+     * @param skewAngle {Number}     New skew state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setSkewY = function setSkewY(skewAngle, transition, callback) {
+        this.skew[1].set(skewAngle, transition, callback);
+        this._finalSkew[1] = skewAngle;
+        this._final = _buildFinal.call(this);
+        return this;
+    };
+
+    /**
+     * Skew only about the Z axis of the skew component of a Transform.
+     *
+     * @method setSkewZ
+     * @chainable
+     *
+     * @param skewAngle {Number}     New skew state
+     * @param [transition] {Object} Transition definition
+     * @param [callback] {Function} Callback
+     * @return {TransitionableTransform}
+     */
+    TransitionableTransform.prototype.setSkewZ = function setSkewZ(skewAngle, transition, callback) {
+        this.skew[2].set(skewAngle, transition, callback);
+        this._finalSkew[2] = skewAngle;
+        this._final = _buildFinal.call(this);
         return this;
     };
 
     /**
      * Setter for a TransitionableTransform with optional parameters to transition
-     * between Transforms
+     * between Transforms. Animates all axes of all components.
      *
      * @method set
      * @chainable
@@ -148,11 +406,13 @@ define(function(require, exports, module) {
         this._finalScale = components.scale;
         this._final = transform;
 
-        var _callback = callback ? Utility.after(4, callback) : null;
-        this.translate.set(components.translate, transition, _callback);
-        this.rotate.set(components.rotate, transition, _callback);
-        this.skew.set(components.skew, transition, _callback);
-        this.scale.set(components.scale, transition, _callback);
+        var _callback = callback ? Utility.after(12, callback) : null;
+        for (var i=0; i<3; i+=1) {
+            this.translate[i].set(components.translate[i], transition, _callback);
+            this.rotate[i].set(components.rotate[i], transition, _callback);
+            this.skew[i].set(components.skew[i], transition, _callback);
+            this.scale[i].set(components.scale[i], transition, _callback);
+        }
         return this;
     };
 
@@ -164,10 +424,12 @@ define(function(require, exports, module) {
      * @param transition {Object} Transition definition
      */
     TransitionableTransform.prototype.setDefaultTransition = function setDefaultTransition(transition) {
-        this.translate.setDefault(transition);
-        this.rotate.setDefault(transition);
-        this.skew.setDefault(transition);
-        this.scale.setDefault(transition);
+        for (var i=0; i<3; i+=1) {
+            this.translate[i].setDefault(transition);
+            this.rotate[i].setDefault(transition);
+            this.skew[i].setDefault(transition);
+            this.scale[i].setDefault(transition);
+        }
     };
 
     /**
@@ -196,14 +458,26 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Determine if the TransitionalTransform is currently transitioning
+     * Determine if the TransitionableTransform is currently transitioning
      *
      * @method isActive
      *
      * @return {Boolean}
      */
     TransitionableTransform.prototype.isActive = function isActive() {
-        return this.translate.isActive() || this.rotate.isActive() || this.scale.isActive() || this.skew.isActive();
+        var isActive = false;
+
+        for (var i=0; i<3; i+=1) {
+            if (
+                this.translate[i].isActive()
+                || this.rotate[i].isActive()
+                || this.skew[i].isActive()
+                || this.scale[i].isActive()
+            ) {
+                isActive = true; break;
+            }
+        }
+        return isActive;
     };
 
     /**
@@ -212,16 +486,19 @@ define(function(require, exports, module) {
      * @method halt
      */
     TransitionableTransform.prototype.halt = function halt() {
-        this.translate.halt();
-        this.rotate.halt();
-        this.skew.halt();
-        this.scale.halt();
+        for (var i=0; i<3; i+=1) {
+            this.translate[i].halt();
+            this.rotate[i].halt();
+            this.skew[i].halt();
+            this.scale[i].halt();
+
+            this._finalTranslate[i] = this.translate[i].get();
+            this._finalRotate[i] = this.rotate[i].get();
+            this._finalSkew[i] = this.skew[i].get();
+            this._finalScale[i] = this.scale[i].get();
+        }
 
         this._final = this.get();
-        this._finalTranslate = this.translate.get();
-        this._finalRotate = this.rotate.get();
-        this._finalSkew = this.skew.get();
-        this._finalScale = this.scale.get();
 
         return this;
     };
