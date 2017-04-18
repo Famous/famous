@@ -26,7 +26,7 @@ the expectations every web developer has of the DOM, but in a way that doesn't c
 performance. The Render Tree is our solution to relative positioning and
 semantic structure. In other documentation we'll go into events and animation.
 
-#Overview
+# Overview
 
 - [Creating the Tree](#creation)
 - [Extending the Tree](#extension)
@@ -39,7 +39,7 @@ semantic structure. In other documentation we'll go into events and animation.
 - [The Big Picture](#review)
 
 
-##<a name="creation">Creating the Tree</a>
+## <a name="creation">Creating the Tree</a>
 
 
 A tree's starting point is called its root. In HTML, this root is the `<body>` tag.
@@ -52,7 +52,7 @@ class `famous-container` (we can also pass in a pre-existing DOM element).
      │
 ```
 
-##<a name="extension">Extending the Tree</a>
+## <a name="extension">Extending the Tree</a>
 
 
 So far we have a pretty boring app. A Context has no visual representation,
@@ -68,7 +68,7 @@ corresponds to a `<div>` in HTML. This `<div>` will be nested inside of the
   surface                    context.add(surface);
 ```
 
-##<a name="nodes">Types of Nodes</a>
+## <a name="nodes">Types of Nodes</a>
 
 
 A tree is made up of nodes. In HTML, these nodes are tags like `<div>` or
@@ -77,7 +77,7 @@ Above, we saw how to add one type of renderable, a Surface, to the Render Tree.
 Below, we will examine other kinds of nodes that make up a typical Render Tree.
 
 
-##<a name="renderables">Renderables</a>
+## <a name="renderables">Renderables</a>
 
 
 Renderables are nodes that get drawn to the screen. We have already been
@@ -108,7 +108,7 @@ complex composited renderables. These are called Views and will be
 discussed [below](#views).
 
 
-##<a name="modifiers">Modifiers</a>
+## <a name="modifiers">Modifiers</a>
 
 
 A Modifier is another type of Famo.us node that is capable of modifying
@@ -140,7 +140,7 @@ then the surface will be at `[100px, 200px]` from the top left of the Context.
 Modifiers also have more complicated support for layout, like auto-centering
 and sizing, but this will be discussed in a different tutorial.
 
-##<a name="chaining">Chaining Nodes</a>
+## <a name="chaining">Chaining Nodes</a>
 
 
 Modifiers affect the render tree beneath them. But that means Modifiers can
@@ -158,7 +158,7 @@ separating state easy to do. One modifier can handle opacity, another, rotation.
   surface
 ```
 
-##<a name="branching">Branching Nodes</a>
+## <a name="branching">Branching Nodes</a>
 
 
 So far our Render Trees have been linear: one node sequentially following another.
@@ -191,7 +191,7 @@ Here, `surface1` and `surface2` are both relative to `modifier1`, and
 (assuming these modifiers are for translating nodes).
 
 
-##<a name="views">Views</a>
+## <a name="views">Views</a>
 
 
 So far we've seen that you can add Modifiers and Surfaces to the Render Tree.
@@ -262,7 +262,7 @@ manageable. And unlike DOM, there is no performance degradation incurred from
 nesting structure; everything is flattened by the time it gets to the DOM.
 
 
-##<a name="review">The Big Picture</a>
+## <a name="review">The Big Picture</a>
 
 
 > It's modifiers all the way down - *Anon*
