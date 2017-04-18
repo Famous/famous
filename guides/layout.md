@@ -291,7 +291,7 @@ properties can animate over time. This can be done in one of two methods:
 - [push-based](#push)
 - [pull-based](#pull)
 
-####<a name="push">Push-based animations</a>
+#### <a name="push">Push-based animations</a>
 
 The `StateModifier` class found in Famous/modifiers/StateModifier.js is a push-based
 implementation. Here, `StateModifier` has the methods
@@ -326,7 +326,7 @@ stateModifier.setOpacity(
 );
 ```
 
-####<a name="pull">Pull-based animations</a>
+#### <a name="pull">Pull-based animations</a>
 
 The `Modifier` class found in Famous/core/Modifier.js is a pull-based
 implementation. The `Modifier` itself doesn't keep any state (like what the 

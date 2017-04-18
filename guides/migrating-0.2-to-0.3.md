@@ -89,7 +89,7 @@ The `initial-scale=1` setting will ensure that the content is displayed correctl
 
 First, let's look at the breaking changes in the v0.3 release of Famo.us:
 
-###src folder
+### src folder
 All src code is now found in a src/ folder.  This will cause issues with any pathing you are currently relying on.  Please see the above sections that describe how to properly update your tooling stack accordingly.
 
 ### Align & origin
